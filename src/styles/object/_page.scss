@@ -1,0 +1,14 @@
+// ==========================================================================
+// PAGE
+// ==========================================================================
+
+.o-page
+{
+  width: 100%;
+  padding: $_doc_line_base * 4 $_doc_line_base !important;
+
+  @include bp(large)
+  {
+    padding: $_doc_line_base $_doc_line_base !important;
+  }
+}

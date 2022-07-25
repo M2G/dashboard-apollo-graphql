@@ -1,0 +1,134 @@
+// ==========================================================================
+// VARIABLES
+// ==========================================================================
+
+// Color swatch
+$_color-red: #ff003c !default;
+$_color-white: #fff !default;
+$_color-grey: #bebebe !default;
+$_color-grey-light: #d8d8d8 !default;
+$_color-grey-dark: #414141 !default;
+$_color-black: #1d1d1b !default;
+$_color-brand: $_color-red !default;
+$_color-links: $_color-black !default;
+$_color-golden: #e6d600 !default;
+$_color-thema: (
+        data: $_color-golden,
+) !default;
+
+$_color-backdrop: darken($_color-grey-dark, 10%) !default;
+// Base
+// ==========================================================================
+
+// Typography
+$_base-font-size: 16px !default;
+$_base-font-line-height: 1.5 !default;
+$_base-font-space: $_base-font-size * $_base-font-line-height !default;
+
+$_font-open-sans: 'Open Sans', sans-serif !default;
+$_font-open-sans-cond: 'Open Sans Condensed', sans-serif !default;
+
+$_base-font-family: $_font-open-sans !default;
+$_base-font-family-condensed: $_font-open-sans-cond !default;
+$_base-font-family-headings: 'Proxima Nova Extra Condensed', $_base-font-family-condensed !default;
+
+$_base-font-color: $_color-black !default;
+
+$_base-font-size-h1: 32px !default;
+$_base-font-size-h2: 30px !default;
+$_base-font-size-h3: 28px !default;
+$_base-font-size-h4: 26px !default;
+$_base-font-size-h5: 24px !default;
+$_base-font-size-h6: 18px !default;
+
+$_base-font-links-color: $_color-brand !default;
+$_base-font-links-color-hover: darken($_base-font-links-color, 5%) !default;
+$_base-font-links-color-focus: darken($_base-font-links-color, 10%) !default;
+$_base-font-links-text-decoration: none;
+
+// Tables
+$_base-tables-padding: $_base-font-space !default;
+$_base-tables-border-width: 1px;
+$_base-tables-border-color: $_color-grey-light;
+
+// GFX
+$_transition-default: all ease .25s !default;
+
+// ==========================================================================
+// Layout
+// ==========================================================================
+
+$_layout-space: 10px !default;
+$_doc_line_base: 24px;
+
+// Breakpoints
+$_layout-breakpoints: (
+  smallest: 23.438em,
+  smaller: 25em,
+  small: 40em,
+  medium: 48em,
+  large: 64em,
+  largest: 78em
+) !default;
+
+/*
+23.438em = 375px
+25em = 400px
+40em = 640px
+48em = 768px
+64em = 1024px
+78em = 1250px
+*/
+
+// Columns
+$_layout-columns: (
+  one-quarter: 25%,
+  one-third: 33.3333%,
+  half: 50%,
+  three-quarter: 75%,
+  full: 100%,
+  two-third: 66.66667%
+) !default;
+
+// Grid
+$_layout-grid: (
+  width: 1170px,
+  columns: 12,
+  gutters: 25px,
+  breakpoints: $_layout-breakpoints
+) !default;
+
+// ==========================================================================
+// Bootstrap override
+// ==========================================================================
+
+$_grid-breakpoints: (
+  xs: 0,
+  sm: 544px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+) !default;
+
+$_container-max-widths: (
+  sm: 576px,
+  md: 720px,
+  lg: 940px,
+  xl: 1140px
+) !default;
+
+@import './function/strip-unit';
+@import './function/em';
+
+$grid-columns: map-get($_layout-grid, columns);
+$grid-width: map-get($_layout-grid, width);
+$grid-gutter-width: _em(map-get($_layout-grid, gutters));
+
+// COMPONENTS
+
+$_component_height_header: 137px;
+
+// CUSTOM
+
+$_custom_wide_layout_max_width: 1500px;
+$_custom_teaser_min_height: 370px;

@@ -1,0 +1,56 @@
+// ==========================================================================
+// LAZYLOADING
+// ==========================================================================
+
+img[data-sizes='auto']
+{
+    display: block;
+
+    width: 100%;
+
+    transition: all ease .45s;
+
+    &.blur
+    {
+        position: relative;
+
+        filter: blur(5px);
+    }
+
+    &.lazyloaded.blur
+    {
+        filter: blur(0);
+    }
+}
+
+img
+{
+    position: relative;
+
+    min-height: 20px;
+
+    &::before
+    {
+        font-size: 12px;
+        line-height: 1;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        display: block;
+
+        width: 100%;
+        min-width: 200px;
+        height: 100%;
+        padding: 10px;
+
+        content: 'Désolé, cette image est inaccessible. ';
+        text-align: center;
+        vertical-align: middle;
+
+        color: darken($_color-grey, 15%);
+        border: 1px dashed darken($_color-grey-light, 2%);
+        background-color: lighten($_color-grey-light,8%);
+    }
+}

@@ -1,0 +1,18 @@
+// ==========================================================================
+// CLEARFIX
+// ==========================================================================
+
+// Fix parent element when a child float
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: ' ';
+    display: table;
+  }
+
+  &:after { clear: both; }
+}
+
+.u-clearfix {
+  @include clearfix();
+}

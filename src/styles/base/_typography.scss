@@ -1,0 +1,153 @@
+// ==========================================================================
+// TYPOGRAPHY
+// ==========================================================================
+
+html
+{
+    font-family: $_base-font-family;
+    font-size: $_base-font-size;
+
+    color: $_base-font-color;
+
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+
+body
+{
+    font-size: _em($_base-font-size);
+    line-height: $_base-font-line-height;
+
+    background-color: $_color-white;
+}
+
+// Headings
+// ==========================================================================
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+{
+    font-family: $_base-font-family-headings;
+    font-weight: bold;
+    line-height: 1;
+
+    margin-bottom: 0;
+
+    &:first-child
+    {
+        margin-top: 0;
+    }
+}
+
+h1
+{
+    font-size: _em($_base-font-size-h1);
+
+    margin-top: _em($_base-font-space, $_base-font-size-h1);
+}
+
+h2
+{
+    font-size: _em($_base-font-size-h2);
+
+    margin-top: _em($_base-font-space, $_base-font-size-h2);
+}
+
+h3
+{
+    font-size: _em($_base-font-size-h3);
+
+    margin-top: _em($_base-font-space, $_base-font-size-h3);
+}
+
+h4
+{
+    font-size: _em($_base-font-size-h4);
+
+    margin-top: _em($_base-font-space, $_base-font-size-h4);
+}
+
+h5
+{
+    font-size: _em($_base-font-size-h5);
+
+    margin-top: _em($_base-font-space, $_base-font-size-h5);
+}
+
+h6
+{
+    font-size: _em($_base-font-size-h6);
+
+    margin-top: _em($_base-font-space, $_base-font-size-h6);
+}
+
+// Block elements
+// ==========================================================================
+
+p,
+ul,
+ol,
+blockquote
+{
+    margin-top: 0;
+    margin-bottom: _em($_base-font-space);
+}
+
+blockquote
+{
+    margin-left: 0;
+    padding-left: _em($_base-font-space);
+
+    border-left: 3px solid $_color-grey-light;
+
+    p
+    {
+        margin-bottom: 0;
+    }
+
+    cite
+    {
+        font-size: .8em;
+        &:before
+        {
+            content: '\2014 \0020';
+        }
+    }
+}
+
+// Inline elements
+// ==========================================================================
+
+// Links
+a
+{
+    text-decoration: $_base-font-links-text-decoration;
+
+    color: $_color-brand;
+}
+
+// Code
+code,
+kbd,
+pre,
+samp
+{
+    padding-right: .2em;
+    padding-left: .2em;
+
+    border-radius: .2em;
+    background-color: $_color-grey-light;
+}
+
+// Extra
+// ==========================================================================
+
+::selection
+{
+    color: $_color-white;
+    background-color: $_color-brand;
+}

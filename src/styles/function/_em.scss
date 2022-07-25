@@ -1,0 +1,10 @@
+// ==========================================================================
+// CONVERT PX TO EM
+// ==========================================================================
+
+$_base-em: if(variable-exists('$_base-font-size'), 16px, $_base-font-size) !default;
+
+@function _em($px, $base: $_base-em)
+{
+    @return ($px / $base) * 1em;
+}

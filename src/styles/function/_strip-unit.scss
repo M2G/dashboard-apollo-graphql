@@ -1,0 +1,9 @@
+// ==========================================================================
+// STRIP UNIT
+// ==========================================================================
+
+// Remove the unit of a length
+// @param {Number} $value - Number to remove unit
+@function _strip-unit($value) {
+  @return $value / ($value * 0 + 1);
+}

@@ -1,0 +1,53 @@
+// ==========================================================================
+// IMPORT FONTS
+// ==========================================================================
+
+@font-face
+{
+    font-family: 'Proxima Nova Extra Condensed';
+    font-weight: normal;
+    font-style: italic;
+
+    src: url('../../assets/fonts/ProximaNovaExCn-MediumItWeb.eot'),
+    url('../../assets/fonts/ProximaNovaExCn-MediumItWeb.woff') format('woff');
+}
+
+@font-face
+{
+    font-family: 'Proxima Nova Extra Condensed';
+    font-weight: normal;
+    font-style: normal;
+
+    src: url('../../assets/fonts/ProximaNovaExCn-MediumWeb.eot');
+    src: url('../../assets/fonts/ProximaNovaExCn-MediumWeb.woff') format('woff');
+}
+
+@font-face
+{
+    font-family: 'Proxima Nova Extra Condensed';
+    font-weight: bold;
+    font-style: normal;
+
+    src: url('../../assets/fonts/ProximaNovaExCn-BoldWeb.eot'),
+    url('../../assets/fonts/ProximaNovaExCn-BoldWeb.woff') format('woff');
+}
+
+@font-face
+{
+    font-family: 'Proxima Nova Extra Condensed';
+    font-weight: bold;
+    font-style: italic;
+
+    src: url('../../assets/fonts/ProximaNovaExCn-BoldItWeb.eot'),
+    url('../../assets/fonts/ProximaNovaExCn-BoldItWeb.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+
+  src: url('../../assets/fonts/OpenSans-Regular.eot'),
+  url('../../assets/fonts/OpenSans-Regular.woff') format('woff');
+}

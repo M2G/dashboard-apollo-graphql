@@ -1,0 +1,127 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "@faker-js/faker": "^6.3.1",
+    "@storybook/addon-a11y": "6.5.9",
+    "@storybook/addon-actions": "6.5.5",
+    "@storybook/addon-docs": "6.5.5",
+    "@storybook/addon-links": "6.5.5",
+    "@storybook/addons": "6.5.5",
+    "@storybook/builder-webpack5": "^6.5.5",
+    "@storybook/eslint-config-storybook": "^3.1.2",
+    "@storybook/manager-webpack5": "^6.5.5",
+    "@storybook/react": "^6.5.5",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.2.0",
+    "@testing-library/user-event": "^14.2.0",
+    "@types/history": "^4.7.11",
+    "@types/prop-types": "^15.7.5",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.5",
+    "@types/react-redux": "^7.1.24",
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
+    "bootstrap": "^5.1.3",
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-react-hooks": "^4.5.0",
+    "eslint-plugin-storybook": "^0.5.12",
+    "eslint-webpack-plugin": "^3.1.1",
+    "history": "^5.3.0",
+    "jest": "27.5.1",
+    "jest-cli": "^27.5.1",
+    "jest-resolve": "27.5.1",
+    "lint-staged": "^12.4.2",
+    "lodash": "^4.17.21",
+    "node-sass": "^7.0.1",
+    "prettier": "^2.6.2",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.7.2",
+    "validate-branch-name": "^1.3.0",
+    "webpack": "^5.72.1"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.6.9",
+    "@sentry/react": "^7.7.0",
+    "@sentry/tracing": "^6.19.7",
+    "classnames": "^2.3.1",
+    "css-loader": "^6.7.1",
+    "cypress": "^10.3.1",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "formik": "^2.2.9",
+    "graphql": "^16.5.0",
+    "husky": "^7.0.4",
+    "i18next": "^21.8.4",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^3.1.4",
+    "react-i18next": "^11.16.9",
+    "react-moment-proptypes": "^1.8.1",
+    "react-query": "^4.0.0",
+    "react-redux": "^8.0.2",
+    "react-router-dom": "^6.3.0",
+    "sass": "^1.52.1",
+    "sass-loader": "^12.6.0",
+    "style-loader": "^3.3.1"
+  },
+  "scripts": {
+    "start": "REACT_APP_ENVIRONMENT=dev react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "build-storybook": "build-storybook",
+    "storybook": "start-storybook -p 9009 --no-manager-cache",
+    "prepare": "husky install",
+    "lint:cypress": "eslint \"cypress/**/*.ts\"",
+    "cypress:open": "cypress open"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "/^sentry\\/(.*)$/": "<rootDir>/src/sentry/$1",
+      "/^exceptions\\/(.*)$/": "<rootDir>/src/exceptions/$1",
+      "/^services\\/(.*)$/": "<rootDir>/src/services/$1",
+      "/^gql\\/(.*)$/": "<rootDir>/src/gql/$1"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "validate-branch-name && npm test",
+      "post-merge": "git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep --quiet package-lock.json && npm ci"
+    }
+  },
+  "lint-staged": {
+    "*.(ts|tsx|graphql|css)": [
+      "prettier --write  --ignore-path .eslintignore"
+    ],
+    "*!(.d).(ts|tsx)": [
+      "eslint --fix"
+    ]
+  },
+  "validate-branch-name": {
+    "pattern": "^master$|stable$|^v\\d+.\\d+$|^release/v\\d+.\\d+$|^(fix|chore|poc|feature|style)[_][\\w-]+$|^IM-[0-9]+[\\w-]+$",
+    "errorMsg": "Branch name format accepted: IM-XXX_some_keyworks, vXX.XX or (fix|chore|poc)_some_keyworks"
+  }
+}

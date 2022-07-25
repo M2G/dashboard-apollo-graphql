@@ -1,0 +1,175 @@
+// ==========================================================================
+// ENTRY
+// ==========================================================================
+
+$_custom_teaser_min_height: 400px;
+
+.o-teaser {
+  @include bp(small) {
+    display: block;
+  }
+
+  width: 100%;
+  height: 100%;
+
+  &__link {
+    position: relative;
+
+    display: block;
+    &:hover,
+    &:focus {
+
+      color: $_color-grey-dark;
+
+      .o-teaser__figure {
+        &:before {
+          opacity: .25;
+        }
+      }
+      .o-head__title {
+        opacity: .8;
+      }
+    }
+  }
+  // Image
+  &__figure {
+    @include bp(small) {
+      display: block;
+
+      width: 100%;
+    }
+
+    position: relative;
+
+    overflow: hidden;
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    &:before {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      content: '';
+      transition: $_transition-default;
+
+      opacity: 0;
+      background-color: $_color-black;
+    }
+    img {
+      z-index: 0;
+
+      display: block;
+
+      width: 100%;
+
+      transition: $_transition-default;
+    }
+  }
+  // Content sections
+  &__content {
+    @include bp(small) {
+      display: block;
+
+      padding-top: _em($_layout-space);
+      padding-right: _em($_layout-space);
+      padding-bottom: 0;
+      padding-left: 0;
+    }
+
+    z-index: 1;
+
+    display: block;
+
+    padding-top: 1em;
+    padding-right: 1em;
+    padding-bottom: 1em;
+    padding-left: 1em;
+
+    align-self: center;
+    .o-page & .o-head {
+      padding-top: 0;
+    }
+    &__body {
+      color: $_base-font-color;
+    }
+    &__footer {
+      @include bp(small) {
+        padding-right: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+      }
+
+      position: relative;
+
+      display: block;
+
+      padding-right: 1em;
+      padding-bottom: 1em;
+      padding-left: 1em;
+
+      color: $_base-font-color;
+      background-color: $_color_white;
+    }
+  }
+  &__excerpt {
+    @include bp(small) {
+      font-size: _rem(18px);
+    }
+  }
+  &--default {
+    display: block;
+    & + & {
+      margin-top: 2em;
+    }
+    .o-teaser__excerpt {
+      margin-bottom: .25em;
+    }
+    .o-head__surtitle {
+      color: $_color-brand;
+    }
+  }
+  .o-infos {
+    @include bp(small) {
+      font-size: 1em;
+    }
+
+    font-size: .75em;
+  }
+
+  .c-header & {
+    .o-infos__author {
+      display: block;
+
+      color: $_color_white;
+    }
+
+    .o-infos__date {
+      font-weight: normal;
+
+      left: 0;
+
+      float: right;
+    }
+  }
+
+  .o-head__title {
+    @include bp(0px, medium) {
+      font-size: 1.8em;
+    }
+  }
+}
+
+// excerpts should be hidden on homepage
+.o-zone:not(.o-zone-medias):not(.o-page--timeline) .o-teaser {
+  &__excerpt {
+    @include bp(small, large) {
+      display: none;
+    }
+  }
+}

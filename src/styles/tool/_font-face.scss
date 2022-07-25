@@ -1,0 +1,17 @@
+// ==========================================================================
+// FONT FACE
+// ==========================================================================
+
+@mixin font-face($fontname, $fontfile, $fontweight: normal, $fontstyle: normal) {
+  @font-face {
+    font-family: '#{$fontname}';
+    src: url('../assets/fonts/#{$fontfile}.eot');
+    src: url('../assets/fonts/#{$fontfile}.eot?#iefix') format('embedded-opentype'),
+         url('../assets/fonts/#{$fontfile}.woff2') format('woff2'),
+         url('../assets/fonts/#{$fontfile}.woff') format('woff'),
+         url('../assets/fonts/#{$fontfile}.ttf') format('truetype'),
+         url('../assets/fonts/#{$fontfile}.svg##{$fontfile}') format('svg');
+    font-weight: #{$fontweight};
+    font-style: #{$fontstyle};
+  }
+}

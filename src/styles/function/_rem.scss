@@ -1,0 +1,29 @@
+// ==========================================================================
+// CONVERT VALUES TO REM
+// ==========================================================================
+
+$_base-rem: if(variable-exists('$_base-font-size'), 16px, $_base-font-size) !default;
+
+// Convert only single value to rem unit
+// @param {Number} $value - Number to convert
+// @param {Number} $base-value - Default base value
+@function _rem-calcu($value, $base-value: $_base-rem) {
+  $value: _strip-unit($value) / _strip-unit($base-value) * 1rem;
+  @if ($value == 0rem) { $value: 0; }
+  @return $value;
+}
+
+// Convert both multiple values and single value to rem unit
+// @param {Number} $value - Number to convert
+// @param {Number} $base-value - Default base value
+@function _rem($values, $base-value: $_base-rem) {
+  $max: length($values);
+
+  @if $max == 1 { @return _rem-calcu(nth($values, 1), $base-value); }
+
+  $rem-values: ();
+  @for $i from 1 through $max {
+    $rem-values: append($rem-values, rem-calc(nth($values, $i), $base-value));
+  }
+  @return $rem-values;
+}

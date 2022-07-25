@@ -1,0 +1,178 @@
+// ==========================================================================
+// HIDDEN
+// ==========================================================================
+
+.u-vishidden
+{
+    position: absolute;
+    top: auto;
+    left: -10000px;
+
+    overflow: hidden;
+
+    width: 1px;
+    height: 1px;
+}
+
+@mixin hidden()
+{
+    display: none;
+    visibility: hidden;
+
+    width: 0;
+    height: 0;
+}
+
+@mixin visible()
+{
+    display: block;
+    visibility: visible;
+
+    width: auto;
+    height: auto;
+}
+
+
+.u-is-hidden-desktop
+{
+    @include bp(large)
+    {
+        display: none !important;
+    }
+}
+
+.u-is-hidden-mobile
+{
+    @include bp(0px, medium)
+    {
+        display: none !important;
+    }
+}
+
+@each $breakpoint, $value in $_layout-breakpoints
+{
+    @if $breakpoint == small
+    {
+        .u-hidden
+        {
+            @include hidden();
+        }
+
+        .u-visible
+        {
+            @include visible();
+        }
+
+        table.u-visible
+        {
+            display: table;
+        }
+
+        td.u-visible,
+        th.u-visible
+        {
+            display: table-cell;
+        }
+
+        tr.u-visible
+        {
+            display: table-row;
+        }
+    }
+
+    @if $breakpoint == medium
+    {
+        .u-hidden--#{$breakpoint}
+        {
+            @include bp(small)
+            {
+                @include hidden();
+            }
+        }
+
+        .u-visible--#{$breakpoint}
+        {
+            @include bp(small)
+            {
+                @include visible();
+            }
+        }
+
+        table.u-visible--#{$breakpoint}
+        {
+            @include bp(small)
+            {
+                display: table;
+            }
+        }
+
+        td.u-visible--#{$breakpoint},
+        th.u-visible--#{$breakpoint}
+        {
+            @include bp(small)
+            {
+                display: table-cell;
+            }
+        }
+
+        tr.u-visible--#{$breakpoint}
+        {
+            @include bp(small)
+            {
+                display: table-row;
+            }
+        }
+    }
+
+    @if $breakpoint == large
+    {
+        .u-hidden--#{$breakpoint}
+        {
+            @include bp(large)
+            {
+                @include hidden();
+            }
+        }
+
+        .u-visible--#{$breakpoint}
+        {
+            @include bp(large)
+            {
+                @include visible();
+            }
+        }
+
+        table.u-visible--#{$breakpoint}
+        {
+            @include bp(large)
+            {
+                display: table;
+            }
+        }
+
+        td.u-visible--#{$breakpoint},
+        th.u-visible--#{$breakpoint}
+        {
+            @include bp(large)
+            {
+                display: table-cell;
+            }
+        }
+
+        tr.u-visible--#{$breakpoint}
+        {
+            @include bp(large)
+            {
+                display: table-row;
+            }
+        }
+    }
+}
+
+.u-cliphidden
+{
+    position: absolute !important;
+
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px, 1px, 1px, 1px);
+}

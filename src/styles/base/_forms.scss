@@ -1,0 +1,33 @@
+// ==========================================================================
+// FORMS
+// ==========================================================================
+
+input::-webkit-input-placeholder
+{
+    /* Chrome/Opera/Safari */
+    color: #cbcbcb;
+}
+
+input::-moz-placeholder
+{
+    /* Firefox 19+ */
+    color: #cbcbcb;
+}
+
+input:-ms-input-placeholder
+{
+    /* IE 10+ */
+    color: #cbcbcb;
+}
+
+input:-moz-placeholder
+{
+    /* Firefox 18- */
+    color: #cbcbcb;
+}
+input[type='search']
+{
+    box-sizing: border-box;
+
+    x-appearance: none;
+}

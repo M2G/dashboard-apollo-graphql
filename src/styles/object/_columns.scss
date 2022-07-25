@@ -1,0 +1,59 @@
+// ==========================================================================
+// COLUMNS
+// ==========================================================================
+
+// All columns
+[class*='o-col'] {
+  @include bp(small) {
+    @include make-col-ready(12);
+  }
+
+  float: left;
+
+  width: 100%;
+}
+
+.u-no-gutters {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+@each $breakpoint, $value in $_layout-breakpoints {
+  @if $breakpoint == small {
+    @each $suffix, $size in $_layout-columns {
+      .o-col--#{$suffix}  {
+        width: $size;
+      }
+    }
+  }
+
+  @if $breakpoint == medium {
+    @include bp(small) {
+      @each $suffix, $size in $_layout-columns {
+        .o-col--#{$suffix}--#{$breakpoint} {
+          width: $size;
+        }
+
+        .u-no-gutters--#{$breakpoint} {
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+      }
+    }
+  }
+
+  @if $breakpoint == large {
+    @include bp(large) {
+      @each $suffix, $size in $_layout-columns {
+        .o-col--#{$suffix}--#{$breakpoint} {
+          width: $size;
+        }
+
+        .u-no-gutters--#{$breakpoint} {
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+      }
+    }
+  }
+}

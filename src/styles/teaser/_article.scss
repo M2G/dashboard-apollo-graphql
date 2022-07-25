@@ -1,0 +1,135 @@
+// ==========================================================================
+// ARTICLE
+// ==========================================================================
+
+.c-article {
+  @include bp(large) {
+    .o-head__title {
+      font-size: _em($_base-font-size-h2);
+    }
+  }
+
+  position: relative;
+
+  .o-teaser__figure {
+    @include bp(small) {
+      border: none;
+    }
+
+    border-color: inherit;
+    border-bottom: _rem(8px) solid;
+  }
+
+  .o-teaser__content {
+    @include bp(small) {
+      width: 80%;
+      margin-top: -10%;
+
+      border-color: inherit;
+      border-top: _rem(8px) solid;
+
+      &.o-teaser__content--no-image {
+        width: 100%;
+        margin-top: 0;
+      }
+    }
+
+    position: relative;
+
+    background-color: $_color-white;
+
+    &__body {
+      *:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &__footer {
+      a {
+        color: $_base-font-color;
+      }
+    }
+  }
+}
+
+.c-article--timeline {
+  .o-teaser__excerpt {
+    @include bp(small) {
+      padding-bottom: 0;
+    }
+
+    margin-bottom: 0;
+    padding-bottom: 1em;
+
+    a {
+      color: $_color-grey-dark;
+    }
+  }
+}
+
+.o-teaser.c-article--data {
+  color: map-get($_color-thema, 'data');
+  background-color: $_color-grey-dark;
+
+  .o-teaser__figure {
+    color: map-get($_color-thema, 'data');
+  }
+
+  .o-teaser__content {
+    @include bp(small) {
+      padding: 8px;
+    }
+
+    color: map-get($_color-thema, 'data');
+    background-color: $_color-grey-dark;
+  }
+
+  .o-teaser__content__footer {
+    @include bp(small) {
+      padding: 0 8px 8px;
+    }
+    background-color: $_color-grey-dark;
+  }
+
+  .o-infos__author,
+  .o-infos,
+  .o-head__title {
+    color: $_color_white;
+  }
+}
+
+.o-zone-medias {
+  .o-teaser__content,
+  .o-teaser__content__footer {
+    background-color: $_color-grey-dark;
+  }
+}
+
+.c-article--embed {
+  border: 1px solid $_color-grey-light;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, .2);
+
+  .o-teaser__link {
+    padding: 20px 20px 0;
+  }
+
+  .o-teaser__content {
+    @include bp(small) {
+      padding: .625em .625em 0 0;
+    }
+
+    padding: 1em 0;
+
+    .o-head {
+      min-height: 50px;
+    }
+  }
+
+  .o-infos {
+    padding: 0 20px;
+
+    a {
+      color: inherit;
+    }
+  }
+}
