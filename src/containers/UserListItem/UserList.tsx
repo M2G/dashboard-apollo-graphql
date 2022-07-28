@@ -3,47 +3,101 @@ import {
   useMemo,
   useState,
   useCallback,
-  useEffect,
+  // useEffect,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { gql, useLazyQuery, useMutation } from "@apollo/client";
+// import { useNavigate } from 'react-router-dom';
+// import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
 import userListItem from 'containers/UserListItem/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
 import UserNew from 'containers/Users/UserNew';
-import { signupUserAction } from 'store/signup/actions';
-import {
-  authGetUsersProfilAction,
-  authDeleteUserProfilAction, authUpdateUserProfilAction } from 'store/auth/actions';
+// import { signupUserAction } from 'store/signup/actions';
+// import { authGetUsersProfilAction, authDeleteUserProfilAction, authUpdateUserProfilAction } from 'store/auth/actions';
 import TableWrapper from 'components/Core/Table/TableWrapper';
 import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
-import TopLineLoading from 'components/Loading/TopLineLoading';
+// import TopLineLoading from 'components/Loading/TopLineLoading';
 
+/*
+const SIGNUP_MUTATION = gql`
+    mutation SignupMutation(
+        $email: String!
+        $password: String!
+    ) {
+        signup(
+            email: $email
+            password: $password
+            name: $name
+        ) {
+            token
+        }
+    }
+`;
+
+const LOGIN_MUTATION = gql`
+    mutation LoginMutation(
+        $email: String!
+        $password: String!
+    ) {
+        login(email: $email, password: $password) {
+            token
+        }
+    }
+`;
+*/
 function UserList({
  id, canEdit = false, canDelete = false, canAdd = false,
 }: any) {
+  // const navigate = useNavigate();
   const { t } = useTranslation();
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
 
+  /*
+const [login] = useMutation(LOGIN_MUTATION, {
+  variables: {
+    email: formState.email,
+    password: formState.password
+  },
+  onCompleted: ({login}) => {
+    localStorage.setItem(AUTH_TOKEN, login.token);
+    navigate('/');
+  }
+});
+
+const [signup] = useMutation(SIGNUP_MUTATION, {
+  variables: {
+    email: formState.email,
+    password: formState.password
+  },
+  onCompleted: ({signup}) => {
+    localStorage.setItem(AUTH_TOKEN, signup.token);
+    navigate('/');
+  }
+});
+*/
+  /*
   const { auth,
-    // signup
+    signup
   }: any = useSelector((state: any) => ({
     signup: state?.signup,
     auth: state?.auth
   }));
-
-  const dispatch = useDispatch();
+*/
+ /* const dispatch = useDispatch();
 
   const authGetUsersProfil = () => dispatch(authGetUsersProfilAction());
   const deleteUserAction = (id: string) => dispatch(authDeleteUserProfilAction(id) as any);
   const editUserAction = (params: any) => dispatch(authUpdateUserProfilAction(params) as any);
-  const signupAction = (params: any) => dispatch(signupUserAction(params) as any);
+  const signupAction = (params: any) => dispatch(signupUserAction(params) as any);*/
 
-  const users = auth?.data || [];
+  // const users = auth?.data || [];
 
-  useEffect(() => authGetUsersProfil(), []);
+  const users: any = [];
+
+  // useEffect(() => authGetUsersProfil(), []);
 
   const onDelete = useCallback((currentSource: any) => {
     setNewUser(false);
@@ -64,8 +118,8 @@ function UserList({
   }, []);
 
   const onEditUser = useCallback((user: any) => {
-    editUserAction(user);
-    authGetUsersProfil();
+    // editUserAction(user);
+    // authGetUsersProfil();
     onClose();
   }, []);
 
@@ -77,14 +131,14 @@ function UserList({
 
   const onNewUser = useCallback((user: any) => {
     setNewUser(user);
-    signupAction(user);
-    authGetUsersProfil();
+    // signupAction(user);
+    // authGetUsersProfil();
     onClose();
   }, []);
 
   const onDeleteUser = useCallback((user: any) => {
-    deleteUserAction(user._id);
-    authGetUsersProfil();
+    // deleteUserAction(user._id);
+    // authGetUsersProfil();
     onClose();
   }, []);
 
@@ -114,7 +168,7 @@ function UserList({
     ],
     []);
 
-  if (!users?.length && auth.loading) return <TopLineLoading />;
+  // if (!users?.length && auth.loading) return <TopLineLoading />;
 
   return <>
 
@@ -132,7 +186,7 @@ function UserList({
       </div>
     </section>
 
-    {!users?.length && !auth.loading && <div>No data</div>}
+    {/*!users?.length && !auth.loading && <div>No data</div>*/}
 
     <TableWrapper id={id} header={header} rows={rows} />
 
