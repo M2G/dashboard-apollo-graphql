@@ -1,8 +1,7 @@
 /*eslint-disable*/
 import { useState } from 'react';
-import {gql, useMutation} from "@apollo/client";
-import {useNavigate} from 'react-router-dom';
-// import { signinUserAction } from 'store/signin/actions';
+import { gql, useMutation } from "@apollo/client";
+import { useNavigate } from 'react-router-dom';
 import { INITIAL_VALUES } from './constants';
 import SigninView from './Signin';
 
