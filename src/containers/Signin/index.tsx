@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import { useState } from 'react';
+import { useCallback } from 'react';
 import { gql, useMutation } from "@apollo/client";
 import { useNavigate } from 'react-router-dom';
 import { INITIAL_VALUES } from './constants';
@@ -9,37 +9,36 @@ export const AUTH_TOKEN = 'AUTH_TOKEN';
 export const LINKS_PER_PAGE = 5;
 
 const LOGIN_MUTATION = gql`
-    mutation LoginMutation(
+    mutation login(
         $email: String!
         $password: String!
     ) {
-        login(email: $email, password: $password) {
-            token
-        }
+        login(input: { email: $email, password: $password })
     }
 `;
 
 function Signin() {
   const navigate = useNavigate();
-  const [formState, setFormState] = useState({
-    email: '',
-    password: '',
-  });
+  const [login] = useMutation(LOGIN_MUTATION, {
+    onCompleted: ({ login }: { login:  string; }) => {
 
-  const [signin] = useMutation(LOGIN_MUTATION, {
-    onCompleted: ({ login }: { login: { token: string }}) => {
-      localStorage.setItem(AUTH_TOKEN, login.token);
+      console.log('useMutation', login);
+
+      localStorage.setItem(AUTH_TOKEN, login);
       navigate('/');
-    },
-    variables: {
-      email: formState.email,
-      password: formState.password,
-    },
+    }
   });
 
-  console.log('signin', signin);
+  const onSubmit = useCallback(async (formData: any) => {
+    await login(
+      {
+        variables: {
+        email: formData.email,
+        password: formData.password,
+    }});
+  }, []);
 
-  return <SigninView initialValues={INITIAL_VALUES} onSubmit={setFormState} />;
+  return <SigninView initialValues={INITIAL_VALUES} onSubmit={onSubmit} />;
 }
 
 export default Signin;

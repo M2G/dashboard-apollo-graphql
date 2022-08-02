@@ -5,7 +5,8 @@
 // All columns
 [class*='o-col'] {
   @include bp(small) {
-    @include make-col-ready(12);
+    // @include make-col-ready(12);
+    @include make-col-ready();
   }
 
   float: left;

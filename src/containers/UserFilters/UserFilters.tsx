@@ -11,7 +11,7 @@ function UserFilters({ onSubmit, initialValues }: any) {
 
   const handleSubmit = (values: object) => onSubmit(values);
 
-  const renderForm = ({ setFieldValue, values }: any): any => (
+  const renderForm = ({ setFieldValue, values = {} }: any): any => (
     <Form className="d-flex">
       <Field
         id="floatingInput"
