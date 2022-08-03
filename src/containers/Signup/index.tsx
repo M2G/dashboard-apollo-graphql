@@ -1,15 +1,41 @@
+/*eslint-disable*/
 import { useCallback } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { signupUserAction } from 'store/signup/actions';
+import { gql, useMutation } from "@apollo/client";
+import { useNavigate } from 'react-router-dom';
 import { INITIAL_VALUES } from './constants';
 import SignupView from './Signup';
+import { setAuthStorage } from 'services/Storage';
 
-function Signin() {
-  const onSubmit = useCallback((e: any) => {
-      // dispatch(signupUserAction(e)
-    }, []);
+const SIGNUP_MUTATION = gql`
+    mutation signup(
+        $email: String!
+        $password: String!
+    ) {
+        signin(input: { email: $email, password: $password })
+    }
+`;
+
+function Signup() {
+  const navigate = useNavigate();
+  const [signup] = useMutation(SIGNUP_MUTATION, {
+    onCompleted: ({ signup }: { signup:  string; }) => {
+
+      console.log('useMutation', signup);
+      setAuthStorage(signup);
+      navigate('/');
+    }
+  });
+
+  const onSubmit = useCallback(async (formData: any) => {
+    await signup(
+      {
+        variables: {
+          email: formData.email,
+          password: formData.password,
+        }});
+  }, []);
 
   return <SignupView initialValues={INITIAL_VALUES} onSubmit={onSubmit} />;
 }
 
-export default Signin;
+export default Signup;
