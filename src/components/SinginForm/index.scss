@@ -1,0 +1,12 @@
+.form-signin {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F5F5F5;
+  flex-direction: column;
+
+  form {
+    width: map-get($_grid-breakpoints, sm) / 2;
+  }
+}

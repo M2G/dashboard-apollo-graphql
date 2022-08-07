@@ -4,7 +4,7 @@ import { gql, useMutation } from "@apollo/client";
 import { useNavigate } from 'react-router-dom';
 import { INITIAL_VALUES } from './constants';
 import SignupView from './Signup';
-import { setAuthStorage } from 'services/Storage';
+import { setAuthStorage } from 'services/storage';
 
 const SIGNUP_MUTATION = gql`
     mutation signup(

@@ -12,7 +12,7 @@ import {
 
 const { ERROR_TEXT_REQUIRED_EMAIL, ERROR_TEXT_REQUIRED_PASSWORD } = ERROR_TEXT_REQUIRED;
 
-function Signin({ initialValues, onSubmit }: any) {
+function SigninForm({ initialValues, onSubmit }: any) {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
     setFieldValue(setFieldName, value);
 
@@ -93,4 +93,4 @@ function Signin({ initialValues, onSubmit }: any) {
     </Formik>;
 }
 
-export default Signin;
+export default SigninForm;

@@ -2,7 +2,7 @@
 import {
  fireEvent, render, cleanup,
 } from "@testing-library/react";
-import Signin from './Signin';
+import SigninForm from './Signin';
 import { INPUT_NAME } from '../Signup/constants';
 
 afterEach(cleanup);
@@ -20,7 +20,7 @@ describe('Signin Container', () => {
       [INPUT_NAME.PASSWORD]: '',
     };
 
-    wrapper = render(<Signin
+    wrapper = render(<SigninForm
       initialValues={INITIAL_VALUES}
       onSubmit={onSubmit} />);
 

@@ -1,6 +1,7 @@
 import {
- ApolloClient, InMemoryCache,
+ ApolloClient, InMemoryCache, HttpLink, from,
 } from '@apollo/client';
+import { onError } from "@apollo/client/link/error";
 import { ApolloProvider } from '@apollo/client/react';
 import * as Sentry from '@sentry/react';
 import ErrorPage from "containers/Error/Error";
@@ -8,11 +9,28 @@ import CustomRouter from 'routes/CustomRouter';
 import Routes from './routes';
 import "./i18n";
 
+const errorLink = onError(({ graphQLErrors, networkError }: any) => {
+  if (graphQLErrors) {
+    console.log(graphQLErrors);
+  }
+
+  if (networkError) {
+    // handle network error
+    console.log(networkError);
+  }
+});
+
+const httpLink = new HttpLink({ uri: 'https://localhost:8282/graphql' });
+
+const appLink = from([
+  errorLink, httpLink,
+]);
+
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
   cache,
-  uri: "http://localhost:8282/graphql",
+  link: appLink,
 });
 
 function App({ history }: any) {

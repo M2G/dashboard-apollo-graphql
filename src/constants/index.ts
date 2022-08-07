@@ -1,4 +1,4 @@
-import { getAuthStorage } from 'services/Storage';
+import { getAuthStorage } from 'services/storage';
 import ROUTER_PATH from './RouterPath';
 
 const authData = getAuthStorage();
