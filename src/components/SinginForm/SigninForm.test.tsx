@@ -2,8 +2,8 @@
 import {
  fireEvent, render, cleanup,
 } from "@testing-library/react";
-import SigninForm from './Signin';
-import { INPUT_NAME } from '../Signup/constants';
+import SigninForm from './SigninForm';
+import { INPUT_NAME } from './constants';
 
 afterEach(cleanup);
 

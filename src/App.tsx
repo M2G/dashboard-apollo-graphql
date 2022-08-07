@@ -1,14 +1,14 @@
-import {
- ApolloClient, InMemoryCache, HttpLink, from,
-} from '@apollo/client';
-import { onError } from "@apollo/client/link/error";
+// import { ApolloClient, InMemoryCache, HttpLink, from, } from '@apollo/client';
+// import { onError } from "@apollo/client/link/error";
 import { ApolloProvider } from '@apollo/client/react';
 import * as Sentry from '@sentry/react';
 import ErrorPage from "containers/Error/Error";
 import CustomRouter from 'routes/CustomRouter';
 import Routes from './routes';
 import "./i18n";
+import apolloClient from './apollo/config';
 
+/*
 const errorLink = onError(({ graphQLErrors, networkError }: any) => {
   if (graphQLErrors) {
     console.log(graphQLErrors);
@@ -32,10 +32,11 @@ const client = new ApolloClient({
   cache,
   link: appLink,
 });
+ */
 
 function App({ history }: any) {
   return <Sentry.ErrorBoundary fallback={ErrorPage} showDialog>
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
       <CustomRouter history={history}>
         <Routes />
       </CustomRouter>
