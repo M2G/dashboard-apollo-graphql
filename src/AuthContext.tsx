@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import { createContext, useState } from 'react';
 
-import jwt from 'jsonwebtoken';
+import jwt_decode from "jwt-decode";
 import {
   clearAuthStorage,
   clearUserStorage,
@@ -11,8 +11,7 @@ import {
   setUserStorage,
 } from './services/storage';
 
-// @ts-ignore
-export const AuthContext = createContext();
+export const AuthContext = createContext<Record<any, any>>({});
 
 function Provider({ children }: any) {
   const [isAuth, setIsAuth] = useState<any>(() => getAuthStorage());
@@ -24,7 +23,7 @@ function Provider({ children }: any) {
     activateAuth: (token: any) => {
       console.log('token token token', token)
 
-      const decodedToken: any = jwt.decode(token) || {};
+      const decodedToken: any = jwt_decode(token) || {};
 
       console.log('decodedToken decodedToken decodedToken', decodedToken)
 
@@ -45,11 +44,9 @@ function Provider({ children }: any) {
     },
   };
 
-  return (
-    <AuthContext.Provider value={value}>
+  return <AuthContext.Provider value={value}>
       {children}
-      </AuthContext.Provider>
-  );
+    </AuthContext.Provider>
 }
 
 export default { Provider, Consumer: AuthContext.Consumer };

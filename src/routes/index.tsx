@@ -1,10 +1,8 @@
 /* eslint-disable */
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import ROUTER_PATH from '../constants/RouterPath';
-
-import PrivateRoute from '../routes/ProtectedRoutes';
 
 const Home = lazy(() => import('containers/Home'));
 const Signin = lazy(() => import('containers/Signin'));
@@ -13,59 +11,56 @@ const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
 const ResetPassword = lazy(() => import('containers/ResetPassword'));
 
 import TopLineLoading from 'components/Loading/TopLineLoading';
+import { AuthContext } from '../AuthContext';
 
 /**
  * Top level application router
  *
  * @returns {Component}
  */
-const Router = () => (
-  <main>
-    <Routes>
-      <Route
-        path={ROUTER_PATH.RESET_PASSWORD}
-        element={
-          <Suspense fallback={<TopLineLoading />}>
-            <ResetPassword />
-          </Suspense>
-        }
-      />
-      <Route
-        path={ROUTER_PATH.FORGOT_PASSWORD}
-        element={
-          <Suspense fallback={<TopLineLoading />}>
-            <ForgotPassword />
-          </Suspense>
-        }
-      />
-      <Route
-        path={ROUTER_PATH.SIGNIN}
-        element={
-          <Suspense fallback={<TopLineLoading />}>
-            <Signin />
-          </Suspense>
-        }
-      />
-      <Route
-        path={ROUTER_PATH.SIGNUP}
-        element={
-          <Suspense fallback={<TopLineLoading />}>
-            <Signup />
-          </Suspense>
-        }
-      />
-      <Route
-        path={ROUTER_PATH.HOME}
-        element={
-          <Suspense fallback={<TopLineLoading />}>
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          </Suspense>
-        }
-      />
-    </Routes>
-  </main>
-);
+
+const Router = () => {
+  const { isAuth } = useContext(AuthContext);
+  const { userData } = useContext(AuthContext);
+
+  console.log('isAuth userData', {
+    isAuth,
+    userData,
+  })
+
+  return (
+    <main>
+      <Suspense fallback={<TopLineLoading />}>
+        <Routes>
+          <Route
+            path={ROUTER_PATH.RESET_PASSWORD}
+            element={<ResetPassword />}
+          />
+          <Route
+            path={ROUTER_PATH.FORGOT_PASSWORD}
+            element={<ForgotPassword />}
+          />
+          <Route
+            path={ROUTER_PATH.SIGNIN}
+            element={<Signin />}
+          />
+          {!isAuth && <Route
+            path={ROUTER_PATH.SIGNUP}
+            element={<Signup />}
+          />}
+
+          {isAuth && <Redirect from={ROUTER_PATH.SIGNIN} to='/' />}
+          {isAuth && <Redirect from={ROUTER_PATH.SIGNUP} to='/' />}
+
+          {isAuth && userData?._id &&
+            <Route
+              path={ROUTER_PATH.HOME}
+              element={<Home />}
+            />}
+        </Routes>
+      </Suspense>
+    </main>
+  );
+}
 
 export default Router;
