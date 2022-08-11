@@ -2,11 +2,14 @@
 // import { onError } from "@apollo/client/link/error";
 import { ApolloProvider } from '@apollo/client/react';
 import * as Sentry from '@sentry/react';
+import { ErrorBoundary } from "react-error-boundary";
 import ErrorPage from "containers/Error/Error";
+import { logError } from "sentry/logError";
 import CustomRouter from 'routes/CustomRouter';
+import AuthContext from './AuthContext';
 import Routes from './routes';
-import "./i18n";
 import apolloClient from './apollo/config';
+import "./i18n";
 
 /*
 const errorLink = onError(({ graphQLErrors, networkError }: any) => {
@@ -35,13 +38,15 @@ const client = new ApolloClient({
  */
 
 function App({ history }: any) {
-  return <Sentry.ErrorBoundary fallback={ErrorPage} showDialog>
+  return <ErrorBoundary FallbackComponent={ErrorPage} onError={logError}>
     <ApolloProvider client={apolloClient}>
-      <CustomRouter history={history}>
-        <Routes />
-      </CustomRouter>
+      <AuthContext.Provider>
+        <CustomRouter history={history}>
+          <Routes />
+        </CustomRouter>
+      </AuthContext.Provider>
     </ApolloProvider>
-  </Sentry.ErrorBoundary>;
+  </ErrorBoundary>;
 }
 
 export default Sentry.withProfiler(App);

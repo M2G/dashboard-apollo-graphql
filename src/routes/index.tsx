@@ -44,14 +44,10 @@ const Router = () => {
             path={ROUTER_PATH.SIGNIN}
             element={<Signin />}
           />
-          {!isAuth && <Route
+          <Route
             path={ROUTER_PATH.SIGNUP}
             element={<Signup />}
-          />}
-
-          {isAuth && <Redirect from={ROUTER_PATH.SIGNIN} to='/' />}
-          {isAuth && <Redirect from={ROUTER_PATH.SIGNUP} to='/' />}
-
+          />
           {isAuth && userData?._id &&
             <Route
               path={ROUTER_PATH.HOME}

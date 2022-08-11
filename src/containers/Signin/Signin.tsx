@@ -1,27 +1,28 @@
 /*eslint-disable*/
 import { useCallback } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useMutation } from "@apollo/client";
 import { INITIAL_VALUES } from './constants';
 import { SIGNIN_MUTATION } from '../../gql/mutations/auth';
 import SigninForm from 'components/SinginForm';
 
 function Signin({ activateAuth }: any) {
-  const navigate = useNavigate();
+  console.log('activateAuth', activateAuth);
+  //const navigate = useNavigate();
   const [signin] = useMutation(SIGNIN_MUTATION, {
-    onCompleted: ({ login }: { login:  string; }) => {
+    onCompleted: ({ signin }: { signin:  string; }) => {
 
-      console.log('useMutation', login);
-      activateAuth(login);
-      navigate('/');
+      console.log('useMutation', signin);
+      activateAuth(signin);
+      // navigate('/');
     },
     onError: () => {
 
     }
   });
 
-  const onSubmit = useCallback(async (formData: any) => {
+  const handleSubmit = useCallback(async (formData: any) => {
     await signin(
       {
         variables: {
@@ -32,7 +33,7 @@ function Signin({ activateAuth }: any) {
     );
   }, []);
 
-  return <SigninForm initialValues={INITIAL_VALUES} onSubmit={onSubmit} />;
+  return <SigninForm initialValues={INITIAL_VALUES} onSubmit={handleSubmit} />;
 }
 
 export default Signin;

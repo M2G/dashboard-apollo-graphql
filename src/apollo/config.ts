@@ -13,12 +13,12 @@ clearAuthStorage
 // https://localhost:8282/graphql
 
 /* Configuration imported from '.env' file */
-const backendProtocol = process.env.REACT_APP_PROTOCOL ?? 'https';
+const backendProtocol = process.env.REACT_APP_PROTOCOL ?? 'http';
 const backendHost = process.env.REACT_APP_HOST ?? 'localhost';
 const backendPort = process.env.REACT_APP_PORT ?? '8282';
 const backendGraphql = process.env.REACT_APP_GRAPHQL ?? 'graphql';
 
-const backendAddress = `${backendProtocol}://${backendHost}:${backendPort}${backendGraphql}`;
+const backendAddress = `${backendProtocol}://${backendHost}:${backendPort}/${backendGraphql}`;
 
 const httpLink = new HttpLink({
   uri: backendAddress,

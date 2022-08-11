@@ -25,8 +25,6 @@ function Provider({ children }: any) {
 
       const decodedToken: any = jwt_decode(token) || {};
 
-      console.log('decodedToken decodedToken decodedToken', decodedToken)
-
       const userData = {
         email: decodedToken.email,
         _id: decodedToken._id,
@@ -43,6 +41,8 @@ function Provider({ children }: any) {
       clearAuthStorage();
     },
   };
+
+  console.log('AuthContext value', value)
 
   return <AuthContext.Provider value={value}>
       {children}
