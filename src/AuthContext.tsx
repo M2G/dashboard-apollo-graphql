@@ -19,11 +19,12 @@ function Provider({ children }: any) {
 
   const value = {
     isAuth,
-    userData,
+    userData: userData ? JSON.parse(userData) : null,
     activateAuth: (token: any) => {
-      console.log('token token token', token)
 
       const decodedToken: any = jwt_decode(token) || {};
+
+      console.log('decodedToken', decodedToken)
 
       const userData = {
         email: decodedToken.email,

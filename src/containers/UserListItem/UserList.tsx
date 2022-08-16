@@ -5,7 +5,7 @@ import {
   useCallback,
   // useEffect,
 } from 'react';
-// import { gql, useLazyQuery, useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 // import { useNavigate } from 'react-router-dom';
 // import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
@@ -17,35 +17,9 @@ import UserNew from 'containers/Users/UserNew';
 import TableWrapper from 'components/Core/Table/TableWrapper';
 import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
+import { LIST_ALL_USERS } from '../../gql/queries/users';
 // import TopLineLoading from 'components/Loading/TopLineLoading';
 
-/*
-const SIGNUP_MUTATION = gql`
-    mutation SignupMutation(
-        $email: String!
-        $password: String!
-    ) {
-        signup(
-            email: $email
-            password: $password
-            name: $name
-        ) {
-            token
-        }
-    }
-`;
-
-const LOGIN_MUTATION = gql`
-    mutation LoginMutation(
-        $email: String!
-        $password: String!
-    ) {
-        login(email: $email, password: $password) {
-            token
-        }
-    }
-`;
-*/
 function UserList({
  id, canEdit = false, canDelete = false, canAdd = false,
 }: any) {
@@ -55,18 +29,12 @@ function UserList({
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
 
-  /*
-const [login] = useMutation(LOGIN_MUTATION, {
-  variables: {
-    email: formState.email,
-    password: formState.password
-  },
-  onCompleted: ({login}) => {
-    localStorage.setItem(AUTH_TOKEN, login.token);
-    navigate('/');
-  }
-});
 
+const { loading, error, data } = useQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
+
+console.log('::::::::::', { loading, error, data });
+
+  /*
 const [signup] = useMutation(SIGNUP_MUTATION, {
   variables: {
     email: formState.email,
