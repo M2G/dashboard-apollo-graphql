@@ -32,7 +32,7 @@ function UserList({
 
 const { loading, error, data } = useQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
 
-console.log('::::::::::', { loading, error, data });
+console.log('LIST_ALL_USERS', { loading, error, data });
 
   /*
 const [signup] = useMutation(SIGNUP_MUTATION, {

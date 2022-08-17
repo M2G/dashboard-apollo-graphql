@@ -40,8 +40,21 @@ const authMiddleware = new ApolloLink((operation: any, forward: any) => {
 const errorLink = onError(({
  operation, graphQLErrors, networkError, response,
 }: any) => {
+
+  console.log('networkError', networkError)
+
   if (graphQLErrors) {
     graphQLErrors?.forEach((err: any) => {
+
+      console.log('graphQLErrors', err)
+
+      window.alert(err?.message);
+
+      if (err?.extensions?.exception?.status === 401) {
+        clearAuthStorage();
+        window.location.href = '/signin';
+      }
+
       // err.message, err.locations, err.path, err.extensions
       if (err.extensions.code === 'UNAUTHENTICATED' || err.extensions.code === 'FORBIDDEN') {
         clearAuthStorage();
