@@ -3,12 +3,14 @@
 import { ApolloProvider } from '@apollo/client/react';
 import * as Sentry from '@sentry/react';
 import { ErrorBoundary } from "react-error-boundary";
+import { ToastContainer } from "react-toastify";
 import ErrorPage from "containers/Error/Error";
 import { logError } from "sentry/logError";
 import CustomRouter from 'routes/CustomRouter';
 import AuthContext from './AuthContext';
 import Routes from './routes';
 import apolloClient from './apollo/config';
+import "react-toastify/dist/ReactToastify.css";
 import "./i18n";
 
 /*
@@ -43,6 +45,7 @@ function App({ history }: any) {
       <AuthContext.Provider>
         <CustomRouter history={history}>
           <Routes />
+          <ToastContainer autoClose={2000} />
         </CustomRouter>
       </AuthContext.Provider>
     </ApolloProvider>
