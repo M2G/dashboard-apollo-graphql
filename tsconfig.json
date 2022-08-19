@@ -45,6 +45,7 @@
       "index": ["./index"],
       "utils": ["./utils/*"],
       "api": ["./api"],
+      "gql": ["./gql/*"],
       "services": ["./services/*"],
       "sentry": ["./sentry/*"],
       "exceptions": ["./exceptions/*"],

@@ -45,7 +45,7 @@ function App({ history }: any) {
       <AuthContext.Provider>
         <CustomRouter history={history}>
           <Routes />
-          <ToastContainer autoClose={2000} />
+          <ToastContainer />
         </CustomRouter>
       </AuthContext.Provider>
     </ApolloProvider>

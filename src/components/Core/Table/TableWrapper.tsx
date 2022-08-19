@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import { useEffect, useMemo, useState, createContext, useContext } from 'react';
+import { useEffect, useMemo, useState, createContext, useContext, FC } from 'react';
 import classnames from 'classnames';
 import {
   arrayOf, string, node, oneOfType, shape, oneOf, bool, number
@@ -25,7 +25,7 @@ const TableHead = ({}) => {
   </thead>
 }
 
-const TableBody = ({ id }: string | number | any): any => {
+const TableBody: FC<{ id: string | number | any }> = ({ id }: string | number | any): any => {
   const { getSortedTable } = useContext(TableContext);
   if (!getSortedTable) return <></>;
   return <tbody className="c-table-body">
@@ -44,7 +44,12 @@ const TableBody = ({ id }: string | number | any): any => {
   </tbody>
 }
 
-const TableWrapper = ({ header, rows, id, className = '' }: any) => {
+const TableWrapper: FC<{
+  header: any;
+  rows: any;
+  id: string | number;
+  className?: string;
+}> = ({ header, rows, id, className = '' }: any) => {
   const [sortData, setSortData] = useState<any>(null);
 
   const handleSort = (index: any, sortDirection: string, type: any) =>
@@ -96,7 +101,7 @@ const TableWrapper = ({ header, rows, id, className = '' }: any) => {
   <div className="c-table-wrapper">
       <table className={classnames("c-table table-bordered", className)}>
         <TableHead key="TableHead" />
-        <TableBody key="TableBody" />
+        <TableBody key="TableBody"  id="test" />
       </table>
     </div>
   </TableContext.Provider>
@@ -117,6 +122,7 @@ const headerRowType = shape({
 TableWrapper.propTypes = {
   rows: arrayOf(arrayOf(rowType)).isRequired,
   header: arrayOf(headerRowType).isRequired,
+  className: string,
   id: string.isRequired,
 };
 

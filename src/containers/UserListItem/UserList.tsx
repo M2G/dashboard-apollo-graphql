@@ -3,22 +3,17 @@ import {
   useMemo,
   useState,
   useCallback,
-  // useEffect,
 } from 'react';
 import { useQuery } from "@apollo/client";
-// import { useNavigate } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
 import userListItem from 'containers/UserListItem/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
 import UserNew from 'containers/Users/UserNew';
-// import { signupUserAction } from 'store/signup/actions';
-// import { authGetUsersProfilAction, authDeleteUserProfilAction, authUpdateUserProfilAction } from 'store/auth/actions';
 import TableWrapper from 'components/Core/Table/TableWrapper';
 import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
-import { LIST_ALL_USERS } from '../../gql/queries/users';
-// import TopLineLoading from 'components/Loading/TopLineLoading';
+import TopLineLoading from 'components/Loading/TopLineLoading';
+import { LIST_ALL_USERS } from 'gql/queries/users';
 
 function UserList({
  id, canEdit = false, canDelete = false, canAdd = false,
@@ -30,9 +25,11 @@ function UserList({
   const [deletingUser, setDeletingUser] = useState(false);
 
 
-const { loading, error, data } = useQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
+const { loading, error, data: userData = {} } = useQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
+const { users } = userData;
 
-console.log('LIST_ALL_USERS', { loading, error, data });
+
+console.log('LIST_ALL_USERS', { loading, error, users });
 
   /*
 const [signup] = useMutation(SIGNUP_MUTATION, {
@@ -60,12 +57,6 @@ const [signup] = useMutation(SIGNUP_MUTATION, {
   const deleteUserAction = (id: string) => dispatch(authDeleteUserProfilAction(id) as any);
   const editUserAction = (params: any) => dispatch(authUpdateUserProfilAction(params) as any);
   const signupAction = (params: any) => dispatch(signupUserAction(params) as any);*/
-
-  // const users = auth?.data || [];
-
-  const users: any = [];
-
-  // useEffect(() => authGetUsersProfil(), []);
 
   const onDelete = useCallback((currentSource: any) => {
     setNewUser(false);
@@ -123,7 +114,7 @@ const [signup] = useMutation(SIGNUP_MUTATION, {
         })),
     [id, onEdit, onDelete, canDelete, canEdit, editingUser, newUser, deletingUser, users]);
 
-  console.log('users', users)
+  console.log('userData.users', users)
 
   const header = useMemo(
     () => [
@@ -136,7 +127,7 @@ const [signup] = useMutation(SIGNUP_MUTATION, {
     ],
     []);
 
-  // if (!users?.length && auth.loading) return <TopLineLoading />;
+  if (!users?.length && loading) return <TopLineLoading />;
 
   return <>
 
@@ -154,7 +145,7 @@ const [signup] = useMutation(SIGNUP_MUTATION, {
       </div>
     </section>
 
-    {/*!users?.length && !auth.loading && <div>No data</div>*/}
+    {!users?.length && !loading && <div>No data</div>}
 
     <TableWrapper id={id} header={header} rows={rows} />
 
