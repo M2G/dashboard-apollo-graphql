@@ -13,9 +13,7 @@ export const history = createBrowserHistory();
 function render(Component: any){
   const MOUNT_NODE: any = document.getElementById('root') || document.createElement('div');
     const root = createRoot(MOUNT_NODE);
-  if (root) {
-      return root.render(<Component history={history} />);
-  }
+  if (root) return root.render(<Component history={history} />);
 }
 
 render(App);

@@ -9,9 +9,6 @@ interface Props extends BrowserRouterProps {
 }
 
 function CustomRouter({ history, ...props }: Props | any) {
-
-  console.log('history', history)
-
   const [state, setState] = useState({
     action: history.action,
     location: history.location,
@@ -20,8 +17,7 @@ function CustomRouter({ history, ...props }: Props | any) {
   useLayoutEffect(() => history.listen(setState), [history]);
 
   return <Router
-      // eslint-disable-next-line
-      {...props}
+      {...props as any}
       location={state.location}
       navigationType={state.action}
       navigator={history}

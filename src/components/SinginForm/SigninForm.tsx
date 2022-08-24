@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 
+import ROUTER_PATH from 'constants/RouterPath';
 import {
   ERROR_TEXT_REQUIRED,
   LABEL_PASSWORD,
@@ -80,7 +81,8 @@ function SigninForm({ initialValues, onSubmit }: any) {
             Sign in
           </button>
         </Form>
-        <Link to="/forgot-password" className="mt-4 text-muted">Forgot Password</Link>
+        <Link to={ROUTER_PATH.SIGNUP} className="mt-4 text-muted">Signup</Link>
+        <Link to={ROUTER_PATH.FORGOT_PASSWORD} className="mt-1 text-muted">Forgot Password</Link>
       </div>;
 
   return <Formik

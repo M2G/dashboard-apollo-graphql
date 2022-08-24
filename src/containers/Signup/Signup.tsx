@@ -40,7 +40,7 @@ function Signup({ initialValues, onSubmit }: any) {
 }: any): any =>
       <div className="form-signin">
         <Form>
-          <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+          <h1 className="h3 mb-3 fw-normal">Please sign up</h1>
           <div className="form-floating">
             <Field
               id="floatingInput"

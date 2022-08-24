@@ -14,11 +14,26 @@ const SIGNUP_MUTATION = gql`
         $email: String!
         $password: String!
     ) {
-        signin(input: { email: $email, password: $password })
+        signup(input: { email: $email, password: $password })
+    }
+`;
+
+const CREATE_USER_MUTATION = gql`
+    mutation createUser(
+        $email: String!
+        $password: String!
+        $first_name: String
+        $last_name: String
+        $username: String
+    ) {
+        createUser(input: { email: $email, password: $password, first_name: $first_name, last_name: $last_name, username: $username }) { 
+          email
+        }
     }
 `;
 
 export {
   SIGNIN_MUTATION,
   SIGNUP_MUTATION,
+  CREATE_USER_MUTATION,
 };

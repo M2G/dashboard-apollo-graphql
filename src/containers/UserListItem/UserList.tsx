@@ -4,7 +4,7 @@ import {
   useState,
   useCallback,
 } from 'react';
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from '@apollo/client';
 import { useTranslation } from "react-i18next";
 import userListItem from 'containers/UserListItem/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
@@ -14,9 +14,10 @@ import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import { LIST_ALL_USERS } from 'gql/queries/users';
+import { CREATE_USER_MUTATION } from '../../gql/mutations/auth';
 
 function UserList({
- id, canEdit = false, canDelete = false, canAdd = false,
+ id, canEdit = false, canDelete = false, canAdd = false, activateAuth
 }: any) {
   // const navigate = useNavigate();
   const { t } = useTranslation();
@@ -24,6 +25,14 @@ function UserList({
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
 
+  const [create_user] = useMutation(CREATE_USER_MUTATION, {
+    onCompleted: ({ signin }: { signin:  string; }) => {
+      // activateAuth(create_user);
+    },
+    onError: () => {
+
+    }
+  });
 
 const { loading, error, data: userData = {} } = useQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
 const { users } = userData;
@@ -89,6 +98,13 @@ const [signup] = useMutation(SIGNUP_MUTATION, {
   }, []);
 
   const onNewUser = useCallback((user: any) => {
+    console.log('onNewUser', user)
+    create_user({
+      variables: {
+        email: user.email,
+        password: user.password,
+      }
+    });
     setNewUser(user);
     // signupAction(user);
     // authGetUsersProfil();

@@ -1,7 +1,6 @@
 /*eslint-disable*/
 import { useCallback } from 'react';
 import { gql, useMutation } from "@apollo/client";
-import { useNavigate } from 'react-router-dom';
 import { INITIAL_VALUES } from './constants';
 import SignupView from './Signup';
 import { setAuthStorage } from 'services/storage';
@@ -16,13 +15,11 @@ const SIGNUP_MUTATION = gql`
 `;
 
 function Signup() {
-  const navigate = useNavigate();
   const [signup] = useMutation(SIGNUP_MUTATION, {
     onCompleted: ({ signup }: { signup:  string; }) => {
 
       console.log('useMutation', signup);
       setAuthStorage(signup);
-      navigate('/');
     }
   });
 

@@ -35,7 +35,7 @@ function UserNew({ onSubmit, initialValues }: any): any {
     return errors;
   };
 
-  const handleSubmit = (values: object) => onSubmit({ ...values, redirect: false });
+  const handleSubmit = (values: object) => onSubmit({ ...values });
 
   const renderForm = ({
                         setFieldValue, values, errors, touched,
