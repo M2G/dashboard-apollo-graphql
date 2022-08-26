@@ -14,58 +14,34 @@ import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import { LIST_ALL_USERS } from 'gql/queries/users';
-import { CREATE_USER_MUTATION } from '../../gql/mutations/auth';
+import { CREATE_USER_MUTATION, UPDATE_USER_MUTATION } from '../../gql/mutations/auth';
 
 function UserList({
- id, canEdit = false, canDelete = false, canAdd = false, activateAuth
+ id, canEdit = false, canDelete = false, canAdd = false
 }: any) {
-  // const navigate = useNavigate();
   const { t } = useTranslation();
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
 
-  const [create_user] = useMutation(CREATE_USER_MUTATION, {
-    onCompleted: ({ signin }: { signin:  string; }) => {
-      // activateAuth(create_user);
-    },
-    onError: () => {
+const { loading, error, data: userData = {}, refetch } = useQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
+const { users } = userData;
 
+  const [createUser] = useMutation(CREATE_USER_MUTATION, {
+    onCompleted: refetch,
+    onError: (err) => {
+      console.log("CREATE_USER_MUTATION onError", err);
     }
   });
 
-const { loading, error, data: userData = {} } = useQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
-const { users } = userData;
-
+  const [updateUser] = useMutation(UPDATE_USER_MUTATION, {
+    onCompleted: refetch,
+    onError: (err) => {
+      console.log("CREATE_USER_MUTATION onError", err);
+    }
+  });
 
 console.log('LIST_ALL_USERS', { loading, error, users });
-
-  /*
-const [signup] = useMutation(SIGNUP_MUTATION, {
-  variables: {
-    email: formState.email,
-    password: formState.password
-  },
-  onCompleted: ({signup}) => {
-    localStorage.setItem(AUTH_TOKEN, signup.token);
-    navigate('/');
-  }
-});
-*/
-  /*
-  const { auth,
-    signup
-  }: any = useSelector((state: any) => ({
-    signup: state?.signup,
-    auth: state?.auth
-  }));
-*/
- /* const dispatch = useDispatch();
-
-  const authGetUsersProfil = () => dispatch(authGetUsersProfilAction());
-  const deleteUserAction = (id: string) => dispatch(authDeleteUserProfilAction(id) as any);
-  const editUserAction = (params: any) => dispatch(authUpdateUserProfilAction(params) as any);
-  const signupAction = (params: any) => dispatch(signupUserAction(params) as any);*/
 
   const onDelete = useCallback((currentSource: any) => {
     setNewUser(false);
@@ -86,8 +62,12 @@ const [signup] = useMutation(SIGNUP_MUTATION, {
   }, []);
 
   const onEditUser = useCallback((user: any) => {
-    // editUserAction(user);
-    // authGetUsersProfil();
+    updateUser({
+      variables: {
+       ...user,
+        id: user?._id
+      }
+    });
     onClose();
   }, []);
 
@@ -98,16 +78,13 @@ const [signup] = useMutation(SIGNUP_MUTATION, {
   }, []);
 
   const onNewUser = useCallback((user: any) => {
-    console.log('onNewUser', user)
-    create_user({
+    createUser({
       variables: {
         email: user.email,
         password: user.password,
       }
     });
     setNewUser(user);
-    // signupAction(user);
-    // authGetUsersProfil();
     onClose();
   }, []);
 
