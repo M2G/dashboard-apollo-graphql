@@ -75,6 +75,8 @@ module.exports = {
 
     "jsx-a11y/label-has-associated-control": 0,
 
+    "@typescript-eslint/prefer-readonly-parameter-types": 1,
+    "@typescript-eslint/no-unsafe-argument": 1,
     "@typescript-eslint/ban-types": 1,
     "@typescript-eslint/object-curly-spacing": 0,
     "@typescript-eslint/no-unsafe-return": 1,

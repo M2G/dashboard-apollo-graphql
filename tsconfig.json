@@ -56,7 +56,7 @@
       "routes/*": ["./routes/*"]
     }
   },
-  "include": ["src/**/*", "src/**/**/*", "test/**/*"],
+  "include": ["src/**/*", "src/**/**/*", "test/**/*", "custom.d.ts"],
   "exclude": [
     "src/stories",
     "**/__tests__/*",

@@ -14,7 +14,7 @@ import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import { LIST_ALL_USERS } from 'gql/queries/users';
-import { CREATE_USER_MUTATION, UPDATE_USER_MUTATION } from '../../gql/mutations/auth';
+import { CREATE_USER_MUTATION, UPDATE_USER_MUTATION, DELETE_USER_MUTATION } from 'gql/mutations/auth';
 
 function UserList({
  id, canEdit = false, canDelete = false, canAdd = false
@@ -29,16 +29,14 @@ const { users } = userData;
 
   const [createUser] = useMutation(CREATE_USER_MUTATION, {
     onCompleted: refetch,
-    onError: (err) => {
-      console.log("CREATE_USER_MUTATION onError", err);
-    }
   });
 
   const [updateUser] = useMutation(UPDATE_USER_MUTATION, {
     onCompleted: refetch,
-    onError: (err) => {
-      console.log("CREATE_USER_MUTATION onError", err);
-    }
+  });
+
+  const [deleteUser] = useMutation(DELETE_USER_MUTATION, {
+    onCompleted: refetch,
   });
 
 console.log('LIST_ALL_USERS', { loading, error, users });
@@ -61,8 +59,14 @@ console.log('LIST_ALL_USERS', { loading, error, users });
     setDeletingUser(false);
   }, []);
 
-  const onEditUser = useCallback((user: any) => {
-    updateUser({
+  const onEdit = useCallback((user: any) => {
+    setEditingUser(user);
+    setNewUser(false);
+    setDeletingUser(false);
+  }, []);
+
+  const onEditUser = useCallback(async (user: any): Promise<void> => {
+    await updateUser({
       variables: {
        ...user,
         id: user?._id
@@ -71,26 +75,23 @@ console.log('LIST_ALL_USERS', { loading, error, users });
     onClose();
   }, []);
 
-  const onEdit = useCallback((user: any) => {
-    setEditingUser(user);
-    setNewUser(false);
-    setDeletingUser(false);
-  }, []);
-
-  const onNewUser = useCallback((user: any) => {
-    createUser({
+  const onNewUser = useCallback(async (user: any): Promise<void> => {
+    await createUser({
       variables: {
-        email: user.email,
-        password: user.password,
+        email: user?.email,
+        password: user?.password,
       }
     });
     setNewUser(user);
     onClose();
   }, []);
 
-  const onDeleteUser = useCallback((user: any) => {
-    // deleteUserAction(user._id);
-    // authGetUsersProfil();
+  const onDeleteUser = useCallback(async (user: any) => {
+    await deleteUser({
+      variables: {
+        id: user?._id,
+      }
+    });
     onClose();
   }, []);
 
@@ -158,10 +159,13 @@ console.log('LIST_ALL_USERS', { loading, error, users });
       </SidebarWrapper>
 
       <ModalWrapper
+        title="Delete"
         hide={onClose}
         isShowing={deletingUser}
         onConfirm={() => onDeleteUser(deletingUser)}
-      />
+      >
+        <p>This is a modal sheet, a variation of the modal that docs itself to the bottom of the viewport like the newer share sheets in iOS.</p>
+      </ModalWrapper>
 
     </>;
 }

@@ -1,7 +1,7 @@
-import './TopLineLoading.scss';
+import styles from './TopLineLoading.module.scss';
 
 function TopLineLoading() {
-  return <div className="top-line-loader" />;
+  return <div className={styles.loader} />;
 }
 
 export default TopLineLoading;
