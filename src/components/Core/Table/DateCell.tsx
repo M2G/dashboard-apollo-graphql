@@ -1,10 +1,13 @@
 /*eslint-disable*/
-import { instanceOf } from 'prop-types';
+import { number } from 'prop-types';
 
+interface IDateCell {
+  date?: number;
+}
 
-function DateCell({ date }: number | any) {
+function DateCell({ date }: IDateCell) {
   return <div className="date_cell">
-      {date > 0 ? (
+      {date && date > 0 ? (
         <>
           <div>{new Date(date * 1000).toLocaleDateString()}</div>
           <div>{new Date(date * 1000).toLocaleTimeString()}</div>
@@ -16,7 +19,7 @@ function DateCell({ date }: number | any) {
 }
 
 DateCell.propTypes = {
-  date: instanceOf(Date),
+  date: number,
 };
 
 export default DateCell;

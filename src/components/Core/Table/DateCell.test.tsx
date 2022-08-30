@@ -11,7 +11,7 @@ describe('test DateCell', () => {
   });
 
   test('should not render', () => {
-    const { container } = render(<DateCell date={null} />);
+    const { container } = render(<DateCell date={undefined} />);
     expect(container).toHaveTextContent("-");
   });
 });

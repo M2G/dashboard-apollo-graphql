@@ -24,7 +24,7 @@ const headerRow = [
     { label: 'Test5' },
 ];
 
-const dateTable = [
+const dateTable: any = [
     new Date(Date.now()),
     new Date(Date.now() - 3600000 * 25),
     new Date(Date.now() - 3600000 * 2),

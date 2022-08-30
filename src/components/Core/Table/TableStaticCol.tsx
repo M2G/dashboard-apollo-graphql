@@ -4,8 +4,8 @@ import { string } from 'prop-types';
 
 interface TableStaticColInterface {
   actions: any[];
-  id: string;
-  label: string;
+  id?: string;
+  label?: string;
 }
 
 function TableStaticCol({ id, label, actions }: TableStaticColInterface) {
@@ -23,8 +23,8 @@ function TableStaticCol({ id, label, actions }: TableStaticColInterface) {
 
 TableStaticCol.propTypes = {
   actions: Action.propTypes.actions,
-  id: string.isRequired,
-  label: string.isRequired,
+  id: string,
+  label: string,
 };
 
 export default TableStaticCol;

@@ -1,48 +1,14 @@
 /*eslint-disable*/
-import { useEffect, useMemo, useState, createContext, useContext, FC } from 'react';
+import { useEffect, useMemo, useState, createContext, FC } from 'react';
 import classnames from 'classnames';
 import {
-  arrayOf, string, node, oneOfType, shape, oneOf, bool, number
+  arrayOf, string, node, oneOfType, shape, oneOf, bool, number, object
 } from 'prop-types';
-import TableHeaderCell from './TableHeaderCell';
 import './index.scss';
+import TableHead from 'components/Core/Table/TableHead';
+import TableBody from 'components/Core/Table/TableBody';
 
-const TableContext = createContext<Record<string, any>>({})
-
-const TableHead = ({}) => {
-  const { header, handleSort, sortData } = useContext(TableContext);
-  return <thead className="c-table-head">
-  <tr>
-    {header?.map(({ label, sortable, type }: any, index: string) =>
-      <TableHeaderCell
-        key={index}
-        label={label}
-        isSortable={sortable}
-        currentSortedData={sortData?.index === index ? sortData : null}
-        onSort={(sortDirection) => handleSort(index, sortDirection, type)}
-      />)}
-  </tr>
-  </thead>
-}
-
-const TableBody: FC<{ id: string | number | any }> = ({ id }: string | number | any): any => {
-  const { getSortedTable } = useContext(TableContext);
-  if (!getSortedTable) return <></>;
-  return <tbody className="c-table-body">
-  {getSortedTable.map((row: { display: any }[], indexRow: any) =>
-    <tr key={`bodyTable__${id}__${indexRow}`}>
-      {row?.map(({ display }, indexCol) => (
-        <td
-          key={`bodyTable__${id}__${indexRow}__${indexCol}`}
-          className="table-wrapper-cell"
-        >
-          {display}
-        </td>
-      ))}
-    </tr>
-  )}
-  </tbody>
-}
+const TableContext = createContext<Record<string, any>>({});
 
 const TableWrapper: FC<{
   header: any;
@@ -50,6 +16,9 @@ const TableWrapper: FC<{
   id: string | number;
   className?: string;
 }> = ({ header, rows, id, className = '' }: any) => {
+
+  console.log('rows rows', rows);
+
   const [sortData, setSortData] = useState<any>(null);
 
   const handleSort = (index: any, sortDirection: string, type: any) =>
@@ -64,7 +33,7 @@ const TableWrapper: FC<{
     const { index, direction, type }: any = sortData;
 
     if (!type || type === 'string') {
-      return rows.sort(
+      return rows?.sort(
         (
           a: { [x: string]: { value: any } },
           b: { [x: string]: { value: string } }
@@ -75,7 +44,7 @@ const TableWrapper: FC<{
       );
     }
     if (type === 'date') {
-      return rows.sort(
+      return rows?.sort(
         (
           a: { [x: string]: { value: number } },
           b: { [x: string]: { value: number } }
@@ -100,16 +69,16 @@ const TableWrapper: FC<{
   >
   <div className="c-table-wrapper">
       <table className={classnames("c-table table-bordered", className)}>
-        <TableHead key="TableHead" />
-        <TableBody key="TableBody"  id="test" />
+        <TableHead key="TableHead" id={id} context={TableContext} />
+        <TableBody key="TableBody" id={id} context={TableContext} />
       </table>
     </div>
   </TableContext.Provider>
 };
 
 const rowType = shape({
-  display: oneOfType([string, node, number]).isRequired,
-  value: oneOfType([string, number]).isRequired,
+  display: oneOfType([string, node, number]),
+  value: oneOfType([string, number, object]),
 });
 
 const headerRowType = shape({
