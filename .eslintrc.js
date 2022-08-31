@@ -72,7 +72,6 @@ module.exports = {
     "react/function-component-definition": 1,
     "react-hooks/rules-of-hooks": 2,
     "react-hooks/exhaustive-deps": 1,
-    "react/no-array-index-key": 1,
 
     "jsx-a11y/label-has-associated-control": 0,
 

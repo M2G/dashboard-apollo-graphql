@@ -1,15 +1,15 @@
 /*eslint-disable*/
-import PropTypes from 'prop-types';
+import PropTypes, { bool, object, oneOfType } from 'prop-types';
 import classnames from 'classnames';
 import Background from './Background';
-import './index.scss';
+import styles from './Sidebar.module.scss';
 
 function Sidebar({ show, setIsOpened, children }: any) {
-  return <div className={classnames('sidebar', show ? 'is-active' : '')}>
-      <div className="sidebar-wrapper">
+  return <div className={classnames(styles.sidebar, show ? styles.active : '')}>
+      <div className={styles.wrapper}>
         <div
           role="button"
-          className="close-icon"
+          className={styles.icon}
           onClick={() => setIsOpened(false)}>
           <span />
         </div>
@@ -30,7 +30,7 @@ function SidebarWrapper({ isOpened, setIsOpened, children }: any) {
 }
 
 SidebarWrapper.propTypes = {
-  isOpened: PropTypes.bool,
+  isOpened: oneOfType([bool, object]),
   setIsOpened: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };

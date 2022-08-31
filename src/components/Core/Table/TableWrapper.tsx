@@ -2,13 +2,13 @@
 import { useEffect, useMemo, useState, createContext, FC } from 'react';
 import classnames from 'classnames';
 import {
-  arrayOf, string, node, oneOfType, shape, oneOf, bool, number, object
+  arrayOf, string, node, oneOfType, shape, bool, number, object
 } from 'prop-types';
 import './index.scss';
 import TableHead from 'components/Core/Table/TableHead';
 import TableBody from 'components/Core/Table/TableBody';
 
-const TableContext = createContext<Record<string, any>>({});
+export const TableContext = createContext<Record<string, any>>({});
 
 const TableWrapper: FC<{
   header: any;
@@ -67,12 +67,10 @@ const TableWrapper: FC<{
   return <TableContext.Provider
     value={{ header, handleSort, sortData, getSortedTable }}
   >
-  <div className="c-table-wrapper">
-      <table className={classnames("c-table table-bordered", className)}>
-        <TableHead key="TableHead" id={id} context={TableContext} />
-        <TableBody key="TableBody" id={id} context={TableContext} />
-      </table>
-    </div>
+    <table className={classnames("c-table table-bordered", className)}>
+      <TableHead key="tableHead" id={id} />
+      <TableBody key="tableBody" id={id} />
+    </table>
   </TableContext.Provider>
 };
 
@@ -84,7 +82,7 @@ const rowType = shape({
 const headerRowType = shape({
   label: string.isRequired,
   sortable: bool,
-  type: oneOf(['string', 'date']),
+  type: oneOfType([string, object]),
   defaultSort: bool,
 });
 

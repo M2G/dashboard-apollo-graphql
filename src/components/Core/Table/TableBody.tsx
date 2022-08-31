@@ -1,24 +1,22 @@
 import { useContext } from 'react';
 import { number, oneOfType, string } from 'prop-types';
+import { TableContext } from 'components/Core/Table/TableWrapper';
 
 interface ITableBody {
   id: number | string;
-  context: any;
 }
 
-function TableBody({ id, context }: ITableBody) {
-  const { getSortedTable } = useContext(context);
+function TableBody({ id }: ITableBody) {
+  const { getSortedTable } = useContext(TableContext);
   return <tbody className="c-table-body">
-  {getSortedTable?.map((row: { display: any }[]) =>
-    <tr key={`tableRow__${id}`}>
-      {row?.map(({ display }: any) => (
-        <td
-          key={`tableCell__${id}`}
+  {getSortedTable?.map((row: { display: any }[], indexRow: number) =>
+    <tr key={`bodyTable__${id}__${indexRow}` as any}>
+      {row?.map(({ display }: any, indexCol: any) => <td
+          key={`bodyTable__${id}__${indexCol}` as any}
           className="table-wrapper-cell"
         >
           {display}
-        </td>
-      ))}
+        </td>)}
     </tr>)}
   </tbody>;
 }

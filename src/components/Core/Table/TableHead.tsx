@@ -1,19 +1,19 @@
 import { useContext } from 'react';
 import TableHeaderCell from 'components/Core/Table/TableHeaderCell';
 import { number, oneOfType, string } from 'prop-types';
+import { TableContext } from 'components/Core/Table/TableWrapper';
 
 interface ITableHead {
   id?: number | string;
-  context: any;
 }
 
-function TableHead({ id, context }: ITableHead) {
-  const { header, handleSort, sortData } = useContext(context);
+function TableHead({ id }: ITableHead) {
+  const { header, handleSort, sortData } = useContext(TableContext);
   return <thead className="c-table-head">
   <tr>
     {header?.map(({ label, sortable, type }: any, index: number) =>
       <TableHeaderCell
-        key={id}
+        key={`tableHeaderCell__${id}__${index}` as any}
         label={label}
         isSortable={sortable}
         currentSortedData={sortData?.index === index ? sortData : null}

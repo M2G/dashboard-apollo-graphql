@@ -2,21 +2,13 @@
   padding: 5px;
 }
 
-.c-table {
-  &-head {
-    th {
-      text-align: center;
-    }
-  }
-}
-
 table {
   width: 100%;
   border-collapse: collapse;
 }
 
 thead th {
-  text-align: left;
+  text-align: center;
   border-bottom: 2px solid black;
 }
 

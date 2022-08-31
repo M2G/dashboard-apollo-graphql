@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import { string, bool, func } from 'prop-types';
+import { string, bool, func, oneOfType, object } from 'prop-types';
 
 const TableHeaderCell = ({
   label,
@@ -30,7 +30,7 @@ const TableHeaderCell = ({
 
 TableHeaderCell.propTypes = {
   isSortable: bool,
-  currentSortedData: bool,
+  currentSortedData: oneOfType([bool, object]),
   onSort: func,
   label: string.isRequired,
 };
