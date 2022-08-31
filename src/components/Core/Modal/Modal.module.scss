@@ -1,4 +1,4 @@
-.c-modal-overlay {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -8,7 +8,7 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.c-modal-wrapper {
+.wrapper {
   position: fixed;
   top: 0;
   left: 0;
@@ -22,7 +22,7 @@
   align-items: center;
 }
 
-.c-modal {
+.modal {
   z-index: 100;
   background: #fff;
   position: relative;
@@ -32,13 +32,13 @@
   padding: 1rem;
 }
 
-.modal-header {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.modal-close-button {
+.button {
   font-size: 1.4rem;
   font-weight: 700;
   color: #000;

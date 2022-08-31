@@ -1,8 +1,9 @@
 /*eslint-disable*/
 import PropTypes from 'prop-types';
 import Portal from 'components/Core/Portal/Portal';
-import './index.scss';
+import styles from './Modal.module.scss';
 import { MouseEventHandler } from 'react';
+import classnames from 'classnames';
 
 interface ModalProps {
   id?: string;
@@ -16,10 +17,10 @@ interface ModalProps {
 function Modal({ id, isShowing, hide, title, onConfirm, children }: ModalProps) {
   return isShowing ? (
     <Portal id={id}>
-      <div className="c-modal-overlay">
-        <div className="c-modal-wrapper">
-          <div className="c-modal modal-content rounded-4 shadow">
-              <div className="modal-header border-bottom-0">
+      <div className={styles.overlay}>
+        <div className={styles.wrapper}>
+          <div className={classnames(styles.modal, 'modal-content rounded-4 shadow')}>
+              <div className={classnames(styles.header, 'border-bottom-0')}>
                 <h5 className="modal-title">{title}</h5>
                 <button type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close' onClick={hide} />
               </div>
