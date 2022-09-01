@@ -1,5 +1,7 @@
 /*eslint-disable*/
 import { string, bool, func, oneOfType, object } from 'prop-types';
+import styles from './Table.module.scss';
+import classnames from 'classnames';
 
 const TableHeaderCell = ({
   label,
@@ -15,14 +17,14 @@ const TableHeaderCell = ({
     );
 
   const sortedClass =
-    currentSortedData?.direction === 'ascending' ? 'ascending' : 'descending';
+    currentSortedData?.direction === styles.ascending ? styles.ascending : styles.descending;
 
-  return <th>
+  return <th className={styles.th}>
       {label}
       {isSortable && (
         <button
           onClick={onSortClick}
-          className={`sort-icon ${currentSortedData ? sortedClass : ''}`}
+          className={classnames(styles.button, `sort-icon ${currentSortedData ? sortedClass : ''}`)}
         />
       )}
     </th>

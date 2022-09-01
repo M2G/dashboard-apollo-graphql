@@ -1,0 +1,71 @@
+.c-action_button {
+  padding: 5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: center;
+  border-bottom: 2px solid black;
+}
+
+button {
+  border: 0;
+  border-radius: unset;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: inherit;
+  padding: 0.5em;
+  margin-bottom: 1px;
+  background-color: transparent;
+}
+
+.ascending {
+  &::before {
+    content: '\f0de';
+    font-family: 'Font Awesome\ 5 Free', sans-serif;
+    margin-left: -10px;
+    float: right;
+    opacity: 0.3;
+  }
+
+  &::after {
+    content: '\f0dd';
+    font-family: 'Font Awesome\ 5 Free', sans-serif;
+    display: inline-block;
+    margin-left: 1em;
+  }
+}
+
+.descending {
+  &::before {
+    content: '\f0de';
+    font-family: 'Font Awesome\ 5 Free', sans-serif;
+    display: inline-block;
+    margin-left: -10px;
+    float: right;
+  }
+
+  &::after {
+    content: '\f0dd';
+    font-family: 'Font Awesome\ 5 Free', sans-serif;
+    display: inline-block;
+    margin-left: 1em;
+    opacity: 0.3;
+  }
+}
+
+
+td {
+  padding: 0.5em;
+  border-bottom: 1px solid #ccc;
+}
+
+tr {
+  &:hover {
+    background-color: #eee;
+  }
+}

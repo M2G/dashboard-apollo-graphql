@@ -4,9 +4,10 @@ import classnames from 'classnames';
 import {
   arrayOf, string, node, oneOfType, shape, bool, number, object
 } from 'prop-types';
-import './index.scss';
 import TableHead from 'components/Core/Table/TableHead';
 import TableBody from 'components/Core/Table/TableBody';
+import styles from './Table.module.scss';
+// import './index.scss';
 
 export const TableContext = createContext<Record<string, any>>({});
 
@@ -67,7 +68,7 @@ const TableWrapper: FC<{
   return <TableContext.Provider
     value={{ header, handleSort, sortData, getSortedTable }}
   >
-    <table className={classnames("c-table table-bordered", className)}>
+    <table className={classnames(styles.table, "c-table table-bordered", className)}>
       <TableHead key="tableHead" id={id} />
       <TableBody key="tableBody" id={id} />
     </table>
