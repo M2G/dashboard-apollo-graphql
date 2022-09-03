@@ -7,7 +7,6 @@ import {
 import TableHead from 'components/Core/Table/TableHead';
 import TableBody from 'components/Core/Table/TableBody';
 import styles from './Table.module.scss';
-// import './index.scss';
 
 export const TableContext = createContext<Record<string, any>>({});
 
