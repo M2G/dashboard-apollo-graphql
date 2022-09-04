@@ -3,14 +3,10 @@ import {
   PLACEHOLDER_FIRST_NAME,
   PLACEHOLDER_LAST_NAME,
   PLACEHOLDER_EMAIL,
-  PLACEHOLDER_PASSWORD,
-  PLACEHOLDER_NEW_PASSWORD,
   INPUT_NAME,
   LABEL_FIRST_NAME,
   LABEL_LAST_NAME,
   LABEL_EMAIL,
-  LABEL_PASSWORD,
-  LABEL_NEW_PASSWORD,
 } from './constants';
 
 function UserEdit({ onSubmit, initialValues }: any): any {
@@ -62,30 +58,6 @@ function UserEdit({ onSubmit, initialValues }: any): any {
           value={values[INPUT_NAME.EMAIL]}
         />
         <label htmlFor="userEmail">{LABEL_EMAIL}</label>
-      </div>
-      <div className="form-floating mb-3">
-        <Field
-          id="userPassword"
-          className="form-control mb-2"
-          name={INPUT_NAME.PASSWORD}
-          type="password"
-          onChange={onChange(setFieldValue, INPUT_NAME.PASSWORD)}
-          placeholder={PLACEHOLDER_PASSWORD}
-          value={values[INPUT_NAME.PASSWORD]}
-        />
-        <label htmlFor="userPassword">{LABEL_PASSWORD}</label>
-      </div>
-      <div className="form-floating mb-3">
-        <Field
-          id="userNewPassword"
-          className="form-control mb-2"
-          name={INPUT_NAME.NEW_PASSWORD}
-          type="password"
-          onChange={onChange(setFieldValue, INPUT_NAME.NEW_PASSWORD)}
-          placeholder={PLACEHOLDER_NEW_PASSWORD}
-          value={values[INPUT_NAME.NEW_PASSWORD]}
-        />
-        <label htmlFor="userNewPassword">{LABEL_NEW_PASSWORD}</label>
       </div>
       <button className="btn btn-primary" type="submit">
         Save

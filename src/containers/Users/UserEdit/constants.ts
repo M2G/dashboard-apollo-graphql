@@ -18,15 +18,11 @@ export const INITIAL_VALUES = {
     [INPUT_NAME.USERNAME]: '',
     [INPUT_NAME.CREATED_AT]: '',
     [INPUT_NAME.MODIFIED_AT]: '',
-    [INPUT_NAME.PASSWORD]: '',
-    [INPUT_NAME.NEW_PASSWORD]: '',
 };
 
 export const PLACEHOLDER_FIRST_NAME = 'First name';
 export const PLACEHOLDER_LAST_NAME = 'Last name';
 export const PLACEHOLDER_EMAIL = 'Email';
-export const PLACEHOLDER_PASSWORD = 'Password';
-export const PLACEHOLDER_NEW_PASSWORD = 'New Password';
 
 export const ERROR_TEXT_REQUIRED = {
     ERROR_TEXT_REQUIRED_FIRST_NAME: 'First name requis',
@@ -37,5 +33,3 @@ export const ERROR_TEXT_REQUIRED = {
 export const LABEL_FIRST_NAME = 'First name';
 export const LABEL_LAST_NAME = 'Last name';
 export const LABEL_EMAIL = 'Email';
-export const LABEL_PASSWORD = 'Password';
-export const LABEL_NEW_PASSWORD = 'New Password';
