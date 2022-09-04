@@ -3,10 +3,13 @@ import { useCallback } from 'react';
 import { useMutation } from "@apollo/client";
 import { INITIAL_VALUES } from './constants';
 import { SIGNIN_MUTATION } from 'gql/mutations/auth';
-import SiginForm from 'components/SiginForm';
+import SiginForm from 'components/SigninForm';
+import { useContext } from 'react';
+import { AuthContext } from '../../AuthContext';
 
-function Signin({ activateAuth }: any) {
-  console.log('activateAuth', activateAuth);
+
+function Signin() {
+  const { activateAuth }: any = useContext(AuthContext);
   const [signin] = useMutation(SIGNIN_MUTATION, {
     onCompleted: ({ signin }: { signin:  string; }) => activateAuth(signin)
   });

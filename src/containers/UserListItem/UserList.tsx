@@ -24,8 +24,8 @@ function UserList({
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
 
-const { loading, error, data: userData = {}, refetch } = useQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
-const { users } = userData;
+const { loading, error, data: usersData = {}, refetch } = useQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
+const { users } = usersData;
 
   const [createUser] = useMutation(CREATE_USER_MUTATION, {
     onCompleted: refetch,

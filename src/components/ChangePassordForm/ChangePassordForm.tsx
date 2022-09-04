@@ -1,0 +1,97 @@
+import { Link } from 'react-router-dom';
+import { Formik, Field, Form } from 'formik';
+
+import ROUTER_PATH from 'constants/RouterPath';
+import {
+  ERROR_TEXT_REQUIRED,
+  INPUT_NAME,
+  LABEL_PASSWORD,
+  LABEL_PASSWORD2,
+  PLACEHOLDER_PASSWORD,
+  PLACEHOLDER_PASSWORD2,
+} from './constants';
+
+const { ERROR_TEXT_REQUIRED_PASSWORD, ERROR_TEXT_REQUIRED_PASSWORD2 } = ERROR_TEXT_REQUIRED;
+
+function ChangePassordForm({ initialValues, onSubmit }: any) {
+  const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
+    setFieldValue(setFieldName, value);
+
+  const onChange = (setFieldValue: any, setFieldName: any): any =>
+    ({ target: { value = '' } }: any) =>
+      setField(setFieldValue, setFieldName, value);
+
+  const onValidate = (values: object): {} => {
+    const errors = {};
+
+    if (!values[INPUT_NAME.PASSWORD]) {
+      errors[INPUT_NAME.PASSWORD] = ERROR_TEXT_REQUIRED_PASSWORD;
+    }
+
+    if (!values[INPUT_NAME.PASSWORD2]) {
+      errors[INPUT_NAME.PASSWORD2] = ERROR_TEXT_REQUIRED_PASSWORD2;
+    }
+
+    return errors;
+  };
+
+  const handleSubmit = (values: object) => onSubmit(values);
+
+  const renderForm = ({
+ setFieldValue, values, errors, touched,
+}: any): any =>
+      <div className="form-signin">
+        <Form>
+          <h1 className="h3 mb-3 fw-normal">Change password</h1>
+          <div className="form-floating">
+            <Field
+              id="floatingPassword"
+              className="form-control mb-2"
+              name={INPUT_NAME.PASSWORD}
+              type="password"
+              onChange={onChange(setFieldValue, INPUT_NAME.PASSWORD)}
+              placeholder={PLACEHOLDER_PASSWORD}
+              value={values?.[INPUT_NAME.PASSWORD]}
+              required
+            />
+            {touched[INPUT_NAME.PASSWORD]
+            && errors
+            && errors[INPUT_NAME.PASSWORD] ? (
+              <span className="error-text">{errors[INPUT_NAME.PASSWORD]}</span>
+            ) : null}
+            <label htmlFor="floatingPassword">{LABEL_PASSWORD}</label>
+          </div>
+          <div className="form-floating">
+            <Field
+              id="floatingInput"
+              name={INPUT_NAME.PASSWORD2}
+              className="form-control mb-2"
+              type="email"
+              onChange={onChange(setFieldValue, INPUT_NAME.PASSWORD2)}
+              placeholder={PLACEHOLDER_PASSWORD2}
+              value={values?.[INPUT_NAME.PASSWORD2]}
+              required
+            />
+            {touched[INPUT_NAME.PASSWORD2] && errors && errors[INPUT_NAME.PASSWORD2] ? (
+              <span className="error-text">{errors[INPUT_NAME.PASSWORD2]}</span>
+            ) : null}
+            <label htmlFor="floatingInput">{LABEL_PASSWORD2}</label>
+          </div>
+          <button className="w-100 btn btn-lg btn-primary" type="submit">
+            Change password
+          </button>
+        </Form>
+        <Link to={ROUTER_PATH.HOME} className="mt-4 text-muted">Home</Link>
+      </div>;
+
+  return <Formik
+      enableReinitialize
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validate={onValidate}
+    >
+      {renderForm}
+    </Formik>;
+}
+
+export default ChangePassordForm;

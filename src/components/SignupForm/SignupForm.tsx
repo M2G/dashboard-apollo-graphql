@@ -13,7 +13,7 @@ import {
 
 const { ERROR_TEXT_REQUIRED_EMAIL, ERROR_TEXT_REQUIRED_PASSWORD } = ERROR_TEXT_REQUIRED;
 
-function SigupForm({ initialValues, onSubmit }: any) {
+function SignupForm({ initialValues, onSubmit }: any) {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
     setFieldValue(setFieldName, value);
 
@@ -95,4 +95,4 @@ function SigupForm({ initialValues, onSubmit }: any) {
     </Formik>;
 }
 
-export default SigupForm;
+export default SignupForm;

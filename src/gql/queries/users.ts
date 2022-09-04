@@ -13,6 +13,20 @@ query users{
 }
 `;
 
+const USER = gql`
+query user{
+    user { 
+      _id
+      first_name,
+      last_name,
+      email
+      created_at
+      modified_at
+   }
+}
+`;
+
 export {
   LIST_ALL_USERS,
+  USER,
 };

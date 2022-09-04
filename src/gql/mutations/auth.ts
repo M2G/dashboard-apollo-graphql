@@ -40,17 +40,28 @@ const UPDATE_USER_MUTATION = gql`
     mutation updateUser(
         $id: String!
         $email: String
-        $password: String
         $first_name: String
         $last_name: String
         $username: String
     ) {
-        updateUser(id: $id, input: { email: $email, password: $password, first_name: $first_name, last_name: $last_name, username: $username }) { 
+        updateUser(id: $id, input: { email: $email, first_name: $first_name, last_name: $last_name, username: $username }) { 
           first_name
           last_name
           email
           created_at
           modified_at
+        }
+    }
+`;
+
+const UPDATE_PASSWORD_USER_MUTATION = gql`
+    mutation updatePasswordUser(
+        $password: String!
+        $password2: String!
+    ) {
+        updateUser(input: { password: $password, password2: $password2 }) { 
+          password
+          password2
         }
     }
 `;
@@ -71,4 +82,5 @@ export {
   CREATE_USER_MUTATION,
   UPDATE_USER_MUTATION,
   DELETE_USER_MUTATION,
+  UPDATE_PASSWORD_USER_MUTATION,
 };
