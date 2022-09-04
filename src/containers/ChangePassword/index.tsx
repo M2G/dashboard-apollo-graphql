@@ -1,7 +1,7 @@
 import ChangePassword from './ChangePassword';
 
-function SigninPage() {
+function ChangePasswordPage() {
   return <ChangePassword />;
 }
 
-export default SigninPage;
+export default ChangePasswordPage;

@@ -77,7 +77,7 @@ function ChangePassordForm({ initialValues, onSubmit }: any) {
             ) : null}
             <label htmlFor="floatingInput">{LABEL_PASSWORD2}</label>
           </div>
-          <button className="w-100 btn btn-lg btn-primary" type="submit">
+          <button className="fs-6 w-100 btn btn-lg btn-primary" type="submit">
             Change password
           </button>
         </Form>

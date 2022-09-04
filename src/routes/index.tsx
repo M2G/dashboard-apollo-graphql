@@ -9,6 +9,8 @@ const Signin = lazy(() => import('containers/Signin'));
 const Signup = lazy(() => import('containers/Signup'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
 const ResetPassword = lazy(() => import('containers/ResetPassword'));
+const ChangePassword = lazy(() => import('containers/ChangePassword'));
+const Profil = lazy(() => import('containers/Profil'));
 
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import { AuthContext } from '../AuthContext';
@@ -36,6 +38,16 @@ const Router = () => {
             <Route
               path={ROUTER_PATH.HOME}
               element={<Home />}
+            />}
+          {isAuth && userData?._id &&
+            <Route
+              path={ROUTER_PATH.PROFIL}
+              element={<Profil />}
+            />}
+          {isAuth && userData?._id &&
+            <Route
+              path={ROUTER_PATH.CHANGE_PASSWORD}
+              element={<ChangePassword />}
             />}
 
           {!isAuth && <Route
