@@ -6,7 +6,7 @@ import { USER } from 'gql/queries/users';
 import ProfilForm from 'components/ProfilForm';
 
 function Profil() {
-  const [user, { loading, error, data: userData = {}, refetch }] = useLazyQuery(USER,  { fetchPolicy: 'no-cache' });
+  const [user] = useLazyQuery(USER,  { fetchPolicy: 'no-cache' });
 
   const handleSubmit = useCallback(async (formData: any) => {
     await user(

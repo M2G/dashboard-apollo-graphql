@@ -2,7 +2,7 @@
 import {
  fireEvent, render, cleanup,
 } from "@testing-library/react";
-import SignupForm from './SigupForm';
+import SignupForm from './SignupForm';
 import { INPUT_NAME } from './constants';
 
 afterEach(cleanup);
