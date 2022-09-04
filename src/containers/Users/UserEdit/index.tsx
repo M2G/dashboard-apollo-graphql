@@ -13,6 +13,8 @@ function UserEdit({ data, onSubmit }: any) {
       initialValues[INPUT_NAME.LAST_NAME] = values?.[INPUT_NAME.LAST_NAME] || '';
       initialValues[INPUT_NAME.EMAIL] = values?.[INPUT_NAME.EMAIL] || '';
       initialValues[INPUT_NAME.CREATED_AT] = values?.[INPUT_NAME.CREATED_AT] || '';
+      initialValues[INPUT_NAME.PASSWORD] = values?.[INPUT_NAME.PASSWORD] || '';
+      initialValues[INPUT_NAME.NEW_PASSWORD] = values?.[INPUT_NAME.NEW_PASSWORD] || '';
     }
 
     return initialValues;

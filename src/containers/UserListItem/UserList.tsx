@@ -164,7 +164,7 @@ console.log('LIST_ALL_USERS', { loading, error, users });
         isShowing={deletingUser}
         onConfirm={() => onDeleteUser(deletingUser)}
       >
-        <p>This is a modal sheet, a variation of the modal that docs itself to the bottom of the viewport like the newer share sheets in iOS.</p>
+        <p>Warning, you are about to perform an irreversible action</p>
       </ModalWrapper>
 
     </>;

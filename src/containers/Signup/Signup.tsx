@@ -43,7 +43,7 @@ function Signup({ initialValues, onSubmit }: any) {
           <h1 className="h3 mb-3 fw-normal">Please sign up</h1>
           <div className="form-floating">
             <Field
-              id="floatingInput"
+              id="floatingEmail"
               name={INPUT_NAME.EMAIL}
               className="form-control mb-2"
               type="email"
@@ -55,7 +55,7 @@ function Signup({ initialValues, onSubmit }: any) {
             {touched[INPUT_NAME.EMAIL] && errors && errors[INPUT_NAME.EMAIL] ? (
               <span className="error-text">{errors[INPUT_NAME.EMAIL]}</span>
             ) : null}
-            <label htmlFor="floatingInput">{LABEL_EMAIL}</label>
+            <label htmlFor="floatingEmail">{LABEL_EMAIL}</label>
           </div>
           <div className="form-floating">
             <Field

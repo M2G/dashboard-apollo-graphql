@@ -46,7 +46,7 @@ function UserNew({ onSubmit, initialValues }: any): any {
           id="floatingEmail"
           className="form-control mb-2"
           name={INPUT_NAME.EMAIL}
-          type="text"
+          type="email"
           onChange={onChange(setFieldValue, INPUT_NAME.EMAIL)}
           placeholder={PLACEHOLDER_EMAIL}
           value={values[INPUT_NAME.EMAIL]}
@@ -64,7 +64,7 @@ function UserNew({ onSubmit, initialValues }: any): any {
           id="floatingPassword"
           name={INPUT_NAME.PASSWORD}
           className="form-control mb-2"
-          type="text"
+          type="password"
           onChange={onChange(setFieldValue, INPUT_NAME.PASSWORD)}
           placeholder={PLACEHOLDER_PASSWORD}
           value={values[INPUT_NAME.PASSWORD]}
@@ -73,7 +73,7 @@ function UserNew({ onSubmit, initialValues }: any): any {
         {touched[INPUT_NAME.PASSWORD] && errors && errors[INPUT_NAME.PASSWORD] ? (
           <span className="error-text">{errors[INPUT_NAME.PASSWORD]}</span>
         ) : null}
-        <label htmlFor="floatingFirstname">{LABEL_PASSWORD}</label>
+        <label htmlFor="floatingPassword">{LABEL_PASSWORD}</label>
       </div>
       <button className="btn btn-primary" type="submit">
         Save
