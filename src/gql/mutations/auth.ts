@@ -55,13 +55,14 @@ const UPDATE_USER_MUTATION = gql`
 `;
 
 const UPDATE_PASSWORD_USER_MUTATION = gql`
-    mutation updatePasswordUser(
+    mutation updateUserPassword(
+        $id: String!
+        $old_password: String!
         $password: String!
-        $password2: String!
+        $password_again: String!
     ) {
-        updateUser(input: { password: $password, password2: $password2 }) { 
-          password
-          password2
+        updateUserPassword(id: $id, input: { old_password: $old_password, password: $password, password_again: $password_again }) { 
+          _id
         }
     }
 `;

@@ -5,13 +5,19 @@ import ROUTER_PATH from 'constants/RouterPath';
 import {
   ERROR_TEXT_REQUIRED,
   INPUT_NAME,
+  LABEL_OLD_PASSWORD,
   LABEL_PASSWORD,
   LABEL_PASSWORD2,
+  PLACEHOLDER_OLD_PASSWORD,
   PLACEHOLDER_PASSWORD,
   PLACEHOLDER_PASSWORD2,
 } from './constants';
 
-const { ERROR_TEXT_REQUIRED_PASSWORD, ERROR_TEXT_REQUIRED_PASSWORD2 } = ERROR_TEXT_REQUIRED;
+const {
+  ERROR_TEXT_REQUIRED_OLD_PASSWORD,
+  ERROR_TEXT_REQUIRED_PASSWORD,
+  ERROR_TEXT_REQUIRED_PASSWORD2,
+} = ERROR_TEXT_REQUIRED;
 
 function ChangePassordForm({ initialValues, onSubmit }: any) {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
@@ -23,6 +29,10 @@ function ChangePassordForm({ initialValues, onSubmit }: any) {
 
   const onValidate = (values: object): {} => {
     const errors = {};
+
+    if (!values[INPUT_NAME.OLD_PASSWORD]) {
+      errors[INPUT_NAME.OLD_PASSWORD] = ERROR_TEXT_REQUIRED_OLD_PASSWORD;
+    }
 
     if (!values[INPUT_NAME.PASSWORD]) {
       errors[INPUT_NAME.PASSWORD] = ERROR_TEXT_REQUIRED_PASSWORD;
@@ -45,6 +55,24 @@ function ChangePassordForm({ initialValues, onSubmit }: any) {
           <h1 className="h3 mb-3 fw-normal">Change password</h1>
           <div className="form-floating">
             <Field
+              id="floatingOldPassword"
+              className="form-control mb-2"
+              name={INPUT_NAME.OLD_PASSWORD}
+              type="password"
+              onChange={onChange(setFieldValue, INPUT_NAME.OLD_PASSWORD)}
+              placeholder={PLACEHOLDER_OLD_PASSWORD}
+              value={values?.[INPUT_NAME.OLD_PASSWORD]}
+              required
+            />
+            {touched[INPUT_NAME.OLD_PASSWORD]
+            && errors
+            && errors[INPUT_NAME.OLD_PASSWORD] ? (
+              <span className="error-text">{errors[INPUT_NAME.OLD_PASSWORD]}</span>
+            ) : null}
+            <label htmlFor="floatingOldPassword">{LABEL_OLD_PASSWORD}</label>
+          </div>
+          <div className="form-floating">
+            <Field
               id="floatingPassword"
               className="form-control mb-2"
               name={INPUT_NAME.PASSWORD}
@@ -63,10 +91,10 @@ function ChangePassordForm({ initialValues, onSubmit }: any) {
           </div>
           <div className="form-floating">
             <Field
-              id="floatingInput"
+              id="floatingPasswordAgain"
               name={INPUT_NAME.PASSWORD2}
               className="form-control mb-2"
-              type="email"
+              type="password"
               onChange={onChange(setFieldValue, INPUT_NAME.PASSWORD2)}
               placeholder={PLACEHOLDER_PASSWORD2}
               value={values?.[INPUT_NAME.PASSWORD2]}
@@ -75,7 +103,7 @@ function ChangePassordForm({ initialValues, onSubmit }: any) {
             {touched[INPUT_NAME.PASSWORD2] && errors && errors[INPUT_NAME.PASSWORD2] ? (
               <span className="error-text">{errors[INPUT_NAME.PASSWORD2]}</span>
             ) : null}
-            <label htmlFor="floatingInput">{LABEL_PASSWORD2}</label>
+            <label htmlFor="floatingPasswordAgain">{LABEL_PASSWORD2}</label>
           </div>
           <button className="fs-6 w-100 btn btn-lg btn-primary" type="submit">
             Change password

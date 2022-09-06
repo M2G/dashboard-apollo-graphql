@@ -12,8 +12,8 @@ function ChangePassword() {
     await changePassword(
       {
         variables: {
-          password: formData.password,
-          password2: formData.password2,
+          id: "test",
+          ...formData
         }
       }
     );
