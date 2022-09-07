@@ -17,6 +17,7 @@ const {
   ERROR_TEXT_REQUIRED_OLD_PASSWORD,
   ERROR_TEXT_REQUIRED_PASSWORD,
   ERROR_TEXT_REQUIRED_PASSWORD2,
+  ERROR_TEXT_REQUIRED_MATCH,
 } = ERROR_TEXT_REQUIRED;
 
 function ChangePassordForm({ initialValues, onSubmit }: any) {
@@ -40,6 +41,10 @@ function ChangePassordForm({ initialValues, onSubmit }: any) {
 
     if (!values[INPUT_NAME.PASSWORD2]) {
       errors[INPUT_NAME.PASSWORD2] = ERROR_TEXT_REQUIRED_PASSWORD2;
+    }
+
+    if (values[INPUT_NAME.PASSWORD] !== values[INPUT_NAME.PASSWORD2]) {
+      errors[INPUT_NAME.PASSWORD2] = ERROR_TEXT_REQUIRED_MATCH;
     }
 
     return errors;
@@ -101,7 +106,7 @@ function ChangePassordForm({ initialValues, onSubmit }: any) {
               required
             />
             {touched[INPUT_NAME.PASSWORD2] && errors && errors[INPUT_NAME.PASSWORD2] ? (
-              <span className="error-text">{errors[INPUT_NAME.PASSWORD2]}</span>
+              <span className="error-text mb-1">{errors[INPUT_NAME.PASSWORD2]}</span>
             ) : null}
             <label htmlFor="floatingPasswordAgain">{LABEL_PASSWORD2}</label>
           </div>
