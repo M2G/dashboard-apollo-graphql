@@ -7,8 +7,10 @@ import {
   LABEL_PASSWORD,
   INPUT_NAME,
   LABEL_EMAIL,
+  LABEL_FIRST_NAME,
   PLACEHOLDER_EMAIL,
   PLACEHOLDER_PASSWORD,
+  PLACEHOLDER_FIRST_NAME, PLACEHOLDER_LAST_NAME, LABEL_LAST_NAME,
 } from './constants';
 
 const { ERROR_TEXT_REQUIRED_EMAIL, ERROR_TEXT_REQUIRED_PASSWORD } = ERROR_TEXT_REQUIRED;
@@ -46,18 +48,52 @@ function ProfilForm({ initialValues, onSubmit }: any) {
           <div className="form-floating">
             <Field
               id="floatingInput"
-              name={INPUT_NAME.EMAIL}
+              name={INPUT_NAME.FIRST_NAME}
               className="form-control mb-2"
+              type="text"
+              onChange={onChange(setFieldValue, INPUT_NAME.FIRST_NAME)}
+              placeholder={PLACEHOLDER_FIRST_NAME}
+              value={values?.[INPUT_NAME.FIRST_NAME]}
+              required
+            />
+            {touched[INPUT_NAME.FIRST_NAME] && errors && errors[INPUT_NAME.FIRST_NAME] ? (
+              <span className="error-text">{errors[INPUT_NAME.FIRST_NAME]}</span>
+            ) : null}
+            <label htmlFor="floatingInput">{LABEL_FIRST_NAME}</label>
+          </div>
+          <div className="form-floating">
+            <Field
+              id="floatingInput"
+              name={INPUT_NAME.LAST_NAME}
+              className="form-control mb-2"
+              type="text"
+              onChange={onChange(setFieldValue, INPUT_NAME.LAST_NAME)}
+              placeholder={PLACEHOLDER_LAST_NAME}
+              value={values?.[INPUT_NAME.LAST_NAME]}
+              required
+            />
+            {touched[INPUT_NAME.LAST_NAME] && errors && errors[INPUT_NAME.LAST_NAME] ? (
+              <span className="error-text">{errors[INPUT_NAME.LAST_NAME]}</span>
+            ) : null}
+            <label htmlFor="floatingInput">{LABEL_LAST_NAME}</label>
+          </div>
+          <div className="form-floating">
+            <Field
+              id="floatingPassword"
+              className="form-control mb-2"
+              name={INPUT_NAME.EMAIL}
               type="email"
               onChange={onChange(setFieldValue, INPUT_NAME.EMAIL)}
               placeholder={PLACEHOLDER_EMAIL}
               value={values?.[INPUT_NAME.EMAIL]}
               required
             />
-            {touched[INPUT_NAME.EMAIL] && errors && errors[INPUT_NAME.EMAIL] ? (
+            {touched[INPUT_NAME.EMAIL]
+            && errors
+            && errors[INPUT_NAME.EMAIL] ? (
               <span className="error-text">{errors[INPUT_NAME.EMAIL]}</span>
             ) : null}
-            <label htmlFor="floatingInput">{LABEL_EMAIL}</label>
+            <label htmlFor="floatingPassword">{LABEL_EMAIL}</label>
           </div>
           <div className="form-floating">
             <Field

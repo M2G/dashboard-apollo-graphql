@@ -1,18 +1,19 @@
 /*eslint-disable*/
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import { useMutation } from "@apollo/client";
 import { INITIAL_VALUES } from './constants';
 import { UPDATE_PASSWORD_USER_MUTATION } from 'gql/mutations/auth';
 import ChangePasswordForm from 'components/ChangePassordForm';
+import { AuthContext } from '../../AuthContext';
 
 function ChangePassword() {
+  const { userData } = useContext(AuthContext);
   const [changePassword] = useMutation(UPDATE_PASSWORD_USER_MUTATION);
-
   const handleSubmit = useCallback(async (formData: any) => {
     await changePassword(
       {
         variables: {
-          id: "test",
+          id: userData?._id,
           ...formData
         }
       }
