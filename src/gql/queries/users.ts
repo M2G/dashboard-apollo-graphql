@@ -14,8 +14,10 @@ query users{
 `;
 
 const USER = gql`
-query user{
-    user { 
+query getUser(
+        $id: String!
+    ) {
+    getUser(id: $id) {
       _id
       first_name,
       last_name,

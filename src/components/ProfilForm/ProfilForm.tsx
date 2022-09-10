@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { Formik, Field, Form } from 'formik';
+import type { FormikHelpers } from 'formik';
+import { Formik, Field, Form} from 'formik';
 
 import ROUTER_PATH from 'constants/RouterPath';
 import {
-  ERROR_TEXT_REQUIRED,
   LABEL_PASSWORD,
   INPUT_NAME,
   LABEL_EMAIL,
@@ -15,9 +15,12 @@ import {
   PLACEHOLDER_LAST_NAME,
 } from './constants';
 
-const { ERROR_TEXT_REQUIRED_EMAIL, ERROR_TEXT_REQUIRED_PASSWORD } = ERROR_TEXT_REQUIRED;
+interface IForm {
+  initialValues: Record<any, unknown>;
+  onSubmit: (value: any) => Record<any, any>;
+}
 
-function ProfilForm({ initialValues, onSubmit }: any) {
+function ProfilForm({ initialValues, onSubmit }: IForm) {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
     setFieldValue(setFieldName, value);
 
@@ -25,21 +28,8 @@ function ProfilForm({ initialValues, onSubmit }: any) {
     ({ target: { value = '' } }: any) =>
       setField(setFieldValue, setFieldName, value);
 
-  const onValidate = (values: object): {} => {
-    const errors = {};
-
-    if (!values[INPUT_NAME.EMAIL]) {
-      errors[INPUT_NAME.EMAIL] = ERROR_TEXT_REQUIRED_EMAIL;
-    }
-
-    if (!values[INPUT_NAME.PASSWORD]) {
-      errors[INPUT_NAME.PASSWORD] = ERROR_TEXT_REQUIRED_PASSWORD;
-    }
-
-    return errors;
-  };
-
-  const handleSubmit = (values: object) => onSubmit(values);
+  const handleSubmit: ((values: any, formikHelpers: FormikHelpers<any>) =>
+    any) & ((values: any) => any) = (values: any) => onSubmit(values);
 
   const renderForm = ({
  setFieldValue, values, errors, touched,
@@ -127,7 +117,6 @@ function ProfilForm({ initialValues, onSubmit }: any) {
       enableReinitialize
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      validate={onValidate}
     >
       {renderForm}
     </Formik>;

@@ -1,36 +1,58 @@
 /*eslint-disable*/
-import { useCallback } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { useLazyQuery } from "@apollo/client";
 import { USER } from 'gql/queries/users';
 import ProfilForm from 'components/ProfilForm';
 import { INPUT_NAME, INITIAL_VALUES }  from 'components/ProfilForm/constants';
+import { AuthContext } from '../../AuthContext';
 
-function initialValues() {
+function initialValues({ values }: Record<any, any>) {
   const initialValues = { ...INITIAL_VALUES };
 
-  initialValues[INPUT_NAME.FIRST_NAME] = '';
-  initialValues[INPUT_NAME.LAST_NAME] = '';
-  initialValues[INPUT_NAME.EMAIL] = '';
-  initialValues[INPUT_NAME.PASSWORD] = '';
+  if (values) {
+    initialValues[INPUT_NAME.FIRST_NAME] = values?.[INPUT_NAME.FIRST_NAME] || '';
+    initialValues[INPUT_NAME.LAST_NAME] = values?.[INPUT_NAME.LAST_NAME] || '';
+    initialValues[INPUT_NAME.EMAIL] = values?.[INPUT_NAME.EMAIL] || '';
+    initialValues[INPUT_NAME.PASSWORD] = values?.[INPUT_NAME.PASSWORD] || '';
+  }
 
   return initialValues;
 }
 
 function Profil() {
-  const [user] = useLazyQuery(USER,  { fetchPolicy: 'no-cache' });
+  const { userData } = useContext(AuthContext);
+  const [getUserProfil, {
+    loading,
+    error,
+    data: userProfil = {},
+  }] = useLazyQuery(USER,  { fetchPolicy: 'no-cache' });
 
-  const handleSubmit = useCallback(async (formData: any) => {
+  console.log('loading', loading)
+  console.log('error', error)
+  console.log('userData', userData)
+
+  useEffect(() => {
+    getUserProfil({
+      variables: {
+        id: userData?._id
+      }
+    });
+  }, []);
+
+  const handleSubmit: any = useCallback(async (formData: any) => {
     console.log('formData', formData)
-    await user(
+    /*await user(
       {
         variables: {
           ...formData
         }
       }
-    );
+    );*/
   }, []);
 
-  return <ProfilForm initialValues={initialValues()} onSubmit={handleSubmit} />;
+  if (loading) return null;
+
+  return <ProfilForm initialValues={initialValues(userProfil)} onSubmit={handleSubmit} />;
 }
 
 export default Profil;
