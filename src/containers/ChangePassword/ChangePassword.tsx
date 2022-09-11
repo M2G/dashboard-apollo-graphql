@@ -1,9 +1,9 @@
 /*eslint-disable*/
 import { useCallback, useContext } from 'react';
 import { useMutation } from "@apollo/client";
-import { INITIAL_VALUES } from './constants';
 import { UPDATE_PASSWORD_USER_MUTATION } from 'gql/mutations/auth';
 import ChangePasswordForm from 'components/ChangePassordForm';
+import { INITIAL_VALUES } from 'components/ChangePassordForm/constants';
 import { AuthContext } from '../../AuthContext';
 
 function ChangePassword() {

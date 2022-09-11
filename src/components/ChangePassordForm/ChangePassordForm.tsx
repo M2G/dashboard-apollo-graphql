@@ -43,7 +43,9 @@ function ChangePassordForm({ initialValues, onSubmit }: any) {
       errors[INPUT_NAME.PASSWORD2] = ERROR_TEXT_REQUIRED_PASSWORD2;
     }
 
-    if (values[INPUT_NAME.PASSWORD] !== values[INPUT_NAME.PASSWORD2]) {
+    if (values[INPUT_NAME.PASSWORD]
+      && values[INPUT_NAME.PASSWORD2]
+      && values[INPUT_NAME.PASSWORD] !== values[INPUT_NAME.PASSWORD2]) {
       errors[INPUT_NAME.PASSWORD2] = ERROR_TEXT_REQUIRED_MATCH;
     }
 

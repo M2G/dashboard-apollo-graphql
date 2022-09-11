@@ -4,13 +4,11 @@ import { Formik, Field, Form} from 'formik';
 
 import ROUTER_PATH from 'constants/RouterPath';
 import {
-  LABEL_PASSWORD,
   INPUT_NAME,
   LABEL_EMAIL,
   LABEL_FIRST_NAME,
   LABEL_LAST_NAME,
   PLACEHOLDER_EMAIL,
-  PLACEHOLDER_PASSWORD,
   PLACEHOLDER_FIRST_NAME,
   PLACEHOLDER_LAST_NAME,
 } from './constants';
@@ -87,30 +85,11 @@ function ProfilForm({ initialValues, onSubmit }: IForm) {
             ) : null}
             <label htmlFor="floatingPassword">{LABEL_EMAIL}</label>
           </div>
-          <div className="form-floating">
-            <Field
-              id="floatingPassword"
-              className="form-control mb-2"
-              name={INPUT_NAME.PASSWORD}
-              type="password"
-              onChange={onChange(setFieldValue, INPUT_NAME.PASSWORD)}
-              placeholder={PLACEHOLDER_PASSWORD}
-              value={values?.[INPUT_NAME.PASSWORD]}
-              required
-            />
-            {touched[INPUT_NAME.PASSWORD]
-            && errors
-            && errors[INPUT_NAME.PASSWORD] ? (
-              <span className="error-text">{errors[INPUT_NAME.PASSWORD]}</span>
-            ) : null}
-            <label htmlFor="floatingPassword">{LABEL_PASSWORD}</label>
-          </div>
           <button className="w-100 btn btn-lg btn-primary" type="submit">
             Sign in
           </button>
         </Form>
-        <Link to={ROUTER_PATH.SIGNUP} className="mt-4 text-muted">Signup</Link>
-        <Link to={ROUTER_PATH.FORGOT_PASSWORD} className="mt-1 text-muted">Forgot Password</Link>
+        <Link to={ROUTER_PATH.CHANGE_PASSWORD} className="mt-4 text-muted">Change Password</Link>
       </div>;
 
   return <Formik

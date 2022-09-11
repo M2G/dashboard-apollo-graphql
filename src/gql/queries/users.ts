@@ -24,6 +24,7 @@ query getUser(
       email
       created_at
       modified_at
+      password
    }
 }
 `;
