@@ -34,7 +34,7 @@ function ProfilForm({ initialValues, onSubmit }: IForm) {
 }: any): any =>
       <div className="form-signin">
         <Form>
-          <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+          <h1 className="h3 mb-3 fw-normal">User Profil</h1>
           <div className="form-floating">
             <Field
               id="floatingInput"
@@ -86,10 +86,11 @@ function ProfilForm({ initialValues, onSubmit }: IForm) {
             <label htmlFor="floatingPassword">{LABEL_EMAIL}</label>
           </div>
           <button className="w-100 btn btn-lg btn-primary" type="submit">
-            Sign in
+            Save
           </button>
         </Form>
         <Link to={ROUTER_PATH.CHANGE_PASSWORD} className="mt-4 text-muted">Change Password</Link>
+        <Link to={ROUTER_PATH.HOME} className="mt-2 text-muted">Home</Link>
       </div>;
 
   return <Formik

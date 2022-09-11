@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Formik, Field, Form } from 'formik';
+import type { FormikHelpers } from 'formik';
+import { Formik, Field, Form} from 'formik';
 
 import ROUTER_PATH from 'constants/RouterPath';
 import {
@@ -20,7 +21,12 @@ const {
   ERROR_TEXT_REQUIRED_MATCH,
 } = ERROR_TEXT_REQUIRED;
 
-function ChangePassordForm({ initialValues, onSubmit }: any) {
+interface IForm {
+  initialValues: Record<any, unknown>;
+  onSubmit: (value: any) => Record<any, any>;
+}
+
+function ChangePassordForm({ initialValues, onSubmit }: IForm) {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
     setFieldValue(setFieldName, value);
 
@@ -52,7 +58,8 @@ function ChangePassordForm({ initialValues, onSubmit }: any) {
     return errors;
   };
 
-  const handleSubmit = (values: object) => onSubmit(values);
+  const handleSubmit: ((values: any, formikHelpers: FormikHelpers<any>) =>
+    any) & ((values: any) => any) = (values: any) => onSubmit(values);
 
   const renderForm = ({
  setFieldValue, values, errors, touched,
@@ -116,7 +123,7 @@ function ChangePassordForm({ initialValues, onSubmit }: any) {
             Change password
           </button>
         </Form>
-        <Link to={ROUTER_PATH.HOME} className="mt-4 text-muted">Home</Link>
+        <Link to={ROUTER_PATH.PROFIL} className="mt-4 text-muted">Profil</Link>
       </div>;
 
   return <Formik

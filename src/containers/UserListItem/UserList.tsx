@@ -139,33 +139,33 @@ console.log('LIST_ALL_USERS', { loading, error, users });
       </div>
     </section>
 
-    {!users?.length && !loading && <div>No data</div>}
+    {users?.length && !loading ? <>
+      <TableWrapper id={id} header={header} rows={rows} />
+        <SidebarWrapper
+          isOpened={editingUser}
+          setIsOpened={onClose}>
+          <UserEdit
+            data={editingUser}
+            onSubmit={onEditUser}
+          />
+        </SidebarWrapper>
 
-    <TableWrapper id={id} header={header} rows={rows} />
+        <SidebarWrapper
+          isOpened={newUser}
+          setIsOpened={onClose}>
+          <UserNew onSubmit={onNewUser} />
+        </SidebarWrapper>
 
-      <SidebarWrapper
-        isOpened={editingUser}
-        setIsOpened={onClose}>
-        <UserEdit
-          data={editingUser}
-          onSubmit={onEditUser}
-        />
-      </SidebarWrapper>
-
-      <SidebarWrapper
-        isOpened={newUser}
-        setIsOpened={onClose}>
-        <UserNew onSubmit={onNewUser} />
-      </SidebarWrapper>
-
-      <ModalWrapper
-        title="Delete"
-        hide={onClose}
-        isShowing={deletingUser}
-        onConfirm={() => onDeleteUser(deletingUser)}
-      >
-        <p>Warning, you are about to perform an irreversible action</p>
-      </ModalWrapper>
+        <ModalWrapper
+          title="Delete"
+          hide={onClose}
+          isShowing={deletingUser}
+          onConfirm={() => onDeleteUser(deletingUser)}
+        >
+          <p>Warning, you are about to perform an irreversible action</p>
+        </ModalWrapper>
+      </>
+      : <div>No data</div>}
 
     </>;
 }
