@@ -1,32 +1,31 @@
 /*eslint-disable*/
 import { useCallback } from 'react';
-// import { useSelector } from 'react-redux';
-// import { authGetUsersProfilAction } from 'store/auth/actions';
+import { useLazyQuery } from '@apollo/client';
+import { LIST_ALL_USERS } from 'gql/queries/users';
 import UserFiltersView from './UserFilters';
-// import { INITIAL_VALUES, INPUT_NAME } from './constants';
+import { INITIAL_VALUES } from './constants';
 
 function UserFilters() {
-/*
-  const { data, loading, ...args } = useSelector(
-    (state: any) => state?.auth as any
-  );
-*/
+  const [userFilter] = useLazyQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
+
   const searchTerms = useCallback((data: any) => {
+    console.log('searchTerms searchTerms searchTerms', data);
+
+    userFilter({
+      variables: {
+        filters: data.search
+      }
+    });
+    console.log('searchTerms searchTerms searchTerms', data);
     // dispatch(authGetUsersProfilAction({ ...data });
   }, []);
-/*
-  function initialValues(searchValue: { [x: string]: string }) {
-    const initialValues = { ...INITIAL_VALUES };
 
-    if (searchValue) {
-      initialValues[INPUT_NAME.SEARCH] = searchValue?.[INPUT_NAME.SEARCH];
-    }
-
-    return initialValues;
+  function initialValues() {
+    return { ...INITIAL_VALUES };
   }
-*/
+
   return <UserFiltersView
-      // initialValues={initialValues(args)}
+      initialValues={initialValues()}
       onSubmit={searchTerms}
     />
 }

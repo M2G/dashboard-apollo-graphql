@@ -1,8 +1,10 @@
 import { gql } from "@apollo/client";
 
 const LIST_ALL_USERS = gql`
-query users{
-    users { 
+query users(
+        $filters: String
+    ) {
+    users(filters: $filters) {
       _id
       first_name,
       last_name,

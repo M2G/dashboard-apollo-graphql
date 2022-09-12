@@ -6,8 +6,7 @@ function UserFilters({ onSubmit, initialValues }: any) {
     setFieldValue(setFieldName, value);
 
   const onChange = (setFieldValue: any, setFieldName: any): any =>
-    ({ target: { value = '' } }: any) =>
-      setField(setFieldValue, setFieldName, value);
+    ({ target: { value = '' } }: any) => setField(setFieldValue, setFieldName, value);
 
   const handleSubmit = (values: object) => onSubmit(values);
 
