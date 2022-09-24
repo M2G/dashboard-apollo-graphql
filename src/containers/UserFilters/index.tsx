@@ -9,15 +9,11 @@ function UserFilters() {
   const [userFilter] = useLazyQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
 
   const searchTerms = useCallback((data: any) => {
-    console.log('searchTerms searchTerms searchTerms', data);
-
     userFilter({
       variables: {
-        filters: data.search
+        filters: data?.search
       }
     });
-    console.log('searchTerms searchTerms searchTerms', data);
-    // dispatch(authGetUsersProfilAction({ ...data });
   }, []);
 
   function initialValues() {

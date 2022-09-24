@@ -29,11 +29,15 @@ module.exports = {
       path.resolve(__dirname, './cypress/tsconfig.json')
     ],
     tsconfigRootDir: __dirname,
-    ecmaVersion: 2020,
+    ecmaVersion: "latest",
     sourceType: 'module',
-    extraFileExtensions: [".scss"]
+    extraFileExtensions: [".scss"],
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
   plugins: ["@typescript-eslint", "react", "react-hooks", "prettier", "cypress", "import", "unused-imports"],
+  ignorePatterns: ["!.*", "dist", "build", "node_modules"],
   rules: {
     "no-return-assign": 0,
     "no-restricted-syntax": 0,
@@ -100,6 +104,9 @@ module.exports = {
     "@typescript-eslint/no-unsafe-call": 1
   },
   settings: {
+    react: {
+      version: "detect",
+    },
     "html/html-extensions": [".html"],
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
@@ -116,6 +123,7 @@ module.exports = {
     browser: true,
     jest: true,
     node: true,
+    es2021: true,
     "cypress/globals": true
   }
 };
