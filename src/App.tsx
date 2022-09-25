@@ -4,9 +4,9 @@ import { ApolloProvider } from '@apollo/client/react';
 import * as Sentry from '@sentry/react';
 import { ErrorBoundary } from "react-error-boundary";
 import { ToastContainer } from "react-toastify";
-import ErrorPage from "containers/Error/Error";
 import { logError } from "sentry/logError";
 import CustomRouter from 'routes/CustomRouter';
+import ErrorFallback from 'containers/Error/Error';
 import AuthContext from './AuthContext';
 import Routes from './routes';
 import apolloClient from './apollo/config';
@@ -40,7 +40,7 @@ const client = new ApolloClient({
  */
 
 function App({ history }: any) {
-  return <ErrorBoundary FallbackComponent={ErrorPage} onError={logError}>
+  return <ErrorBoundary FallbackComponent={ErrorFallback} onError={logError}>
     <ApolloProvider client={apolloClient}>
       <AuthContext.Provider>
         <CustomRouter history={history}>
