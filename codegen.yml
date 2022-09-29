@@ -1,0 +1,43 @@
+schema:
+  - 'http://localhost:8181/graphql'
+hooks:
+  afterAllFileWrite:
+    - node_modules/.bin/prettier --write
+generates:
+  src/modules/graphql/generated.ts:
+    config:
+      apolloReactCommonImportFrom: '@apollo/client'
+      apolloReactComponentsImportFrom: '@apollo/client'
+      apolloReactHocImportFrom: '@apollo/client'
+      apolloReactHooksImportFrom: '@apollo/client'
+      avoidOptionals: true
+      fragmentSuffix: 'FragmentDoc'
+      gqlImport: '@apollo/client#gql'
+      immutableTypes: false
+      inlineFragmentTypes: 'inline'
+      nameSuffix: 'Document'
+      namingConvention: 'keep'
+      nonOptionalTypename: true
+      useTypeImports: true
+    documents: src/**/*.graphql
+    plugins:
+      - '@graphql-codegen/typescript'
+      - '@graphql-codegen/typescript-operations'
+      - '@graphql-codegen/typescript-react-apollo'
+
+  src/modules/graphql/introspection.gen.json:
+    plugins:
+      - introspection
+    config:
+      minify: true
+
+  src/modules/graphql/introspection.gen.ts:
+    plugins:
+      - '@graphql-codegen/fragment-matcher'
+
+  .graphql/schema.graphql:
+    config:
+      includeDirectives: true
+      commentDescriptions: true
+    plugins:
+      - '@graphql-codegen/schema-ast'

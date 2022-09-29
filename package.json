@@ -50,6 +50,11 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@graphql-codegen/fragment-matcher": "^3.3.1",
+    "@graphql-codegen/schema-ast": "^2.5.1",
+    "@graphql-codegen/typescript": "^2.7.3",
+    "@graphql-codegen/typescript-operations": "^2.5.3",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.3",
     "@sentry/react": "^7.8.0",
     "@sentry/tracing": "^7.8.0",
     "classnames": "^2.3.1",
@@ -83,7 +88,9 @@
     "storybook": "start-storybook -p 9009 --no-manager-cache",
     "prepare": "husky install",
     "lint:cypress": "eslint \"cypress/**/*.ts\"",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "generate:gql": "graphql-codegen",
+    "generate:gql:watch": "graphql-codegen --watch"
   },
   "jest": {
     "moduleNameMapper": {
