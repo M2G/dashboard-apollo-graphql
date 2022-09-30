@@ -1,3 +1,4 @@
+overwrite: true
 schema:
   - 'http://localhost:8181/graphql'
 hooks:
@@ -19,21 +20,11 @@ generates:
       namingConvention: 'keep'
       nonOptionalTypename: true
       useTypeImports: true
-    documents: src/**/*.graphql
+    documents: './src/**/*.graphql'
     plugins:
       - '@graphql-codegen/typescript'
       - '@graphql-codegen/typescript-operations'
       - '@graphql-codegen/typescript-react-apollo'
-
-  src/modules/graphql/introspection.gen.json:
-    plugins:
-      - introspection
-    config:
-      minify: true
-
-  src/modules/graphql/introspection.gen.ts:
-    plugins:
-      - '@graphql-codegen/fragment-matcher'
 
   .graphql/schema.graphql:
     config:
