@@ -4,7 +4,7 @@ import {
   useState,
   useCallback,
 } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, QueryResult } from '@apollo/client';
 import { useTranslation } from "react-i18next";
 import userListItem from 'containers/UserListItem/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
@@ -13,8 +13,13 @@ import TableWrapper from 'components/Core/Table/TableWrapper';
 import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
-import { LIST_ALL_USERS } from 'gql/queries/users';
 import { CREATE_USER_MUTATION, UPDATE_USER_MUTATION, DELETE_USER_MUTATION } from 'gql/mutations/auth';
+import {
+  useGetUserListQuery,
+  GetUserListQuery,
+  Exact,
+  InputMaybe,
+} from 'modules/graphql/generated';
 
 function UserList({
  id, canEdit = false, canDelete = false, canAdd = false
@@ -24,8 +29,12 @@ function UserList({
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
 
-const { loading, error, data: usersData = {}, refetch } = useQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
-const { users } = usersData;
+const { loading, error, data: usersData = {
+  __typename: 'Query',
+  users: null,
+}, refetch }:
+  QueryResult<GetUserListQuery, Exact<{ filters: InputMaybe<string>; }>> = useGetUserListQuery({ fetchPolicy: 'no-cache' });
+  const { users } = usersData;
 
   const [createUser] = useMutation(CREATE_USER_MUTATION, {
     onCompleted: refetch,

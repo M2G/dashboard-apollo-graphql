@@ -37,7 +37,7 @@ module.exports = {
     },
   },
   plugins: ["@typescript-eslint", "react", "react-hooks", "prettier", "cypress", "import", "unused-imports"],
-  ignorePatterns: ["!.*", "dist", "build", "node_modules"],
+  ignorePatterns: ["!.*", "dist", "build", "node_modules", "src/modules"],
   rules: {
     "no-return-assign": 0,
     "no-restricted-syntax": 0,

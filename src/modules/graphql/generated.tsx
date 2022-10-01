@@ -30,10 +30,10 @@ export type CreateUserInput = {
 export type Mutation = {
   __typename: 'Mutation';
   createUser: User;
-  deleteUser: User;
+  deleteUser: Maybe<User>;
   signin: Scalars['String'];
   signup: Scalars['String'];
-  updateUser: User;
+  updateUser: Maybe<User>;
   updateUserPassword: User;
 };
 
@@ -71,9 +71,8 @@ export type MutationupdateUserPasswordArgs = {
 
 export type Query = {
   __typename: 'Query';
-  email: Scalars['String'];
-  getUser: User;
-  users: Array<User>;
+  getUser: Maybe<User>;
+  users: Maybe<Array<User>>;
 };
 
 
@@ -118,19 +117,71 @@ export type updateUserPasswordInput = {
   password_again: Scalars['String'];
 };
 
+export type GetUserListQueryVariables = Exact<{
+  filters: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetUserListQuery = { __typename: 'Query', users: Array<{ __typename: 'User', _id: string | null, first_name: string | null, last_name: string | null, email: string | null, created_at: number | null, modified_at: number | null }> | null };
+
 export type GetUserQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetUserQuery = { __typename: 'Query', getUser: { __typename: 'User', first_name: string | null, last_name: string | null } };
+export type GetUserQuery = { __typename: 'Query', getUser: { __typename: 'User', _id: string | null, first_name: string | null, last_name: string | null, email: string | null, created_at: number | null, modified_at: number | null, password: string | null } | null };
 
 
+export const GetUserListDocument = gql`
+    query GetUserList($filters: String) {
+  users(filters: $filters) {
+    _id
+    first_name
+    last_name
+    email
+    created_at
+    modified_at
+  }
+}
+    `;
+
+/**
+ * __useGetUserListQuery__
+ *
+ * To run a query within a React component, call `useGetUserListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserListQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *   },
+ * });
+ */
+export function useGetUserListQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetUserListQuery, GetUserListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<GetUserListQuery, GetUserListQueryVariables>(GetUserListDocument, options);
+      }
+export function useGetUserListLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetUserListQuery, GetUserListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<GetUserListQuery, GetUserListQueryVariables>(GetUserListDocument, options);
+        }
+export type GetUserListQueryHookResult = ReturnType<typeof useGetUserListQuery>;
+export type GetUserListLazyQueryHookResult = ReturnType<typeof useGetUserListLazyQuery>;
+export type GetUserListQueryResult = ApolloReactCommon.QueryResult<GetUserListQuery, GetUserListQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser($id: String!) {
   getUser(id: $id) {
+    _id
     first_name
     last_name
+    email
+    created_at
+    modified_at
+    password
   }
 }
     `;

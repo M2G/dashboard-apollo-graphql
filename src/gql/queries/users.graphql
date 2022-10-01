@@ -1,0 +1,26 @@
+query GetUserList(
+        $filters: String
+    ) {
+    users(filters: $filters) {
+      _id
+      first_name,
+      last_name,
+      email
+      created_at
+      modified_at
+   }
+}
+
+query GetUser(
+        $id: String!
+    ) {
+    getUser(id: $id) {
+      _id
+      first_name,
+      last_name,
+      email
+      created_at
+      modified_at
+      password
+   }
+}

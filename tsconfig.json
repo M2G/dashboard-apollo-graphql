@@ -53,11 +53,13 @@
       "constants/*": ["./constants/*"],
       "components/*": ["./components/*"],
       "container/*": ["./container/*"],
-      "routes/*": ["./routes/*"]
+      "routes/*": ["./routes/*"],
+      "graphql/*": ["./modules/graphql/*"]
     }
   },
   "include": ["src/**/*", "src/**/**/*", "test/**/*", "custom.d.ts"],
   "exclude": [
+    "src/modules/*",
     "src/stories",
     "**/__tests__/*",
     "node_modules",
