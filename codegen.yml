@@ -5,7 +5,7 @@ hooks:
   afterAllFileWrite:
     - node_modules/.bin/prettier --write
 generates:
-  src/modules/graphql/generated.ts:
+  src/modules/graphql/generated.tsx:
     config:
       apolloReactCommonImportFrom: '@apollo/client'
       apolloReactComponentsImportFrom: '@apollo/client'
@@ -20,15 +20,15 @@ generates:
       namingConvention: 'keep'
       nonOptionalTypename: true
       useTypeImports: true
-    documents: './src/**/*.graphql'
+    documents: 'src/**/*.graphql'
     plugins:
-      - '@graphql-codegen/typescript'
-      - '@graphql-codegen/typescript-operations'
-      - '@graphql-codegen/typescript-react-apollo'
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
 
   .graphql/schema.graphql:
     config:
       includeDirectives: true
       commentDescriptions: true
     plugins:
-      - '@graphql-codegen/schema-ast'
+      - 'schema-ast'
