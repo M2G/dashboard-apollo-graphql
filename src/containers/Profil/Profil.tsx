@@ -1,11 +1,15 @@
 /*eslint-disable*/
-import { useCallback, useContext, useEffect } from 'react';
-import { useLazyQuery, useMutation } from '@apollo/client';
-import { USER } from 'gql/queries/users';
+import { useCallback, useContext } from 'react';
+import { QueryResult } from '@apollo/client';
 import ProfilForm from 'components/ProfilForm';
 import { INPUT_NAME, INITIAL_VALUES }  from 'components/ProfilForm/constants';
-import { AuthContext } from '../../AuthContext';
-import { UPDATE_USER_MUTATION } from '../../gql/mutations/auth';
+import { AuthContext } from 'AuthContext';
+import {
+  Exact,
+  GetUserQuery,
+  useGetUserQuery,
+  useUpdateUserMutation
+} from 'modules/graphql/generated';
 
 function initialValues(values: Record<any, any>) {
   const initialValues = { ...INITIAL_VALUES };
@@ -24,19 +28,18 @@ function initialValues(values: Record<any, any>) {
 function Profil() {
   const { userData } = useContext(AuthContext);
 
-  const [
-    getUserProfil, { loading, data: userProfil = {} }
-  ] = useLazyQuery(USER,  { fetchPolicy: 'no-cache' });
-
-  const [updateUser, { data: updateProfil = {} }] = useMutation(UPDATE_USER_MUTATION);
-
-  useEffect(() => {
-    getUserProfil({
+  const { loading, data: userProfil = {
+    __typename: 'Query',
+    getUser: null,
+  } }: QueryResult<GetUserQuery, Exact<{ id: string; }>> = useGetUserQuery(
+    {
+      fetchPolicy: 'no-cache',
       variables: {
         id: userData?._id
       }
     });
-  }, []);
+
+  const [updateUser, { data: updateProfil = {} }]: any = useUpdateUserMutation();
 
   const handleSubmit: any = useCallback(async (formData: any) => {
     await updateUser(

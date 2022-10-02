@@ -13,7 +13,7 @@ const ChangePassword = lazy(() => import('containers/ChangePassword'));
 const Profil = lazy(() => import('containers/Profil'));
 
 import TopLineLoading from 'components/Loading/TopLineLoading';
-import { AuthContext } from '../AuthContext';
+import { AuthContext } from 'AuthContext';
 
 /**
  * Top level application router

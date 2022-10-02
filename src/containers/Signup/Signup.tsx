@@ -1,18 +1,17 @@
 /*eslint-disable*/
 import { useCallback } from 'react';
-import { useMutation } from "@apollo/client";
 import { INITIAL_VALUES } from './constants';
-import { SIGNIN_MUTATION } from 'gql/mutations/auth';
 import SignupForm from 'components/SignupForm';
 import { useContext } from 'react';
-import { AuthContext } from '../../AuthContext';
+import { AuthContext } from 'AuthContext';
+import { useSigninMutation } from 'modules/graphql/generated';
 
 
 function Signup() {
   const { activateAuth }: any = useContext(AuthContext);
-  const [signup] = useMutation(SIGNIN_MUTATION, {
+  const [signup] = useSigninMutation({
     onCompleted: ({ signup }: { signup:  string; }) => activateAuth(signup)
-  });
+  } as any);
 
   const handleSubmit = useCallback(async (formData: any) => {
     await signup(

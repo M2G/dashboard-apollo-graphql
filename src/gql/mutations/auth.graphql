@@ -1,0 +1,56 @@
+    mutation Signin($email: String!$password: String!) {
+        signin(input: { email: $email, password: $password })
+    }
+
+   mutation Signup($email: String!$password: String!) {
+        signup(input: { email: $email, password: $password })
+    }
+
+    mutation CreateUser(
+        $email: String!
+        $password: String!
+        $first_name: String
+        $last_name: String
+        $username: String
+    ) {
+        createUser(input: { email: $email, password: $password, first_name: $first_name, last_name: $last_name, username: $username }) {
+          first_name
+          last_name
+          email
+          created_at
+          modified_at
+        }
+    }
+
+    mutation UpdateUser(
+        $id: String!
+        $email: String
+        $first_name: String
+        $last_name: String
+        $username: String
+    ) {
+        updateUser(id: $id, input: { email: $email, first_name: $first_name, last_name: $last_name, username: $username }) {
+          first_name
+          last_name
+          email
+          created_at
+          modified_at
+        }
+    }
+
+    mutation UpdateUserPassword(
+        $id: String!
+        $old_password: String!
+        $password: String!
+        $password_again: String!
+    ) {
+        updateUserPassword(id: $id, input: { old_password: $old_password, password: $password, password_again: $password_again }) {
+          _id
+        }
+    }
+
+    mutation DeleteUser($id: String!) {
+        deleteUser(id: $id) {
+          _id
+        }
+    }

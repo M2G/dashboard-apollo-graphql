@@ -4,7 +4,7 @@ import {
   useState,
   useCallback,
 } from 'react';
-import { useMutation, QueryResult } from '@apollo/client';
+import { QueryResult } from '@apollo/client';
 import { useTranslation } from "react-i18next";
 import userListItem from 'containers/UserListItem/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
@@ -13,9 +13,11 @@ import TableWrapper from 'components/Core/Table/TableWrapper';
 import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
-import { CREATE_USER_MUTATION, UPDATE_USER_MUTATION, DELETE_USER_MUTATION } from 'gql/mutations/auth';
 import {
   useGetUserListQuery,
+  useUpdateUserMutation,
+  useCreateUserMutation,
+  useDeleteUserMutation,
   GetUserListQuery,
   Exact,
   InputMaybe,
@@ -36,17 +38,17 @@ const { loading, error, data: usersData = {
   QueryResult<GetUserListQuery, Exact<{ filters: InputMaybe<string>; }>> = useGetUserListQuery({ fetchPolicy: 'no-cache' });
   const { users } = usersData;
 
-  const [createUser] = useMutation(CREATE_USER_MUTATION, {
+  const [createUser] = useCreateUserMutation({
     onCompleted: refetch,
-  });
+  } as any);
 
-  const [updateUser] = useMutation(UPDATE_USER_MUTATION, {
+  const [updateUser] = useUpdateUserMutation({
     onCompleted: refetch,
-  });
+  } as any);
 
-  const [deleteUser] = useMutation(DELETE_USER_MUTATION, {
+  const [deleteUser] = useDeleteUserMutation({
     onCompleted: refetch,
-  });
+  } as any);
 
 console.log('LIST_ALL_USERS', { loading, error, users });
 
@@ -79,7 +81,7 @@ console.log('LIST_ALL_USERS', { loading, error, users });
       variables: {
        ...user,
         id: user?._id
-      }
+      },
     });
     onClose();
   }, []);
@@ -89,7 +91,7 @@ console.log('LIST_ALL_USERS', { loading, error, users });
       variables: {
         email: user?.email,
         password: user?.password,
-      }
+      } as any
     });
     setNewUser(user);
     onClose();

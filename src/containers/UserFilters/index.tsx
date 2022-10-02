@@ -1,12 +1,11 @@
 /*eslint-disable*/
 import { useCallback } from 'react';
-import { useLazyQuery } from '@apollo/client';
-import { LIST_ALL_USERS } from 'gql/queries/users';
 import UserFiltersView from './UserFilters';
 import { INITIAL_VALUES } from './constants';
+import { useGetUserListLazyQuery } from 'modules/graphql/generated';
 
 function UserFilters() {
-  const [userFilter] = useLazyQuery(LIST_ALL_USERS,  { fetchPolicy: 'no-cache' });
+  const [userFilter] = useGetUserListLazyQuery({ fetchPolicy: 'no-cache' });
 
   const searchTerms = useCallback((data: any) => {
     userFilter({
