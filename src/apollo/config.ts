@@ -11,10 +11,12 @@ import ROUTER_PATH from 'constants/RouterPath';
 /* Configuration imported from '.env' file */
 const backendProtocol = process.env.REACT_APP_PROTOCOL ?? 'http';
 const backendHost = process.env.REACT_APP_HOST ?? 'localhost';
-const backendPort = process.env.REACT_APP_PORT ?? '8282';
+const backendPort = process.env.REACT_APP_PORT ?? '8181';
 const backendGraphql = process.env.REACT_APP_GRAPHQL ?? 'graphql';
 
 const backendAddress = `${backendProtocol}://${backendHost}:${backendPort}/${backendGraphql}`;
+
+console.log('backendAddress', backendAddress)
 
 const httpLink = new HttpLink({
   uri: backendAddress,
@@ -34,10 +36,15 @@ const authMiddleware = new ApolloLink((operation: any, forward: any) => {
 });
 
 const errorLink = onError(({
- operation, graphQLErrors, networkError, response,
+ operation, graphQLErrors, networkError, response, ...arg
 }: any) => {
 
-  console.log('networkError', networkError)
+  console.log('ERROR', {
+    operation, graphQLErrors, networkError, response, arg
+  })
+
+  console.log('------------------>', networkError?.response?.status)
+
 
   if (graphQLErrors) {
     graphQLErrors?.forEach((err: any) => {
