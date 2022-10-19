@@ -70,6 +70,11 @@ const errorLink = onError(({
     });
   }
 
+  if (networkError?.response?.status === 404) {
+    clearAuthStorage();
+    window.location.href = ROUTER_PATH.SIGNIN;
+  }
+
   if (networkError?.response === 'invalid_token') {
     clearAuthStorage();
     window.location.href = ROUTER_PATH.HOME;

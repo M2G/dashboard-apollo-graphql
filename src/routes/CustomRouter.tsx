@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import { useLayoutEffect, useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import type { BrowserRouterProps } from 'react-router-dom';
 import { Router } from 'react-router-dom';
 import type { BrowserHistory } from 'history';
@@ -14,7 +14,9 @@ function CustomRouter({ history, ...props }: Props | any) {
     location: history.location,
   });
 
-  useLayoutEffect(() => history.listen(setState), [history]);
+  useLayoutEffect(() => {
+    history.listen(setState);
+  }, [history]);
 
   return <Router
       {...props as any}

@@ -2,13 +2,13 @@
 import { useContext } from 'react';
 import { AuthContext } from 'AuthContext';
 import { useCallback } from 'react';
-import { useSignupMutation } from 'modules/graphql/generated';
+import { useSigninMutation } from 'modules/graphql/generated';
 import SiginForm from 'components/SigninForm';
 import { INITIAL_VALUES } from './constants';
 
 function Signin() {
   const { activateAuth }: any = useContext(AuthContext);
-  const [signin] = useSignupMutation({
+  const [signin] = useSigninMutation({
     onCompleted: ({ signin }: { signin:  string; }) => activateAuth(signin)
   } as any);
 
