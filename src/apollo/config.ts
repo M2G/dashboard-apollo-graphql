@@ -4,7 +4,7 @@ import {
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { toast } from "react-toastify";
-import { clearAuthStorage, getAuthStorage } from 'services/storage';
+import { clearAuthStorage, getAuthStorage, clearUserStorage } from 'services/storage';
 import ROUTER_PATH from 'constants/RouterPath';
 
 // https://localhost:8282/graphql
@@ -55,12 +55,14 @@ const errorLink = onError(({
 
       if (err?.extensions?.exception?.status === 401) {
         clearAuthStorage();
+        clearUserStorage();
         window.location.href = ROUTER_PATH.SIGNIN;
       }
 
       // err.message, err.locations, err.path, err.extensions
       if (err.extensions.code === 'UNAUTHENTICATED' || err.extensions.code === 'FORBIDDEN') {
         clearAuthStorage();
+        clearUserStorage();
         window.location.href = ROUTER_PATH.HOME;
       }
 
@@ -72,11 +74,13 @@ const errorLink = onError(({
 
   if (networkError?.response?.status === 404) {
     clearAuthStorage();
+    clearUserStorage();
     window.location.href = ROUTER_PATH.SIGNIN;
   }
 
   if (networkError?.response === 'invalid_token') {
     clearAuthStorage();
+    clearUserStorage();
     window.location.href = ROUTER_PATH.HOME;
   }
 });
