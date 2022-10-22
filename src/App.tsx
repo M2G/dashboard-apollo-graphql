@@ -5,7 +5,8 @@ import * as Sentry from '@sentry/react';
 import { ErrorBoundary } from "react-error-boundary";
 import { ToastContainer } from "react-toastify";
 import { logError } from "sentry/logError";
-import CustomRouter from 'routes/CustomRouter';
+import { BrowserRouter } from "react-router-dom";
+// import CustomRouter from 'routes/CustomRouter';
 import ErrorFallback from 'containers/Error/Error';
 import AuthContext from './AuthContext';
 import Routes from './routes';
@@ -39,14 +40,14 @@ const client = new ApolloClient({
 });
  */
 
-function App({ history }: any) {
+function App() {
   return <ErrorBoundary FallbackComponent={ErrorFallback} onError={logError}>
     <ApolloProvider client={apolloClient}>
       <AuthContext.Provider>
-        <CustomRouter history={history}>
+        <BrowserRouter>
           <Routes />
           <ToastContainer />
-        </CustomRouter>
+        </BrowserRouter>
       </AuthContext.Provider>
     </ApolloProvider>
   </ErrorBoundary>;

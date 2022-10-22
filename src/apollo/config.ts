@@ -45,7 +45,6 @@ const errorLink = onError(({
 
   console.log('------------------>', networkError?.response?.status)
 
-
   if (graphQLErrors) {
     graphQLErrors?.forEach((err: any) => {
 
@@ -60,28 +59,19 @@ const errorLink = onError(({
       }
 
       // err.message, err.locations, err.path, err.extensions
-      if (err.extensions.code === 'UNAUTHENTICATED' || err.extensions.code === 'FORBIDDEN') {
+      if (err.extensions.code === 'UNAUTHENTICATED'
+        || err.extensions.code === 'FORBIDDEN') {
         clearAuthStorage();
         clearUserStorage();
-        window.location.href = ROUTER_PATH.HOME;
-      }
-
-      if (err.extensions.code === 'INTERNAL_SERVER_ERROR') {
-        err.message = 'An error has occurred';
+        window.location.href = ROUTER_PATH.SIGNIN;
       }
     });
-  }
-
-  if (networkError?.response?.status === 404) {
-    clearAuthStorage();
-    clearUserStorage();
-    window.location.href = ROUTER_PATH.SIGNIN;
   }
 
   if (networkError?.response === 'invalid_token') {
     clearAuthStorage();
     clearUserStorage();
-    window.location.href = ROUTER_PATH.HOME;
+    window.location.href = ROUTER_PATH.SIGNIN;
   }
 });
 
