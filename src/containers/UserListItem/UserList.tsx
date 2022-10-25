@@ -2,7 +2,7 @@
 import {
   useMemo,
   useState,
-  useCallback, useContext,
+  useCallback,
 } from 'react';
 import { QueryResult } from '@apollo/client';
 import { useTranslation } from "react-i18next";
@@ -18,11 +18,12 @@ import {
   useUpdateUserMutation,
   useCreateUserMutation,
   useDeleteUserMutation,
+  useGetUserListLazyQuery,
   GetUserListQuery,
   Exact,
   InputMaybe,
 } from 'modules/graphql/generated';
-import { FilterContext } from '../../FiltersContext';
+import UserFilters from 'containers/UserFilters';
 
 function UserList({
  id, canEdit = false, canDelete = false, canAdd = false
@@ -31,18 +32,23 @@ function UserList({
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
-  const { data = {}}: any = useContext(FilterContext);
-  const { users: userData } = data;
-
-
-  console.log('FilterContext FilterContext FilterContext FilterContext FilterContext', userData);
 
 const { loading, error, data: usersData = {
   __typename: 'Query',
   users: null,
 }, refetch }:
   QueryResult<GetUserListQuery, Exact<{ filters: InputMaybe<string>; }>> = useGetUserListQuery({ fetchPolicy: 'no-cache' });
-  const { users } = usersData;
+
+  const [userFilter, { loading: loadingUser, error: errorUser, data }] = useGetUserListLazyQuery(
+    {
+      fetchPolicy: 'no-cache',
+      onCompleted: ({ ...arg }: any) => {
+        console.log('onCompleted onCompleted onCompleted', arg);
+      }
+    },
+  );
+
+const { users } = usersData;
 
   const [createUser] = useCreateUserMutation({
     onCompleted: refetch,
@@ -112,6 +118,16 @@ console.log('LIST_ALL_USERS', { loading, error, users });
     onClose();
   }, []);
 
+  console.log('---------------->', { loadingUser, errorUser, data })
+
+  const searchTerms = useCallback(async (params: any) => {
+    await userFilter({
+      variables: {
+        filters: params?.search
+      }
+    });
+  }, []);
+
   const rows = useMemo(
     () =>
       users?.map((user: any) =>
@@ -155,6 +171,8 @@ console.log('LIST_ALL_USERS', { loading, error, users });
         </div>
       </div>
     </section>
+
+    <UserFilters onSubmit={searchTerms} />
 
     {users?.length && !loading ? <>
       <TableWrapper id={id} header={header} rows={rows} />

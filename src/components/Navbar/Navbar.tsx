@@ -1,7 +1,6 @@
 /*eslint-disable*/
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import UserFilters from 'containers/UserFilters';
 import ROUTER_PATH from '../../constants/RouterPath';
 
 function Navbar() {
@@ -39,7 +38,6 @@ function Navbar() {
             if (state) return i18n?.changeLanguage("fr");
             i18n?.changeLanguage("en");
           }}>{state ? 'fr' : 'en'}</button>
-          <UserFilters />
         </div>
       </div>
     </nav>
