@@ -7,8 +7,6 @@ import ROUTER_PATH from '../../constants/RouterPath';
 function Navbar() {
   const { i18n } = useTranslation();
   const [state, setState] = useState<boolean>(false);
-
-  console.log('state', state)
   return (
     <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <div className="container-fluid">

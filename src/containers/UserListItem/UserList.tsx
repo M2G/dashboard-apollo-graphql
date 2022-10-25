@@ -2,7 +2,7 @@
 import {
   useMemo,
   useState,
-  useCallback,
+  useCallback, useContext,
 } from 'react';
 import { QueryResult } from '@apollo/client';
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,7 @@ import {
   Exact,
   InputMaybe,
 } from 'modules/graphql/generated';
+import { FilterContext } from '../../FiltersContext';
 
 function UserList({
  id, canEdit = false, canDelete = false, canAdd = false
@@ -30,6 +31,11 @@ function UserList({
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
+  const { data = {}}: any = useContext(FilterContext);
+  const { users: userData } = data;
+
+
+  console.log('FilterContext FilterContext FilterContext FilterContext FilterContext', userData);
 
 const { loading, error, data: usersData = {
   __typename: 'Query',

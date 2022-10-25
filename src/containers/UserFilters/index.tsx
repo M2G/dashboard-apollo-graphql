@@ -1,16 +1,28 @@
 /*eslint-disable*/
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import UserFiltersView from './UserFilters';
 import { INITIAL_VALUES } from './constants';
 import { useGetUserListLazyQuery } from 'modules/graphql/generated';
+import { FilterContext } from '../../FiltersContext';
 
 function UserFilters() {
-  const [userFilter] = useGetUserListLazyQuery({ fetchPolicy: 'no-cache' });
+  const { userData }: any = useContext(FilterContext);
+  const [userFilter, { loading, error, data }] = useGetUserListLazyQuery(
+    {
+      fetchPolicy: 'no-cache',
+      onCompleted: ({ ...arg }: any) => {
+          console.log('onCompleted onCompleted onCompleted', arg);
+        userData(arg);
+        }
+      },
+    );
 
-  const searchTerms = useCallback((data: any) => {
-    userFilter({
+  console.log('---------------->', { loading, error, data })
+
+  const searchTerms = useCallback(async (params: any) => {
+    await userFilter({
       variables: {
-        filters: data?.search
+        filters: params?.search
       }
     });
   }, []);
