@@ -48,7 +48,10 @@ const { loading, error, data: usersData = {
     },
   );
 
-const { users } = usersData;
+  console.log('::::::::::::::::::::::::::', { loadingUser, errorUser, data })
+  console.log('LIST_ALL_USERS', { loading, error, usersData });
+
+  console.log('(usersData?.users || data?.users)', (data?.users || usersData?.users));
 
   const [createUser] = useCreateUserMutation({
     onCompleted: refetch,
@@ -62,7 +65,7 @@ const { users } = usersData;
     onCompleted: refetch,
   } as any);
 
-console.log('LIST_ALL_USERS', { loading, error, users });
+
 
   const onDelete = useCallback((currentSource: any) => {
     setNewUser(false);
@@ -118,8 +121,6 @@ console.log('LIST_ALL_USERS', { loading, error, users });
     onClose();
   }, []);
 
-  console.log('---------------->', { loadingUser, errorUser, data })
-
   const searchTerms = useCallback(async (params: any) => {
     await userFilter({
       variables: {
@@ -130,7 +131,7 @@ console.log('LIST_ALL_USERS', { loading, error, users });
 
   const rows = useMemo(
     () =>
-      users?.map((user: any) =>
+      (data?.users || usersData?.users)?.map((user: any) =>
         userListItem({
           id,
           user,
@@ -139,9 +140,9 @@ console.log('LIST_ALL_USERS', { loading, error, users });
           canDelete,
           canEdit,
         })),
-    [id, onEdit, onDelete, canDelete, canEdit, editingUser, newUser, deletingUser, users]);
+    [id, onEdit, onDelete, canDelete, canEdit, editingUser, newUser, deletingUser, usersData, data]);
 
-  console.log('userData.users', users)
+  console.log('userData.users', usersData)
 
   const header = useMemo(
     () => [
@@ -154,7 +155,7 @@ console.log('LIST_ALL_USERS', { loading, error, users });
     ],
     []);
 
-  if (!users?.length && loading) return <TopLineLoading />;
+  if (!(data?.users || usersData?.users)?.length && loading) return <TopLineLoading />;
 
   return <>
 
@@ -174,7 +175,7 @@ console.log('LIST_ALL_USERS', { loading, error, users });
 
     <UserFilters onSubmit={searchTerms} />
 
-    {users?.length && !loading ? <>
+    {(data?.users || usersData?.users)?.length && !loading ? <>
       <TableWrapper id={id} header={header} rows={rows} />
         <SidebarWrapper
           isOpened={editingUser}
