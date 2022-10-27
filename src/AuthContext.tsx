@@ -22,7 +22,10 @@ function Provider({ children }: any) {
     userData: userData ? JSON.parse(userData) : null,
     activateAuth: (token: string) => {
 
-      const decodedToken: any = jwt_decode(token) || {};
+      const decodedToken: {
+        email: string;
+        _id: string;
+      } = jwt_decode(token) || {};
 
       console.log('decodedToken', decodedToken)
 

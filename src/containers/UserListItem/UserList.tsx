@@ -65,8 +65,6 @@ const { loading, error, data: usersData = {
     onCompleted: refetch,
   } as any);
 
-
-
   const onDelete = useCallback((currentSource: any) => {
     setNewUser(false);
     setEditingUser(false);
