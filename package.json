@@ -59,8 +59,6 @@
     "@sentry/tracing": "^7.8.0",
     "classnames": "^2.3.1",
     "css-loader": "^6.7.1",
-    "cypress": "^10.3.1",
-    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-unused-imports": "^2.0.0",
     "formik": "^2.2.9",
     "graphql": "^16.5.0",

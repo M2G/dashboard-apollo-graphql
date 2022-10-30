@@ -26,7 +26,6 @@ module.exports = {
     project: [
       path.resolve(__dirname, './tsconfig.json'),
       path.resolve(__dirname, './tsconfig.lint.json'),
-      path.resolve(__dirname, './cypress/tsconfig.json')
     ],
     tsconfigRootDir: __dirname,
     ecmaVersion: "latest",
@@ -36,7 +35,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ["@typescript-eslint", "react", "react-hooks", "prettier", "cypress", "import", "unused-imports"],
+  plugins: ["@typescript-eslint", "react", "react-hooks", "prettier", "import", "unused-imports"],
   ignorePatterns: ["!.*", "dist", "build", "node_modules", "src/modules"],
   rules: {
     "no-return-assign": 0,
@@ -124,6 +123,5 @@ module.exports = {
     jest: true,
     node: true,
     es2021: true,
-    "cypress/globals": true
   }
 };
