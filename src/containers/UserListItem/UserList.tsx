@@ -171,10 +171,9 @@ const { loading, error, data: usersData = {
       </div>
     </section>
 
-    <UserFilters onSubmit={searchTerms} />
-
     {(data?.users || usersData?.users)?.length && !loading ? <>
-      <TableWrapper id={id} header={header} rows={rows} />
+        <UserFilters onSubmit={searchTerms} />
+        <TableWrapper id={id} header={header} rows={rows} />
         <SidebarWrapper
           isOpened={editingUser}
           setIsOpened={onClose}>

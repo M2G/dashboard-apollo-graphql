@@ -1,5 +1,6 @@
 import { Field, Formik, Form } from 'formik';
 import { PLACEHOLDER_SEARCH, INPUT_NAME } from './constants';
+import './index.scss';
 
 function UserFilters({ onSubmit, initialValues }: any) {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
@@ -11,11 +12,11 @@ function UserFilters({ onSubmit, initialValues }: any) {
   const handleSubmit = (values: object) => onSubmit(values);
 
   const renderForm = ({ setFieldValue, values = {} }: any): any => (
-    <Form className="d-flex">
+    <Form className="d-flex mb-2">
       <Field
         id="floatingInput"
         name={INPUT_NAME.SEARCH}
-        className="form-control me-2"
+        className="form-control me-2 c-search-input"
         type="search"
         aria-label="Search"
         onChange={onChange(setFieldValue, INPUT_NAME.SEARCH)}
