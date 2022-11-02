@@ -6,7 +6,35 @@
   background-color: #F5F5F5;
   flex-direction: column;
 
+  & > input {
+    margin-bottom: -1px;
+  }
+
+  a {
+    margin-top: 10px;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
   form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  input, button {
     width: map-get($_grid-breakpoints, sm) / 2;
+  }
+
+  .error-text {
+    margin: 5px 0;
+    color: $_color-red;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 15px;
   }
 }

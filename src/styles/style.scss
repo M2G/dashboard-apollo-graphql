@@ -117,6 +117,8 @@ $form-floating-label-transform:   scale(.85) translateY(-.5rem) translateX(.15re
 
 .form-floating {
   position: relative;
+  display: flex;
+  flex-direction: column;
 
   > .form-control,
   > .form-control-plaintext,
