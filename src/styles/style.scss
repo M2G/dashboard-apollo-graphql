@@ -1,3 +1,38 @@
+// scss-docs-start border-variables
+$border-width:                1px !default;
+$input-btn-border-width:      $border-width !default;
+$input-btn-padding-x:         .75rem !default;
+
+$input-border-width:                    $input-btn-border-width !default;
+$input-height-border:                   $input-border-width * 2 !default;
+
+// scss-docs-start gray-color-variables
+$gray-300: #dee2e6 !default;
+$gray-200: #e9ecef !default;
+$gray-600: #6c757d !default;
+
+$border-color:                $gray-300 !default;
+
+// scss-docs-start color-variables
+$blue:    #0d6efd !default;
+
+// scss-docs-start theme-color-variables
+$primary:       $blue !default;
+
+// scss-docs-start gray-color-variables
+$white:    #fff !default;
+
+$component-active-color:      $white !default;
+$component-active-bg:         $primary !default;
+
+$input-btn-focus-width:         .25rem !default;
+$input-btn-focus-color-opacity: .25 !default;
+$input-btn-focus-color:         rgba($component-active-bg, $input-btn-focus-color-opacity) !default;
+$input-btn-focus-blur:          0 !default;
+
+// scss-docs-start input-btn-variables
+$input-btn-focus-box-shadow:    0 0 $input-btn-focus-blur $input-btn-focus-width $input-btn-focus-color !default;
+
 // scss-docs-start border-radius-variables
 $border-radius:               .375rem !default;
 $border-radius-sm:            .25rem !default;
@@ -5,8 +40,6 @@ $border-radius-lg:            .5rem !default;
 $border-radius-xl:            1rem !default;
 $border-radius-2xl:           2rem !default;
 
-// scss-docs-start gray-color-variables
-$white:    #fff !default;
 
 $font-size-base:              1rem !default; // Assumes the browser default, typically `16px`
 $pagination-font-size:              $font-size-base !default;
@@ -90,7 +123,9 @@ $pagination-border-radius-lg:       $border-radius-lg !default;
 @import '../../node_modules/bootstrap/scss/mixins/grid';
 @import '../../node_modules/bootstrap/scss/mixins/transition';
 // @import '../../node_modules/bootstrap/scss/bootstrap';
-@import 'node_modules/bootstrap/scss/_pagination.scss';
+
+@import 'node_modules/bootstrap/scss/vendor/_rfs';
+@import 'node_modules/bootstrap/scss/_pagination';
 
 // Functions
 // ==========================================================================
@@ -137,14 +172,6 @@ $pagination-border-radius-lg:       $border-radius-lg !default;
 @import './src/containers/Signin';
 @import './src/containers/Home';
 
-
-// scss-docs-start border-variables
-$border-width:                1px !default;
-$input-btn-border-width:      $border-width !default;
-$input-btn-padding-x:         .75rem !default;
-
-$input-border-width:                    $input-btn-border-width !default;
-$input-height-border:                   $input-border-width * 2 !default;
 
 $form-floating-input-padding-t:   1.625rem !default;
 $form-floating-input-padding-b:   .625rem !default;
