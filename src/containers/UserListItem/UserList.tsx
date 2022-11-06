@@ -3,8 +3,8 @@ import {
   useMemo,
   useState,
   useCallback,
+  useEffect,
 } from 'react';
-import { QueryResult } from '@apollo/client';
 import { useTranslation } from "react-i18next";
 import userListItem from 'containers/UserListItem/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
@@ -14,16 +14,13 @@ import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import {
-  useGetUserListQuery,
   useUpdateUserMutation,
   useCreateUserMutation,
   useDeleteUserMutation,
   useGetUserListLazyQuery,
-  GetUserListQuery,
-  Exact,
-  InputMaybe,
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
+import Pagination from 'components/Core/Pagination';
 
 function UserList({
  id, canEdit = false, canDelete = false, canAdd = false
@@ -32,34 +29,38 @@ function UserList({
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
-  const { loading, error, data: usersData, refetch }:
-    QueryResult<GetUserListQuery, Exact<{ filters: InputMaybe<string>; pageSize: InputMaybe<number>; page: InputMaybe<number>; }>> = useGetUserListQuery(
+  const [state, setState] = useState({
+    pageSize: 2,
+    page: 2,
+  });
 
-      {
-        fetchPolicy: 'no-cache',
-        variables: {
-          filters: "",
-          pageSize: 2,
-          page: 1,
-        }
+  const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery({ fetchPolicy: 'no-cache', });
+
+  useEffect(() => {
+    userFilter({
+      variables: {
+        filters: "",
+        pageSize: 2,
+        page: 2,
       }
-  );
-  const [{ results } = {} as any] = usersData?.users || [];
+    });
+  }, []);
 
 
-  const [userFilter, { loading: loadingUser, error: errorUser, data }] = useGetUserListLazyQuery(
-    {
-      fetchPolicy: 'no-cache',
-      onCompleted: ({ ...arg }: any) => {
-        console.log('onCompleted onCompleted onCompleted', arg);
-      }
-    },
-  );
 
-  console.log('::::::::::::::::::::::::::', { loadingUser, errorUser, data })
-  console.log('LIST_ALL_USERS', { loading, error, usersData });
+  const range = (start: number, end: number) => {
+    const length = end - start + 1;
+    return Array.from({ length }, (_, i) => start + i);
+  };
 
-  console.log('(usersData?.users || data?.users)', (data?.users || results));
+
+  console.log('range', range(1, 3));
+
+  const [{ results } = {} as any] = data?.users || [];
+
+  console.log('LIST_ALL_USERS', { loading, error, data });
+
+  console.log('(usersData?.users || data?.users)', (results));
 
   const [createUser] = useCreateUserMutation({
     onCompleted: refetch,
@@ -127,19 +128,25 @@ function UserList({
     onClose();
   }, []);
 
-  const searchTerms = useCallback(async (params: any) => {
-    await userFilter({
+  const onPageSize = useCallback((params: any) => {
+    console.log('onPageSize onPageSize', params)
+    setState({ ...params });
+  }, []);
+  // const onPage = useCallback((params: any) => setPage(params), []);
+
+  const searchTerms = useCallback((params: any) => {
+    userFilter({
       variables: {
         filters: params?.search,
-        pageSize: params?.pageSize,
-        page: params?.page,
+        pageSize: state.pageSize,
+        page: state.page,
       }
     });
   }, []);
 
   const rows = useMemo(
     () =>
-      (data?.users || results)?.map((user: any) =>
+      results?.map((user: any) =>
         userListItem({
           id,
           user,
@@ -148,9 +155,9 @@ function UserList({
           canDelete,
           canEdit,
         })),
-    [id, onEdit, onDelete, canDelete, canEdit, editingUser, newUser, deletingUser, usersData, data]);
+    [id, onEdit, onDelete, canDelete, canEdit, editingUser, newUser, deletingUser, data]);
 
-  console.log('userData.users', usersData)
+  console.log('userData.users', data)
 
   const header = useMemo(
     () => [
@@ -163,7 +170,7 @@ function UserList({
     ],
     []);
 
-  if (!(data?.users || usersData?.users)?.length && loading) return <TopLineLoading />;
+  if (!data?.users?.length && loading) return <TopLineLoading />;
 
   return <>
 
@@ -181,19 +188,13 @@ function UserList({
       </div>
     </section>
 
-    {(data?.users || usersData?.users)?.length && !loading ? <>
+    {data?.users?.length && !loading ? <>
         <UserFilters onSubmit={searchTerms} />
         <TableWrapper id={id} header={header} rows={rows} />
-
-        <nav aria-label="Page navigation example">
-          <ul className="pagination">
-            <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-            <li className="page-item"><a className="page-link" href="#">1</a></li>
-            <li className="page-item"><a className="page-link" href="#">2</a></li>
-            <li className="page-item"><a className="page-link" href="#">3</a></li>
-            <li className="page-item"><a className="page-link" href="#">Next</a></li>
-          </ul>
-        </nav>
+        <Pagination
+          pageSize={state.pageSize}
+          page={state.page}
+          onChange={onPageSize} />
 
         <SidebarWrapper
           isOpened={editingUser}

@@ -5,14 +5,7 @@
   align-items: center;
   background-color: #F5F5F5;
   flex-direction: column;
-
-  & > input {
-    margin-bottom: -1px;
-  }
-
-  a {
-    margin-top: 10px;
-  }
+  margin-bottom: 10px;
 
   h1 {
     margin-bottom: 10px;
@@ -31,10 +24,5 @@
   .error-text {
     margin: 5px 0;
     color: $_color-red;
-  }
-
-  button {
-    margin-top: 20px;
-    padding: 15px;
   }
 }
