@@ -69,10 +69,18 @@ export type MutationupdateUserPasswordArgs = {
   input: updateUserPasswordInput;
 };
 
+export type PageInfo = {
+  __typename: 'PageInfo';
+  count: Maybe<Scalars['Int']>;
+  next: Maybe<Scalars['Int']>;
+  pages: Maybe<Scalars['Int']>;
+  prev: Maybe<Scalars['Int']>;
+};
+
 export type Query = {
   __typename: 'Query';
   getUser: Maybe<User>;
-  users: Maybe<Array<User>>;
+  users: Maybe<Array<Users>>;
 };
 
 
@@ -83,6 +91,8 @@ export type QuerygetUserArgs = {
 
 export type QueryusersArgs = {
   filters: InputMaybe<Scalars['String']>;
+  page: InputMaybe<Scalars['Int']>;
+  pageSize: InputMaybe<Scalars['Int']>;
 };
 
 export type SigninInput = {
@@ -110,6 +120,17 @@ export type User = {
   reset_password_token: Maybe<Scalars['String']>;
   username: Maybe<Scalars['String']>;
 };
+
+export type Users = {
+  __typename: 'Users';
+  pageInfo: PageInfo;
+  results: Maybe<Array<Maybe<User>>>;
+};
+
+export enum sortOrder {
+  ASC = 'ASC',
+  DESC = 'DESC'
+}
 
 export type updateUserPasswordInput = {
   old_password: Scalars['String'];
@@ -174,10 +195,12 @@ export type DeleteUserMutation = { __typename: 'Mutation', deleteUser: { __typen
 
 export type GetUserListQueryVariables = Exact<{
   filters: InputMaybe<Scalars['String']>;
+  pageSize: InputMaybe<Scalars['Int']>;
+  page: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetUserListQuery = { __typename: 'Query', users: Array<{ __typename: 'User', _id: string | null, first_name: string | null, last_name: string | null, email: string | null, created_at: number | null, modified_at: number | null }> | null };
+export type GetUserListQuery = { __typename: 'Query', users: Array<{ __typename: 'Users', results: Array<{ __typename: 'User', _id: string | null, first_name: string | null, last_name: string | null, email: string | null, created_at: number | null, modified_at: number | null } | null> | null, pageInfo: { __typename: 'PageInfo', count: number | null, pages: number | null, next: number | null, prev: number | null } }> | null };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['String'];
@@ -411,14 +434,22 @@ export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutati
 export type DeleteUserMutationResult = ApolloReactCommon.MutationResult<DeleteUserMutation>;
 export type DeleteUserMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
 export const GetUserListDocument = gql`
-    query GetUserList($filters: String) {
-  users(filters: $filters) {
-    _id
-    first_name
-    last_name
-    email
-    created_at
-    modified_at
+    query GetUserList($filters: String, $pageSize: Int, $page: Int) {
+  users(filters: $filters, pageSize: $pageSize, page: $page) {
+    results {
+      _id
+      first_name
+      last_name
+      email
+      created_at
+      modified_at
+    }
+    pageInfo {
+      count
+      pages
+      next
+      prev
+    }
   }
 }
     `;
@@ -436,6 +467,8 @@ export const GetUserListDocument = gql`
  * const { data, loading, error } = useGetUserListQuery({
  *   variables: {
  *      filters: // value for 'filters'
+ *      pageSize: // value for 'pageSize'
+ *      page: // value for 'page'
  *   },
  * });
  */

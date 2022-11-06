@@ -32,12 +32,20 @@ function UserList({
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
+  const { loading, error, data: usersData, refetch }:
+    QueryResult<GetUserListQuery, Exact<{ filters: InputMaybe<string>; pageSize: InputMaybe<number>; page: InputMaybe<number>; }>> = useGetUserListQuery(
 
-const { loading, error, data: usersData = {
-  __typename: 'Query',
-  users: null,
-}, refetch }:
-  QueryResult<GetUserListQuery, Exact<{ filters: InputMaybe<string>; }>> = useGetUserListQuery({ fetchPolicy: 'no-cache' });
+      {
+        fetchPolicy: 'no-cache',
+        variables: {
+          filters: "",
+          pageSize: 2,
+          page: 1,
+        }
+      }
+  );
+  const [{ results } = {} as any] = usersData?.users || [];
+
 
   const [userFilter, { loading: loadingUser, error: errorUser, data }] = useGetUserListLazyQuery(
     {
@@ -51,7 +59,7 @@ const { loading, error, data: usersData = {
   console.log('::::::::::::::::::::::::::', { loadingUser, errorUser, data })
   console.log('LIST_ALL_USERS', { loading, error, usersData });
 
-  console.log('(usersData?.users || data?.users)', (data?.users || usersData?.users));
+  console.log('(usersData?.users || data?.users)', (data?.users || results));
 
   const [createUser] = useCreateUserMutation({
     onCompleted: refetch,
@@ -122,14 +130,16 @@ const { loading, error, data: usersData = {
   const searchTerms = useCallback(async (params: any) => {
     await userFilter({
       variables: {
-        filters: params?.search
+        filters: params?.search,
+        pageSize: params?.pageSize,
+        page: params?.page,
       }
     });
   }, []);
 
   const rows = useMemo(
     () =>
-      (data?.users || usersData?.users)?.map((user: any) =>
+      (data?.users || results)?.map((user: any) =>
         userListItem({
           id,
           user,
@@ -174,6 +184,17 @@ const { loading, error, data: usersData = {
     {(data?.users || usersData?.users)?.length && !loading ? <>
         <UserFilters onSubmit={searchTerms} />
         <TableWrapper id={id} header={header} rows={rows} />
+
+        <nav aria-label="Page navigation example">
+          <ul className="pagination">
+            <li className="page-item"><a className="page-link" href="#">Previous</a></li>
+            <li className="page-item"><a className="page-link" href="#">1</a></li>
+            <li className="page-item"><a className="page-link" href="#">2</a></li>
+            <li className="page-item"><a className="page-link" href="#">3</a></li>
+            <li className="page-item"><a className="page-link" href="#">Next</a></li>
+          </ul>
+        </nav>
+
         <SidebarWrapper
           isOpened={editingUser}
           setIsOpened={onClose}>

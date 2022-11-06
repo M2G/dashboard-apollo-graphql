@@ -67,7 +67,7 @@ const TableWrapper: FC<{
   return <TableContext.Provider
     value={{ header, handleSort, sortData, getSortedTable }}
   >
-    <table className={classnames(styles.table, "c-table table-bordered", className)}>
+    <table className={classnames(styles.table, "c-table table table-bordered", className)}>
       <TableHead key="tableHead" id={id} />
       <TableBody key="tableBody" id={id} />
     </table>

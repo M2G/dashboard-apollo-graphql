@@ -1,14 +1,20 @@
-query GetUserList(
-        $filters: String
-    ) {
-    users(filters: $filters) {
-      _id
-      first_name,
-      last_name,
-      email
-      created_at
-      modified_at
-   }
+query GetUserList($filters: String, $pageSize: Int, $page: Int) {
+    users(filters: $filters, pageSize: $pageSize, page: $page) {
+        results {
+          _id
+          first_name
+          last_name
+          email
+          created_at
+          modified_at
+        }
+        pageInfo {
+          count
+          pages
+          next
+          prev
+        }
+    }
 }
 
 query GetUser(

@@ -1,3 +1,22 @@
+
+// scss-docs-start spacer-variables-maps
+$spacer: 1rem !default;
+
+$black:    #000 !default;
+
+// $font-size-base affects the font size of the body text
+$font-size-base:              1rem !default; // Assumes the browser default, typically `16px`
+$font-size-lg:                $font-size-base * 1.25 !default;
+$font-size-sm:                $font-size-base * .875 !default;
+
+// Quickly modify global styling by enabling or disabling optional features.
+$enable-gradients:            false !default;
+$enable-rounded:              true !default;
+
+// Style anchor elements.
+$link-decoration:                         underline !default;
+$link-hover-decoration:                   null !default;
+
 // scss-docs-start border-variables
 $border-width:                1px !default;
 $input-btn-border-width:      $border-width !default;
@@ -63,6 +82,7 @@ $prefix:                      $variable-prefix !default;
 // Quickly modify global styling by enabling or disabling optional features.
 $enable-transitions:          true !default;
 $enable-reduced-motion:       true !default;
+$enable-smooth-scroll:        true !default;
 
 // Pagination
 
@@ -105,6 +125,100 @@ $pagination-transition:              color .15s ease-in-out, background-color .1
 $pagination-border-radius-sm:       $border-radius-sm !default;
 $pagination-border-radius-lg:       $border-radius-lg !default;
 
+
+// Tables
+//
+// Customizes the `.table` component with basic values, each used across all table variations.
+
+// scss-docs-start table-variables
+$table-color:                 var(--#{$prefix}body-color) !default;
+$table-bg:                    transparent !default;
+$table-accent-bg:             transparent !default;
+$table-striped-color:         $table-color !default;
+$table-striped-color:         $table-color !default;
+$table-active-color:          $table-color !default;
+$table-active-bg-factor:      .1 !default;
+$table-active-bg:             rgba($black, $table-active-bg-factor) !default;
+$table-hover-color:           $table-color !default;
+$table-cell-vertical-align:   top !default;
+
+$table-cell-padding-y:        .5rem !default;
+$table-cell-padding-x:        .5rem !default;
+$table-cell-padding-y-sm:     .25rem !default;
+$table-cell-padding-x-sm:     .25rem !default;
+
+$table-border-width:          $border-width !default;
+$table-group-separator-color: currentcolor !default;
+
+$table-border-color:          var(--#{$prefix}border-color) !default;
+
+$table-striped-order:         odd !default;
+$table-striped-columns-order: even !default;
+
+$table-striped-bg-factor:     .05 !default;
+$table-striped-bg:            rgba($black, $table-striped-bg-factor) !default;
+
+$table-hover-bg-factor:       .075 !default;
+$table-hover-bg:              rgba($black, $table-hover-bg-factor) !default;
+
+$gray-100: #f8f9fa !default;
+$gray-900: #212529 !default;
+
+$light:         $gray-100 !default;
+$dark:          $gray-900 !default;
+
+// scss-docs-start table-loop
+$table-variants: (
+        "light":      $light,
+        "dark":       $dark,
+) !default;
+
+// Body
+//
+// Settings for the `<body>` element.
+$body-bg:                   $white !default;
+// Customize the light and dark text colors for use in our color contrast function.
+$color-contrast-dark:      $black !default;
+$color-contrast-light:     $white !default;
+
+// The contrast ratio to reach against white, to determine if color changes from "light" to "dark". Acceptable values for WCAG 2.0 are 3, 4.5 and 7.
+// See https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
+$min-contrast-ratio:   4.5 !default;
+
+$table-border-factor:         .1 !default;
+
+$table-th-font-weight:        null !default;
+// Tables
+//
+// Prevent double borders
+
+table {
+  caption-side: bottom;
+  border-collapse: collapse;
+}
+
+// 1. Removes font-weight bold by inheriting
+// 2. Matches default `<td>` alignment by inheriting `text-align`.
+// 3. Fix alignment for Safari
+
+th {
+  font-weight: $table-th-font-weight; // 1
+  text-align: inherit; // 2
+  text-align: -webkit-match-parent; // 3
+}
+
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+}
+
+
 .form-floating {
   position: relative;
 }
@@ -113,18 +227,28 @@ $pagination-border-radius-lg:       $border-radius-lg !default;
 // ==========================================================================
 @import 'variables';
 
-
-
 // Libs
 // ==========================================================================
-@import '../../node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/functions';
 // @import '../../node_modules/bootstrap/scss/mixins/buttons';
-@import '../../node_modules/bootstrap/scss/mixins/container';
-@import '../../node_modules/bootstrap/scss/mixins/grid';
-@import '../../node_modules/bootstrap/scss/mixins/transition';
+@import 'node_modules/bootstrap/scss/mixins/container';
+@import 'node_modules/bootstrap/scss/mixins/grid';
+@import 'node_modules/bootstrap/scss/mixins/transition';
 // @import '../../node_modules/bootstrap/scss/bootstrap';
 
-@import 'node_modules/bootstrap/scss/vendor/_rfs';
+$grid-breakpoints: $_grid-breakpoints !default;
+
+@import "node_modules/bootstrap/scss/mixins/breakpoints";
+@import "node_modules/bootstrap/scss/mixins/table-variants";
+@import "node_modules/bootstrap/scss/tables";
+
+
+
+@import "node_modules/bootstrap/scss/mixins/pagination";
+@import "node_modules/bootstrap/scss/mixins/border-radius";
+@import 'node_modules/bootstrap/scss/mixins/gradients';
+@import 'node_modules/bootstrap/scss/mixins/lists';
+@import 'node_modules/bootstrap/scss/vendor/rfs';
 @import 'node_modules/bootstrap/scss/_pagination';
 
 // Functions
