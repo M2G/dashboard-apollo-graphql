@@ -29,10 +29,6 @@ function UserList({
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
-  const [state, setState] = useState({
-    pageSize: 2,
-    page: 2,
-  });
 
   const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery({ fetchPolicy: 'no-cache', });
 
@@ -46,17 +42,14 @@ function UserList({
     });
   }, []);
 
-
-
   const range = (start: number, end: number) => {
     const length = end - start + 1;
     return Array.from({ length }, (_, i) => start + i);
   };
 
+  const [{ results, pageInfo } = {} as any] = data?.users || [];
 
-  console.log('range', range(1, 3));
-
-  const [{ results } = {} as any] = data?.users || [];
+  console.log('range', range(pageInfo?.prev, pageInfo?.next));
 
   console.log('LIST_ALL_USERS', { loading, error, data });
 
@@ -128,19 +121,24 @@ function UserList({
     onClose();
   }, []);
 
-  const onPageSize = useCallback((params: any) => {
+  const onChangePagination = useCallback((params: any) => {
     console.log('onPageSize onPageSize', params)
-    setState({ ...params });
+    userFilter({
+      variables: {
+        filters: "",
+        pageSize: params.pageSize,
+        page: params.page,
+      }
+    });
   }, []);
-  // const onPage = useCallback((params: any) => setPage(params), []);
 
   const searchTerms = useCallback((params: any) => {
     userFilter({
       variables: {
         filters: params?.search,
-        pageSize: state.pageSize,
-        page: state.page,
-      }
+        pageSize: undefined,
+        page: undefined,
+      } as any
     });
   }, []);
 
@@ -192,9 +190,11 @@ function UserList({
         <UserFilters onSubmit={searchTerms} />
         <TableWrapper id={id} header={header} rows={rows} />
         <Pagination
-          pageSize={state.pageSize}
-          page={state.page}
-          onChange={onPageSize} />
+          count={pageInfo?.count}
+          pages={pageInfo?.pages}
+          next={pageInfo?.next}
+          prev={pageInfo?.prev}
+          onChange={onChangePagination} />
 
         <SidebarWrapper
           isOpened={editingUser}
