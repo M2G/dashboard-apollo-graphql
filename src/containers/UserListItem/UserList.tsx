@@ -42,14 +42,7 @@ function UserList({
     });
   }, []);
 
-  const range = (start: number, end: number) => {
-    const length = end - start + 1;
-    return Array.from({ length }, (_, i) => start + i);
-  };
-
   const [{ results, pageInfo } = {} as any] = data?.users || [];
-
-  console.log('range', range(pageInfo?.prev, pageInfo?.next));
 
   console.log('LIST_ALL_USERS', { loading, error, data });
 
