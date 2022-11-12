@@ -1,4 +1,4 @@
-import UserList from 'containers/UserListItem/UserList';
+import UserList from 'containers/UserList/UserList';
 
 function Home() {
   return <div className="o-zone">

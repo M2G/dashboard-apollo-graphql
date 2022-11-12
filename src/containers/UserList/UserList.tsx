@@ -6,10 +6,9 @@ import {
   useEffect,
 } from 'react';
 import { useTranslation } from "react-i18next";
-import userListItem from 'containers/UserListItem/UserListItem';
+import userListItem from 'containers/UserList/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
 import UserNew from 'containers/Users/UserNew';
-import TableWrapper from 'components/Core/Table/TableWrapper';
 import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
@@ -20,7 +19,7 @@ import {
   useGetUserListLazyQuery,
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
-import Pagination from 'components/Core/Pagination';
+import List from 'containers/UserList/List';
 
 function UserList({
  id, canEdit = false, canDelete = false, canAdd = false
@@ -33,7 +32,7 @@ function UserList({
   const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery({ fetchPolicy: 'no-cache', });
 
   useEffect(() => {
-    userFilter({
+    !data && userFilter({
       variables: {
         filters: "",
         pageSize: 2,
@@ -44,9 +43,9 @@ function UserList({
 
   const [{ results, pageInfo } = {} as any] = data?.users || [];
 
-  console.log('LIST_ALL_USERS', { loading, error, data });
-
-  console.log('(usersData?.users || data?.users)', (results));
+  console.log('{ loading, error, data }', { loading, error, data });
+  console.log('results', results);
+  console.log('pageInfo', pageInfo);
 
   const [createUser] = useCreateUserMutation({
     onCompleted: refetch,
@@ -114,23 +113,23 @@ function UserList({
     onClose();
   }, []);
 
-  const onChangePagination = useCallback((params: any) => {
-    console.log('onPageSize onPageSize', params)
-    userFilter({
-      variables: {
-        filters: "",
-        pageSize: params.pageSize,
-        page: params.page,
-      }
-    });
-  }, []);
-
   const searchTerms = useCallback((params: any) => {
     userFilter({
       variables: {
         filters: params?.search,
         pageSize: undefined,
         page: undefined,
+      } as any
+    });
+  }, []);
+
+  const onChangePagination = useCallback((params: any) => {
+    console.log('onChangePagination', params)
+    userFilter({
+      variables: {
+        filters: undefined,
+        pageSize: 2,
+        page: params,
       } as any
     });
   }, []);
@@ -146,9 +145,7 @@ function UserList({
           canDelete,
           canEdit,
         })),
-    [id, onEdit, onDelete, canDelete, canEdit, editingUser, newUser, deletingUser, data]);
-
-  console.log('userData.users', data)
+    [id, onEdit, onDelete, canDelete, canEdit, editingUser, newUser, deletingUser, results]);
 
   const header = useMemo(
     () => [
@@ -161,7 +158,7 @@ function UserList({
     ],
     []);
 
-  if (!data?.users?.length && loading) return <TopLineLoading />;
+  if (!results?.length && loading) return <TopLineLoading />;
 
   return <>
 
@@ -179,15 +176,12 @@ function UserList({
       </div>
     </section>
 
-    {data?.users?.length && !loading ? <>
+    {results?.length && !loading ? <>
         <UserFilters onSubmit={searchTerms} />
-        <TableWrapper id={id} header={header} rows={rows} />
-        <Pagination
-          count={pageInfo?.count}
-          pages={pageInfo?.pages}
-          next={pageInfo?.next}
-          prev={pageInfo?.prev}
-          onChange={onChangePagination} />
+        <List
+          // @ts-ignore
+          id={id} header={header} rows={rows} data={results} count={pageInfo?.count} currentPage={pageInfo?.pages}
+          setCurrentPage={onChangePagination}></List>
 
         <SidebarWrapper
           isOpened={editingUser}
