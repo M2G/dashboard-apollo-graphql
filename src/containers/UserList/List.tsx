@@ -7,7 +7,7 @@ function List({ id, header, rows, data, count, setCurrentPage, setCurrentPageSiz
 
   console.log('List List List', { setCurrentPage, setCurrentPageSize, currentPage });
 
-  const perPage = 2;
+  const perPage = currentPageSize;
   const lastIndex = currentPage * perPage;
   const firstIndex = lastIndex - perPage;
 
@@ -19,18 +19,20 @@ function List({ id, header, rows, data, count, setCurrentPage, setCurrentPageSiz
   return (
     <>
       <TableWrapper id={id} header={header} rows={rows} />
-      <PageSize
-        currentPageSize={currentPageSize}
-        setCurrentPageSize={setCurrentPageSize}
-      />
-      <Pagination
-        totalItems={count}
-        perPage={perPage}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      <div className="d-inline-flex">
+        <PageSize
+          currentPageSize={currentPageSize}
+          setCurrentPageSize={setCurrentPageSize}
+        />
+        <Pagination
+          totalItems={count}
+          perPage={perPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
     </>
   );
 }
-//@ts-ignore
-export default withPagination(List);
+
+export default withPagination(List as any);

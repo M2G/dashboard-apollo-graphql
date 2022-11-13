@@ -1,52 +1,63 @@
 /*eslint-disable*/
-/*
+
 interface IPagination {
-  pageSize: number;
-  page: number;
-  onChange: (params: any) => any;
+  currentPage: any;
+  totalItems: any;
+  perPage: any;
+  setCurrentPage: any;
 }
-*/
+
 import { Component } from 'react';
 
-const Pagination = ({ currentPage, totalItems, perPage, setCurrentPage }: any) => {
+const Pagination = ({ currentPage, totalItems, perPage, setCurrentPage }: IPagination): any => {
   const handleClick = ({ target: { dataset: { id } } }: { target: { dataset: { id: string }; }; }): any => {
-    setCurrentPage(parseInt(id, 10))
+    setCurrentPage(parseInt(id, 10));
   }
 
-  const pageNumbers = []
+  const handlePrevClick = (): any => {
+    setCurrentPage(currentPage - 1);
+  }
+
+  const handleNextClick = (): any => {
+    setCurrentPage(currentPage + 1);
+  }
+
+  const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(totalItems / perPage); i += 1) {
-    pageNumbers.push(i)
+    pageNumbers.push(i);
   }
 
-  const displayNumbers = pageNumbers.slice(currentPage - 2 > 0 ? currentPage - 2 : 0, currentPage + 2)
+  const displayNumbers = pageNumbers.slice(currentPage - 5 > 0 ? currentPage - 5 : 0, currentPage + 5)
 
   console.log('pageNumbers', pageNumbers)
   console.log('currentPage', currentPage)
+  console.log('displayNumbers', displayNumbers)
 
   return <nav aria-label="-1">
     {pageNumbers.length > 1 ? <ul className="pagination">
-      {currentPage > 2 &&
-        <li className="page-item">
-          <a data-id={1} className="page-link" href="#" onClick={handleClick as any}>
-        First
+        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+          <a className="page-link" href="#" onClick={handlePrevClick}>
+            Prev
         </a>
-      </li>}
-      {displayNumbers.map(number => (console.log('number', number),
+      </li>
+      {displayNumbers.map(number =>
         <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
           <a data-id={number} className="page-link" href="#" onClick={handleClick as any}>
           {number}
           </a>
         </li>
-      ))}
-        <li className={`page-item ${currentPage !== pageNumbers.length && pageNumbers.length > 2 ? '' : 'disabled'}`}>
-          <a data-id={pageNumbers.length as any} className="page-link" href="#" onClick={handleClick as any}>
-        Last
+      )}
+        <li className={`page-item ${currentPage === pageNumbers.length ? 'disabled' : ''}`}>
+          <a className="page-link" href="#" onClick={handleNextClick}>
+            Next
           </a>
       </li>
     </ul> : null}
   </nav>
 }
+
+Pagination.propTypes = {};
 
 const withPagination = (WrappedComponent: JSX.IntrinsicAttributes) => {
   return class extends Component {

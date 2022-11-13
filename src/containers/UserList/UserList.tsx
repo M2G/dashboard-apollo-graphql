@@ -198,7 +198,8 @@ function UserList({
         <List
           // @ts-ignore
           id={id} header={header} rows={rows}
-          data={results} count={pageInfo?.count}
+          data={results}
+          count={pageInfo?.count}
           currentPage={page}
           setCurrentPage={onChangePage}
           currentPageSize={pageSize}
