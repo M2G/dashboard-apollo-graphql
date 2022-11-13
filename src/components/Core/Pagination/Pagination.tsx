@@ -9,7 +9,7 @@ interface IPagination {
 import { Component } from 'react';
 
 const Pagination = ({ currentPage, totalItems, perPage, setCurrentPage }: any) => {
-  const handleClick = ({ currentTarget: { dataset: { id } } }: { currentTarget: { dataset: { id: string }; }; }): any => {
+  const handleClick = ({ target: { dataset: { id } } }: { target: { dataset: { id: string }; }; }): any => {
     setCurrentPage(parseInt(id, 10))
   }
 
@@ -24,28 +24,26 @@ const Pagination = ({ currentPage, totalItems, perPage, setCurrentPage }: any) =
   console.log('pageNumbers', pageNumbers)
   console.log('currentPage', currentPage)
 
-  return <nav>
+  return <nav aria-label="-1">
     {pageNumbers.length > 1 ? <ul className="pagination">
       {currentPage > 2 &&
-        <li
-          data-id={1} className="page-item" onClick={handleClick as any}>
-          <a className="page-link" href="#">
+        <li className="page-item">
+          <a data-id={1} className="page-link" href="#" onClick={handleClick as any}>
         First
         </a>
       </li>}
       {displayNumbers.map(number => (console.log('number', number),
-        <li key={number} data-id={number} className={`page-item ${currentPage === number ? 'active' : ''}`} onClick={handleClick as any}>
-          <a className="page-link" href="#">
+        <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+          <a data-id={number} className="page-link" href="#" onClick={handleClick as any}>
           {number}
           </a>
         </li>
       ))}
-      {currentPage !== pageNumbers.length && pageNumbers.length > 2 &&
-        <li data-id={pageNumbers.length as any} className="page-item" onClick={handleClick as any}>
-          <a className="page-link" href="#">
+        <li className={`page-item ${currentPage !== pageNumbers.length && pageNumbers.length > 2 ? '' : 'disabled'}`}>
+          <a data-id={pageNumbers.length as any} className="page-link" href="#" onClick={handleClick as any}>
         Last
           </a>
-      </li>}
+      </li>
     </ul> : null}
   </nav>
 }

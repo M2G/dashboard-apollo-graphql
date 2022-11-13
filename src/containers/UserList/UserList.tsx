@@ -28,6 +28,8 @@ function UserList({
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(2);
 
   const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery({ fetchPolicy: 'no-cache', });
 
@@ -35,8 +37,8 @@ function UserList({
     !data && userFilter({
       variables: {
         filters: "",
-        pageSize: 2,
-        page: 2,
+        pageSize: pageSize,
+        page: page,
       }
     });
   }, []);
@@ -123,13 +125,26 @@ function UserList({
     });
   }, []);
 
-  const onChangePagination = useCallback((params: any) => {
-    console.log('onChangePagination', params)
+  const onChangePage = useCallback((params: any) => {
+    console.log('setPage', params)
+    setPage(params);
     userFilter({
       variables: {
         filters: undefined,
-        pageSize: 2,
-        page: params,
+        pageSize: pageSize,
+        page: params || page,
+      } as any
+    });
+  }, []);
+
+  const onChangePageSize = useCallback((params: any) => {
+    console.log('setPageSize', params)
+    setPageSize(params);
+    userFilter({
+      variables: {
+        filters: undefined,
+        pageSize: params || pageSize,
+        page: page,
       } as any
     });
   }, []);
@@ -160,6 +175,8 @@ function UserList({
 
   if (!results?.length && loading) return <TopLineLoading />;
 
+  console.log(':::::::::::::::::::::: page pageSize', { page, pageSize })
+
   return <>
 
     <section className="py-5 text-center container">
@@ -180,8 +197,13 @@ function UserList({
         <UserFilters onSubmit={searchTerms} />
         <List
           // @ts-ignore
-          id={id} header={header} rows={rows} data={results} count={pageInfo?.count} currentPage={pageInfo?.pages}
-          setCurrentPage={onChangePagination}></List>
+          id={id} header={header} rows={rows}
+          data={results} count={pageInfo?.count}
+          currentPage={page}
+          setCurrentPage={onChangePage}
+          currentPageSize={pageSize}
+          setCurrentPageSize={onChangePageSize}
+        />
 
         <SidebarWrapper
           isOpened={editingUser}
