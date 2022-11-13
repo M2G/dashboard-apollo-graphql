@@ -23,10 +23,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
   parserOptions: {
-    project: [
-      path.resolve(__dirname, './tsconfig.json'),
-      path.resolve(__dirname, './tsconfig.lint.json'),
-    ],
+    project: path.resolve(__dirname, './tsconfig.json'),
     tsconfigRootDir: __dirname,
     ecmaVersion: "latest",
     sourceType: 'module',
