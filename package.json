@@ -84,8 +84,6 @@
     "build-storybook": "build-storybook",
     "storybook": "start-storybook -p 9009 --no-manager-cache",
     "prepare": "husky install",
-    "lint:cypress": "eslint \"cypress/**/*.ts\"",
-    "cypress:open": "cypress open",
     "generate:gql": "graphql-codegen",
     "generate:gql:watch": "graphql-codegen --watch"
   },
