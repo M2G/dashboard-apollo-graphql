@@ -27,7 +27,7 @@ const Portal = ({ id, children }: IPortal): ReactPortal | null => {
         el.current.parentElement.removeChild(el.current);
       }
     };
-  }, [id]);
+  }, [dynamic, id]);
   return el?.current && createPortal(children, el.current);
 };
 
