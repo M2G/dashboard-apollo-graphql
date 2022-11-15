@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import PropTypes from 'prop-types';
-import Portal from 'components/Core/Portal/Portal';
+import Portal from 'components/Core/Portal';
 import styles from './Modal.module.scss';
 import { MouseEventHandler } from 'react';
 import classnames from 'classnames';

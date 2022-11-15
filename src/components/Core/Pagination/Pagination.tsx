@@ -1,13 +1,13 @@
 /*eslint-disable*/
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 interface IPagination {
-  currentPage: any;
-  totalItems: any;
-  perPage: any;
-  setCurrentPage: any;
+  currentPage: number;
+  totalItems: number;
+  perPage: number;
+  setCurrentPage: (params: any) => {};
 }
-
-import { Component } from 'react';
 
 const Pagination = ({ currentPage, totalItems, perPage, setCurrentPage }: IPagination): any => {
   const handleClick = ({ target: { dataset: { id } } }: { target: { dataset: { id: string }; }; }): any => {
@@ -57,7 +57,12 @@ const Pagination = ({ currentPage, totalItems, perPage, setCurrentPage }: IPagin
   </nav>
 }
 
-Pagination.propTypes = {};
+Pagination.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  totalItems: PropTypes.number.isRequired,
+  perPage: PropTypes.number.isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
+};
 
 const withPagination = (WrappedComponent: JSX.IntrinsicAttributes) => {
   return class extends Component {
@@ -76,60 +81,11 @@ const withPagination = (WrappedComponent: JSX.IntrinsicAttributes) => {
     }
 
     render() {
-      return (
-        // @ts-ignore
-        <WrappedComponent setCurrentPage={this.setCurrentPage} currentPage={this.state.currentPage} {...this.props} />
-      )
+      // @ts-ignore
+      return <WrappedComponent setCurrentPage={this.setCurrentPage} currentPage={this.state.currentPage} {...this.props} />
     }
   }
 }
 
-
-
-/*
-function Pagination({ onChange,
-                      count,
-                      pages,
-                      next,
-                      prev }: any) {
-
-  const [paginate, setPaginate] = useState({});
-
-  const range = (start: number, end: number) => {
-    const length = end - start + 1;
-    return Array.from({ length }, (_, i) => start + i);
-  };
-
-  console.log('range', range(prev, next));
-
-  const pageList = range(prev, next);
-
-  console.log('Pagination', {
-    count,
-    pages,
-    next,
-    prev
-  });
-
-  return <div>
-    <select className="form-select" aria-label="Default select example" onChange={({ target: { value }}) => {
-        onChange({ pageSize: value });
-        setPaginate({ pageSize: value });
-      }}>
-      <option value="2">2</option>
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="">All</option>
-    </select>
-    <nav aria-label="Page navigation example">
-      <ul className="pagination">
-        <li className="page-item"><a className="page-link" href="#" onClick={() => onChange({ ...paginate, pages: pages - 1 })}>Previous</a></li>
-        {pageList?.map((page) => <li className="page-item" onClick={() => onChange( { ...paginate, page })}><a className="page-link" href="#">{page}</a></li>)}
-        <li className="page-item"><a className="page-link" href="#" onClick={() => onChange({ ...paginate, pages: pages + 1 })}>Next</a></li>
-      </ul>
-    </nav>
-  </div>;
-}
-*/
 export { withPagination };
 export default Pagination;
