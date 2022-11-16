@@ -7,7 +7,7 @@ interface IPageSize {
   setCurrentPageSize: (params: any) => {};
 }
 
-function PageSize({ currentPageSize = 2, setCurrentPageSize }: IPageSize) {
+function PageSize({ currentPageSize, setCurrentPageSize }: IPageSize) {
   const pageSize = useMemo(() => currentPageSize, [currentPageSize]);
 
   const handleClick = ({ target: { value } }: { target: { value: string } }): any =>
