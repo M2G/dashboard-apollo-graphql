@@ -3,7 +3,16 @@ import { string, func, arrayOf, shape } from 'prop-types';
 import Icon from 'components/Core/Icon';
 import styles from './Table.module.scss';
 
-function Action({ actions }: any) {
+interface IAction {
+  actions: [{
+    id: string;
+    action: (params: any) => {}
+    icon: string;
+    iconType: string;
+  }];
+}
+
+function Action({ actions }: IAction) {
   return <>
       {actions?.map(({ id, action, icon, iconType = 'fas', name, family }: any) =>
         <div key={`actionCol__${id}`} className={styles.action}>

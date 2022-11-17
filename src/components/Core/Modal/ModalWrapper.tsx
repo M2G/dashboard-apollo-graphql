@@ -5,7 +5,7 @@ import styles from './Modal.module.scss';
 import { MouseEventHandler } from 'react';
 import classnames from 'classnames';
 
-interface ModalProps {
+interface IModal {
   id?: string;
   isShowing: boolean;
   hide: MouseEventHandler<HTMLButtonElement>;
@@ -14,7 +14,11 @@ interface ModalProps {
   children: any;
 }
 
-function Modal({ id, isShowing, hide, title, onConfirm, children }: ModalProps) {
+interface IModalWrapper {
+  // id, isShowing, hide, title, onConfirm, children
+}
+
+function Modal({ id, isShowing, hide, title, onConfirm, children }: IModal) {
   return isShowing ? (
     <Portal id={id}>
       <div className={styles.overlay}>
@@ -42,7 +46,7 @@ function Modal({ id, isShowing, hide, title, onConfirm, children }: ModalProps) 
   ) : null;
 }
 
-function ModalWrapper({ id, isShowing, hide, title, onConfirm, children }: any) {
+function ModalWrapper({ id, isShowing, hide, title, onConfirm, children }: IModalWrapper) {
   return <Modal id={id} isShowing={isShowing} hide={hide} title={title} onConfirm={onConfirm}>{children}</Modal>
 }
 
