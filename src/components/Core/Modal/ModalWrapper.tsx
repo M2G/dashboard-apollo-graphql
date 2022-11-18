@@ -1,9 +1,8 @@
 /*eslint-disable*/
-import PropTypes from 'prop-types';
-import Portal from 'components/Core/Portal';
-import styles from './Modal.module.scss';
 import { MouseEventHandler } from 'react';
 import classnames from 'classnames';
+import Portal from 'components/Core/Portal';
+import styles from './Modal.module.scss';
 
 interface IModal {
   id?: string;
@@ -15,7 +14,12 @@ interface IModal {
 }
 
 interface IModalWrapper {
-  // id, isShowing, hide, title, onConfirm, children
+  id: any;
+  isShowing: any;
+  hide: any;
+  title: any;
+  onConfirm: any;
+  children: any;
 }
 
 function Modal({ id, isShowing, hide, title, onConfirm, children }: IModal) {
@@ -49,14 +53,5 @@ function Modal({ id, isShowing, hide, title, onConfirm, children }: IModal) {
 function ModalWrapper({ id, isShowing, hide, title, onConfirm, children }: IModalWrapper) {
   return <Modal id={id} isShowing={isShowing} hide={hide} title={title} onConfirm={onConfirm}>{children}</Modal>
 }
-
-ModalWrapper.propTypes = {
-  id: PropTypes.string,
-  isShowing: PropTypes.bool.isRequired,
-  onConfirm: PropTypes.func.isRequired,
-  hide: PropTypes.func.isRequired,
-  children: PropTypes.node,
-  title: PropTypes.string,
-};
 
 export default ModalWrapper;

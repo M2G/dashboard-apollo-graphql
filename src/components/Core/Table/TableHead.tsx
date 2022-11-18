@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import TableHeaderCell from 'components/Core/Table/TableHeaderCell';
-import { number, oneOfType, string } from 'prop-types';
 import { TableContext } from 'components/Core/Table/TableWrapper';
 
 interface ITableHead {
+  // eslint-disable-next-line react/require-default-props
   id?: number | string;
 }
 
@@ -22,9 +22,5 @@ function TableHead({ id }: ITableHead) {
   </tr>
   </thead>;
 }
-
-TableHead.propTypes = {
-  id: oneOfType([string, number]).isRequired,
-};
 
 export default TableHead;

@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { number, oneOfType, string } from 'prop-types';
 import { TableContext } from 'components/Core/Table/TableWrapper';
 import classnames from 'classnames';
 import styles from 'components/Core/Table/Table.module.scss';
@@ -25,9 +24,5 @@ function TableBody({ id }: ITableBody) {
     </tr>)}
   </tbody>;
 }
-
-TableBody.propTypes = {
-  id: oneOfType([string, number]).isRequired,
-};
 
 export default TableBody;

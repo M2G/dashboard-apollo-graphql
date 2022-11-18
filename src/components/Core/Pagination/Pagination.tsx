@@ -1,6 +1,5 @@
 /*eslint-disable*/
 import { Component } from 'react';
-import PropTypes from 'prop-types';
 
 interface IPagination {
   currentPage: number;
@@ -56,13 +55,6 @@ const Pagination = ({ currentPage, totalItems, perPage, setCurrentPage }: IPagin
     </ul> : null}
   </nav>
 }
-
-Pagination.propTypes = {
-  currentPage: PropTypes.number.isRequired,
-  totalItems: PropTypes.number.isRequired,
-  perPage: PropTypes.number.isRequired,
-  setCurrentPage: PropTypes.func.isRequired,
-};
 
 const withPagination = (WrappedComponent: JSX.IntrinsicAttributes) => {
   return class extends Component {

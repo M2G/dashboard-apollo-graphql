@@ -1,5 +1,4 @@
 /*eslint-disable*/
-import PropTypes, { bool, object, oneOfType } from 'prop-types';
 import classnames from 'classnames';
 import Background from './Background';
 import styles from './Sidebar.module.scss';
@@ -28,11 +27,5 @@ function SidebarWrapper({ isOpened, setIsOpened, children }: any) {
       </Sidebar>
     </>
 }
-
-SidebarWrapper.propTypes = {
-  isOpened: oneOfType([bool, object]),
-  setIsOpened: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-};
 
 export default SidebarWrapper;

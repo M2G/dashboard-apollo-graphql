@@ -1,9 +1,8 @@
 /*eslint-disable*/
 import Action from 'components/Core/Table/Action';
-import { string } from 'prop-types';
 
 interface TableStaticColInterface {
-  actions: any[];
+  actions: [{ id: string; action: (params: any) => {}; icon: string; iconType: string; }];
   id?: string;
   label?: string;
 }
@@ -20,11 +19,5 @@ function TableStaticCol({ id, label, actions }: TableStaticColInterface) {
       </div>
     </div>
 }
-
-TableStaticCol.propTypes = {
-  actions: Action.propTypes.actions,
-  id: string,
-  label: string,
-};
 
 export default TableStaticCol;

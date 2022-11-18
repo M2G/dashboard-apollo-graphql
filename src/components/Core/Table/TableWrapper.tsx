@@ -1,9 +1,6 @@
 /*eslint-disable*/
 import { useEffect, useMemo, useState, createContext, FC } from 'react';
 import classnames from 'classnames';
-import {
-  arrayOf, string, node, oneOfType, shape, bool, number, object
-} from 'prop-types';
 import TableHead from 'components/Core/Table/TableHead';
 import TableBody from 'components/Core/Table/TableBody';
 import styles from './Table.module.scss';
@@ -72,25 +69,6 @@ const TableWrapper: FC<{
       <TableBody key="tableBody" id={id} />
     </table>
   </TableContext.Provider>
-};
-
-const rowType = shape({
-  display: oneOfType([string, node, number]),
-  value: oneOfType([string, number, object]),
-});
-
-const headerRowType = shape({
-  label: string.isRequired,
-  sortable: bool,
-  type: oneOfType([string, object]),
-  defaultSort: bool,
-});
-
-TableWrapper.propTypes = {
-  rows: arrayOf(arrayOf(rowType)).isRequired,
-  header: arrayOf(headerRowType).isRequired,
-  className: string,
-  id: string.isRequired,
 };
 
 export default TableWrapper;

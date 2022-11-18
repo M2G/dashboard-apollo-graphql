@@ -1,9 +1,14 @@
 /*eslint-disable*/
 import classnames from 'classnames';
 
-function Icon({
- name = '', family = '', className = '', style = {},
-}: any) {
+interface IIcon {
+  name: any;
+  family: any;
+  className: any;
+  style: any;
+}
+
+function Icon({ name = '', family = '', className = '', style = {} }: IIcon) {
   return <i style={style} className={classnames(family, family ? `${family}-${name}` : name, className)} />;
 }
 

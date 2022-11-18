@@ -1,5 +1,4 @@
 /*eslint-disable*/
-import { string, bool, func, oneOfType, object } from 'prop-types';
 import styles from './Table.module.scss';
 import classnames from 'classnames';
 
@@ -28,13 +27,6 @@ const TableHeaderCell = ({
         />
       )}
     </th>
-};
-
-TableHeaderCell.propTypes = {
-  isSortable: bool,
-  currentSortedData: oneOfType([bool, object]),
-  onSort: func,
-  label: string.isRequired,
 };
 
 export default TableHeaderCell;

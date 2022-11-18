@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import PropTypes from 'prop-types';
 import styles from './Pagination.module.scss';
 
 interface IPageSize {
@@ -20,10 +19,5 @@ function PageSize({ currentPageSize, setCurrentPageSize }: IPageSize) {
     <option value="">All</option>
   </select>;
 }
-
-PageSize.propTypes = {
-  currentPageSize: PropTypes.number.isRequired,
-  setCurrentPageSize: PropTypes.func.isRequired,
-};
 
 export default PageSize;

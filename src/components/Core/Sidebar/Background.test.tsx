@@ -6,11 +6,7 @@ describe('test DateCell', () => {
   test('should render', () => {
     const setIsOpened = jest.fn();
     const { container }: any = render(
-      <Background
-        show
-        setIsOpened={setIsOpened}>
-        <div>Test</div>
-      </Background>,
+      <Background show setIsOpened={setIsOpened} />
 );
 
     const backgroundIsActive: any = container?.querySelector('.background.is-active');
@@ -20,11 +16,7 @@ describe('test DateCell', () => {
   test('should not render', () => {
     const setIsOpened = jest.fn();
     const { container }: any = render(
-      <Background
-        show={false}
-        setIsOpened={setIsOpened}>
-        <div>Test</div>
-      </Background>,
+      <Background show={false} setIsOpened={setIsOpened} />
     );
 
     const background: any = container?.querySelector('.background');

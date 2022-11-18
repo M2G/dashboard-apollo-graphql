@@ -1,6 +1,4 @@
 /*eslint-disable*/
-import { number } from 'prop-types';
-
 interface IDateCell {
   date?: number;
 }
@@ -17,9 +15,5 @@ function DateCell({ date }: IDateCell) {
       )}
     </div>
 }
-
-DateCell.propTypes = {
-  date: number,
-};
 
 export default DateCell;
