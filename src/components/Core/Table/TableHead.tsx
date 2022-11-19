@@ -3,8 +3,7 @@ import TableHeaderCell from 'components/Core/Table/TableHeaderCell';
 import { TableContext } from 'components/Core/Table/TableWrapper';
 
 interface ITableHead {
-  // eslint-disable-next-line react/require-default-props
-  id?: number | string;
+  id: number | string;
 }
 
 function TableHead({ id }: ITableHead) {
@@ -17,7 +16,7 @@ function TableHead({ id }: ITableHead) {
         label={label}
         isSortable={sortable}
         currentSortedData={sortData?.index === index ? sortData : null}
-        onSort={(sortDirection) => handleSort(index, sortDirection, type)}
+        onSort={(sortDirection: any) => handleSort(index, sortDirection, type)}
       />)}
   </tr>
   </thead>;
