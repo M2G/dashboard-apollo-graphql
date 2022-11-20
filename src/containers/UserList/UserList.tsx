@@ -135,7 +135,7 @@ function UserList({
         page: params || page,
       } as any
     });
-  }, []);
+  }, [pageSize]);
 
   const onChangePageSize = useCallback((params: any) => {
     console.log('setPageSize', params)
@@ -147,7 +147,7 @@ function UserList({
         page: page,
       } as any
     });
-  }, []);
+  }, [page]);
 
   const rows = useMemo(
     () =>
@@ -224,6 +224,7 @@ function UserList({
         </SidebarWrapper>
 
         <ModalWrapper
+          id="test"
           title="Delete"
           hide={onClose}
           isShowing={deletingUser}

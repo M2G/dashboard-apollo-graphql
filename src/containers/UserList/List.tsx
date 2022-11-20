@@ -1,11 +1,11 @@
 /*eslint-disable*/
-import Pagination, { withPagination } from "components/Core/Pagination/Pagination";
+import Pagination from "components/Core/Pagination/Pagination";
 import PageSize from "components/Core/Pagination/PageSize";
 import TableWrapper from 'components/Core/Table';
 
 function List({ id, header, rows, data, count, setCurrentPage, setCurrentPageSize, currentPageSize, currentPage }: any) {
 
-  console.log('List List List', { setCurrentPage, setCurrentPageSize, currentPage });
+  console.log('List List List', { setCurrentPage, setCurrentPageSize, currentPage, currentPageSize });
 
   const perPage = currentPageSize;
   const lastIndex = currentPage * perPage;
@@ -35,4 +35,4 @@ function List({ id, header, rows, data, count, setCurrentPage, setCurrentPageSiz
   );
 }
 
-export default withPagination(List as any);
+export default List;

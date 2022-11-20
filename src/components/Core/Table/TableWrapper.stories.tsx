@@ -74,7 +74,7 @@ Default.args = {
 
 export const WithStaticBlock: any = Template.bind({});
 
-const tableStaticBlockProps = (n: number) => ({
+const tableStaticBlockProps: any = (n: number) => ({
     actions,
     nbMaxActions: 3,
     id: `tableWrapper__${n}`,
@@ -90,7 +90,9 @@ const generateTable = (nbRows: number, nbCols: number) => getArray(nbRows).map((
     if (indexCol === 1) return { display: <DateCell date={dateTable[index]}/>, value: dateTable[index] };
     if (indexCol === 3) {
         return {
-            display: <Icon name={'phone'} family={'mdi'} />, value: '',
+            display: <
+              // @ts-ignore
+                Icon name={'phone'} family={'mdi'} />, value: '',
         };
     }
     return { display: `Row ${index + 1}, Col ${indexCol + 1}`, value: `Row ${index + 1}, Col ${indexCol + 1}` };

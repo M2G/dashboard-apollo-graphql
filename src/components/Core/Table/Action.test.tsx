@@ -2,7 +2,7 @@
 import { render } from '@testing-library/react';
 import Action from './Action';
 
-const action = [
+const action: any = [
   {
     action: () => {},
     family: 'fa-edit',

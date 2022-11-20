@@ -2,12 +2,12 @@
 import styles from './Table.module.scss';
 import classnames from 'classnames';
 
-const TableHeaderCell = ({
+function TableHeaderCell({
   label,
   onSort,
   isSortable,
   currentSortedData,
-}: any) => {
+}: any) {
 
   const onSortClick = () => onSort(
       !currentSortedData || currentSortedData.direction === 'ascending'
@@ -27,6 +27,6 @@ const TableHeaderCell = ({
         />
       )}
     </th>
-};
+}
 
 export default TableHeaderCell;

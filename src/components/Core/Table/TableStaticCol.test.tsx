@@ -11,7 +11,7 @@ describe('test TableStaticCol', () => {
       id: `test__edit`,
       label: 'Edit',
     });
-    const tableStaticColProps = {
+    const tableStaticColProps: any = {
       actions,
       id: 'test_id',
       label: 'test',

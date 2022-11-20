@@ -1,13 +1,22 @@
 /*eslint-disable*/
 import Action from 'components/Core/Table/Action';
 
-interface TableStaticColInterface {
-  actions: [{ id: string; action: (params: any) => {}; icon: string; iconType: string; }];
+interface ITableStaticCol {
+  actions: [
+    {
+      id: string;
+      action: (params: any) => {};
+      icon: string;
+      iconType: string;
+      name: string;
+      family: string;
+    },
+  ];
   id?: string;
   label?: string;
 }
 
-function TableStaticCol({ id, label, actions }: TableStaticColInterface) {
+function TableStaticCol({ id, label, actions }: ITableStaticCol) {
   return <div className="tableStaticCol">
       <div className="ml-3 actions">
         <div className="labelHandler">

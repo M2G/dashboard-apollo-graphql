@@ -37,7 +37,7 @@ const userListItem = ({
     });
   }
 
-  const tableStaticColProps = {
+  const tableStaticColProps: any = {
     id,
     actions,
     label,

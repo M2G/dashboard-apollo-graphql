@@ -1,6 +1,4 @@
 /*eslint-disable*/
-import { Component } from 'react';
-
 interface IPagination {
   currentPage: number;
   totalItems: number;
@@ -8,18 +6,13 @@ interface IPagination {
   setCurrentPage: (params: any) => {};
 }
 
-const Pagination = ({ currentPage, totalItems, perPage, setCurrentPage }: IPagination): any => {
-  const handleClick = ({ target: { dataset: { id } } }: { target: { dataset: { id: string }; }; }): any => {
+function Pagination({ currentPage, totalItems, perPage, setCurrentPage }: IPagination) {
+  const handleClick = ({ target: { dataset: { id } } }: { target: { dataset: { id: string }; }; }): any =>
     setCurrentPage(parseInt(id, 10));
-  }
 
-  const handlePrevClick = (): any => {
-    setCurrentPage(currentPage - 1);
-  }
+  const handlePrevClick = (): any => setCurrentPage(currentPage - 1);
 
-  const handleNextClick = (): any => {
-    setCurrentPage(currentPage + 1);
-  }
+  const handleNextClick = (): any => setCurrentPage(currentPage + 1);
 
   const pageNumbers = [];
 
@@ -34,7 +27,7 @@ const Pagination = ({ currentPage, totalItems, perPage, setCurrentPage }: IPagin
   console.log('displayNumbers', displayNumbers)
 
   return <nav aria-label="-1">
-    {pageNumbers.length > 1 ? <ul className="pagination">
+    {pageNumbers.length > 1 && <ul className="pagination">
         <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
           <a className="page-link" href="#" onClick={handlePrevClick}>
             Prev
@@ -52,32 +45,9 @@ const Pagination = ({ currentPage, totalItems, perPage, setCurrentPage }: IPagin
             Next
           </a>
       </li>
-    </ul> : null}
+    </ul>}
   </nav>
 }
 
-const withPagination = (WrappedComponent: JSX.IntrinsicAttributes) => {
-  return class extends Component {
-    constructor(props: {} | Readonly<{}>) {
-      super(props)
 
-      this.setCurrentPage = this.setCurrentPage.bind(this)
-
-      this.state = {
-        currentPage: 1
-      }
-    }
-
-    setCurrentPage(currentPage: any) {
-      this.setState({ currentPage })
-    }
-
-    render() {
-      // @ts-ignore
-      return <WrappedComponent setCurrentPage={this.setCurrentPage} currentPage={this.state.currentPage} {...this.props} />
-    }
-  }
-}
-
-export { withPagination };
 export default Pagination;

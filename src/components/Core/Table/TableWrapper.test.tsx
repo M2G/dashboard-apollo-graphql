@@ -40,7 +40,7 @@ const listItem = ({
     });
   }
 
-  const tableStaticColProps = {
+  const tableStaticColProps: any = {
     id,
     actions,
     label,

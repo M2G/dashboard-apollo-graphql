@@ -10,6 +10,7 @@ describe('test DateCell', () => {
     render(
       <ModalWrapper
         id="test"
+        title="test"
         isShowing
         hide={onClose}
         onConfirm={onConfirm}
@@ -42,6 +43,8 @@ describe('test DateCell', () => {
 
     render(
       <ModalWrapper
+        id="test"
+        title="test"
         isShowing={false}
         onConfirm={onConfirm}
         hide={onClose}>
