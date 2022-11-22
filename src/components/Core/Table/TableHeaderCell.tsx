@@ -2,12 +2,19 @@
 import styles from './Table.module.scss';
 import classnames from 'classnames';
 
+interface ITableHeaderCell {
+  label: any;
+  onSort: any;
+  isSortable: any;
+  currentSortedData: any;
+}
+
 function TableHeaderCell({
   label,
   onSort,
   isSortable,
   currentSortedData,
-}: any) {
+}: ITableHeaderCell) {
 
   const onSortClick = () => onSort(
       !currentSortedData || currentSortedData.direction === 'ascending'

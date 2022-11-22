@@ -7,12 +7,14 @@ import styles from './Table.module.scss';
 
 export const TableContext = createContext<Record<string, any>>({});
 
-const TableWrapper: FC<{
+interface ITableWrapper {
   header: any;
   rows: any;
   id: string | number;
   className?: string;
-}> = ({ header, rows, id, className = '' }: any) => {
+}
+
+function TableWrapper({ header, rows, id, className = '' }: ITableWrapper){
 
   console.log('rows rows', rows);
 

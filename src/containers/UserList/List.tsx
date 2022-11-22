@@ -11,7 +11,7 @@ function List({ id, header, rows, data, count, setCurrentPage, setCurrentPageSiz
   const lastIndex = currentPage * perPage;
   const firstIndex = lastIndex - perPage;
 
-  const currentDevices = data.slice(firstIndex, lastIndex);
+  const currentDevices = data?.slice(firstIndex, lastIndex);
 
   console.log('currentDevices', currentDevices);
   console.log('data', data);

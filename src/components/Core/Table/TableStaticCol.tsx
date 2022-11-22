@@ -12,8 +12,8 @@ interface ITableStaticCol {
       family: string;
     },
   ];
-  id?: string;
-  label?: string;
+  id?: string | undefined;
+  label?: string | undefined;
 }
 
 function TableStaticCol({ id, label, actions }: ITableStaticCol) {
@@ -23,10 +23,12 @@ function TableStaticCol({ id, label, actions }: ITableStaticCol) {
           <label id={id}>{label}</label>
         </div>
         <div className="actionBar">
-          {actions?.length > 0 && <Action actions={actions} />}
+          {actions?.length > 0 &&
+            // @ts-ignore
+            <Action actions={actions} />}
         </div>
       </div>
-    </div>
+    </div>;
 }
 
 export default TableStaticCol;

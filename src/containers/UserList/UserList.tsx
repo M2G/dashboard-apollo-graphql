@@ -31,7 +31,7 @@ function UserList({
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(2);
 
-  const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery({ fetchPolicy: 'no-cache', });
+  const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery({ fetchPolicy: 'cache-and-network', });
 
   useEffect(() => {
     !data && userFilter({

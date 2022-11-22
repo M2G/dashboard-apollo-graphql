@@ -33,7 +33,7 @@ function Profil() {
     getUser: null,
   } }: QueryResult<GetUserQuery, Exact<{ id: string; }>> = useGetUserQuery(
     {
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'cache-and-network',
       variables: {
         id: userData?._id
       }

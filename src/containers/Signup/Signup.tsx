@@ -6,7 +6,6 @@ import { useContext } from 'react';
 import { AuthContext } from 'AuthContext';
 import { useSigninMutation } from 'modules/graphql/generated';
 
-
 function Signup() {
   const { activateAuth }: any = useContext(AuthContext);
   const [signup] = useSigninMutation({
