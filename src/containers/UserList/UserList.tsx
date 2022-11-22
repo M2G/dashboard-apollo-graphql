@@ -21,9 +21,16 @@ import {
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
 
+interface IUserList {
+  id: number | string;
+  canEdit?: boolean;
+  canDelete?: boolean;
+  canAdd?: boolean;
+}
+
 function UserList({
  id, canEdit = false, canDelete = false, canAdd = false
-}: any) {
+}: IUserList) {
   const { t } = useTranslation();
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
@@ -31,7 +38,7 @@ function UserList({
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(2);
 
-  const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery({ fetchPolicy: 'cache-and-network', });
+  const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery({ fetchPolicy: 'cache-and-network' });
 
   useEffect(() => {
     !data && userFilter({

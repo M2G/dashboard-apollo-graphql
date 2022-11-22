@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import { useEffect, useMemo, useState, createContext, FC } from 'react';
+import { useEffect, useMemo, useState, createContext } from 'react';
 import classnames from 'classnames';
 import TableHead from 'components/Core/Table/TableHead';
 import TableBody from 'components/Core/Table/TableBody';
@@ -71,6 +71,6 @@ function TableWrapper({ header, rows, id, className = '' }: ITableWrapper){
       <TableBody key="tableBody" id={id} />
     </table>
   </TableContext.Provider>
-};
+}
 
 export default TableWrapper;
