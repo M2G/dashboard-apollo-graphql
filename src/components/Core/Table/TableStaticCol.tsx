@@ -16,7 +16,7 @@ interface ITableStaticCol {
   label?: string | undefined;
 }
 
-function TableStaticCol({ id, label, actions }: ITableStaticCol) {
+function TableStaticCol({ id, label, actions }: ITableStaticCol): JSX.Element {
   return <div className="tableStaticCol">
       <div className="ml-3 actions">
         <div className="labelHandler">

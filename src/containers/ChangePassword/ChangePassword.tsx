@@ -1,23 +1,23 @@
-/*eslint-disable*/
 import { useCallback, useContext } from 'react';
 import ChangePasswordForm from 'components/ChangePassordForm';
 import { INITIAL_VALUES } from 'components/ChangePassordForm/constants';
 import { AuthContext } from 'AuthContext';
 import { useUpdateUserMutation } from 'modules/graphql/generated';
 
-function ChangePassword() {
-  const { userData } = useContext(AuthContext);
+function ChangePassword(): JSX.Element {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const { userData: { _id } } = useContext(AuthContext);
   const [changePassword] = useUpdateUserMutation();
   const handleSubmit = useCallback(async (formData: any) => {
     await changePassword(
       {
         variables: {
-          id: userData?._id,
-          ...formData
-        }
-      }
+          id: _id,
+          ...formData,
+        },
+      },
     );
-  }, []);
+  }, [changePassword, _id]);
 
   return <ChangePasswordForm initialValues={INITIAL_VALUES} onSubmit={handleSubmit} />;
 }

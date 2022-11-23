@@ -3,7 +3,7 @@ import Pagination from "components/Core/Pagination/Pagination";
 import PageSize from "components/Core/Pagination/PageSize";
 import TableWrapper from 'components/Core/Table';
 
-function List({ id, header, rows, data, count, setCurrentPage, setCurrentPageSize, currentPageSize, currentPage }: any) {
+function List({ id, header, rows, data, count, setCurrentPage, setCurrentPageSize, currentPageSize, currentPage }: any): JSX.Element {
 
   console.log('List List List', { setCurrentPage, setCurrentPageSize, currentPage, currentPageSize });
 

@@ -6,7 +6,7 @@ interface IBackground {
   show: boolean;
 }
 
-function Background({ show, setIsOpened }: IBackground) {
+function Background({ show, setIsOpened }: IBackground): JSX.Element {
   return <div aria-hidden="true" className={classnames(styles.background, show ? styles.active : '')} onClick={() => setIsOpened(false)} />;
 }
 

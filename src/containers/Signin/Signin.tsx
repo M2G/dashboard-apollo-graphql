@@ -6,7 +6,7 @@ import { useSigninMutation } from 'modules/graphql/generated';
 import SiginForm from 'components/SigninForm';
 import { INITIAL_VALUES } from './constants';
 
-function Signin() {
+function Signin(): JSX.Element {
   const { activateAuth }: any = useContext(AuthContext);
   const [signin] = useSigninMutation({
     onCompleted: ({ signin }: { signin:  string; }) => activateAuth(signin)
