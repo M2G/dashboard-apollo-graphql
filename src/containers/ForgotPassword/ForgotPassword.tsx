@@ -9,7 +9,7 @@ import {
 
 const { ERROR_TEXT_REQUIRED_EMAIL } = ERROR_TEXT_REQUIRED;
 
-function ForgotPassword({ initialValues, onSubmit }: any) {
+function ForgotPassword({ initialValues, onSubmit }: any): JSX.Element {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
     setFieldValue(setFieldName, value);
 

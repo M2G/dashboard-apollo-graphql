@@ -1,4 +1,4 @@
-function ErrorFallback({ error, componentStack, resetErrorBoundary }: any) {
+function ErrorFallback({ error, componentStack, resetErrorBoundary }: any): JSX.Element {
   return <div role="alert">
       <p>Something went wrong:</p>
       <pre>{error.message}</pre>

@@ -1,7 +1,5 @@
-/*eslint-disable*/
-import { useContext } from 'react';
+import { useContext, useCallback } from 'react';
 import { AuthContext } from 'AuthContext';
-import { useCallback } from 'react';
 import { useSigninMutation } from 'modules/graphql/generated';
 import SiginForm from 'components/SigninForm';
 import { INITIAL_VALUES } from './constants';
@@ -9,8 +7,8 @@ import { INITIAL_VALUES } from './constants';
 function Signin(): JSX.Element {
   const { activateAuth }: any = useContext(AuthContext);
   const [signin] = useSigninMutation({
-    onCompleted: ({ signin }: { signin:  string; }) => activateAuth(signin)
-  } as any);
+    onCompleted: ({ signin: signinData }: { signin: string }) => activateAuth(signinData),
+  });
 
   const handleSubmit = useCallback(async (formData: any) => {
     await signin(
@@ -18,10 +16,10 @@ function Signin(): JSX.Element {
         variables: {
           email: formData.email,
           password: formData.password,
-        }
-      }
+        },
+      },
     );
-  }, []);
+  }, [signin]);
 
   return <SiginForm initialValues={INITIAL_VALUES} onSubmit={handleSubmit} />;
 }

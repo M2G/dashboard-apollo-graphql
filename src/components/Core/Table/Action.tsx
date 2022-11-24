@@ -10,7 +10,7 @@ interface IAction {
   }];
 }
 
-function Action({ actions }: IAction): JSX.Element[] | undefined {
+function Action({ actions }: IAction): JSX.Element[] | null {
   return actions?.map(({
  id, action, icon, iconType = 'fas', name, family,
 }: any) =>

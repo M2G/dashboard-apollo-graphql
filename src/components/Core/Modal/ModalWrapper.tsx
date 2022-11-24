@@ -22,7 +22,7 @@ interface IModalWrapper {
   children: any;
 }
 
-function Modal({ id, isShowing, hide, title, onConfirm, children }: IModal) {
+function Modal({ id, isShowing, hide, title, onConfirm, children }: IModal): JSX.Element | null {
   return isShowing ? (
     <Portal id={id}>
       <div className={styles.overlay}>
@@ -50,7 +50,7 @@ function Modal({ id, isShowing, hide, title, onConfirm, children }: IModal) {
   ) : null;
 }
 
-function ModalWrapper({ id, isShowing, hide, title, onConfirm, children }: IModalWrapper) {
+function ModalWrapper({ id, isShowing, hide, title, onConfirm, children }: IModalWrapper): JSX.Element {
   return <Modal id={id} isShowing={isShowing} hide={hide} title={title} onConfirm={onConfirm}>{children}</Modal>
 }
 

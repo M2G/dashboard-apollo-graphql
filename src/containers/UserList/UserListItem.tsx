@@ -2,7 +2,7 @@
 import DateCell from 'components/Core/Table/DateCell';
 import TableStaticCol from 'components/Core/Table/TableStaticCol';
 
-const userListItem = ({
+function userListItem({
   id: rowId,
   user,
   label,
@@ -10,7 +10,7 @@ const userListItem = ({
   onDelete,
   canDelete,
   canEdit,
-}: any) => {
+}: any): ({ display: JSX.Element } | { display: any; value: any } | { display: JSX.Element; value: Date })[] {
   const id = `user__row__${rowId}__${user._id}`;
 
   const actions = [];
@@ -68,6 +68,6 @@ const userListItem = ({
       value: new Date(user?.modified_at),
     },
   ];
-};
+}
 
 export default userListItem;
