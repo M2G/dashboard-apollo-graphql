@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import { createContext, useState } from 'react';
+import { createContext, useState, useMemo } from 'react';
 
 import jwt_decode from "jwt-decode";
 import {
@@ -21,20 +21,19 @@ function Provider({ children }: any) {
     isAuth,
     userData: userData ? JSON.parse(userData) : null,
     activateAuth: (token: string) => {
-
       const decodedToken: {
         email: string;
         _id: string;
       } = jwt_decode(token) || {};
 
-      console.log('decodedToken', decodedToken)
+      console.log('decodedToken', decodedToken);
 
-      const userData = {
+      const user = {
         email: decodedToken.email,
         _id: decodedToken._id,
       };
-      setUserStorage(JSON.stringify(userData));
-      setUserData(JSON.stringify(userData));
+      setUserStorage(JSON.stringify(user));
+      setUserData(JSON.stringify(user));
       setAuthStorage(token);
       setIsAuth(true);
     },
@@ -46,11 +45,13 @@ function Provider({ children }: any) {
     },
   };
 
-  console.log('AuthContext value', value)
+  console.log('AuthContext value', value);
 
-  return <AuthContext.Provider value={value}>
+  const authValue = useMemo(() => value, [value]);
+
+  return <AuthContext.Provider value={authValue}>
       {children}
-    </AuthContext.Provider>
+    </AuthContext.Provider>;
 }
 
-export default { Provider, Consumer: AuthContext.Consumer };
+export default { Consumer: AuthContext.Consumer, Provider };
