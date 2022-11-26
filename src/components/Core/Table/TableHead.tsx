@@ -6,7 +6,7 @@ interface ITableHead {
   id: number | string;
 }
 
-function TableHead({ id }: ITableHead) {
+function TableHead({ id }: ITableHead): JSX.Element {
   const { header, handleSort, sortData } = useContext(TableContext);
   return <thead className="c-table-head">
   <tr>

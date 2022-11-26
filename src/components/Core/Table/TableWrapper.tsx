@@ -14,7 +14,7 @@ interface ITableWrapper {
   className?: string;
 }
 
-function TableWrapper({ header, rows, id, className = '' }: ITableWrapper){
+function TableWrapper({ header, rows, id, className = '' }: ITableWrapper): JSX.Element {
 
   console.log('rows rows', rows);
 
@@ -63,9 +63,7 @@ function TableWrapper({ header, rows, id, className = '' }: ITableWrapper){
     });
   }, [header]);
 
-  return <TableContext.Provider
-    value={{ header, handleSort, sortData, getSortedTable }}
-  >
+  return <TableContext.Provider value={{ header, handleSort, sortData, getSortedTable }}>
     <table className={classnames(styles.table, "c-table table table-bordered", className)}>
       <TableHead key="tableHead" id={id} />
       <TableBody key="tableBody" id={id} />

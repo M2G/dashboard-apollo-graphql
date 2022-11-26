@@ -18,7 +18,7 @@ interface IForm {
   onSubmit: (value: any) => Record<any, any>;
 }
 
-function ProfilForm({ initialValues, onSubmit }: IForm) {
+function ProfilForm({ initialValues, onSubmit }: IForm): JSX.Element {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
     setFieldValue(setFieldName, value);
 
