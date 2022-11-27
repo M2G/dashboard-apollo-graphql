@@ -8,13 +8,7 @@ describe('test DateCell', () => {
     const onConfirm = jest.fn();
 
     render(
-      <ModalWrapper
-        id="test"
-        title="test"
-        isShowing
-        hide={onClose}
-        onConfirm={onConfirm}
-      >
+      <ModalWrapper title="test" isShowing hide={onClose} onConfirm={onConfirm}>
         <div>Test</div>
       </ModalWrapper>
     );
@@ -24,7 +18,9 @@ describe('test DateCell', () => {
     const modalWrapper: any = document.body?.querySelector('.c-modal-wrapper');
     const modalContainer: any = document.body?.querySelector('.c-modal');
     const modalHeader: any = document.body?.querySelector('.modal-header');
-    const closeButton: any = document.body?.querySelector('.modal-close-button');
+    const closeButton: any = document.body?.querySelector(
+      '.modal-close-button'
+    );
 
     expect(overlay).toBeInTheDocument();
     expect(modalWrapper).toBeInTheDocument();
@@ -43,11 +39,11 @@ describe('test DateCell', () => {
 
     render(
       <ModalWrapper
-        id="test"
         title="test"
         isShowing={false}
         onConfirm={onConfirm}
-        hide={onClose}>
+        hide={onClose}
+      >
         <div>Test</div>
       </ModalWrapper>
     );
@@ -56,7 +52,9 @@ describe('test DateCell', () => {
     const modalWrapper: any = document.body?.querySelector('.c-modal-wrapper');
     const modalContainer: any = document.body?.querySelector('.c-modal');
     const modalHeader: any = document.body?.querySelector('.modal-header');
-    const closeButton: any = document.body?.querySelector('.modal-close-button');
+    const closeButton: any = document.body?.querySelector(
+      '.modal-close-button'
+    );
 
     expect(overlay).toBeNull();
     expect(modalWrapper).toBeNull();

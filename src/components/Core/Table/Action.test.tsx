@@ -2,7 +2,7 @@
 import { render } from '@testing-library/react';
 import Action from './Action';
 
-const action: any = [
+const actions: any = [
   {
     action: () => {},
     family: 'fa-edit',
@@ -10,13 +10,13 @@ const action: any = [
     iconType: 'fas',
     id: 'test',
     label: 'click',
-    name: "test",
-  },
+    name: 'test'
+  }
 ];
 
 describe('test action', () => {
   test('should render', () => {
-    const { container }: any = render(<Action actions={action} />);
+    const { container }: any = render(Action({ actions }) as any);
     const div = container.querySelector('#test');
     const fa = container.querySelector('.fa-edit');
     expect(div).toBeInTheDocument();

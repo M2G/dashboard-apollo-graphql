@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 interface IIcon {
   name: any;
@@ -11,7 +11,12 @@ interface IIcon {
 function Icon({
  name = '', family = '', className = '', style = {},
 }: IIcon) {
-  return <i style={style} className={classnames(family, family ? `${family}-${name}` : name, className)} />;
+  return (
+    <i
+      style={style}
+      className={clsx(family, family ? `${family}-${name}` : name, className)}
+    />
+  );
 }
 
 export default Icon;

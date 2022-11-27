@@ -1,25 +1,25 @@
 import type { ReactNode, ReactPortal } from 'react';
 import {
-  memo, useEffect, useRef, useState,
+ memo, useEffect, useRef, useState,
 } from 'react';
 import { createPortal } from 'react-dom';
-import {
-  oneOfType, func, element, string,
-} from 'prop-types';
 
 interface IPortal {
-  readonly id?: string;
+  readonly id?: string | undefined;
   readonly children: ReactNode;
 }
 
-const Portal = ({ id, children }: IPortal): ReactPortal | null => {
-  const el = useRef(id ? document.getElementById(id) : document.createElement('div'));
+function Portal({ id, children }: IPortal): ReactPortal | null {
+  const el = useRef(
+    document.getElementById(id as any) ?? document.createElement('div'),
+  );
   const [dynamic] = useState(!el?.current?.parentElement);
   useEffect(() => {
     if (dynamic) {
       if (id && el?.current) {
         el.current.id = id;
       }
+
       document.body.appendChild(el.current as any);
     }
     return () => {
@@ -29,13 +29,6 @@ const Portal = ({ id, children }: IPortal): ReactPortal | null => {
     };
   }, [dynamic, id]);
   return el?.current && createPortal(children, el.current);
-};
-
-Portal.propTypes = {
-  children: oneOfType([
-    func, element,
-  ]).isRequired,
-  id: string,
-};
+}
 
 export default memo(Portal);

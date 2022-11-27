@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import { useEffect, useMemo, useState, createContext } from 'react';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import TableHead from 'components/Core/Table/TableHead';
 import TableBody from 'components/Core/Table/TableBody';
 import styles from './Table.module.scss';
@@ -14,8 +14,12 @@ interface ITableWrapper {
   className?: string;
 }
 
-function TableWrapper({ header, rows, id, className = '' }: ITableWrapper): JSX.Element {
-
+function TableWrapper({
+  header,
+  rows,
+  id,
+  className = ''
+}: ITableWrapper): JSX.Element {
   console.log('rows rows', rows);
 
   const [sortData, setSortData] = useState<any>(null);
@@ -24,7 +28,7 @@ function TableWrapper({ header, rows, id, className = '' }: ITableWrapper): JSX.
     setSortData({
       index,
       direction: sortDirection,
-      type,
+      type
     } as any);
 
   const getSortedTable = useMemo(() => {
@@ -63,12 +67,22 @@ function TableWrapper({ header, rows, id, className = '' }: ITableWrapper): JSX.
     });
   }, [header]);
 
-  return <TableContext.Provider value={{ header, handleSort, sortData, getSortedTable }}>
-    <table className={classnames(styles.table, "c-table table table-bordered", className)}>
-      <TableHead key="tableHead" id={id} />
-      <TableBody key="tableBody" id={id} />
-    </table>
-  </TableContext.Provider>
+  return (
+    <TableContext.Provider
+      value={{ header, handleSort, sortData, getSortedTable }}
+    >
+      <table
+        className={clsx(
+          styles.table,
+          'c-table table table-bordered',
+          className
+        )}
+      >
+        <TableHead key="tableHead" id={id} />
+        <TableBody key="tableBody" id={id} />
+      </table>
+    </TableContext.Provider>
+  );
 }
 
 export default TableWrapper;

@@ -1,9 +1,9 @@
 /*eslint-disable*/
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ROUTER_PATH from '../../constants/RouterPath';
 
-function Navbar() {
+function Navbar(): JSX.Element {
   const { i18n } = useTranslation();
   const [state, setState] = useState<boolean>(false);
   return (
@@ -33,11 +33,17 @@ function Navbar() {
               </a>
             </li>
           </ul>
-          <button type="button" className="me-2 btn btn-light" onClick={() => {
-            setState(!state);
-            if (state) return i18n?.changeLanguage("fr");
-            i18n?.changeLanguage("en");
-          }}>{state ? 'fr' : 'en'}</button>
+          <button
+            type="button"
+            className="me-2 btn btn-light"
+            onClick={() => {
+              setState(!state);
+              if (state) return i18n?.changeLanguage('fr');
+              i18n?.changeLanguage('en');
+            }}
+          >
+            {state ? 'fr' : 'en'}
+          </button>
         </div>
       </div>
     </nav>

@@ -1,6 +1,6 @@
 /*eslint-disable*/
+import clsx from 'clsx';
 import styles from './Table.module.scss';
-import classnames from 'classnames';
 
 interface ITableHeaderCell {
   label: any;
@@ -13,27 +13,34 @@ function TableHeaderCell({
   label,
   onSort,
   isSortable,
-  currentSortedData,
+  currentSortedData
 }: ITableHeaderCell) {
-
-  const onSortClick = () => onSort(
+  const onSortClick = () =>
+    onSort(
       !currentSortedData || currentSortedData.direction === 'ascending'
         ? 'descending'
         : 'ascending'
     );
 
   const sortedClass =
-    currentSortedData?.direction === styles.ascending ? styles.ascending : styles.descending;
+    currentSortedData?.direction === styles.ascending
+      ? styles.ascending
+      : styles.descending;
 
-  return <th className={styles.th}>
+  return (
+    <th className={styles.th}>
       {label}
       {isSortable && (
         <button
           onClick={onSortClick}
-          className={classnames(styles.button, `sort-icon ${currentSortedData ? sortedClass : ''}`)}
+          className={clsx(
+            styles.button,
+            `sort-icon ${currentSortedData ? sortedClass : ''}`
+          )}
         />
       )}
     </th>
+  );
 }
 
 export default TableHeaderCell;

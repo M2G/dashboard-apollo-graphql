@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import clsx from 'clsx';
 import styles from './Background.module.scss';
 
 interface IBackground {
@@ -7,7 +7,13 @@ interface IBackground {
 }
 
 function Background({ show, setIsOpened }: IBackground): JSX.Element {
-  return <div aria-hidden="true" className={classnames(styles.background, show ? styles.active : '')} onClick={() => setIsOpened(false)} />;
+  return (
+    <div
+      aria-hidden="true"
+      className={clsx(styles.background, show ? styles.active : '')}
+      onClick={() => setIsOpened(false)}
+    />
+  );
 }
 
 export default Background;
