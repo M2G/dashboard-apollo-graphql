@@ -7,14 +7,14 @@ describe('test DateCell', () => {
     const onClose = jest.fn();
 
     const { container }: any = render(
-      <SidebarWrapper
-        isOpened
-        setIsOpened={onClose}>
+      <SidebarWrapper isOpened setIsOpened={onClose}>
         <div>Test</div>
-      </SidebarWrapper>,
+      </SidebarWrapper>
     );
 
-    const backgroundIsActive: any = container?.querySelector('.background.is-active');
+    const backgroundIsActive: any = container?.querySelector(
+      '.background.is-active'
+    );
     const sidebarIsActive: any = container?.querySelector('.sidebar.is-active');
     const button = screen.getByRole('button');
 
@@ -31,10 +31,9 @@ describe('test DateCell', () => {
     const onClose = jest.fn();
 
     const { container }: any = render(
-      <SidebarWrapper
-        setIsOpened={onClose}>
+      <SidebarWrapper setIsOpened={onClose}>
         <div>Test</div>
-      </SidebarWrapper>,
+      </SidebarWrapper>
     );
 
     const backgroundIsActive: any = container?.querySelector('.background');

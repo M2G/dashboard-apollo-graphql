@@ -9,21 +9,23 @@ describe('test TableStaticCol', () => {
       action: () => {},
       icon: 'fa-edit',
       id: `test__edit`,
-      label: 'Edit',
+      label: 'Edit'
     });
     const tableStaticColProps: any = {
       actions,
       id: 'test_id',
-      label: 'test',
+      label: 'test'
     };
 
-    const { container } = render(<TableStaticCol
-      actions={tableStaticColProps.actions}
-      id={tableStaticColProps.id}
-      label={tableStaticColProps.label}
-    />);
+    const { container } = render(
+      <TableStaticCol
+        actions={tableStaticColProps.actions}
+        id={tableStaticColProps.id}
+        label={tableStaticColProps.label}
+      />
+    );
 
-    expect(container).toHaveTextContent("test");
+    expect(container).toHaveTextContent('test');
     const tableStaticCol = container.querySelector('.tableStaticCol');
     const action = container.querySelector('.actions');
     const labelHandler = container.querySelector('.labelHandler');
@@ -45,8 +47,7 @@ describe('test TableStaticCol', () => {
   });
 
   test('should not render', () => {
-
- /*   const args = {
+    /*   const args = {
       currentSortedData: null,
       isSortable: false,
       label: "",

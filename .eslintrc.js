@@ -64,6 +64,7 @@ module.exports = {
     "import/no-unresolved": 0,
     "import/prefer-default-export": 0,
 
+    "react/require-default-props": 1,
     "lines-between-class-members": 0,
     "multiline-comment-style": 0,
     "react/jsx-uses-react": 0,
@@ -75,6 +76,7 @@ module.exports = {
 
     "jsx-a11y/label-has-associated-control": 0,
 
+    "@typescript-eslint/no-confusing-void-expression": 1,
     "@typescript-eslint/prefer-readonly-parameter-types": 1,
     "@typescript-eslint/no-unsafe-argument": 1,
     "@typescript-eslint/ban-types": 1,

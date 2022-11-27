@@ -10,7 +10,9 @@
     display: table;
   }
 
-  &:after { clear: both; }
+  &:after {
+    clear: both;
+  }
 }
 
 .u-clearfix {

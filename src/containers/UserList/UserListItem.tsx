@@ -9,8 +9,12 @@ function userListItem({
   onEdit,
   onDelete,
   canDelete,
-  canEdit,
-}: any): ({ display: JSX.Element } | { display: any; value: any } | { display: JSX.Element; value: Date })[] {
+  canEdit
+}: any): (
+  | { display: JSX.Element }
+  | { display: any; value: any }
+  | { display: JSX.Element; value: Date }
+)[] {
   const id = `user__row__${rowId}__${user._id}`;
 
   const actions = [];
@@ -22,7 +26,7 @@ function userListItem({
       id: `${id}__edit`,
       action: () => {
         onEdit(user);
-      },
+      }
     });
   }
 
@@ -33,40 +37,40 @@ function userListItem({
       id: `${id}__delete`,
       action: () => {
         onDelete(user);
-      },
+      }
     });
   }
 
   const tableStaticColProps: any = {
     id,
     actions,
-    label,
+    label
   };
 
   return [
     {
-      display: <TableStaticCol {...tableStaticColProps} />,
+      display: <TableStaticCol {...tableStaticColProps} />
     },
     {
       display: user?.first_name,
-      value: user?.first_name,
+      value: user?.first_name
     },
     {
       display: user?.last_name,
-      value: user?.last_name,
+      value: user?.last_name
     },
     {
       display: user?.email,
-      value: user?.email,
+      value: user?.email
     },
     {
       display: <DateCell date={user?.created_at} />,
-      value: new Date(user?.created_at),
+      value: new Date(user?.created_at)
     },
     {
       display: <DateCell date={user?.modified_at} />,
-      value: new Date(user?.modified_at),
-    },
+      value: new Date(user?.modified_at)
+    }
   ];
 }
 

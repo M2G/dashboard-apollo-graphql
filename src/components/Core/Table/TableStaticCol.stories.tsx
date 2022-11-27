@@ -4,7 +4,7 @@ import TableStaticCol from './TableStaticCol';
 
 export default {
   title: 'TableStaticCol',
-  component: TableStaticCol,
+  component: TableStaticCol
 };
 
 const Template = (args: any) => <TableStaticCol {...args} />;
@@ -18,39 +18,39 @@ Default.args = {
       label: 'click',
       icon: 'pencil',
       id: getRandomId(),
-      action: () => {},
+      action: () => {}
     },
     {
       label: 'comment',
       icon: 'comment-text',
       id: getRandomId(),
-      action: () => {},
+      action: () => {}
     },
     {
       label: 'open in new',
       icon: 'open-in-new',
       id: getRandomId(),
-      action: () => {},
+      action: () => {}
     },
     {
       label: 'stop',
       icon: 'square',
       id: getRandomId(),
-      action: () => {},
+      action: () => {}
     },
     {
       label: 'delete',
       icon: 'trash',
       iconType: 'dripicons',
       id: getRandomId(),
-      action: () => {},
+      action: () => {}
     },
     {
       label: 'yolo',
       icon: 'plus',
       id: getRandomId(),
-      action: () => {},
-    },
+      action: () => {}
+    }
   ],
-  label: 'This is a block',
+  label: 'This is a block'
 };

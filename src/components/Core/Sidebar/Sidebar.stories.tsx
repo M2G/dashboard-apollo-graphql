@@ -5,22 +5,22 @@ import './index.scss';
 
 export default {
   component: SidebarWrapper,
-  title: 'SidebarWrapper',
+  title: 'SidebarWrapper'
 };
 
 function Template(args: any) {
   const [isOpened, setIsOpened] = useState(false);
 
-  console.log('isOpened', isOpened)
+  console.log('isOpened', isOpened);
 
-return <>
-  <button onClick={() => setIsOpened(!isOpened)}>OK</button>
-  <SidebarWrapper
-    isOpened={isOpened}
-    setIsOpened={setIsOpened}>
-    <div>Test</div>
-  </SidebarWrapper>
-</>
+  return (
+    <>
+      <button onClick={() => setIsOpened(!isOpened)}>OK</button>
+      <SidebarWrapper isOpened={isOpened} setIsOpened={setIsOpened}>
+        <div>Test</div>
+      </SidebarWrapper>
+    </>
+  );
 }
 
 export const Default: any = Template.bind({});

@@ -18,16 +18,15 @@ $_custom_teaser_min_height: 400px;
     display: block;
     &:hover,
     &:focus {
-
       color: $_color-grey-dark;
 
       .o-teaser__figure {
         &:before {
-          opacity: .25;
+          opacity: 0.25;
         }
       }
       .o-head__title {
-        opacity: .8;
+        opacity: 0.8;
       }
     }
   }
@@ -128,7 +127,7 @@ $_custom_teaser_min_height: 400px;
       margin-top: 2em;
     }
     .o-teaser__excerpt {
-      margin-bottom: .25em;
+      margin-bottom: 0.25em;
     }
     .o-head__surtitle {
       color: $_color-brand;
@@ -139,7 +138,7 @@ $_custom_teaser_min_height: 400px;
       font-size: 1em;
     }
 
-    font-size: .75em;
+    font-size: 0.75em;
   }
 
   .c-header & {

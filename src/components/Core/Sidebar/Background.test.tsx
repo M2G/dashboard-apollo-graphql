@@ -7,9 +7,11 @@ describe('test DateCell', () => {
     const setIsOpened = jest.fn();
     const { container }: any = render(
       <Background show setIsOpened={setIsOpened} />
-);
+    );
 
-    const backgroundIsActive: any = container?.querySelector('.background.is-active');
+    const backgroundIsActive: any = container?.querySelector(
+      '.background.is-active'
+    );
     expect(backgroundIsActive).toBeInTheDocument();
   });
 

@@ -22,7 +22,7 @@
 @each $breakpoint, $value in $_layout-breakpoints {
   @if $breakpoint == small {
     @each $suffix, $size in $_layout-columns {
-      .o-col--#{$suffix}  {
+      .o-col--#{$suffix} {
         width: $size;
       }
     }

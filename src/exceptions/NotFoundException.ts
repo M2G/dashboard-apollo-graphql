@@ -1,5 +1,5 @@
 class NotFoundException extends Error {
-  public constructor(msg = "404") {
+  public constructor(msg = '404') {
     super(msg);
 
     // Set the prototype explicitly.

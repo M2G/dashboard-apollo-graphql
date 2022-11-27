@@ -9,7 +9,7 @@ const token = authData ?? '';
 
 export default {
   GLOBAL_VAR: {
-    token,
+    token
   },
-  ROUTER_PATH,
+  ROUTER_PATH
 };

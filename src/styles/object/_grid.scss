@@ -2,60 +2,57 @@
 // GRID
 // ==========================================================================
 
-.o-zone
-{
-    padding: $_doc_line_base * 2 $_doc_line_base !important;
+.o-zone {
+  padding: $_doc_line_base * 2 $_doc_line_base !important;
 }
-.o-page
-{
-    width: 100%;
-    padding: $_doc_line_base * 4 $_doc_line_base !important;
+.o-page {
+  width: 100%;
+  padding: $_doc_line_base * 4 $_doc_line_base !important;
 
-    @include bp(large)
-    {
-        padding: $_doc_line_base $_doc_line_base !important;
-    }
+  @include bp(large) {
+    padding: $_doc_line_base $_doc_line_base !important;
+  }
 }
 
 .o-grid {
-    @include clearfix();
-    @include make-container();
-    @include bp(small) {
-        padding-top: $grid-gutter-width / 2;
+  @include clearfix();
+  @include make-container();
+  @include bp(small) {
+    padding-top: $grid-gutter-width / 2;
+  }
+
+  position: relative;
+
+  max-width: map-get($_layout-grid, width);
+
+  background-color: $_color-white;
+
+  .o-zone:not(.o-zone--advert) + .o-zone &,
+  & + & {
+    padding-top: 0;
+  }
+
+  .o-zone + .o-zone &.o-grid--section {
+    padding-top: $grid-gutter-width / 2;
+    .o-grid__row {
+      padding-bottom: $grid-gutter-width / 2;
     }
+  }
 
-    position: relative;
-
-    max-width: map-get($_layout-grid, width);
-
-    background-color: $_color-white;
-
-    .o-zone:not(.o-zone--advert) + .o-zone &,
-    & + & {
-        padding-top: 0;
-    }
-
-    .o-zone + .o-zone &.o-grid--section {
-        padding-top: $grid-gutter-width / 2;
-        .o-grid__row {
-            padding-bottom: $grid-gutter-width / 2;
-        }
-    }
-
-    &--transparent {
-        background-color: transparent;
-    }
+  &--transparent {
+    background-color: transparent;
+  }
 }
 
 .o-grid__row {
-    @include make-row();
+  @include make-row();
 
-    & & {
-        margin-right: 0;
-        margin-left: 0;
-    }
+  & & {
+    margin-right: 0;
+    margin-left: 0;
+  }
 
-    &--centered {
-        text-align: center;
-    }
+  &--centered {
+    text-align: center;
+  }
 }

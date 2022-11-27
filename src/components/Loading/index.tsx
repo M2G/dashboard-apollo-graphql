@@ -16,7 +16,7 @@ const Loading: React.FC<LoadingNS> = ({ isLoading }: boolean | any) => {
 Loading.displayName = 'Loading';
 
 Loading.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired
 };
 
 export default Loading;

@@ -5,21 +5,29 @@ import { AuthContext } from 'AuthContext';
 import { useUpdateUserMutation } from 'modules/graphql/generated';
 
 function ChangePassword(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const { userData: { _id } } = useContext(AuthContext);
+  const {
+    // eslint-disable-next-line
+    userData: { _id }
+  } = useContext(AuthContext);
   const [changePassword] = useUpdateUserMutation();
-  const handleSubmit = useCallback(async (formData: any) => {
-    await changePassword(
-      {
+  const handleSubmit = useCallback(
+    async (formData: any) => {
+      await changePassword({
         variables: {
           id: _id,
           ...formData,
         },
-      },
-    );
-  }, [changePassword, _id]);
+      });
+    },
+    [changePassword, _id],
+  );
 
-  return <ChangePasswordForm initialValues={INITIAL_VALUES} onSubmit={handleSubmit} />;
+  return (
+    <ChangePasswordForm
+      initialValues={INITIAL_VALUES}
+      onSubmit={handleSubmit}
+    />
+  );
 }
 
 export default ChangePassword;

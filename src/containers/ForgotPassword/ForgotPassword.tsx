@@ -31,40 +31,45 @@ function ForgotPassword({ initialValues, onSubmit }: any): JSX.Element {
 
   const renderForm = ({
  setFieldValue, values, errors, touched,
-}: any): any =>
-      <div className="form-signin">
-        <Form>
-          <h1 className="h3 mb-3 fw-normal">Forgot password</h1>
-          <div className="form-floating">
-            <Field
-              id="floatingInput"
-              name={INPUT_NAME.EMAIL}
-              className="form-control"
-              type="email"
-              onChange={onChange(setFieldValue, INPUT_NAME.EMAIL)}
-              placeholder={PLACEHOLDER_EMAIL}
-              value={values?.[INPUT_NAME.EMAIL]}
-              required
-            />
-            {touched[INPUT_NAME.EMAIL] && errors && errors[INPUT_NAME.EMAIL] ? (
-              <span className="error-text text-danger">{errors[INPUT_NAME.EMAIL]}</span>
-            ) : null}
-            <label htmlFor="floatingInput">{LABEL_EMAIL}</label>
-          </div>
-          <button className="w-100 btn btn-lg btn-primary mt-2" type="submit">
-            Submit
-          </button>
-        </Form>
-      </div>;
+}: any): any => (
+    <div className="form-signin">
+      <Form>
+        <h1 className="h3 mb-3 fw-normal">Forgot password</h1>
+        <div className="form-floating">
+          <Field
+            id="floatingInput"
+            name={INPUT_NAME.EMAIL}
+            className="form-control"
+            type="email"
+            onChange={onChange(setFieldValue, INPUT_NAME.EMAIL)}
+            placeholder={PLACEHOLDER_EMAIL}
+            value={values?.[INPUT_NAME.EMAIL]}
+            required
+          />
+          {touched[INPUT_NAME.EMAIL] && errors && errors[INPUT_NAME.EMAIL] ? (
+            <span className="error-text text-danger">
+              {errors[INPUT_NAME.EMAIL]}
+            </span>
+          ) : null}
+          <label htmlFor="floatingInput">{LABEL_EMAIL}</label>
+        </div>
+        <button className="w-100 btn btn-lg btn-primary mt-2" type="submit">
+          Submit
+        </button>
+      </Form>
+    </div>
+  );
 
-  return <Formik
+  return (
+    <Formik
       enableReinitialize
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validate={onValidate}
     >
       {renderForm}
-    </Formik>;
+    </Formik>
+  );
 }
 
 export default ForgotPassword;

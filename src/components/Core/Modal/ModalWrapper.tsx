@@ -4,7 +4,7 @@ import Portal from 'components/Core/Portal';
 import styles from './Modal.module.scss';
 
 interface IModal {
-  id: string | undefined;
+  id?: string | undefined;
   isShowing: boolean;
   hide: MouseEventHandler<HTMLButtonElement>;
   onConfirm: any;
@@ -13,7 +13,7 @@ interface IModal {
 }
 
 interface IModalWrapper {
-  id: string | undefined;
+  id?: string | undefined;
   isShowing: any;
   hide: any;
   title: any;
@@ -22,7 +22,7 @@ interface IModalWrapper {
 }
 
 function Modal({
-  id = '',
+  id,
   isShowing,
   hide,
   title,

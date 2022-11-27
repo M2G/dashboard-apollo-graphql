@@ -8,33 +8,37 @@ describe('test TableHeaderCell', () => {
     const args = {
       currentSortedData: null,
       isSortable: false,
-      label: "First name",
+      label: 'First name',
       onSort: () => {},
     };
 
-    const { container } = render(<TableHeaderCell
+    const { container } = render(
+      <TableHeaderCell
         label={args.label}
         isSortable={args.isSortable}
         currentSortedData={args.currentSortedData}
         onSort={args.onSort}
-      />);
-    expect(container).toHaveTextContent("First name");
+      />,
+    );
+    expect(container).toHaveTextContent('First name');
   });
 
   test('should not render', () => {
     const args = {
       currentSortedData: null,
       isSortable: false,
-      label: "",
+      label: '',
       onSort: () => {},
     };
 
-    const { container } = render(<TableHeaderCell
-      label={args.label}
-      isSortable={args.isSortable}
-      currentSortedData={args.currentSortedData}
-      onSort={args.onSort}
-    />);
-    expect(container).toHaveTextContent("");
+    const { container } = render(
+      <TableHeaderCell
+        label={args.label}
+        isSortable={args.isSortable}
+        currentSortedData={args.currentSortedData}
+        onSort={args.onSort}
+      />,
+    );
+    expect(container).toHaveTextContent('');
   });
 });

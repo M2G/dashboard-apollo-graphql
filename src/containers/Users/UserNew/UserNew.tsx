@@ -8,10 +8,7 @@ import {
   LABEL_EMAIL,
 } from './constants';
 
-const {
-  ERROR_TEXT_REQUIRED_EMAIL,
-  ERROR_TEXT_REQUIRED_PASSWORD,
-} = ERROR_TEXT_REQUIRED;
+const { ERROR_TEXT_REQUIRED_EMAIL, ERROR_TEXT_REQUIRED_PASSWORD } = ERROR_TEXT_REQUIRED;
 
 function UserNew({ onSubmit, initialValues }: any): any {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
@@ -38,8 +35,8 @@ function UserNew({ onSubmit, initialValues }: any): any {
   const handleSubmit = (values: object) => onSubmit({ ...values });
 
   const renderForm = ({
-                        setFieldValue, values, errors, touched,
-                      }: any): any =>
+ setFieldValue, values, errors, touched,
+}: any): any => (
     <Form className="mt-5">
       <div className="form-floating mb-3">
         <Field
@@ -52,9 +49,7 @@ function UserNew({ onSubmit, initialValues }: any): any {
           value={values[INPUT_NAME.EMAIL]}
           required
         />
-        {touched[INPUT_NAME.EMAIL]
-        && errors
-        && errors[INPUT_NAME.EMAIL] ? (
+        {touched[INPUT_NAME.EMAIL] && errors && errors[INPUT_NAME.EMAIL] ? (
           <span className="error-text">{errors[INPUT_NAME.EMAIL]}</span>
         ) : null}
         <label htmlFor="floatingEmail">{LABEL_EMAIL}</label>
@@ -70,7 +65,9 @@ function UserNew({ onSubmit, initialValues }: any): any {
           value={values[INPUT_NAME.PASSWORD]}
           required
         />
-        {touched[INPUT_NAME.PASSWORD] && errors && errors[INPUT_NAME.PASSWORD] ? (
+        {touched[INPUT_NAME.PASSWORD]
+        && errors
+        && errors[INPUT_NAME.PASSWORD] ? (
           <span className="error-text">{errors[INPUT_NAME.PASSWORD]}</span>
         ) : null}
         <label htmlFor="floatingPassword">{LABEL_PASSWORD}</label>
@@ -78,16 +75,19 @@ function UserNew({ onSubmit, initialValues }: any): any {
       <button className="btn btn-primary" type="submit">
         Save
       </button>
-    </Form>;
+    </Form>
+  );
 
-  return <Formik
+  return (
+    <Formik
       enableReinitialize
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validate={onValidate}
     >
       {renderForm}
-    </Formik>;
+    </Formik>
+  );
 }
 
 export default UserNew;

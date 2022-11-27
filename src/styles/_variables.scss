@@ -13,7 +13,7 @@ $_color-brand: $_color-red !default;
 $_color-links: $_color-black !default;
 $_color-golden: #e6d600 !default;
 $_color-thema: (
-        data: $_color-golden,
+  data: $_color-golden
 ) !default;
 
 $_color-backdrop: darken($_color-grey-dark, 10%) !default;
@@ -30,7 +30,8 @@ $_font-open-sans-cond: 'Open Sans Condensed', sans-serif !default;
 
 $_base-font-family: $_font-open-sans !default;
 $_base-font-family-condensed: $_font-open-sans-cond !default;
-$_base-font-family-headings: 'Proxima Nova Extra Condensed', $_base-font-family-condensed !default;
+$_base-font-family-headings: 'Proxima Nova Extra Condensed',
+  $_base-font-family-condensed !default;
 
 $_base-font-color: $_color-black !default;
 
@@ -52,7 +53,7 @@ $_base-tables-border-width: 1px;
 $_base-tables-border-color: $_color-grey-light;
 
 // GFX
-$_transition-default: all ease .25s !default;
+$_transition-default: all ease 0.25s !default;
 
 // ==========================================================================
 // Layout

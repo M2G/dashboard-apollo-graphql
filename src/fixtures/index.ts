@@ -1,9 +1,3 @@
-import {
-  actions,
-  moreActions,
-} from './action';
+import { actions, moreActions } from './action';
 
-export {
-  actions,
-  moreActions,
-};
+export { actions, moreActions };

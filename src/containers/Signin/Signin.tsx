@@ -7,19 +7,21 @@ import { INITIAL_VALUES } from './constants';
 function Signin(): JSX.Element {
   const { activateAuth }: any = useContext(AuthContext);
   const [signin] = useSigninMutation({
-    onCompleted: ({ signin: signinData }: { signin: string }) => activateAuth(signinData),
+    onCompleted: ({ signin: signinData }: { signin: string }) =>
+      activateAuth(signinData),
   });
 
-  const handleSubmit = useCallback(async (formData: any) => {
-    await signin(
-      {
+  const handleSubmit = useCallback(
+    async (formData: any) => {
+      await signin({
         variables: {
           email: formData.email,
           password: formData.password,
         },
-      },
-    );
-  }, [signin]);
+      });
+    },
+    [signin],
+  );
 
   return <SiginForm initialValues={INITIAL_VALUES} onSubmit={handleSubmit} />;
 }

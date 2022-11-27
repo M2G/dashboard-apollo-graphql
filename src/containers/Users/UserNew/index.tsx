@@ -6,10 +6,7 @@ function UserNew({ onSubmit }: any) {
     return { ...INITIAL_VALUES };
   }
 
-  return <UserNewView
-      initialValues={initialValues()}
-      onSubmit={onSubmit}
-    />;
+  return <UserNewView initialValues={initialValues()} onSubmit={onSubmit} />;
 }
 
 export default UserNew;

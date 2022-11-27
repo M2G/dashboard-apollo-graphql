@@ -7,8 +7,8 @@ describe('test DateCell', () => {
     render(
       <Portal id="123456">
         <div>test</div>
-      </Portal>,
-);
+      </Portal>
+    );
 
     const id: any = document.body?.querySelector('#123456');
 

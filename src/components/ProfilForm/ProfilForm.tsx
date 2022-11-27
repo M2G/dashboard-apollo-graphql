@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { FormikHelpers } from 'formik';
-import { Formik, Field, Form} from 'formik';
+import { Formik, Field, Form } from 'formik';
 
 import ROUTER_PATH from 'constants/RouterPath';
 import {
@@ -26,80 +26,92 @@ function ProfilForm({ initialValues, onSubmit }: IForm): JSX.Element {
     ({ target: { value = '' } }: any) =>
       setField(setFieldValue, setFieldName, value);
 
-  const handleSubmit: ((values: any, formikHelpers: FormikHelpers<any>) =>
-    any) & ((values: any) => any) = (values: any) => onSubmit(values);
+  const handleSubmit: ((
+    values: any,
+    formikHelpers: FormikHelpers<any>
+  ) => any) &
+    ((values: any) => any) = (values: any) => onSubmit(values);
 
   const renderForm = ({
  setFieldValue, values, errors, touched,
-}: any): any =>
-      <div className="form-signin">
-        <Form>
-          <h1 className="h3 mb-3 fw-normal">User Profil</h1>
-          <div className="form-floating">
-            <Field
-              id="floatingInput"
-              name={INPUT_NAME.FIRST_NAME}
-              className="form-control mb-2"
-              type="text"
-              onChange={onChange(setFieldValue, INPUT_NAME.FIRST_NAME)}
-              placeholder={PLACEHOLDER_FIRST_NAME}
-              value={values?.[INPUT_NAME.FIRST_NAME]}
-              required
-            />
-            {touched[INPUT_NAME.FIRST_NAME] && errors && errors[INPUT_NAME.FIRST_NAME] ? (
-              <span className="error-text">{errors[INPUT_NAME.FIRST_NAME]}</span>
-            ) : null}
-            <label htmlFor="floatingInput">{LABEL_FIRST_NAME}</label>
-          </div>
-          <div className="form-floating">
-            <Field
-              id="floatingInput"
-              name={INPUT_NAME.LAST_NAME}
-              className="form-control mb-2"
-              type="text"
-              onChange={onChange(setFieldValue, INPUT_NAME.LAST_NAME)}
-              placeholder={PLACEHOLDER_LAST_NAME}
-              value={values?.[INPUT_NAME.LAST_NAME]}
-              required
-            />
-            {touched[INPUT_NAME.LAST_NAME] && errors && errors[INPUT_NAME.LAST_NAME] ? (
-              <span className="error-text">{errors[INPUT_NAME.LAST_NAME]}</span>
-            ) : null}
-            <label htmlFor="floatingInput">{LABEL_LAST_NAME}</label>
-          </div>
-          <div className="form-floating">
-            <Field
-              id="floatingPassword"
-              className="form-control mb-2"
-              name={INPUT_NAME.EMAIL}
-              type="email"
-              onChange={onChange(setFieldValue, INPUT_NAME.EMAIL)}
-              placeholder={PLACEHOLDER_EMAIL}
-              value={values?.[INPUT_NAME.EMAIL]}
-              required
-            />
-            {touched[INPUT_NAME.EMAIL]
-            && errors
-            && errors[INPUT_NAME.EMAIL] ? (
-              <span className="error-text">{errors[INPUT_NAME.EMAIL]}</span>
-            ) : null}
-            <label htmlFor="floatingPassword">{LABEL_EMAIL}</label>
-          </div>
-          <button className="w-100 btn btn-lg btn-primary" type="submit">
-            Save
-          </button>
-        </Form>
-        <Link to={ROUTER_PATH.CHANGE_PASSWORD} className="mt-4 text-muted">Change Password</Link>
-        <Link to={ROUTER_PATH.HOME} className="mt-2 text-muted">Home</Link>
-      </div>;
+}: any): any => (
+    <div className="form-signin">
+      <Form>
+        <h1 className="h3 mb-3 fw-normal">User Profil</h1>
+        <div className="form-floating">
+          <Field
+            id="floatingInput"
+            name={INPUT_NAME.FIRST_NAME}
+            className="form-control mb-2"
+            type="text"
+            onChange={onChange(setFieldValue, INPUT_NAME.FIRST_NAME)}
+            placeholder={PLACEHOLDER_FIRST_NAME}
+            value={values?.[INPUT_NAME.FIRST_NAME]}
+            required
+          />
+          {touched[INPUT_NAME.FIRST_NAME]
+          && errors
+          && errors[INPUT_NAME.FIRST_NAME] ? (
+            <span className="error-text">{errors[INPUT_NAME.FIRST_NAME]}</span>
+          ) : null}
+          <label htmlFor="floatingInput">{LABEL_FIRST_NAME}</label>
+        </div>
+        <div className="form-floating">
+          <Field
+            id="floatingInput"
+            name={INPUT_NAME.LAST_NAME}
+            className="form-control mb-2"
+            type="text"
+            onChange={onChange(setFieldValue, INPUT_NAME.LAST_NAME)}
+            placeholder={PLACEHOLDER_LAST_NAME}
+            value={values?.[INPUT_NAME.LAST_NAME]}
+            required
+          />
+          {touched[INPUT_NAME.LAST_NAME]
+          && errors
+          && errors[INPUT_NAME.LAST_NAME] ? (
+            <span className="error-text">{errors[INPUT_NAME.LAST_NAME]}</span>
+          ) : null}
+          <label htmlFor="floatingInput">{LABEL_LAST_NAME}</label>
+        </div>
+        <div className="form-floating">
+          <Field
+            id="floatingPassword"
+            className="form-control mb-2"
+            name={INPUT_NAME.EMAIL}
+            type="email"
+            onChange={onChange(setFieldValue, INPUT_NAME.EMAIL)}
+            placeholder={PLACEHOLDER_EMAIL}
+            value={values?.[INPUT_NAME.EMAIL]}
+            required
+          />
+          {touched[INPUT_NAME.EMAIL] && errors && errors[INPUT_NAME.EMAIL] ? (
+            <span className="error-text">{errors[INPUT_NAME.EMAIL]}</span>
+          ) : null}
+          <label htmlFor="floatingPassword">{LABEL_EMAIL}</label>
+        </div>
+        <button className="w-100 btn btn-lg btn-primary" type="submit">
+          Save
+        </button>
+      </Form>
+      <Link to={ROUTER_PATH.CHANGE_PASSWORD} className="mt-4 text-muted">
+        Change Password
+      </Link>
+      <Link to={ROUTER_PATH.HOME} className="mt-2 text-muted">
+        Home
+      </Link>
+    </div>
+  );
 
-  return <Formik
+  return (
+    <Formik
       enableReinitialize
       initialValues={initialValues}
       onSubmit={handleSubmit}
     >
       {renderForm}
-    </Formik>;
+    </Formik>
+  );
 }
 
 export default ProfilForm;

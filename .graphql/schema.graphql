@@ -1,0 +1,77 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+input CreateUserInput {
+  _id: String
+  created_at: Int
+  email: String
+  first_name: String
+  last_name: String
+  modified_at: Int
+  password: String
+  username: String
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+  deleteUser(id: String!): User
+  signin(input: SigninInput): String!
+  signup(input: SignupInput): String!
+  updateUser(id: String!, input: CreateUserInput!): User
+  updateUserPassword(id: String!, input: updateUserPasswordInput!): User!
+}
+
+type PageInfo {
+  count: Int
+  next: Int
+  pages: Int
+  prev: Int
+}
+
+type Query {
+  getUser(id: String!): User
+  users(filters: String, page: Int, pageSize: Int): [Users!]
+}
+
+input SigninInput {
+  email: String!
+  password: String!
+}
+
+input SignupInput {
+  email: String!
+  password: String!
+}
+
+type User {
+  _id: String
+  created_at: Int
+  deleted_at: Int
+  email: String
+  first_name: String
+  last_connected_at: Int
+  last_name: String
+  modified_at: Int
+  password: String
+  reset_password_expires: String
+  reset_password_token: String
+  username: String
+}
+
+type Users {
+  pageInfo: PageInfo!
+  results: [User]
+}
+
+enum sortOrder {
+  ASC
+  DESC
+}
+
+input updateUserPasswordInput {
+  old_password: String!
+  password: String!
+  password_again: String!
+}

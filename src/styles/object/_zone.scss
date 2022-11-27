@@ -2,10 +2,9 @@
 // ZONE
 // ==========================================================================
 
-.o-zone
-{
-    padding: $_doc_line_base * 2 $_doc_line_base !important;
-    background-color: $_color-white;
+.o-zone {
+  padding: $_doc_line_base * 2 $_doc_line_base !important;
+  background-color: $_color-white;
 
-    @include clearfix();
+  @include clearfix();
 }

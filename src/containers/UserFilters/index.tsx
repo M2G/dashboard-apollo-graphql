@@ -7,10 +7,9 @@ function UserFilters({ onSubmit }: any) {
     return { ...INITIAL_VALUES };
   }
 
-  return <UserFiltersView
-      initialValues={initialValues()}
-      onSubmit={onSubmit}
-    />
+  return (
+    <UserFiltersView initialValues={initialValues()} onSubmit={onSubmit} />
+  );
 }
 
 export default UserFilters;

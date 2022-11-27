@@ -1,8 +1,6 @@
 /* eslint-disable */
 import { Suspense, lazy, useContext } from 'react';
-import { Routes, Route,
-  Navigate
-} from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import ROUTER_PATH from '../constants/RouterPath';
 
@@ -29,51 +27,51 @@ const Router = () => {
 
   console.log('isAuth userData', {
     isAuth,
-    userData,
-  })
+    userData
+  });
 
   return (
     <main>
       <Suspense fallback={<TopLineLoading />}>
         <Routes>
-          {isAuth && userData?._id &&
-            <Route
-              path={ROUTER_PATH.HOME}
-              element={<Home />}
-            />}
-          {isAuth && userData?._id &&
-            <Route
-              path={ROUTER_PATH.PROFIL}
-              element={<Profil />}
-            />}
-          {isAuth && userData?._id &&
+          {isAuth && userData?._id && (
+            <Route path={ROUTER_PATH.HOME} element={<Home />} />
+          )}
+          {isAuth && userData?._id && (
+            <Route path={ROUTER_PATH.PROFIL} element={<Profil />} />
+          )}
+          {isAuth && userData?._id && (
             <Route
               path={ROUTER_PATH.CHANGE_PASSWORD}
               element={<ChangePassword />}
-            />}
+            />
+          )}
 
-          {!isAuth && <Route
-            path={ROUTER_PATH.RESET_PASSWORD}
-            element={<ResetPassword />}
-          />}
-          {!isAuth && <Route
-            path={ROUTER_PATH.FORGOT_PASSWORD}
-            element={<ForgotPassword />}
-          />}
-          {!isAuth && <Route
-            path={ROUTER_PATH.SIGNIN}
-            element={<Signin />}
-          />}
-          {!isAuth && <Route
-            path={ROUTER_PATH.SIGNUP}
-            element={<Signup />}
-          />}
+          {!isAuth && (
+            <Route
+              path={ROUTER_PATH.RESET_PASSWORD}
+              element={<ResetPassword />}
+            />
+          )}
+          {!isAuth && (
+            <Route
+              path={ROUTER_PATH.FORGOT_PASSWORD}
+              element={<ForgotPassword />}
+            />
+          )}
+          {!isAuth && <Route path={ROUTER_PATH.SIGNIN} element={<Signin />} />}
+          {!isAuth && <Route path={ROUTER_PATH.SIGNUP} element={<Signup />} />}
 
-          {isAuth && <Route path="*" element={<Navigate to={ROUTER_PATH.HOME} replace />} />}
+          {isAuth && (
+            <Route
+              path="*"
+              element={<Navigate to={ROUTER_PATH.HOME} replace />}
+            />
+          )}
         </Routes>
       </Suspense>
     </main>
   );
-}
+};
 
 export default Router;

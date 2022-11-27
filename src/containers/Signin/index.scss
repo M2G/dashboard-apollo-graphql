@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   flex-direction: column;
   margin-bottom: 10px;
 
@@ -17,7 +17,8 @@
     flex-direction: column;
   }
 
-  input, button {
+  input,
+  button {
     width: map-get($_grid-breakpoints, sm) / 2;
   }
 

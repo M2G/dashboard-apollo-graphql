@@ -19,9 +19,7 @@ function UserEdit({ onSubmit, initialValues }: any): any {
 
   const handleSubmit = (values: object) => onSubmit(values);
 
-  const renderForm = ({
-                        setFieldValue, values,
-                      }: any): any =>
+  const renderForm = ({ setFieldValue, values }: any): any => (
     <Form className="mt-5">
       <div className="form-floating mb-3">
         <Field
@@ -62,15 +60,18 @@ function UserEdit({ onSubmit, initialValues }: any): any {
       <button className="btn btn-primary" type="submit">
         Save
       </button>
-    </Form>;
+    </Form>
+  );
 
-  return <Formik
+  return (
+    <Formik
       enableReinitialize
       initialValues={initialValues}
       onSubmit={handleSubmit}
     >
       {renderForm}
-    </Formik>;
+    </Formik>
+  );
 }
 
 export default UserEdit;

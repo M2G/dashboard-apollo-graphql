@@ -1,14 +1,14 @@
 /*eslint-disable*/
 import { createContext, useState, useMemo } from 'react';
 
-import jwt_decode from "jwt-decode";
+import jwt_decode from 'jwt-decode';
 import {
   clearAuthStorage,
   clearUserStorage,
   getAuthStorage,
   getUserStorage,
   setAuthStorage,
-  setUserStorage,
+  setUserStorage
 } from './services/storage';
 
 export const AuthContext = createContext<Record<any, any>>({});
@@ -30,7 +30,7 @@ function Provider({ children }: any) {
 
       const user = {
         email: decodedToken.email,
-        _id: decodedToken._id,
+        _id: decodedToken._id
       };
       setUserStorage(JSON.stringify(user));
       setUserData(JSON.stringify(user));
@@ -42,16 +42,16 @@ function Provider({ children }: any) {
       setUserStorage(JSON.stringify({}));
       clearUserStorage();
       clearAuthStorage();
-    },
+    }
   };
 
   console.log('AuthContext value', value);
 
   const authValue = useMemo(() => value, [value]);
 
-  return <AuthContext.Provider value={authValue}>
-      {children}
-    </AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>
+  );
 }
 
 export default { Consumer: AuthContext.Consumer, Provider };
