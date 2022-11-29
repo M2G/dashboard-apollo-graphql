@@ -1,11 +1,17 @@
-import type { ReactNode } from 'react';
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import clsx from 'clsx';
 import Background from './Background';
 import styles from './Sidebar.module.scss';
 
 interface ISidebar {
   show: boolean;
-  setIsOpened: (params: any) => {};
+  setIsOpened: Dispatch<SetStateAction<boolean>>;
+  children: ReactNode;
+}
+
+interface ISidebarWrapper {
+  isOpened: boolean;
+  setIsOpened: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
 }
 
@@ -18,7 +24,7 @@ function Sidebar({ show, setIsOpened, children }: ISidebar): JSX.Element {
           aria-hidden="true"
           role="button"
           className={styles.icon}
-          onClick={() => setIsOpened(false)}
+          onClick={() => { setIsOpened(false); }}
         >
           <span />
         </div>
@@ -28,7 +34,11 @@ function Sidebar({ show, setIsOpened, children }: ISidebar): JSX.Element {
   );
 }
 
-function SidebarWrapper({ isOpened, setIsOpened, children }: any): JSX.Element {
+function SidebarWrapper({
+  isOpened,
+  setIsOpened,
+  children,
+}: ISidebarWrapper): JSX.Element {
   return (
     <>
       <Background show={isOpened} setIsOpened={setIsOpened} />

@@ -12,3 +12,4 @@ src/stories
 .storybook
 index.ts
 src/modules
+modules/graphql/generated

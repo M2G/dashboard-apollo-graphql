@@ -19,7 +19,7 @@ const resources = {
     escapeValue: false,
   },
   keySeparator: false,
-  lng: 'en',
+  lng: 'fr',
   resources,
 });
 

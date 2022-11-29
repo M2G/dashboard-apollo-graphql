@@ -12,7 +12,7 @@ function Signin(): JSX.Element {
   });
 
   const handleSubmit = useCallback(
-    async (formData: any) => {
+    async (formData: { email: string; password: string }) => {
       await signin({
         variables: {
           email: formData.email,

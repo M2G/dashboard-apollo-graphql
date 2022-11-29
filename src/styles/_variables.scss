@@ -126,12 +126,3 @@ $_container-max-widths: (
 $grid-columns: map-get($_layout-grid, columns);
 $grid-width: map-get($_layout-grid, width);
 $grid-gutter-width: _em(map-get($_layout-grid, gutters));
-
-// COMPONENTS
-
-$_component_height_header: 137px;
-
-// CUSTOM
-
-$_custom_wide_layout_max_width: 1500px;
-$_custom_teaser_min_height: 370px;

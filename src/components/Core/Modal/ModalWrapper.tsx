@@ -70,7 +70,7 @@ function Modal({
 }
 
 function ModalWrapper({
-  id = undefined,
+  id,
   isShowing,
   hide,
   title,

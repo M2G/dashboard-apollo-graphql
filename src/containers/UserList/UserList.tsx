@@ -233,7 +233,6 @@ function UserList({
         <>
           <UserFilters onSubmit={searchTerms} />
           <List
-            // @ts-ignore
             id={id}
             header={header}
             rows={rows}

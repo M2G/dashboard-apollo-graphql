@@ -48,7 +48,7 @@ function Pagination({
               Prev
             </a>
           </li>
-          {displayNumbers.map((number) => (
+          {displayNumbers?.map((number) => (
             <li
               key={number}
               className={`page-item ${currentPage === number ? 'active' : ''}`}

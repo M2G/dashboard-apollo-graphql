@@ -28,10 +28,10 @@ describe('test DateCell', () => {
   });
 
   test('should not render', () => {
-    const onClose = jest.fn();
+    const onClose: any = jest.fn();
 
     const { container }: any = render(
-      <SidebarWrapper setIsOpened={onClose}>
+      <SidebarWrapper setIsOpened={onClose} isOpened>
         <div>Test</div>
       </SidebarWrapper>
     );
