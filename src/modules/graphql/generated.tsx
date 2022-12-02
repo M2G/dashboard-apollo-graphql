@@ -211,6 +211,17 @@ export type DeleteUserMutation = {
   deleteUser: { __typename: 'User'; _id: string | null } | null;
 };
 
+export type UserPartsFragment = {
+  __typename: 'User';
+  _id: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  created_at: number | null;
+  modified_at: number | null;
+  password: string | null;
+};
+
 export type GetUserListQueryVariables = Exact<{
   filters: InputMaybe<Scalars['String']>;
   pageSize: InputMaybe<Scalars['Int']>;
@@ -229,6 +240,7 @@ export type GetUserListQuery = {
       email: string | null;
       created_at: number | null;
       modified_at: number | null;
+      password: string | null;
     } | null> | null;
     pageInfo: {
       __typename: 'PageInfo';
@@ -258,6 +270,17 @@ export type GetUserQuery = {
   } | null;
 };
 
+export const UserPartsFragmentDoc = gql`
+  fragment UserParts on User {
+    _id
+    first_name
+    last_name
+    email
+    created_at
+    modified_at
+    password
+  }
+`;
 export const SigninDocument = gql`
   mutation Signin($email: String!, $password: String!) {
     signin(input: { email: $email, password: $password })
@@ -616,12 +639,7 @@ export const GetUserListDocument = gql`
   query GetUserList($filters: String, $pageSize: Int, $page: Int) {
     users(filters: $filters, pageSize: $pageSize, page: $page) {
       results {
-        _id
-        first_name
-        last_name
-        email
-        created_at
-        modified_at
+        ...UserParts
       }
       pageInfo {
         count
@@ -631,6 +649,7 @@ export const GetUserListDocument = gql`
       }
     }
   }
+  ${UserPartsFragmentDoc}
 `;
 
 /**
@@ -686,15 +705,10 @@ export type GetUserListQueryResult = ApolloReactCommon.QueryResult<
 export const GetUserDocument = gql`
   query GetUser($id: String!) {
     getUser(id: $id) {
-      _id
-      first_name
-      last_name
-      email
-      created_at
-      modified_at
-      password
+      ...UserParts
     }
   }
+  ${UserPartsFragmentDoc}
 `;
 
 /**

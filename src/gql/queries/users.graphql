@@ -1,12 +1,17 @@
+fragment UserParts on User {
+  _id
+  first_name
+  last_name
+  email
+  created_at
+  modified_at
+  password
+}
+
 query GetUserList($filters: String, $pageSize: Int, $page: Int) {
   users(filters: $filters, pageSize: $pageSize, page: $page) {
     results {
-      _id
-      first_name
-      last_name
-      email
-      created_at
-      modified_at
+      ...UserParts
     }
     pageInfo {
       count
@@ -19,12 +24,6 @@ query GetUserList($filters: String, $pageSize: Int, $page: Int) {
 
 query GetUser($id: String!) {
   getUser(id: $id) {
-    _id
-    first_name
-    last_name
-    email
-    created_at
-    modified_at
-    password
+    ...UserParts
   }
 }
