@@ -26,7 +26,7 @@ interface IForm {
   onSubmit: (value: any) => Record<any, any>;
 }
 
-function ChangePassordForm({ initialValues, onSubmit }: IForm) {
+function ChangePassordForm({ initialValues, onSubmit }: IForm): JSX.Element {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
     setFieldValue(setFieldName, value);
 
@@ -34,7 +34,7 @@ function ChangePassordForm({ initialValues, onSubmit }: IForm) {
     ({ target: { value = '' } }: any) =>
       setField(setFieldValue, setFieldName, value);
 
-  const onValidate = (values: object): {} => {
+  const onValidate = (values: object): Record<any, any> => {
     const errors = {};
 
     if (!values[INPUT_NAME.OLD_PASSWORD]) {
@@ -67,8 +67,11 @@ function ChangePassordForm({ initialValues, onSubmit }: IForm) {
     ((values: any) => any) = (values: any) => onSubmit(values);
 
   const renderForm = ({
- setFieldValue, values, errors, touched,
-}: any): any => (
+    setFieldValue,
+    values,
+    errors,
+    touched,
+  }: any): JSX.Element => (
     <div className="form-signin">
       <Form>
         <h1 className="h3 mb-3 fw-normal">Change password</h1>

@@ -28,7 +28,7 @@ function UserList({
   canEdit = false,
   canDelete = false,
   canAdd = false
-}: IUserList) {
+}: IUserList): JSX.Element {
   const { t } = useTranslation();
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);

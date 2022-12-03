@@ -5,7 +5,7 @@ import { useSigninMutation } from 'modules/graphql/generated';
 import { INITIAL_VALUES } from './constants';
 
 function Signup(): JSX.Element {
-  const { activateAuth }: any = useContext(AuthContext);
+  const { activateAuth } = useContext(AuthContext);
   const [signup] = useSigninMutation({
     onCompleted: ({ signup: signupData }: { signup: string }) =>
       activateAuth(signupData),
