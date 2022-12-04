@@ -6,7 +6,7 @@ interface IAction {
   actions: [
     {
       id: string;
-      action: (params: any) => {};
+      action: () => void;
       icon?: string;
     },
   ];

@@ -1,16 +1,13 @@
-/*eslint-disable*/
 import Action from 'components/Core/Table/Action';
+import type IconNames from 'components/Core/Icon/Icons.types';
 
-interface ITableStaticCol {
+export interface ITableStaticCol {
   actions: [
     {
       id: string;
-      action: (params: any) => {};
-      icon: string;
-      iconType: string;
-      name: string;
-      family: string;
-    }
+      action: () => void;
+      icon: IconNames | undefined;
+    },
   ];
   id?: string | undefined;
   label?: string | undefined;
@@ -20,9 +17,11 @@ function TableStaticCol({ id, label, actions }: ITableStaticCol): JSX.Element {
   return (
     <div className="tableStaticCol">
       <div className="ml-3 actions">
-        <div className="labelHandler">
-          <label id={id}>{label}</label>
-        </div>
+        {label && (
+          <div className="labelHandler">
+            <label id={id}>{label}</label>
+          </div>
+        )}
         <div className="actionBar">
           {actions?.length > 0 && Action({ actions })}
         </div>

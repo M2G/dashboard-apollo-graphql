@@ -1,6 +1,20 @@
 /*eslint-disable*/
 import DateCell from 'components/Core/Table/DateCell';
-import TableStaticCol from 'components/Core/Table/TableStaticCol';
+import TableStaticCol, {
+  ITableStaticCol
+} from 'components/Core/Table/TableStaticCol';
+import IconNames from 'components/Core/Icon/Icons.types';
+import { User } from 'graphql/generated';
+
+export interface IUserListItem {
+  id: string;
+  user: any;
+  label: any;
+  onEdit: (user: User) => any;
+  onDelete: (user: User) => any;
+  canDelete: boolean | undefined;
+  canEdit: boolean | undefined;
+}
 
 function userListItem({
   id: rowId,
@@ -10,9 +24,8 @@ function userListItem({
   onDelete,
   canDelete,
   canEdit
-}: any): (
+}: IUserListItem): (
   | { display: JSX.Element }
-  | { display: any; value: any }
   | { display: JSX.Element; value: Date }
 )[] {
   const id = `user__row__${rowId}__${user._id}`;
@@ -22,7 +35,7 @@ function userListItem({
   if (canEdit) {
     actions.push({
       label: 'Edit',
-      icon: 'fa-edit',
+      icon: IconNames.EDIT,
       id: `${id}__edit`,
       action: () => {
         onEdit(user);
@@ -33,7 +46,7 @@ function userListItem({
   if (canDelete) {
     actions.push({
       label: 'Delete',
-      icon: 'fa-remove',
+      icon: IconNames.DELETE,
       id: `${id}__delete`,
       action: () => {
         onDelete(user);
@@ -41,9 +54,10 @@ function userListItem({
     });
   }
 
-  const tableStaticColProps: any = {
-    id,
+  const tableStaticColProps: ITableStaticCol = {
+    // @ts-ignore
     actions,
+    id,
     label
   };
 
