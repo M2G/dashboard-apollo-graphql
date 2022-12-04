@@ -6,9 +6,12 @@ import { INITIAL_VALUES } from './constants';
 
 function Signin(): JSX.Element {
   const { activateAuth }: any = useContext(AuthContext);
-  const [signin] = useSigninMutation({
+  const [signin, { reset }] = useSigninMutation({
     onCompleted: ({ signin: signinData }: { signin: string }) =>
       activateAuth(signinData),
+    onError: () => {
+      reset();
+    },
   });
 
   const handleSubmit = useCallback(

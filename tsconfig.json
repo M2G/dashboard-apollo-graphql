@@ -43,6 +43,7 @@
     "baseUrl": "src",
     "paths": {
       "index": ["./index"],
+      "assets/*": ["./assets/*"],
       "utils": ["./utils/*"],
       "api": ["./api"],
       "gql": ["./gql/*"],

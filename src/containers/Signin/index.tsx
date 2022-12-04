@@ -1,6 +1,6 @@
 import Signin from './Signin';
 
-function SigninPage() {
+function SigninPage(): JSX.Element {
   return <Signin />;
 }
 

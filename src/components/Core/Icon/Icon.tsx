@@ -1,24 +1,17 @@
-import clsx from 'clsx';
+import type { SVGAttributes } from 'react';
+import { useMemo } from 'react';
+import Icons from 'components/Core/Icon/Icons';
+import type IconNames from 'components/Core/Icon/Icons.types';
 
-interface IIcon {
-  name: any;
-  family: any;
-  className: any;
-  style?: Record<any, any> | undefined;
+interface IconProps extends SVGAttributes<SVGElement> {
+  icon: IconNames;
+  size: number;
+  className: string;
 }
 
-function Icon({
-  name = '',
-  family = '',
-  className = '',
-  style = {},
-}: IIcon): JSX.Element {
-  return (
-    <i
-      style={style}
-      className={clsx(family, family ? `${family}-${name}` : name, className)}
-    />
-  );
+function Icon({ className, icon, size }: IconProps): JSX.Element {
+  const SVGIcon = useMemo(() => Icons[icon], [icon]);
+  return <SVGIcon width={size} height={size} className={className} />;
 }
 
 export default Icon;
