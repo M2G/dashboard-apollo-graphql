@@ -4,6 +4,7 @@ import { actions } from 'fixtures/action';
 import TableWrapper from './TableWrapper';
 import DateCell from './DateCell';
 import Icon from 'components/Core/Icon';
+import IconNames from 'components/Core/Icon/Icons.types';
 
 export default {
   title: 'TableWrapper',
@@ -104,7 +105,7 @@ const generateTable = (nbRows: number, nbCols: number) =>
         };
       if (indexCol === 3) {
         return {
-          display: <Icon name={'phone'} family={'mdi'} className={''} />,
+          display: <Icon icon={IconNames.DELETE} className={''} />,
           value: ''
         };
       }

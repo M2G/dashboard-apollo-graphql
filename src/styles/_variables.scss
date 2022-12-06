@@ -126,3 +126,20 @@ $_container-max-widths: (
 $grid-columns: map-get($_layout-grid, columns);
 $grid-width: map-get($_layout-grid, width);
 $grid-gutter-width: _em(map-get($_layout-grid, gutters));
+
+// Prefix for :root CSS variables
+
+$variable-prefix:             bs- !default; // Deprecated in v5.2.0 for the shorter `$prefix`
+$prefix:                      $variable-prefix !default;
+
+// Grid columns
+//
+// Set the number of columns and specify the width of the gutters.
+
+$grid-columns:                12 !default;
+$grid-gutter-width:           1.5rem !default;
+$grid-row-columns:            6 !default;
+
+// Container padding
+
+$container-padding-x: $grid-gutter-width !default;

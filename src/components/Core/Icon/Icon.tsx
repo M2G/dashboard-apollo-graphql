@@ -5,11 +5,13 @@ import type IconNames from 'components/Core/Icon/Icons.types';
 
 interface IconProps extends SVGAttributes<SVGElement> {
   icon: IconNames;
+  size?: number;
+  className?: string;
 }
 
-function Icon({ icon }: IconProps): JSX.Element {
-  const SVGIcon = useMemo(() => Icons[icon], [icon]);
-  return <SVGIcon />;
+function Icon({ className, icon, size }: IconProps): JSX.Element {
+  const SVGIcon = useMemo(() => Icons?.[icon], [icon]);
+  return <SVGIcon className={className} width={size} height={size} />;
 }
 
 export default Icon;

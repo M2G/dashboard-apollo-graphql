@@ -35,8 +35,6 @@ function SigninForm({ initialValues, onSubmit }: any) {
     return errors;
   };
 
-  const handleSubmit = (values: object) => onSubmit(values);
-
   const renderForm = ({
  setFieldValue, values, errors, touched,
 }: any): any => (
@@ -94,7 +92,7 @@ function SigninForm({ initialValues, onSubmit }: any) {
     <Formik
       enableReinitialize
       initialValues={initialValues}
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       validate={onValidate}
     >
       {renderForm}

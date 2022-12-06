@@ -11,7 +11,8 @@ import {
   useUpdateUserMutation,
   useCreateUserMutation,
   useDeleteUserMutation,
-  useGetUserListLazyQuery
+  useGetUserListLazyQuery,
+  Users
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
@@ -50,7 +51,7 @@ function UserList({
       });
   }, []);
 
-  const [{ results, pageInfo } = {} as any] = data?.users || [];
+  const [{ results, pageInfo } = {} as Users] = data?.users || [];
 
   console.log('{ loading, error, data }', { loading, error, data });
   console.log('results', results);
@@ -166,6 +167,7 @@ function UserList({
     () =>
       results?.map((user: any) =>
         userListItem({
+          //@ts-ignore
           id,
           user,
           onEdit,
@@ -205,29 +207,17 @@ function UserList({
 
   return (
     <>
-      <section className="py-5 text-center container">
-        <div className="row py-lg-5">
-          <div className="col-lg-6 col-md-8 mx-auto">
-            <h1 className="fw-light">{t('Welcome to React')}</h1>
-            <p className="lead text-muted">
-              Something short and leading about the collection below—its
-              contents, the creator, etc. Make it short and sweet, but not too
-              short so folks don’t simply skip over it entirely.
-            </p>
-            <p>
-              {canAdd && (
-                <button
-                  className="btn btn-primary my-2"
-                  type="submit"
-                  onClick={onAdd}
-                >
-                  Add user(s)
-                </button>
-              )}
-            </p>
-          </div>
-        </div>
-      </section>
+      <div>
+        {canAdd && (
+          <button
+            className="btn btn-primary my-2"
+            type="submit"
+            onClick={onAdd}
+          >
+            {t('Add user')}
+          </button>
+        )}
+      </div>
 
       {results?.length && !loading ? (
         <>
