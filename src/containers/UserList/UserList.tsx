@@ -1,5 +1,11 @@
 /*eslint-disable*/
-import { useMemo, useState, useCallback, useEffect } from 'react';
+import {
+  useMemo,
+  useState,
+  useCallback,
+  useEffect,
+  SetStateAction
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import userListItem from 'containers/UserList/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
@@ -12,7 +18,8 @@ import {
   useCreateUserMutation,
   useDeleteUserMutation,
   useGetUserListLazyQuery,
-  Users
+  Users,
+  User
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
@@ -87,13 +94,13 @@ function UserList({
     setDeletingUser(false);
   }, []);
 
-  const onEdit = useCallback((user: any) => {
+  const onEdit = useCallback((user: SetStateAction<boolean>) => {
     setEditingUser(user);
     setNewUser(false);
     setDeletingUser(false);
   }, []);
 
-  const onEditUser = useCallback(async (user: any): Promise<void> => {
+  const onEditUser = useCallback(async (user: User): Promise<void> => {
     await updateUser({
       variables: {
         ...user,
@@ -103,18 +110,18 @@ function UserList({
     onClose();
   }, []);
 
-  const onNewUser = useCallback(async (user: any): Promise<void> => {
+  const onNewUser = useCallback(async (user: User): Promise<void> => {
     await createUser({
       variables: {
         email: user?.email,
         password: user?.password
       } as any
     });
-    setNewUser(user);
+    setNewUser(user as unknown as SetStateAction<boolean>);
     onClose();
   }, []);
 
-  const onDeleteUser = useCallback(async (user: any) => {
+  const onDeleteUser = useCallback(async (user: User) => {
     await deleteUser({
       variables: {
         id: user?._id
@@ -165,7 +172,7 @@ function UserList({
 
   const rows = useMemo(
     () =>
-      results?.map((user: any) =>
+      results?.map((user: User) =>
         userListItem({
           //@ts-ignore
           id,

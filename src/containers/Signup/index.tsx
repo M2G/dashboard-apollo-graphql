@@ -1,6 +1,6 @@
 import Signup from './Signup';
 
-function SignupPage() {
+function SignupPage(): JSX.Element {
   return <Signup />;
 }
 
