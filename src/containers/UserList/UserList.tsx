@@ -1,31 +1,26 @@
 /*eslint-disable*/
-import {
-  useMemo,
-  useState,
-  useCallback,
-  useEffect,
-  SetStateAction
-} from 'react';
+import type { SetStateAction } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { IUserListItem } from 'containers/UserList/UserListItem';
 import userListItem from 'containers/UserList/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
 import UserNew from 'containers/Users/UserNew';
 import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
+import type { Users, User } from 'modules/graphql/generated';
 import {
   useUpdateUserMutation,
   useCreateUserMutation,
   useDeleteUserMutation,
-  useGetUserListLazyQuery,
-  Users,
-  User
+  useGetUserListLazyQuery
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
 
 interface IUserList {
-  id: number | string;
+  id: string;
   canEdit?: boolean;
   canDelete?: boolean;
   canAdd?: boolean;
@@ -52,8 +47,8 @@ function UserList({
       userFilter({
         variables: {
           filters: '',
-          pageSize: pageSize,
-          page: page
+          pageSize,
+          page
         }
       });
   }, []);
@@ -76,10 +71,10 @@ function UserList({
     onCompleted: refetch
   } as any);
 
-  const onDelete = useCallback((currentSource: any) => {
+  const onDelete = useCallback((user: User): void => {
     setNewUser(false);
     setEditingUser(false);
-    setDeletingUser(currentSource);
+    setDeletingUser(user as unknown as SetStateAction<boolean>);
   }, []);
 
   const onClose = useCallback(() => {
@@ -88,23 +83,23 @@ function UserList({
     setNewUser(false);
   }, []);
 
-  const onAdd = useCallback(() => {
+  const onAdd = useCallback((): void => {
     setNewUser(true);
     setEditingUser(false);
     setDeletingUser(false);
   }, []);
 
-  const onEdit = useCallback((user: SetStateAction<boolean>) => {
-    setEditingUser(user);
+  const onEdit = useCallback((user: User): void => {
+    setEditingUser(user as unknown as SetStateAction<boolean>);
     setNewUser(false);
     setDeletingUser(false);
   }, []);
 
   const onEditUser = useCallback(async (user: User): Promise<void> => {
-    await updateUser({
+    updateUser({
       variables: {
         ...user,
-        id: user?._id
+        id: user?._id ?? ''
       }
     });
     onClose();
@@ -113,41 +108,50 @@ function UserList({
   const onNewUser = useCallback(async (user: User): Promise<void> => {
     await createUser({
       variables: {
-        email: user?.email,
-        password: user?.password
-      } as any
-    });
-    setNewUser(user as unknown as SetStateAction<boolean>);
-    onClose();
-  }, []);
-
-  const onDeleteUser = useCallback(async (user: User) => {
-    await deleteUser({
-      variables: {
-        id: user?._id
+        email: user?.email ?? '',
+        password: user?.password ?? '',
+        first_name: user?.first_name ?? '',
+        last_name: user?.last_name ?? '',
+        username: user?.username ?? ''
       }
     });
+    setNewUser(user as any);
     onClose();
   }, []);
 
-  const searchTerms = useCallback((params: any) => {
-    userFilter({
-      variables: {
-        filters: params?.search,
-        pageSize: undefined,
-        page: undefined
-      } as any
-    });
-  }, []);
+  const onDeleteUser = useCallback(
+    async (user: User): Promise<void> => {
+      await deleteUser({
+        variables: {
+          id: user?._id ?? ''
+        }
+      });
+      onClose();
+    },
+    [deleteUser, onClose]
+  );
+
+  const searchTerms = useCallback(
+    async (params: any): Promise<void> => {
+      await userFilter({
+        variables: {
+          filters: params?.search || '',
+          page: undefined,
+          pageSize: undefined
+        } as any
+      });
+    },
+    [userFilter]
+  );
 
   const onChangePage = useCallback(
-    (params: any) => {
+    async (params: any) => {
       console.log('setPage', params);
       setPage(params);
-      userFilter({
+      await userFilter({
         variables: {
           filters: undefined,
-          pageSize: pageSize,
+          pageSize,
           page: params || page
         } as any
       });
@@ -156,14 +160,14 @@ function UserList({
   );
 
   const onChangePageSize = useCallback(
-    (params: any) => {
+    async (params: any) => {
       console.log('setPageSize', params);
       setPageSize(params);
-      userFilter({
+      await userFilter({
         variables: {
           filters: undefined,
           pageSize: params || pageSize,
-          page: page
+          page
         } as any
       });
     },
@@ -172,16 +176,15 @@ function UserList({
 
   const rows = useMemo(
     () =>
-      results?.map((user: User) =>
+      results?.map((user) =>
         userListItem({
-          //@ts-ignore
           id,
           user,
           onEdit,
           onDelete,
           canDelete,
           canEdit
-        })
+        } as IUserListItem)
       ),
     [
       id,
@@ -253,7 +256,9 @@ function UserList({
             title="Delete"
             hide={onClose}
             isShowing={deletingUser}
-            onConfirm={() => onDeleteUser(deletingUser)}
+            onConfirm={async () =>
+              onDeleteUser(deletingUser as unknown as User)
+            }
           >
             <p>Warning, you are about to perform an irreversible action</p>
           </ModalWrapper>

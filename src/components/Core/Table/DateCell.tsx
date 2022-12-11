@@ -1,5 +1,7 @@
+import type { Maybe } from 'graphql/generated';
+
 interface IDateCell {
-  date: number | undefined;
+  readonly date: Maybe<number> | undefined;
 }
 
 function DateCell({ date }: IDateCell): JSX.Element {
@@ -10,9 +12,7 @@ function DateCell({ date }: IDateCell): JSX.Element {
           <div>{new Date(date * 1000).toLocaleDateString()}</div>
           <div>{new Date(date * 1000).toLocaleTimeString()}</div>
         </>
-      )
-        : '-'
-      }
+      ) : null}
     </div>
   );
 }

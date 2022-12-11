@@ -64,6 +64,7 @@ module.exports = {
     "import/no-unresolved": 0,
     "import/prefer-default-export": 0,
 
+    "no-underscore-dangle": 1,
     "react/require-default-props": 1,
     "lines-between-class-members": 0,
     "multiline-comment-style": 0,

@@ -4,14 +4,14 @@ import TableStaticCol, {
   ITableStaticCol
 } from 'components/Core/Table/TableStaticCol';
 import IconNames from 'components/Core/Icon/Icons.types';
-import { User } from 'graphql/generated';
+import { Maybe, User } from 'graphql/generated';
 
 export interface IUserListItem {
   id: string;
-  user: any;
-  label: any;
-  onEdit: (user: User) => any;
-  onDelete: (user: User) => any;
+  user: User;
+  label: string;
+  onEdit: (user: User) => void;
+  onDelete: (user: User) => void;
   canDelete: boolean | undefined;
   canEdit: boolean | undefined;
 }
@@ -26,7 +26,10 @@ function userListItem({
   canEdit
 }: IUserListItem): (
   | { display: JSX.Element }
-  | { display: JSX.Element; value: Date }
+  | {
+      display: Maybe<number> | string | Date | undefined;
+      value: number | string | Date | null | undefined;
+    }
 )[] {
   const id = `user__row__${rowId}__${user._id}`;
 
@@ -34,10 +37,10 @@ function userListItem({
 
   if (canEdit) {
     actions.push({
-      label: 'Edit',
+      label: IconNames.EDIT,
       icon: IconNames.EDIT,
       id: `${id}__edit`,
-      action: () => {
+      action: (): void => {
         onEdit(user);
       }
     });
@@ -45,10 +48,10 @@ function userListItem({
 
   if (canDelete) {
     actions.push({
-      label: 'Delete',
+      label: IconNames.DELETE,
       icon: IconNames.DELETE,
       id: `${id}__delete`,
-      action: () => {
+      action: (): void => {
         onDelete(user);
       }
     });
@@ -79,11 +82,11 @@ function userListItem({
     },
     {
       display: <DateCell date={user?.created_at} />,
-      value: new Date(user?.created_at)
+      value: new Date(user?.created_at as number)
     },
     {
       display: <DateCell date={user?.modified_at} />,
-      value: new Date(user?.modified_at)
+      value: new Date(user?.modified_at as number)
     }
   ];
 }
