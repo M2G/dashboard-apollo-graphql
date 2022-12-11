@@ -13,3 +13,4 @@ src/stories
 index.ts
 src/modules
 modules/graphql/generated
+stylelint.config.js

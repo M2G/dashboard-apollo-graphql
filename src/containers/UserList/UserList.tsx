@@ -216,7 +216,7 @@ function UserList({
   console.log(':::::::::::::::::::::: page pageSize', { page, pageSize });
 
   return (
-    <>
+    <div>
       <div>
         {canAdd && (
           <button
@@ -266,7 +266,7 @@ function UserList({
       ) : (
         <div>No data</div>
       )}
-    </>
+    </div>
   );
 }
 
