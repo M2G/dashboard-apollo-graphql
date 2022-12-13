@@ -42,25 +42,46 @@ function Profil() {
     }
   });
 
-  const [updateUser, { data: updateProfil = {} }]: any =
-    useUpdateUserMutation();
-
-  const handleSubmit: any = useCallback(async (formData: any) => {
-    await updateUser({
-      variables: {
-        id: userData?._id,
-        ...formData
+  const [updateUser, { data: updateProfil }] = useUpdateUserMutation({
+    variables: {
+      id: '6325166e24edff96de6bf90c',
+      email: 'oliver.garcia@university.com',
+      first_name: 'Oliver222',
+      last_name: 'Garcia222',
+      username: 'test'
+    },
+    optimisticResponse: {
+      __typename: 'Mutation',
+      updateUser: {
+        __typename: 'User',
+        id: '6325166e24edff96de6bf90c',
+        first_name: 'Oliver222',
+        last_name: 'Garcia222',
+        email: 'oliver.garcia@university.com',
+        created_at: 1658098356,
+        modified_at: 1670890758
       }
-    });
-  }, []);
+    } as any
+  });
+
+  console.log('updateProfil updateProfil', updateProfil);
+
+  const handleSubmit: any = useCallback(
+    async (formData: any) => {
+      await updateUser();
+
+      console.log('TEST', updateProfil);
+    },
+    [updateUser]
+  );
 
   if (loading && userProfil?.getUser) return null;
 
   return (
     <ProfilForm
       initialValues={initialValues({
-        ...userProfil.getUser,
-        ...updateProfil.updateUser
+        ...userProfil.getUser
+        // ...updateProfil.updateUser
       })}
       onSubmit={handleSubmit}
     />

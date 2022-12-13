@@ -18,6 +18,7 @@ import {
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
+import './index.scss';
 
 interface IUserList {
   id: string;
@@ -96,7 +97,7 @@ function UserList({
   }, []);
 
   const onEditUser = useCallback(async (user: User): Promise<void> => {
-    updateUser({
+    await updateUser({
       variables: {
         ...user,
         id: user?._id ?? ''
@@ -216,7 +217,7 @@ function UserList({
   console.log(':::::::::::::::::::::: page pageSize', { page, pageSize });
 
   return (
-    <div>
+    <div className="c-userlist">
       <div>
         {canAdd && (
           <button
