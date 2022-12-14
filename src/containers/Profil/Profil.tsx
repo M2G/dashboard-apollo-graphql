@@ -42,37 +42,36 @@ function Profil() {
     }
   });
 
-  const [updateUser, { data: updateProfil }] = useUpdateUserMutation({
-    variables: {
-      id: '6325166e24edff96de6bf90c',
-      email: 'oliver.garcia@university.com',
-      first_name: 'Oliver222',
-      last_name: 'Garcia222',
-      username: 'test'
-    },
-    optimisticResponse: {
-      __typename: 'Mutation',
-      updateUser: {
-        __typename: 'User',
-        id: '6325166e24edff96de6bf90c',
-        first_name: 'Oliver222',
-        last_name: 'Garcia222',
-        email: 'oliver.garcia@university.com',
-        created_at: 1658098356,
-        modified_at: 1670890758
-      }
-    } as any
-  });
+  const [updateUserMutation, { data: updateProfil }] = useUpdateUserMutation();
 
   console.log('updateProfil updateProfil', updateProfil);
 
   const handleSubmit: any = useCallback(
     async (formData: any) => {
-      await updateUser();
-
-      console.log('TEST', updateProfil);
+      await updateUserMutation({
+        variables: {
+          id: userProfil?.getUser?._id || '',
+          email: formData?.email,
+          first_name: formData?.first_name,
+          last_name: formData?.last_name,
+          username: formData?.username
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          updateUser: {
+            __typename: 'User',
+            // @ts-ignore
+            id: userProfil?.getUser?._id,
+            first_name: formData?.first_name,
+            last_name: formData?.last_name,
+            email: formData?.email,
+            created_at: userProfil?.getUser?.created_at || null,
+            modified_at: userProfil?.getUser?.modified_at || null
+          }
+        }
+      });
     },
-    [updateUser]
+    [userProfil, updateUserMutation]
   );
 
   if (loading && userProfil?.getUser) return null;
@@ -80,8 +79,8 @@ function Profil() {
   return (
     <ProfilForm
       initialValues={initialValues({
-        ...userProfil.getUser
-        // ...updateProfil.updateUser
+        ...userProfil?.getUser,
+        ...updateProfil?.updateUser
       })}
       onSubmit={handleSubmit}
     />
