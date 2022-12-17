@@ -1,7 +1,6 @@
 /*eslint-disable*/
 import type { SetStateAction } from 'react';
 import { useMemo, useState, useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import type { IUserListItem } from 'containers/UserList/UserListItem';
 import userListItem from 'containers/UserList/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
@@ -9,6 +8,7 @@ import UserNew from 'containers/Users/UserNew';
 import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
+import NoData from 'components/NoData';
 import type { Users, User } from 'modules/graphql/generated';
 import {
   useUpdateUserMutation,
@@ -19,6 +19,7 @@ import {
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
 import './index.scss';
+import AddUser from './AddUser';
 
 interface IUserList {
   id: string;
@@ -33,7 +34,6 @@ function UserList({
   canDelete = false,
   canAdd = false
 }: IUserList): JSX.Element {
-  const { t } = useTranslation();
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
@@ -218,19 +218,10 @@ function UserList({
 
   return (
     <div className="c-userlist">
-      <div>
-        {canAdd && (
-          <button
-            className="btn btn-primary my-2"
-            type="submit"
-            onClick={onAdd}
-          >
-            {t('Add user')}
-          </button>
-        )}
-      </div>
+      <AddUser canAdd onAdd={onAdd} />
 
-      {results?.length && !loading ? (
+      {!results?.length && !loading && <NoData />}
+      {results?.length && (
         <>
           <UserFilters onSubmit={searchTerms} />
           <List
@@ -264,8 +255,6 @@ function UserList({
             <p>Warning, you are about to perform an irreversible action</p>
           </ModalWrapper>
         </>
-      ) : (
-        <div>No data</div>
       )}
     </div>
   );

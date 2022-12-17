@@ -1,7 +1,12 @@
 import UserNewView from 'containers/Users/UserNew/UserNew';
+import type { User } from 'graphql/generated';
 import { INITIAL_VALUES } from './constants';
 
-function UserNew({ onSubmit }: any) {
+interface IUserNew {
+  readonly onSubmit: (user: User) => Promise<void>;
+}
+
+function UserNew({ onSubmit }: IUserNew): JSX.Element {
   function initialValues() {
     return { ...INITIAL_VALUES };
   }
