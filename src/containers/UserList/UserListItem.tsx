@@ -33,7 +33,7 @@ function userListItem({
 )[] {
   const id = `user__row__${rowId}__${user._id}`;
 
-  const actions = [];
+  const actions: any = [];
 
   if (canEdit) {
     actions.push({
@@ -58,7 +58,6 @@ function userListItem({
   }
 
   const tableStaticColProps: ITableStaticCol = {
-    // @ts-ignore
     actions,
     id,
     label

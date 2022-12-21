@@ -98,7 +98,8 @@
       "/^sentry\\/(.*)$/": "<rootDir>/src/sentry/$1",
       "/^exceptions\\/(.*)$/": "<rootDir>/src/exceptions/$1",
       "/^services\\/(.*)$/": "<rootDir>/src/services/$1",
-      "/^gql\\/(.*)$/": "<rootDir>/src/gql/$1"
+      "/^gql\\/(.*)$/": "<rootDir>/src/gql/$1",
+      "/^modules\\/(.*)$/": "<rootDir>/src/modules/$1"
     }
   },
   "browserslist": {

@@ -13,6 +13,7 @@ import {
   clearUserStorage
 } from 'services/storage';
 import ROUTER_PATH from 'constants/RouterPath';
+import { link } from "./schema";
 
 // https://localhost:8282/graphql
 /* Configuration imported from '.env' file */
@@ -26,7 +27,7 @@ const backendAddress = `${backendProtocol}://${backendHost}:${backendPort}/${bac
 console.log('backendAddress', backendAddress);
 
 const httpLink = new HttpLink({
-  uri: backendAddress
+  uri: backendAddress,
 });
 
 const authMiddleware = new ApolloLink((operation: any, forward: any) => {
@@ -86,11 +87,11 @@ const errorLink = onError(
   }
 );
 
-const link = ApolloLink.from([authMiddleware, errorLink, httpLink]);
+// const link = ApolloLink.from([authMiddleware, errorLink, httpLink]);
 
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
-  link
+  link,
 });
 
 export default apolloClient;

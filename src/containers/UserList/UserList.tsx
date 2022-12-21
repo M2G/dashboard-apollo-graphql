@@ -1,6 +1,6 @@
 /*eslint-disable*/
-import type { SetStateAction } from 'react';
 import { useMemo, useState, useCallback, useEffect } from 'react';
+import type { SetStateAction } from 'react';
 import type { IUserListItem } from 'containers/UserList/UserListItem';
 import userListItem from 'containers/UserList/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
@@ -14,12 +14,12 @@ import {
   useUpdateUserMutation,
   useCreateUserMutation,
   useDeleteUserMutation,
-  useGetUserListLazyQuery
+  useGetUserListLazyQuery,
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
+import AddUser from './Action/AddUser';
 import './index.scss';
-import AddUser from './AddUser';
 
 interface IUserList {
   id: string;
@@ -40,8 +40,9 @@ function UserList({
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(2);
 
-  const [userFilter, { loading, error, data, refetch }] =
-    useGetUserListLazyQuery({ fetchPolicy: 'cache-and-network' });
+  const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery();
+
+  console.log('{ loading, error, data }', { loading, error, data });
 
   useEffect(() => {
     !data &&
@@ -55,10 +56,6 @@ function UserList({
   }, []);
 
   const [{ results, pageInfo } = {} as Users] = data?.users || [];
-
-  console.log('{ loading, error, data }', { loading, error, data });
-  console.log('results', results);
-  console.log('pageInfo', pageInfo);
 
   const [createUser] = useCreateUserMutation({
     onCompleted: refetch
@@ -116,7 +113,7 @@ function UserList({
         username: user?.username ?? ''
       }
     });
-    setNewUser(user as any);
+    setNewUser(user as unknown as SetStateAction<boolean>);
     onClose();
   }, []);
 
@@ -218,7 +215,7 @@ function UserList({
 
   return (
     <div className="c-userlist">
-      <AddUser canAdd onAdd={onAdd} />
+      <AddUser canAdd={canAdd} onAdd={onAdd} />
 
       {!results?.length && !loading && <NoData />}
       {results?.length && (
@@ -248,9 +245,7 @@ function UserList({
             title="Delete"
             hide={onClose}
             isShowing={deletingUser}
-            onConfirm={async () =>
-              onDeleteUser(deletingUser as unknown as User)
-            }
+            onConfirm={onDeleteUser(deletingUser as unknown as User)}
           >
             <p>Warning, you are about to perform an irreversible action</p>
           </ModalWrapper>
