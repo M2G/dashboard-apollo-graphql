@@ -13,7 +13,6 @@ import './i18n';
 import Dog from './containers/UserList/Dog';
 import Test from './containers/UserList/Test';
 
-
 function App() {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback} onError={logError}>
@@ -21,8 +20,8 @@ function App() {
         <AuthContext.Provider>
           <BrowserRouter>
             <Routes />
-              <Test name="Buck" />
-              <Dog></Dog>
+            <Test name="Buck" />
+            <Dog />
             <ToastContainer />
           </BrowserRouter>
         </AuthContext.Provider>

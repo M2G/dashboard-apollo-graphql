@@ -1,6 +1,4 @@
 import {
-  graphql,
-  print,
   GraphQLSchema,
   GraphQLObjectType,
   GraphQLID,
@@ -8,15 +6,14 @@ import {
   GraphQLList,
   GraphQLInt,
 } from 'graphql';
-import { ApolloLink, Observable } from '@apollo/client';
 
 const DogType2 = new GraphQLObjectType({
-  name: "Dog",
+  name: 'Dog',
   fields: {
     id: { type: GraphQLID },
     name: { type: GraphQLString },
-    breed: { type: GraphQLString }
-  }
+    breed: { type: GraphQLString },
+  },
 });
 
 const DogType = new GraphQLObjectType({
@@ -37,22 +34,15 @@ const DogType = new GraphQLObjectType({
       next: { type: GraphQLInt },
       prev: { type: GraphQLInt },
     },
-
-    /*
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    breed: { type: GraphQLString },
-
-     */
   },
 });
 
 const users = [
   {
-    // __typename: "Users",
+    __typename: "Users",
     results: [
       {
-        // __typename: "User",
+        __typename: "User",
         _id: '632fc3747943271e582ff7c7',
         first_name: 'Federic',
         last_name: 'Delavier',
@@ -63,7 +53,7 @@ const users = [
       },
     ],
     pageInfo: {
-      // __typename: "PageInfo",
+      __typename: "PageInfo",
       count: 7,
       pages: 4,
       next: 2,
@@ -72,10 +62,10 @@ const users = [
   },
 ];
 
-let dogData = [
-  { id: "12", name: "Buck", breed: "bulldog" },
-  { id: "2", name: "Blueberry", breed: "poodle" },
-  { id: "3", name: "Mozzarella", breed: "corgi" }
+const dogData = [
+  { id: '12', name: 'Buck', breed: 'bulldog' },
+  { id: '2', name: 'Blueberry', breed: 'poodle' },
+  { id: '3', name: 'Mozzarella', breed: 'corgi' },
 ];
 
 const QueryType = new GraphQLObjectType({
@@ -83,30 +73,26 @@ const QueryType = new GraphQLObjectType({
   fields: {
     dogs: {
       type: GraphQLList(DogType2),
-      resolve: () => {
-        return dogData;
-      }
+      resolve: () => dogData,
     },
     dog: {
       type: DogType,
       args: {
-        name: { type: GraphQLString }
+        name: { type: GraphQLString },
       },
       resolve: (_, { name }) => {
         const findDogByName = dogData.find(
-          (dog) => dog.name.toLowerCase() === name.toLowerCase()
+          (dog) => dog.name.toLowerCase() === name.toLowerCase(),
         );
         if (!name || !findDogByName) return dogData[0];
         return dogData.find(
-          (dog) => dog.name.toLowerCase() === name.toLowerCase()
+          (dog) => dog.name.toLowerCase() === name.toLowerCase(),
         );
-      }
+      },
     },
     users: {
       type: GraphQLList(DogType),
-      resolve: () => {
-        return users;
-      },
+      resolve: () => users,
     },
 
     /*
@@ -150,36 +136,7 @@ const MutationType = new GraphQLObjectType({
   },
 });
 
-const schema = new GraphQLSchema({
+export const schema = new GraphQLSchema({
   query: QueryType,
-
   // mutation: MutationType
-
 });
-
-async function delay(wait) {
-  return new Promise((resolve) => setTimeout(resolve, wait));
-}
-
-export const link = new ApolloLink(
-  (operation) =>
-    new Observable(async (observer) => {
-      const { query, operationName, variables } = operation;
-
-      console.log('operation operation', operation);
-
-      await delay(300);
-      try {
-        const result = await graphql({
-          schema,
-          source: print(query),
-          variableValues: variables,
-          operationName,
-        });
-        observer.next(result);
-        observer.complete();
-      } catch (err) {
-        observer.error(err);
-      }
-    }),
-);
