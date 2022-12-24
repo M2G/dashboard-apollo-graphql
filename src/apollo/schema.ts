@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import {
   GraphQLSchema,
   GraphQLObjectType,
@@ -71,10 +72,6 @@ const dogData = [
 const QueryType = new GraphQLObjectType({
   name: 'Query',
   fields: {
-    dogs: {
-      type: GraphQLList(DogType2),
-      resolve: () => dogData,
-    },
     dog: {
       type: DogType,
       args: {
@@ -91,7 +88,7 @@ const QueryType = new GraphQLObjectType({
       },
     },
     users: {
-      type: GraphQLList(DogType),
+      type: new GraphQLList(DogType),
       resolve: () => users,
     },
 
@@ -138,5 +135,5 @@ const MutationType = new GraphQLObjectType({
 
 export const schema = new GraphQLSchema({
   query: QueryType,
-  // mutation: MutationType
+  mutation: MutationType
 });

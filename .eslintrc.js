@@ -35,6 +35,12 @@ module.exports = {
   plugins: ["@typescript-eslint", "react", "react-hooks", "prettier", "import", "unused-imports"],
   ignorePatterns: ["!.*", "dist", "build", "node_modules", "src/modules"],
   rules: {
+    "array-element-newline": ["error", {
+      "ArrayExpression": "consistent",
+      "ArrayPattern": { "minItems": 3 },
+    }],
+
+
     "no-return-assign": 0,
     "no-restricted-syntax": 0,
     "no-cond-assign": 0,

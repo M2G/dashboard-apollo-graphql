@@ -1,5 +1,6 @@
-/*eslint-disable*/
-import { useMemo, useState, useCallback, useEffect } from 'react';
+import {
+ useMemo, useState, useCallback, useEffect,
+} from 'react';
 import type { SetStateAction } from 'react';
 import type { IUserListItem } from 'containers/UserList/UserListItem';
 import userListItem from 'containers/UserList/UserListItem';
@@ -32,7 +33,7 @@ function UserList({
   id,
   canEdit = false,
   canDelete = false,
-  canAdd = false
+  canAdd = false,
 }: IUserList): JSX.Element {
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
@@ -40,33 +41,32 @@ function UserList({
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(2);
 
-  const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery();
+  const [userFilter, {
+ loading, error, data, refetch,
+}] = useGetUserListLazyQuery();
 
   console.log('{ loading, error, data }', { loading, error, data });
 
   useEffect(() => {
-    !data &&
-      userFilter({
+    userFilter({
         variables: {
           filters: '',
-          pageSize,
-          page
-        }
+          page: 1,
+          pageSize: 5,
+        },
       });
   }, []);
 
-  const [{ results, pageInfo } = {} as Users] = data?.users || [];
-
   const [createUser] = useCreateUserMutation({
-    onCompleted: refetch
+    onCompleted: refetch,
   } as any);
 
   const [updateUser] = useUpdateUserMutation({
-    onCompleted: refetch
+    onCompleted: refetch,
   } as any);
 
   const [deleteUser] = useDeleteUserMutation({
-    onCompleted: refetch
+    onCompleted: refetch,
   } as any);
 
   const onDelete = useCallback((user: User): void => {
@@ -97,8 +97,8 @@ function UserList({
     await updateUser({
       variables: {
         ...user,
-        id: user?._id ?? ''
-      }
+        id: user?._id ?? '',
+      },
     });
     onClose();
   }, []);
@@ -110,8 +110,8 @@ function UserList({
         password: user?.password ?? '',
         first_name: user?.first_name ?? '',
         last_name: user?.last_name ?? '',
-        username: user?.username ?? ''
-      }
+        username: user?.username ?? '',
+      },
     });
     setNewUser(user as unknown as SetStateAction<boolean>);
     onClose();
@@ -121,12 +121,12 @@ function UserList({
     async (user: User): Promise<void> => {
       await deleteUser({
         variables: {
-          id: user?._id ?? ''
-        }
+          id: user?._id ?? '',
+        },
       });
       onClose();
     },
-    [deleteUser, onClose]
+    [deleteUser, onClose],
   );
 
   const searchTerms = useCallback(
@@ -135,11 +135,11 @@ function UserList({
         variables: {
           filters: params?.search || '',
           page: undefined,
-          pageSize: undefined
-        } as any
+          pageSize: undefined,
+        } as any,
       });
     },
-    [userFilter]
+    [userFilter],
   );
 
   const onChangePage = useCallback(
@@ -150,11 +150,11 @@ function UserList({
         variables: {
           filters: undefined,
           pageSize,
-          page: params || page
-        } as any
+          page: params || page,
+        } as any,
       });
     },
-    [pageSize]
+    [pageSize],
   );
 
   const onChangePageSize = useCallback(
@@ -165,36 +165,29 @@ function UserList({
         variables: {
           filters: undefined,
           pageSize: params || pageSize,
-          page
-        } as any
+          page,
+        } as any,
       });
     },
-    [page]
+    [page, pageSize, userFilter],
   );
+
+  const users: Users | any = data?.users;
+  const results = users?.results || [];
+  const pageInfo = users?.pageInfo || {};
 
   const rows = useMemo(
     () =>
-      results?.map((user) =>
+      results?.map((user: User) =>
         userListItem({
-          id,
-          user,
-          onEdit,
-          onDelete,
           canDelete,
-          canEdit
-        } as IUserListItem)
-      ),
-    [
-      id,
-      onEdit,
-      onDelete,
-      canDelete,
-      canEdit,
-      editingUser,
-      newUser,
-      deletingUser,
-      results
-    ]
+          canEdit,
+          id,
+          onDelete,
+          onEdit,
+          user,
+        } as IUserListItem)),
+    [results, canDelete, canEdit, id, onDelete, onEdit],
   );
 
   const header = useMemo(
@@ -204,9 +197,9 @@ function UserList({
       { label: 'Last name', sortable: false },
       { label: 'Email', sortable: false },
       { label: 'Created at', sortable: true, type: 'date' },
-      { label: 'Modified at', sortable: true, type: 'date' }
+      { label: 'Modified at', sortable: true, type: 'date' },
     ],
-    []
+    [],
   );
 
   if (!results?.length && loading) return <TopLineLoading />;

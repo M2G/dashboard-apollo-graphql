@@ -1,23 +1,21 @@
 /*eslint-disable*/
-import {
-  render, screen, act, waitFor, cleanup,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MockedProvider, MockLink } from '@apollo/client/testing';
-import { GetUserListDocument } from 'modules/graphql/generated';
-import { InMemoryCache, ApolloLink } from '@apollo/client';
+import { ApolloLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
-import UserList, { GET_DOG_QUERY } from './Test';
+import { GetUserListDocument } from 'modules/graphql/generated';
+import Test from './Test';
 
-export function MyMockedProvider(props: { [x: string]: any; mocks: any; }) {
-  let {mocks, ...otherProps} = props;
+export function MyMockedProvider(props: { [x: string]: any; mocks: any }) {
+  let { mocks, ...otherProps } = props;
 
   let mockLink = new MockLink(mocks);
   let errorLoggingLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
       graphQLErrors.map(({ message, locations, path }) =>
         console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-        ),
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        )
       );
 
     if (networkError) console.log(`[Network error]: ${networkError}`);
@@ -27,59 +25,69 @@ export function MyMockedProvider(props: { [x: string]: any; mocks: any; }) {
   return <MockedProvider {...otherProps} link={link} />;
 }
 
-
 const data = {
-  users:
-    {
-      __typename: "Users",
-      results:
-        {
-          __typename: "User",
-          _id: "632fc3747943271e582ff7c7",
-          first_name: "Federic",
-          last_name: "Delavier",
-          email: "federic.delavier@university.com",
-          created_at: 1664074612,
-          modified_at: 1667014561,
-          password: "$2b$10$hQoG8E..vnfh0gZeDgt/b.1nfMwRB4UtfCBjAmmaLxkaxabkjxAqq",
-        },
-      pageInfo: {
-        __typename: "PageInfo",
-        count: 7,
-        pages: 4,
-        next: 2,
-        prev: null,
+  users: {
+    __typename: 'Users',
+    results: [
+      {
+        __typename: 'User',
+        _id: '632fc3747943271e582ff7c7',
+        first_name: 'Federic',
+        last_name: 'Delavier',
+        email: 'federic.delavier@university.com',
+        created_at: 1664074612,
+        modified_at: 1667014561,
+        password: '$2b$10$hQoG8E..vnfh0gZeDgt/b.1nfMwRB4UtfCBjAmmaLxkaxabkjxAqq'
       },
-    },
+      {
+        __typename: 'User',
+        _id: '632fc3747943271e582ff7c7',
+        first_name: 'Federic',
+        last_name: 'Delavier',
+        email: 'federic.delavier@university.com',
+        created_at: 1664074612,
+        modified_at: 1667014561,
+        password: '$2b$10$hQoG8E..vnfh0gZeDgt/b.1nfMwRB4UtfCBjAmmaLxkaxabkjxAqq'
+      }
+    ],
+    pageInfo: {
+      __typename: 'PageInfo',
+      count: 7,
+      pages: 4,
+      next: 2,
+      prev: null
+    }
+  }
 };
 
 describe('test UserList', () => {
-
   test('should render', async () => {
     const dogMock = {
       request: {
-        query: GET_DOG_QUERY
+        query: GetUserListDocument,
+        variables: {
+          filters: '',
+          pageSize: 5,
+          page: 1
+        }
       },
       result: {
-        loading: "test",
-        data: { dogs: { id: 1, name: "Buck", breed: "poodle" } }
+        loading: false,
+        data: data
       }
     };
 
     let consoleLogSpy = jest.spyOn(console, 'log');
 
     render(
-      <MockedProvider
-        mocks={[dogMock]}
-        addTypename={false}
-      >
-        <UserList name="Buck" ></UserList>
-      </MockedProvider>,
+      <MyMockedProvider mocks={[dogMock]} addTypename={false}>
+        <Test />
+      </MyMockedProvider>
     );
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    console.log('consoleLogSpy.mock.calls ', consoleLogSpy.mock.calls)
+    console.log('consoleLogSpy.mock.calls ', consoleLogSpy.mock.calls);
 
     screen.debug();
   });

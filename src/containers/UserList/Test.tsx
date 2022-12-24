@@ -1,26 +1,26 @@
-import { gql, useQuery } from "@apollo/client";
+import { useEffect } from 'react';
+import {
+  useGetUserListLazyQuery,
+} from 'modules/graphql/generated';
 
-// Make sure that both the query and the component are exported
-export const GET_DOG_QUERY = gql`
-    query GetDog {
-        dogs {
-            id
-            name
-            breed
-        }
-    }
-`;
+export default function Test() {
+  const [userFilter, { loading, error, data }] = useGetUserListLazyQuery();
 
-export default function Dog({ name }) {
-  const { loading, error, data } = useQuery(GET_DOG_QUERY);
+  useEffect(() => {
+    userFilter({
+      variables: {
+        filters: '',
+        pageSize: 5,
+        page: 1,
+      },
+    });
+  }, []);
 
-  console.log("------------> 2", { loading, error, data });
+  console.log('------------> 2', { loading, error, data });
+
+  console.log('------------> RES :', JSON.stringify(data));
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
-  return (
-    <p>
-      {data?.dog?.name} is a {data?.dog?.breed}
-    </p>
-  );
+  return null;
 }
