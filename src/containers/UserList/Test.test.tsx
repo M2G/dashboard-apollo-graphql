@@ -40,8 +40,7 @@ const data = {
 };
 
 describe('test UserList', () => {
-
-  test("should render without error", () => {
+  test('should render without error', () => {
     render(
       <MyMockedProvider mocks={[]}>
         <Test />

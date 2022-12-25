@@ -55,7 +55,7 @@ function UserList({
           pageSize: 5,
         },
       });
-  }, []);
+  }, [userFilter]);
 
   const [createUser] = useCreateUserMutation({
     onCompleted: refetch,
