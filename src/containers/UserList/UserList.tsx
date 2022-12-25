@@ -101,7 +101,7 @@ function UserList({
       },
     });
     onClose();
-  }, []);
+  }, [onClose, updateUser]);
 
   const onNewUser = useCallback(async (user: User): Promise<void> => {
     await createUser({
@@ -115,13 +115,13 @@ function UserList({
     });
     setNewUser(user as unknown as SetStateAction<boolean>);
     onClose();
-  }, []);
+  }, [createUser, onClose]);
 
   const onDeleteUser = useCallback(
     async (user: User): Promise<void> => {
       await deleteUser({
         variables: {
-          id: user?._id ?? '',
+          id: user?._id || '',
         },
       });
       onClose();
@@ -148,13 +148,13 @@ function UserList({
       setPage(params);
       await userFilter({
         variables: {
-          filters: undefined,
-          pageSize,
+          filters: "",
           page: params || page,
-        } as any,
+          pageSize,
+        },
       });
     },
-    [pageSize],
+    [page, pageSize, userFilter],
   );
 
   const onChangePageSize = useCallback(
@@ -163,10 +163,10 @@ function UserList({
       setPageSize(params);
       await userFilter({
         variables: {
-          filters: undefined,
-          pageSize: params || pageSize,
+          filters: "",
           page,
-        } as any,
+          pageSize: params || pageSize,
+        },
       });
     },
     [page, pageSize, userFilter],
@@ -202,7 +202,7 @@ function UserList({
     [],
   );
 
-  if (!results?.length && loading) return <TopLineLoading />;
+  if (!results?.length && loading && !error) return <TopLineLoading />;
 
   console.log(':::::::::::::::::::::: page pageSize', { page, pageSize });
 
@@ -238,7 +238,7 @@ function UserList({
             title="Delete"
             hide={onClose}
             isShowing={deletingUser}
-            onConfirm={onDeleteUser(deletingUser as unknown as User)}
+            onConfirm={async () => onDeleteUser(deletingUser as unknown as User)}
           >
             <p>Warning, you are about to perform an irreversible action</p>
           </ModalWrapper>

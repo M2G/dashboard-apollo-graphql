@@ -1,29 +1,8 @@
 /*eslint-disable*/
 import { render, screen } from '@testing-library/react';
-import { MockedProvider, MockLink } from '@apollo/client/testing';
-import { ApolloLink } from '@apollo/client';
-import { onError } from '@apollo/client/link/error';
 import { GetUserListDocument } from 'modules/graphql/generated';
+import MyMockedProvider from 'apollo/MockProvider';
 import Test from './Test';
-
-export function MyMockedProvider(props: { [x: string]: any; mocks: any }) {
-  let { mocks, ...otherProps } = props;
-
-  let mockLink = new MockLink(mocks);
-  let errorLoggingLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
-      graphQLErrors.map(({ message, locations, path }) =>
-        console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        )
-      );
-
-    if (networkError) console.log(`[Network error]: ${networkError}`);
-  });
-  let link = ApolloLink.from([errorLoggingLink, mockLink]);
-
-  return <MockedProvider {...otherProps} link={link} />;
-}
 
 const data = {
   users: {
@@ -61,7 +40,16 @@ const data = {
 };
 
 describe('test UserList', () => {
-  test('should render', async () => {
+
+  test("should render without error", () => {
+    render(
+      <MyMockedProvider mocks={[]}>
+        <Test />
+      </MyMockedProvider>
+    );
+  });
+
+  test('should render user list', async () => {
     const dogMock = {
       request: {
         query: GetUserListDocument,

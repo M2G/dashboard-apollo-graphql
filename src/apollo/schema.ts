@@ -2,22 +2,25 @@
 import {
   GraphQLSchema,
   GraphQLObjectType,
-  GraphQLID,
   GraphQLString,
   GraphQLList,
   GraphQLInt,
 } from 'graphql';
 
-const DogType2 = new GraphQLObjectType({
-  name: 'Dog',
+const UserType = new GraphQLObjectType({
+  name: 'User',
   fields: {
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    breed: { type: GraphQLString },
+    _id: { type: GraphQLString },
+    first_name: { type: GraphQLString },
+    last_name: { type: GraphQLString },
+    email: { type: GraphQLString },
+    created_at: { type: GraphQLInt },
+    modified_at: { type: GraphQLInt },
+    password: { type: GraphQLString },
   },
 });
 
-const DogType = new GraphQLObjectType({
+const UsersType = new GraphQLObjectType({
   name: 'Users',
   fields: {
     results: {
@@ -43,15 +46,28 @@ const users = [
     __typename: "Users",
     results: [
       {
-        __typename: "User",
+        __typename: 'User',
         _id: '632fc3747943271e582ff7c7',
-        first_name: 'Federic',
-        last_name: 'Delavier',
-        email: 'federic.delavier@university.com',
-        created_at: 1664074612,
-        modified_at: 1667014561,
-        password: '$2b$10$hQoG8E..vnfh0gZeDgt/b.1nfMwRB4UtfCBjAmmaLxkaxabkjxAqq',
+        "first_name" : "Smith",
+        "last_name" : "Jackson",
+        "email" : "smith.jackson@university.com",
+        "password" : "$2a$10$zZwZ9FuuHQxjWQAQQFc6cOUj59UfUMZLp7/.pGQiyS3aBsYlKgXBe",
+        "created_at" : 1658098622,
+        "modified_at" : 1671941336,
+        "last_connected_at" : 1671941336,
+        "deleted_at" : 0
       },
+      {
+        __typename: 'User',
+        "first_name" : "Oliver",
+        "last_name" : "Garcia",
+        "email" : "oliver.garcia@university.com",
+        "password" : "$2a$10$zZwZ9FuuHQxjWQAQQFc6cOUj59UfUMZLp7/.pGQiyS3aBsYlKgXBe",
+        "created_at" : 1658098356,
+        "modified_at" : 1663988936,
+        "last_connected_at" : 1663988936,
+        "deleted_at" : 0
+      }
     ],
     pageInfo: {
       __typename: "PageInfo",
@@ -72,23 +88,25 @@ const dogData = [
 const QueryType = new GraphQLObjectType({
   name: 'Query',
   fields: {
-    dog: {
-      type: DogType,
+    user: {
+      type: UserType,
       args: {
         name: { type: GraphQLString },
       },
-      resolve: (_, { name }) => {
+      resolve: (_, { ...args }) => {
+        console.log('----------------', args)
+        /*
         const findDogByName = dogData.find(
           (dog) => dog.name.toLowerCase() === name.toLowerCase(),
         );
         if (!name || !findDogByName) return dogData[0];
         return dogData.find(
           (dog) => dog.name.toLowerCase() === name.toLowerCase(),
-        );
+        );*/
       },
     },
     users: {
-      type: new GraphQLList(DogType),
+      type: new GraphQLList(UsersType),
       resolve: () => users,
     },
 
@@ -116,7 +134,7 @@ const MutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
     deleteDog: {
-      type: DogType,
+      type: UserType,
       args: {
         name: { type: GraphQLString },
       },

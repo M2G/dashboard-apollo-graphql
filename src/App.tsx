@@ -11,7 +11,7 @@ import apolloClient from './apollo/config';
 import 'react-toastify/dist/ReactToastify.css';
 import './i18n';
 
-function App() {
+function App(): JSX.Element {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback} onError={logError}>
       <ApolloProvider client={apolloClient}>
