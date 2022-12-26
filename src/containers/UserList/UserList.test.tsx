@@ -117,15 +117,12 @@ describe('test UserList', () => {
       error: new Error('An error occurred')
     };
 
-    render(
+    const { container } = render(
       <MyMockedProvider mocks={[usersMock]} addTypename={false}>
         <UserList id="test" canEdit canDelete canAdd />
       </MyMockedProvider>
     );
 
-
-    console.log("'ddddddddd", screen.debug())
-
-    // expect(await screen.findByText("Loading...")).toBeInTheDocument();
+    expect(await container?.querySelector('.loader')).toBeInTheDocument();
   });
 });
