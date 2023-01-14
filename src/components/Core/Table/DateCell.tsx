@@ -1,4 +1,4 @@
-import type { Maybe } from 'graphql/generated';
+import type { Maybe } from 'modules/graphql/generated';
 
 interface IDateCell {
   readonly date: Maybe<number> | undefined;

@@ -1,5 +1,5 @@
 import UserNewView from 'containers/Users/UserNew/UserNew';
-import type { User } from 'graphql/generated';
+import type { User } from 'modules/graphql/generated';
 import { INITIAL_VALUES } from './constants';
 
 interface IUserNew {

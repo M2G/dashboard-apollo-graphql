@@ -4,7 +4,7 @@ import TableStaticCol, {
   ITableStaticCol
 } from 'components/Core/Table/TableStaticCol';
 import IconNames from 'components/Core/Icon/Icons.types';
-import { Maybe, User } from 'graphql/generated';
+import { Maybe, User } from 'modules/graphql/generated';
 
 export interface IUserListItem {
   id: string;

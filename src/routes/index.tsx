@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { Suspense, lazy, useContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-
 import ROUTER_PATH from '../constants/RouterPath';
 
 const Home = lazy(() => import('containers/Home'));

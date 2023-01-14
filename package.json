@@ -4,6 +4,8 @@
   "private": true,
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
+    "@graphql-codegen/fragment-matcher": "^3.3.3",
+    "@graphql-codegen/introspection": "^2.2.3",
     "@storybook/addon-a11y": "6.5.14",
     "@storybook/addon-actions": "6.5.14",
     "@storybook/addon-docs": "6.5.14",
@@ -55,11 +57,12 @@
   "dependencies": {
     "@apollo/client": "^3.7.2",
     "@graphql-codegen/cli": "^2.16.1",
-    "@graphql-codegen/fragment-matcher": "^3.3.3",
     "@graphql-codegen/schema-ast": "^2.6.0",
     "@graphql-codegen/typescript": "^2.8.5",
     "@graphql-codegen/typescript-operations": "^2.5.10",
     "@graphql-codegen/typescript-react-apollo": "^3.3.7",
+    "@graphql-tools/mock": "^8.7.15",
+    "@graphql-tools/schema": "^9.0.13",
     "@sentry/react": "^7.24.2",
     "@sentry/tracing": "^7.24.2",
     "clsx": "^1.2.1",
@@ -79,12 +82,13 @@
     "sass": "^1.56.2",
     "sass-loader": "^13.2.0",
     "style-loader": "^3.3.1",
-    "stylelint-config-standard-scss": "^6.1.0"
+    "stylelint-config-standard-scss": "^6.1.0",
+    "zod": "^3.20.2"
   },
   "scripts": {
     "start": "REACT_APP_ENVIRONMENT=dev react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "REACT_APP_ENVIRONMENT=test react-scripts test",
     "eject": "react-scripts eject",
     "build-storybook": "build-storybook",
     "storybook": "start-storybook -p 9009 --no-manager-cache",

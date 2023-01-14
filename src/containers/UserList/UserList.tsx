@@ -1,6 +1,5 @@
-import {
- useMemo, useState, useCallback, useEffect,
-} from 'react';
+/*eslint-disable*/
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import type { SetStateAction } from 'react';
 import type { IUserListItem } from 'containers/UserList/UserListItem';
 import userListItem from 'containers/UserList/UserListItem';
@@ -15,7 +14,7 @@ import {
   useUpdateUserMutation,
   useCreateUserMutation,
   useDeleteUserMutation,
-  useGetUserListLazyQuery,
+  useGetUserListLazyQuery
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
@@ -33,7 +32,7 @@ function UserList({
   id,
   canEdit = false,
   canDelete = false,
-  canAdd = false,
+  canAdd = false
 }: IUserList): JSX.Element {
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
@@ -41,32 +40,32 @@ function UserList({
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(2);
 
-  const [userFilter, {
- loading, error, data, refetch,
-}] = useGetUserListLazyQuery();
+  const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery();
 
   console.log('{ loading, error, data }', { loading, error, data });
 
+  console.log('useGetUserListLazyQuery', JSON.stringify(data))
+
   useEffect(() => {
     userFilter({
-        variables: {
-          filters: '',
-          page: 1,
-          pageSize: 5,
-        },
-      });
-  }, [userFilter]);
+      variables: {
+        filters: '',
+        page: 1,
+        pageSize: 5
+      }
+    });
+  }, []);
 
   const [createUser] = useCreateUserMutation({
-    onCompleted: refetch,
-  } as any);
+    onCompleted: refetch as any
+  });
 
   const [updateUser] = useUpdateUserMutation({
-    onCompleted: refetch,
+    onCompleted: refetch
   } as any);
 
   const [deleteUser] = useDeleteUserMutation({
-    onCompleted: refetch,
+    onCompleted: refetch
   } as any);
 
   const onDelete = useCallback((user: User): void => {
@@ -93,40 +92,46 @@ function UserList({
     setDeletingUser(false);
   }, []);
 
-  const onEditUser = useCallback(async (user: User): Promise<void> => {
-    await updateUser({
-      variables: {
-        ...user,
-        id: user?._id ?? '',
-      },
-    });
-    onClose();
-  }, [onClose, updateUser]);
+  const onEditUser = useCallback(
+    async (user: User): Promise<void> => {
+      await updateUser({
+        variables: {
+          ...user,
+          id: user?._id ?? ''
+        }
+      });
+      onClose();
+    },
+    [onClose, updateUser]
+  );
 
-  const onNewUser = useCallback(async (user: User): Promise<void> => {
-    await createUser({
-      variables: {
-        email: user?.email ?? '',
-        password: user?.password ?? '',
-        first_name: user?.first_name ?? '',
-        last_name: user?.last_name ?? '',
-        username: user?.username ?? '',
-      },
-    });
-    setNewUser(user as unknown as SetStateAction<boolean>);
-    onClose();
-  }, [createUser, onClose]);
+  const onNewUser = useCallback(
+    async (user: User): Promise<void> => {
+      await createUser({
+        variables: {
+          email: user?.email ?? '',
+          password: user?.password ?? '',
+          first_name: user?.first_name ?? '',
+          last_name: user?.last_name ?? '',
+          username: user?.username ?? ''
+        }
+      });
+      setNewUser(user as unknown as SetStateAction<boolean>);
+      onClose();
+    },
+    [createUser, onClose]
+  );
 
   const onDeleteUser = useCallback(
     async (user: User): Promise<void> => {
       await deleteUser({
         variables: {
-          id: user?._id || '',
-        },
+          id: user?._id || ''
+        }
       });
       onClose();
     },
-    [deleteUser, onClose],
+    [deleteUser, onClose]
   );
 
   const searchTerms = useCallback(
@@ -135,11 +140,11 @@ function UserList({
         variables: {
           filters: params?.search || '',
           page: undefined,
-          pageSize: undefined,
-        } as any,
+          pageSize: undefined
+        } as any
       });
     },
-    [userFilter],
+    [userFilter]
   );
 
   const onChangePage = useCallback(
@@ -148,13 +153,13 @@ function UserList({
       setPage(params);
       await userFilter({
         variables: {
-          filters: "",
+          filters: '',
           page: params || page,
-          pageSize,
-        },
+          pageSize
+        }
       });
     },
-    [page, pageSize, userFilter],
+    [page, pageSize, userFilter]
   );
 
   const onChangePageSize = useCallback(
@@ -163,16 +168,16 @@ function UserList({
       setPageSize(params);
       await userFilter({
         variables: {
-          filters: "",
+          filters: '',
           page,
-          pageSize: params || pageSize,
-        },
+          pageSize: params || pageSize
+        }
       });
     },
-    [page, pageSize, userFilter],
+    [page, pageSize, userFilter]
   );
 
-  const users: Users | any = data?.users;
+  const [users]: Users | any = data?.users || [];
   const results = users?.results || [];
   const pageInfo = users?.pageInfo || {};
 
@@ -185,9 +190,10 @@ function UserList({
           id,
           onDelete,
           onEdit,
-          user,
-        } as IUserListItem)),
-    [results, canDelete, canEdit, id, onDelete, onEdit],
+          user
+        } as IUserListItem)
+      ),
+    [results, canDelete, canEdit, id, onDelete, onEdit]
   );
 
   const header = useMemo(
@@ -197,20 +203,22 @@ function UserList({
       { label: 'Last name', sortable: false },
       { label: 'Email', sortable: false },
       { label: 'Created at', sortable: true, type: 'date' },
-      { label: 'Modified at', sortable: true, type: 'date' },
+      { label: 'Modified at', sortable: true, type: 'date' }
     ],
-    [],
+    []
   );
 
   if (!results?.length && loading && !error) return <TopLineLoading />;
 
   console.log(':::::::::::::::::::::: page pageSize', { page, pageSize });
 
+
+  console.log(':zzzzzzzzzzzz', data);
   return (
     <div className="c-userlist">
       <AddUser canAdd={canAdd} onAdd={onAdd} />
 
-      {!results?.length && !loading && <NoData />}
+      {!results.length && loading && <NoData />}
       {results?.length && (
         <>
           <UserFilters onSubmit={searchTerms} />

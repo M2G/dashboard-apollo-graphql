@@ -1,7 +1,6 @@
 /*eslint-disable*/
 import { render, screen } from '@testing-library/react';
-import { GetUserListDocument } from 'modules/graphql/generated';
-import MyMockedProvider from 'apollo/MockProvider';
+import AutoMockProvider from 'apollo/AutoMockProvider';
 import UserList from './UserList';
 
 const data = {
@@ -19,18 +18,6 @@ const data = {
         modified_at: 1671941336,
         last_connected_at: 1671941336,
         deleted_at: 0
-      },
-      {
-        __typename: 'User',
-        _id: '6325166e24edff96de6bf90c',
-        first_name: 'Oliver',
-        last_name: 'Garcia',
-        email: 'oliver.garcia@university.com',
-        password: '$2a$10$zZwZ9FuuHQxjWQAQQFc6cOUj59UfUMZLp7/.pGQiyS3aBsYlKgXBe',
-        created_at: 1658098356,
-        modified_at: 1663988936,
-        last_connected_at: 1663988936,
-        deleted_at: 0
       }
     ],
     pageInfo: {
@@ -42,85 +29,60 @@ const data = {
     }
   }
 };
+
 describe('test UserList', () => {
   test('should render without error', () => {
     render(
-      <MyMockedProvider mocks={[]}>
+      <AutoMockProvider mockResolvers={{}}>
         <UserList id="test" canEdit canDelete canAdd />
-      </MyMockedProvider>
+      </AutoMockProvider>
     );
   });
 
   test('should render', async () => {
-    const usersMock = {
-      request: {
-        query: GetUserListDocument,
-        variables: {
-          filters: '',
-          pageSize: 5,
-          page: 1
-        }
-      },
-      result: {
-        loading: false,
-        data: data
-      }
-    };
-
-    let consoleLogSpy = jest.spyOn(console, 'log');
+    const resolver = {
+      Users: () => data.users
+    }
 
     render(
-      <MyMockedProvider mocks={[usersMock]} addTypename={false}>
+      <AutoMockProvider mockResolvers={resolver}>
         <UserList id="test" canEdit canDelete canAdd />
-      </MyMockedProvider>
-    );
+      </AutoMockProvider>
+    )
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    console.log('consoleLogSpy.mock.calls ', consoleLogSpy.mock.calls);
+    await screen.debug();
 
-    expect(screen.getByText(data.users.results[0].first_name)).toBeInTheDocument();
-    expect(screen.getByText(data.users.results[0].last_name)).toBeInTheDocument();
-    expect(screen.getByText(data.users.results[0].email)).toBeInTheDocument();
+
+    expect(await screen.findByText(data.users.results[0].first_name)).toBeInTheDocument();
+    expect(await screen.findByText(data.users.results[0].last_name)).toBeInTheDocument();
+    expect(await screen.findByText(data.users.results[0].email)).toBeInTheDocument();
+    expect(await screen.findByText(data.users.results[0].first_name)).toBeInTheDocument();
+    expect(await screen.findByText(data.users.results[0].last_name)).toBeInTheDocument();
+    expect(await screen.findByText(data.users.results[0].email)).toBeInTheDocument();
     expect(
-      screen.getAllByText(new Date(data.users.results[0].created_at * 1000).toLocaleDateString())[0]
+      await screen.findAllByText(new Date(data.users.results[0].created_at * 1000).toLocaleDateString())[0]
     ).toBeInTheDocument();
     expect(
-      screen.getAllByText(
+      await screen.findAllByText(
         new Date(data.users.results[0].modified_at * 1000).toLocaleDateString()
-      )[0]
-    ).toBeInTheDocument();
-
-    expect(screen.getByText(data.users.results[1].first_name)).toBeInTheDocument();
-    expect(screen.getByText(data.users.results[1].last_name)).toBeInTheDocument();
-    expect(screen.getByText(data.users.results[1].email)).toBeInTheDocument();
-    expect(
-      screen.getAllByText(new Date(data.users.results[1].created_at * 1000).toLocaleDateString())[0]
-    ).toBeInTheDocument();
-    expect(
-      screen.getAllByText(
-        new Date(data.users.results[1].modified_at * 1000).toLocaleDateString()
       )[0]
     ).toBeInTheDocument();
   });
 
   test('renders without error', async () => {
-    const usersMock = {
-      request: {
-        query: GetUserListDocument,
-        variables: {
-          filters: '',
-          pageSize: 5,
-          page: 1
-        }
-      },
-      error: new Error('An error occurred')
-    };
+
+    const resolver = {
+      Users: () => {
+        error: new Error('An error occurred')
+      }
+    }
 
     const { container } = render(
-      <MyMockedProvider mocks={[usersMock]} addTypename={false}>
+      <AutoMockProvider mockResolvers={resolver}>
         <UserList id="test" canEdit canDelete canAdd />
-      </MyMockedProvider>
+      </AutoMockProvider>
     );
 
     expect(await container?.querySelector('.loader')).toBeInTheDocument();

@@ -32,3 +32,12 @@ generates:
       commentDescriptions: true
     plugins:
       - 'schema-ast'
+
+  src/modules/graphql/introspection.gen.json:
+    plugins:
+      - introspection
+    config:
+      minify: true
+  src/modules/graphql/introspection.gen.ts:
+    plugins:
+      - 'fragment-matcher'
