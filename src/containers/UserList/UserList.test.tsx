@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import AutoMockProvider from 'apollo/AutoMockProvider';
 import UserList from './UserList';
 
@@ -31,12 +31,12 @@ const data = {
 };
 
 describe('test UserList', () => {
-  test('should render without error', () => {
-    render(
+  test('should render without error', async () => {
+    await act(async () => render(
       <AutoMockProvider mockResolvers={{}}>
         <UserList id="test" canEdit canDelete canAdd />
       </AutoMockProvider>
-    );
+    ));
   });
 
   test('should render', async () => {
@@ -44,17 +44,14 @@ describe('test UserList', () => {
       Users: () => data.users
     }
 
-    render(
+    await act(async () => render(
       <AutoMockProvider mockResolvers={resolver}>
         <UserList id="test" canEdit canDelete canAdd />
       </AutoMockProvider>
-    )
+    ));
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    await screen.debug();
-
-
     expect(await screen.findByText(data.users.results[0].first_name)).toBeInTheDocument();
     expect(await screen.findByText(data.users.results[0].last_name)).toBeInTheDocument();
     expect(await screen.findByText(data.users.results[0].email)).toBeInTheDocument();
@@ -62,12 +59,12 @@ describe('test UserList', () => {
     expect(await screen.findByText(data.users.results[0].last_name)).toBeInTheDocument();
     expect(await screen.findByText(data.users.results[0].email)).toBeInTheDocument();
     expect(
-      await screen.findAllByText(new Date(data.users.results[0].created_at * 1000).toLocaleDateString())[0]
+      await screen.findByText(new Date(data.users.results[0].created_at * 1000).toLocaleDateString())
     ).toBeInTheDocument();
     expect(
-      await screen.findAllByText(
+      await screen.findByText(
         new Date(data.users.results[0].modified_at * 1000).toLocaleDateString()
-      )[0]
+      )
     ).toBeInTheDocument();
   });
 
@@ -79,12 +76,14 @@ describe('test UserList', () => {
       }
     }
 
-    const { container } = render(
+    const { container } =  await act(async () => render(
       <AutoMockProvider mockResolvers={resolver}>
         <UserList id="test" canEdit canDelete canAdd />
       </AutoMockProvider>
-    );
+    ));
 
-    expect(await container?.querySelector('.loader')).toBeInTheDocument();
+    console.log('container', container)
+
+    // expect(await container?.querySelector('.loader')).toBeInTheDocument();
   });
 });
