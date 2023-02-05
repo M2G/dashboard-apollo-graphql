@@ -82,8 +82,7 @@
     "sass": "^1.56.2",
     "sass-loader": "^13.2.0",
     "style-loader": "^3.3.1",
-    "stylelint-config-standard-scss": "^6.1.0",
-    "zod": "^3.20.2"
+    "stylelint-config-standard-scss": "^6.1.0"
   },
   "scripts": {
     "start": "REACT_APP_ENVIRONMENT=dev react-scripts start",
@@ -95,7 +94,13 @@
     "prepare": "husky install",
     "generate:gql": "graphql-codegen",
     "generate:gql:watch": "graphql-codegen --watch",
-    "stylint": "npx stylelint \"**/*.scss\""
+    "stylint": "npx stylelint \"**/*.scss\"",
+    "lint:css": "stylelint '**/*.{scss,ts,tsx}'",
+    "lint:css:fix": "stylelint --fix '**/*.scss'",
+    "lint:js": "eslint --ext .js,.ts,.tsx,.graphql .",
+    "lint:js:fix": "npm run lint:js -- --fix .",
+    "lint:prettier": "prettier -c .",
+    "lint:prettier:fix": "prettier -w ."
   },
   "jest": {
     "moduleNameMapper": {

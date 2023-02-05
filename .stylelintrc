@@ -1,0 +1,50 @@
+{
+  "extends": ["stylelint-config", "stylelint-config-prettier"],
+  "ignoreFiles": ["**/*.d.ts"],
+  "rules": {
+    "no-descending-specificity": [
+      true,
+      {
+        "severity": "warning"
+      }
+    ],
+    "no-invalid-position-at-import-rule": null,
+    "selector-not-notation": "simple"
+  },
+  "overrides": [
+    {
+      "extends": [
+        "stylelint-config",
+        "stylelint-config-css-modules",
+        "stylelint-config-prettier"
+      ],
+      "files": ["**/*.module.scss"],
+      "rules": {
+        "selector-not-notation": "complex"
+      }
+    },
+    {
+      "extends": [
+        "stylelint-config",
+        "stylelint-config-styled-components",
+        "stylelint-config-prettier"
+      ],
+      "files": ["**/*.ts", "**/*.tsx"],
+      "rules": {
+        "selector-type-case": [
+          "lower",
+          {
+            "ignoreTypes": ["/^\\$\\w+/"]
+          }
+        ],
+        "selector-type-no-unknown": [
+          true,
+          {
+            "ignoreTypes": ["/^\\$\\w+/"]
+          }
+        ],
+        "selector-not-notation": "complex"
+      }
+    }
+  ]
+}

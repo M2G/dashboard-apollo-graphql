@@ -1,79 +1,49 @@
 /*eslint-disable*/
+import { ChangeEventHandler, MouseEventHandler } from 'react';
+
 interface IPagination {
-  currentPage: number;
-  totalItems: number;
-  perPage: number;
-  setCurrentPage: (params: any) => {};
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  setCurrentPage: (dataset: any) => void;
 }
 
-function Pagination({
-  currentPage,
-  totalItems,
-  perPage,
-  setCurrentPage
-}: IPagination) {
-  const handleClick = ({
-    target: {
-      dataset: { id }
-    }
-  }: {
-    target: { dataset: { id: string } };
-  }): any => setCurrentPage(parseInt(id, 10));
+export type DatasetInjector<HTMLAnchorElement, D extends DOMStringMap> = HTMLAnchorElement & {
+  dataset: D;
+};
 
-  const handlePrevClick = (): any => setCurrentPage(currentPage - 1);
+function Pagination({ hasNextPage, hasPrevPage, setCurrentPage }: IPagination) {
+  const handlePrevClick: ChangeEventHandler<
+    DatasetInjector<HTMLAnchorElement, { prev: string }>
+  > = ({ target: { dataset } }) => setCurrentPage(dataset);
 
-  const handleNextClick = (): any => setCurrentPage(currentPage + 1);
-
-  const pageNumbers = [];
-
-  for (let i = 1; i <= Math.ceil(totalItems / perPage); i += 1) {
-    pageNumbers.push(i);
-  }
-
-  const displayNumbers = pageNumbers.slice(
-    currentPage - 5 > 0 ? currentPage - 5 : 0,
-    currentPage + 5
-  );
-
-  console.log('pageNumbers', pageNumbers);
-  console.log('currentPage', currentPage);
-  console.log('displayNumbers', displayNumbers);
+  const handleNextClick: ChangeEventHandler<
+    DatasetInjector<HTMLAnchorElement, { next: string }>
+  > = ({ target: { dataset } }) => setCurrentPage(dataset);
 
   return (
     <nav aria-label="-1">
-      {pageNumbers.length > 1 && (
-        <ul className="pagination">
-          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-            <a className="page-link" href="#" onClick={handlePrevClick}>
-              Prev
-            </a>
-          </li>
-          {displayNumbers?.map((number) => (
-            <li
-              key={number}
-              className={`page-item ${currentPage === number ? 'active' : ''}`}
-            >
-              <a
-                data-id={number}
-                className="page-link"
-                href="#"
-                onClick={handleClick as any}
-              >
-                {number}
-              </a>
-            </li>
-          ))}
-          <li
-            className={`page-item ${
-              currentPage === pageNumbers.length ? 'disabled' : ''
-            }`}
+      <ul className="pagination">
+        <li className={`page-item ${hasPrevPage ? '' : 'disabled'}`}>
+          <a
+            data-prev
+            className="page-link"
+            href="#"
+            onClick={handlePrevClick as unknown as MouseEventHandler<HTMLAnchorElement>}
           >
-            <a className="page-link" href="#" onClick={handleNextClick}>
-              Next
-            </a>
-          </li>
-        </ul>
-      )}
+            Prev
+          </a>
+        </li>
+        <li className={`page-item ${hasNextPage ? '' : 'disabled'}`}>
+          <a
+            data-next
+            className="page-link"
+            href="#"
+            onClick={handleNextClick as unknown as MouseEventHandler<HTMLAnchorElement>}
+          >
+            Next
+          </a>
+        </li>
+      </ul>
     </nav>
   );
 }

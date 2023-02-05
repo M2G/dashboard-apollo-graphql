@@ -21,17 +21,17 @@ const httpLink = new HttpLink({
 });
 
 const authMiddleware = new ApolloLink((operation: any, forward: any) => {
-        const token = getAuthStorage();
-        const authorization = token ? `Bearer ${token}` : '';
-        operation.setContext(({ headers = {} }: any) => ({
-          headers: {
-            ...headers,
-            authorization
-          }
-        }));
+  const token = getAuthStorage();
+  const authorization = token ? `Bearer ${token}` : '';
+  operation.setContext(({ headers = {} }: any) => ({
+    headers: {
+      ...headers,
+      authorization
+    }
+  }));
 
-        return forward(operation);
-      });
+  return forward(operation);
+});
 
 const errorLink = onError(({ operation, graphQLErrors, networkError, response, ...arg }: any) => {
   console.log('ERROR', {
@@ -43,6 +43,12 @@ const errorLink = onError(({ operation, graphQLErrors, networkError, response, .
   });
 
   console.log('------------------>', networkError?.response?.status);
+
+  if (networkError?.response === 'invalid_token' || networkError?.response?.status === 401) {
+    clearAuthStorage();
+    clearUserStorage();
+    window.location.href = ROUTER_PATH.SIGNIN;
+  }
 
   if (graphQLErrors) {
     graphQLErrors?.forEach((err: any) => {
@@ -63,12 +69,6 @@ const errorLink = onError(({ operation, graphQLErrors, networkError, response, .
         window.location.href = ROUTER_PATH.SIGNIN;
       }
     });
-  }
-
-  if (networkError?.response === 'invalid_token') {
-    clearAuthStorage();
-    clearUserStorage();
-    window.location.href = ROUTER_PATH.SIGNIN;
   }
 });
 

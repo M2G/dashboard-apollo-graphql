@@ -9,7 +9,7 @@ import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
-import type { Users, User } from 'modules/graphql/generated';
+import type { User } from 'modules/graphql/generated';
 import {
   useUpdateUserMutation,
   useCreateUserMutation,
@@ -20,6 +20,7 @@ import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
 import AddUser from './Action/AddUser';
 import './index.scss';
+import type { DatasetInjector } from 'components/Core/Pagination/Pagination';
 
 interface IUserList {
   id: string;
@@ -37,21 +38,17 @@ function UserList({
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(2);
 
-  const [userFilter, { loading, error, data, refetch }] = useGetUserListLazyQuery();
+  const [userFilter, { loading, error, data, refetch, fetchMore }] = useGetUserListLazyQuery();
 
-  console.log('{ loading, error, data }', { loading, error, data });
-
-  console.log('useGetUserListLazyQuery', JSON.stringify(data))
+  console.log('useGetUserListLazyQuery', { loading, error, data });
 
   useEffect(() => {
     userFilter({
       variables: {
-        filters: '',
-        page: 1,
-        pageSize: 5
+        afterCursor: null,
+        first: 2,
+        filters: ''
       }
     });
   }, []);
@@ -147,53 +144,57 @@ function UserList({
     [userFilter]
   );
 
+  const updateQuery = (previousResult: { users: any }, { fetchMoreResult }: any) => {
+    return fetchMoreResult.users.edges.length ? fetchMoreResult : previousResult;
+  };
+
+
   const onChangePage = useCallback(
-    async (params: any) => {
-      console.log('setPage', params);
-      setPage(params);
-      await userFilter({
+    async (dataset: DatasetInjector<any, any>) => {
+      if (dataset.next) {
+        console.log('setPage', dataset);
+        return fetchMore({
+          updateQuery,
+          variables: {
+            first: 2,
+            afterCursor: data?.users?.pageInfo?.endCursor || null
+          }
+        });
+      }
+
+      fetchMore({
+        updateQuery,
         variables: {
-          filters: '',
-          page: params || page,
-          pageSize
+          first: 2,
+          afterCursor: data?.users?.pageInfo?.startCursor || null
         }
       });
+
     },
-    [page, pageSize, userFilter]
+    [data, fetchMore, userFilter]
   );
 
-  const onChangePageSize = useCallback(
-    async (params: any) => {
-      console.log('setPageSize', params);
-      setPageSize(params);
-      await userFilter({
-        variables: {
-          filters: '',
-          page,
-          pageSize: params || pageSize
-        }
-      });
-    },
-    [page, pageSize, userFilter]
-  );
+  const users = data?.users?.edges || [];
 
-  const [users]: Users | any = data?.users || [];
-  const results = users?.results || [];
-  const pageInfo = users?.pageInfo || {};
+  console.log('users users users users', users);
+
+  const pageInfo = data?.users?.pageInfo || {};
+
+  console.log('pageInfo pageInfo pageInfo', pageInfo);
 
   const rows = useMemo(
     () =>
-      results?.map((user: User) =>
+      users?.map((user: any) =>
         userListItem({
           canDelete,
           canEdit,
           id,
           onDelete,
           onEdit,
-          user
+          user: user.node
         } as IUserListItem)
       ),
-    [results, canDelete, canEdit, id, onDelete, onEdit]
+    [users, canDelete, canEdit, id, onDelete, onEdit]
   );
 
   const header = useMemo(
@@ -208,30 +209,23 @@ function UserList({
     []
   );
 
-  if (!results?.length && loading && !error) return <TopLineLoading />;
+  if (loading) return <TopLineLoading />;
 
-  console.log(':::::::::::::::::::::: page pageSize', { page, pageSize });
-
-
-  console.log(':zzzzzzzzzzzz', data);
   return (
     <div className="c-userlist">
       <AddUser canAdd={canAdd} onAdd={onAdd} />
 
-      {!results.length && loading && <NoData />}
-      {results?.length && (
+      {!users.length && <NoData />}
+      {users?.length && (
         <>
           <UserFilters onSubmit={searchTerms} />
           <List
             id={id}
             header={header}
             rows={rows}
-            data={results}
-            count={pageInfo?.count}
-            currentPage={page}
+            hasNextPage={data?.users?.pageInfo?.hasNextPage}
+            hasPrevPage={data?.users?.pageInfo?.hasPrevPage}
             setCurrentPage={onChangePage}
-            currentPageSize={pageSize}
-            setCurrentPageSize={onChangePageSize}
           />
 
           <SidebarWrapper isOpened={editingUser} setIsOpened={onClose}>

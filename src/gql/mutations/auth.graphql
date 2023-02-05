@@ -39,36 +39,13 @@ mutation UpdateUser(
 ) {
   updateUser(
     id: $id
-    input: {
-      email: $email
-      first_name: $first_name
-      last_name: $last_name
-      username: $username
-    }
+    input: { email: $email, first_name: $first_name, last_name: $last_name, username: $username }
   ) {
     first_name
     last_name
     email
     created_at
     modified_at
-  }
-}
-
-mutation UpdateUserPassword(
-  $id: String!
-  $old_password: String!
-  $password: String!
-  $password_again: String!
-) {
-  updateUserPassword(
-    id: $id
-    input: {
-      old_password: $old_password
-      password: $password
-      password_again: $password_again
-    }
-  ) {
-    _id
   }
 }
 

@@ -38,6 +38,12 @@ export type CreateUserInput = {
   username: InputMaybe<Scalars['String']>;
 };
 
+export type Edge = {
+  __typename: 'Edge';
+  cursor: Maybe<Scalars['String']>;
+  node: Maybe<User>;
+};
+
 export type Library = {
   __typename: 'Library';
   books: Maybe<Array<Book>>;
@@ -48,10 +54,11 @@ export type Mutation = {
   __typename: 'Mutation';
   createUser: User;
   deleteUser: Maybe<User>;
+  forgotPassword: Status;
+  resetPassword: Status;
   signin: Scalars['String'];
   signup: Scalars['String'];
   updateUser: Maybe<User>;
-  updateUserPassword: User;
 };
 
 export type MutationcreateUserArgs = {
@@ -60,6 +67,14 @@ export type MutationcreateUserArgs = {
 
 export type MutationdeleteUserArgs = {
   id: Scalars['String'];
+};
+
+export type MutationforgotPasswordArgs = {
+  email: Scalars['String'];
+};
+
+export type MutationresetPasswordArgs = {
+  input: ResetPasswordInput;
 };
 
 export type MutationsigninArgs = {
@@ -75,24 +90,19 @@ export type MutationupdateUserArgs = {
   input: CreateUserInput;
 };
 
-export type MutationupdateUserPasswordArgs = {
-  id: Scalars['String'];
-  input: updateUserPasswordInput;
-};
-
 export type PageInfo = {
   __typename: 'PageInfo';
-  count: Maybe<Scalars['Int']>;
-  next: Maybe<Scalars['Int']>;
-  pages: Maybe<Scalars['Int']>;
-  prev: Maybe<Scalars['Int']>;
+  endCursor: Maybe<Scalars['String']>;
+  hasNextPage: Maybe<Scalars['Boolean']>;
+  hasPrevPage: Maybe<Scalars['Boolean']>;
+  startCursor: Maybe<Scalars['String']>;
 };
 
 export type Query = {
   __typename: 'Query';
   getUser: Maybe<User>;
   libraries: Maybe<Array<Maybe<Library>>>;
-  users: Maybe<Array<Users>>;
+  users: Users;
 };
 
 export type QuerygetUserArgs = {
@@ -100,9 +110,14 @@ export type QuerygetUserArgs = {
 };
 
 export type QueryusersArgs = {
+  afterCursor: InputMaybe<Scalars['String']>;
   filters: InputMaybe<Scalars['String']>;
-  page: InputMaybe<Scalars['Int']>;
-  pageSize: InputMaybe<Scalars['Int']>;
+  first: Scalars['Int'];
+};
+
+export type ResetPasswordInput = {
+  password: Scalars['String'];
+  token: Scalars['String'];
 };
 
 export type SigninInput = {
@@ -113,6 +128,11 @@ export type SigninInput = {
 export type SignupInput = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type Status = {
+  __typename: 'Status';
+  success: Maybe<Scalars['Boolean']>;
 };
 
 export type User = {
@@ -133,20 +153,15 @@ export type User = {
 
 export type Users = {
   __typename: 'Users';
+  edges: Maybe<Array<Maybe<Edge>>>;
   pageInfo: Maybe<PageInfo>;
-  results: Maybe<Array<Maybe<User>>>;
+  totalCount: Maybe<Scalars['Int']>;
 };
 
 export enum sortOrder {
   ASC = 'ASC',
   DESC = 'DESC'
 }
-
-export type updateUserPasswordInput = {
-  old_password: Scalars['String'];
-  password: Scalars['String'];
-  password_again: Scalars['String'];
-};
 
 export type SigninMutationVariables = Exact<{
   email: Scalars['String'];
@@ -202,18 +217,6 @@ export type UpdateUserMutation = {
   } | null;
 };
 
-export type UpdateUserPasswordMutationVariables = Exact<{
-  id: Scalars['String'];
-  old_password: Scalars['String'];
-  password: Scalars['String'];
-  password_again: Scalars['String'];
-}>;
-
-export type UpdateUserPasswordMutation = {
-  __typename: 'Mutation';
-  updateUserPassword: { __typename: 'User'; _id: string | null };
-};
-
 export type DeleteUserMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -235,33 +238,38 @@ export type UserPartsFragment = {
 };
 
 export type GetUserListQueryVariables = Exact<{
+  afterCursor: InputMaybe<Scalars['String']>;
+  first: Scalars['Int'];
   filters: InputMaybe<Scalars['String']>;
-  pageSize: InputMaybe<Scalars['Int']>;
-  page: InputMaybe<Scalars['Int']>;
 }>;
 
 export type GetUserListQuery = {
   __typename: 'Query';
-  users: Array<{
+  users: {
     __typename: 'Users';
-    results: Array<{
-      __typename: 'User';
-      _id: string | null;
-      first_name: string | null;
-      last_name: string | null;
-      email: string | null;
-      created_at: number | null;
-      modified_at: number | null;
-      password: string | null;
+    totalCount: number | null;
+    edges: Array<{
+      __typename: 'Edge';
+      cursor: string | null;
+      node: {
+        __typename: 'User';
+        _id: string | null;
+        first_name: string | null;
+        last_name: string | null;
+        email: string | null;
+        created_at: number | null;
+        modified_at: number | null;
+        password: string | null;
+      } | null;
     } | null> | null;
     pageInfo: {
       __typename: 'PageInfo';
-      count: number | null;
-      pages: number | null;
-      next: number | null;
-      prev: number | null;
+      startCursor: string | null;
+      endCursor: string | null;
+      hasNextPage: boolean | null;
+      hasPrevPage: boolean | null;
     } | null;
-  }> | null;
+  };
 };
 
 export type GetUserQueryVariables = Exact<{
@@ -512,65 +520,6 @@ export type UpdateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<
   UpdateUserMutation,
   UpdateUserMutationVariables
 >;
-export const UpdateUserPasswordDocument = gql`
-  mutation UpdateUserPassword(
-    $id: String!
-    $old_password: String!
-    $password: String!
-    $password_again: String!
-  ) {
-    updateUserPassword(
-      id: $id
-      input: { old_password: $old_password, password: $password, password_again: $password_again }
-    ) {
-      _id
-    }
-  }
-`;
-export type UpdateUserPasswordMutationFn = ApolloReactCommon.MutationFunction<
-  UpdateUserPasswordMutation,
-  UpdateUserPasswordMutationVariables
->;
-
-/**
- * __useUpdateUserPasswordMutation__
- *
- * To run a mutation, you first call `useUpdateUserPasswordMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateUserPasswordMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateUserPasswordMutation, { data, loading, error }] = useUpdateUserPasswordMutation({
- *   variables: {
- *      id: // value for 'id'
- *      old_password: // value for 'old_password'
- *      password: // value for 'password'
- *      password_again: // value for 'password_again'
- *   },
- * });
- */
-export function useUpdateUserPasswordMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    UpdateUserPasswordMutation,
-    UpdateUserPasswordMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return ApolloReactHooks.useMutation<
-    UpdateUserPasswordMutation,
-    UpdateUserPasswordMutationVariables
-  >(UpdateUserPasswordDocument, options);
-}
-export type UpdateUserPasswordMutationHookResult = ReturnType<typeof useUpdateUserPasswordMutation>;
-export type UpdateUserPasswordMutationResult =
-  ApolloReactCommon.MutationResult<UpdateUserPasswordMutation>;
-export type UpdateUserPasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  UpdateUserPasswordMutation,
-  UpdateUserPasswordMutationVariables
->;
 export const DeleteUserDocument = gql`
   mutation DeleteUser($id: String!) {
     deleteUser(id: $id) {
@@ -619,16 +568,20 @@ export type DeleteUserMutationOptions = ApolloReactCommon.BaseMutationOptions<
   DeleteUserMutationVariables
 >;
 export const GetUserListDocument = gql`
-  query GetUserList($filters: String, $pageSize: Int, $page: Int) {
-    users(filters: $filters, pageSize: $pageSize, page: $page) {
-      results {
-        ...UserParts
+  query GetUserList($afterCursor: String, $first: Int!, $filters: String) {
+    users(afterCursor: $afterCursor, first: $first, filters: $filters) {
+      totalCount
+      edges {
+        node {
+          ...UserParts
+        }
+        cursor
       }
       pageInfo {
-        count
-        pages
-        next
-        prev
+        startCursor
+        endCursor
+        hasNextPage
+        hasPrevPage
       }
     }
   }
@@ -647,14 +600,14 @@ export const GetUserListDocument = gql`
  * @example
  * const { data, loading, error } = useGetUserListQuery({
  *   variables: {
+ *      afterCursor: // value for 'afterCursor'
+ *      first: // value for 'first'
  *      filters: // value for 'filters'
- *      pageSize: // value for 'pageSize'
- *      page: // value for 'page'
  *   },
  * });
  */
 export function useGetUserListQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<GetUserListQuery, GetUserListQueryVariables>
+  baseOptions: ApolloReactHooks.QueryHookOptions<GetUserListQuery, GetUserListQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return ApolloReactHooks.useQuery<GetUserListQuery, GetUserListQueryVariables>(

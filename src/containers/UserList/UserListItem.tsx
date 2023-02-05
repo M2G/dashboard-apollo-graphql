@@ -31,6 +31,9 @@ function userListItem({
       value: number | string | Date | null | undefined;
     }
 )[] {
+
+  console.log('userListItem', user)
+
   const id = `user__row__${rowId}__${user._id}`;
 
   const actions: any = [];
