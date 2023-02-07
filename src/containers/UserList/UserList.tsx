@@ -39,7 +39,10 @@ function UserList({
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
 
-  const [userFilter, { loading, error, data, refetch, fetchMore }] = useGetUserListLazyQuery();
+  const [userFilter, { loading, error, data, refetch, fetchMore }] = useGetUserListLazyQuery({
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first'
+  });
 
   console.log('useGetUserListLazyQuery', { loading, error, data });
 
@@ -148,7 +151,6 @@ function UserList({
     return fetchMoreResult.users.edges.length ? fetchMoreResult : previousResult;
   };
 
-
   const onChangePage = useCallback(
     async (dataset: DatasetInjector<any, any>) => {
       if (dataset.next) {
@@ -169,7 +171,6 @@ function UserList({
           afterCursor: data?.users?.pageInfo?.startCursor || null
         }
       });
-
     },
     [data, fetchMore, userFilter]
   );
