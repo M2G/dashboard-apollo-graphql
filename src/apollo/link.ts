@@ -50,8 +50,8 @@ const errorLink = onError(({ operation, graphQLErrors, networkError, response, .
     window.location.href = ROUTER_PATH.SIGNIN;
   }
 
-  if (graphQLErrors) {
-    graphQLErrors?.forEach((err: any) => {
+  if (graphQLErrors?.length) {
+    graphQLErrors.forEach((err: any) => {
       toast.error(err?.message);
 
       console.log('graphQLErrors', err);

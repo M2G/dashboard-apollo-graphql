@@ -7,10 +7,10 @@ export function MyMockedProvider(props: { [x: string]: any; mocks: any }) {
 
   const mockLink = new MockLink(mocks);
   const errorLoggingLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors) {
-      graphQLErrors.map(({ message, locations, path }) => {
-        console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-      });
+    if (graphQLErrors?.length) {
+      graphQLErrors.map(({ message, locations, path }) =>
+        console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+      );
     }
 
     if (networkError) console.log(`[Network error]: ${networkError}`);

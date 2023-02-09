@@ -185,14 +185,14 @@ function UserList({
 
   const rows = useMemo(
     () =>
-      users?.map((user: any) =>
+      users?.map(({ node }: any) =>
         userListItem({
           canDelete,
           canEdit,
           id,
           onDelete,
           onEdit,
-          user: user.node
+          user: node
         } as IUserListItem)
       ),
     [users, canDelete, canEdit, id, onDelete, onEdit]
