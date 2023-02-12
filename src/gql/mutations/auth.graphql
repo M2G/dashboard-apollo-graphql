@@ -3,25 +3,17 @@ mutation Signin($email: String!, $password: String!) {
 }
 
 mutation Signup($email: String!, $password: String!) {
-  signup(input: { email: $email, password: $password })
+  signup(input: { email: $email, password: $password }) {
+    first_name
+    last_name
+    email
+    created_at
+    modified_at
+  }
 }
 
-mutation CreateUser(
-  $email: String!
-  $password: String!
-  $first_name: String
-  $last_name: String
-  $username: String
-) {
-  createUser(
-    input: {
-      email: $email
-      password: $password
-      first_name: $first_name
-      last_name: $last_name
-      username: $username
-    }
-  ) {
+mutation CreateUser($email: String!, $password: String!) {
+  createUser(input: { email: $email, password: $password }) {
     first_name
     last_name
     email

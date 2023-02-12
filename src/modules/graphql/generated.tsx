@@ -28,14 +28,8 @@ export type Book = {
 };
 
 export type CreateUserInput = {
-  _id: InputMaybe<Scalars['String']>;
-  created_at: InputMaybe<Scalars['Int']>;
-  email: InputMaybe<Scalars['String']>;
-  first_name: InputMaybe<Scalars['String']>;
-  last_name: InputMaybe<Scalars['String']>;
-  modified_at: InputMaybe<Scalars['Int']>;
-  password: InputMaybe<Scalars['String']>;
-  username: InputMaybe<Scalars['String']>;
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type Edge = {
@@ -57,7 +51,7 @@ export type Mutation = {
   forgotPassword: Status;
   resetPassword: Status;
   signin: Scalars['String'];
-  signup: Scalars['String'];
+  signup: User;
   updateUser: Maybe<User>;
 };
 
@@ -87,7 +81,7 @@ export type MutationsignupArgs = {
 
 export type MutationupdateUserArgs = {
   id: Scalars['String'];
-  input: CreateUserInput;
+  input: InputMaybe<UpdateUserInput>;
 };
 
 export type PageInfo = {
@@ -135,6 +129,13 @@ export type Status = {
   success: Maybe<Scalars['Boolean']>;
 };
 
+export type UpdateUserInput = {
+  email: InputMaybe<Scalars['String']>;
+  first_name: InputMaybe<Scalars['String']>;
+  last_name: InputMaybe<Scalars['String']>;
+  username: InputMaybe<Scalars['String']>;
+};
+
 export type User = {
   __typename: 'User';
   _id: Maybe<Scalars['String']>;
@@ -175,14 +176,21 @@ export type SignupMutationVariables = Exact<{
   password: Scalars['String'];
 }>;
 
-export type SignupMutation = { __typename: 'Mutation'; signup: string };
+export type SignupMutation = {
+  __typename: 'Mutation';
+  signup: {
+    __typename: 'User';
+    first_name: string | null;
+    last_name: string | null;
+    email: string | null;
+    created_at: number | null;
+    modified_at: number | null;
+  };
+};
 
 export type CreateUserMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
-  first_name: InputMaybe<Scalars['String']>;
-  last_name: InputMaybe<Scalars['String']>;
-  username: InputMaybe<Scalars['String']>;
 }>;
 
 export type CreateUserMutation = {
@@ -346,7 +354,13 @@ export type SigninMutationOptions = ApolloReactCommon.BaseMutationOptions<
 >;
 export const SignupDocument = gql`
   mutation Signup($email: String!, $password: String!) {
-    signup(input: { email: $email, password: $password })
+    signup(input: { email: $email, password: $password }) {
+      first_name
+      last_name
+      email
+      created_at
+      modified_at
+    }
   }
 `;
 export type SignupMutationFn = ApolloReactCommon.MutationFunction<
@@ -388,22 +402,8 @@ export type SignupMutationOptions = ApolloReactCommon.BaseMutationOptions<
   SignupMutationVariables
 >;
 export const CreateUserDocument = gql`
-  mutation CreateUser(
-    $email: String!
-    $password: String!
-    $first_name: String
-    $last_name: String
-    $username: String
-  ) {
-    createUser(
-      input: {
-        email: $email
-        password: $password
-        first_name: $first_name
-        last_name: $last_name
-        username: $username
-      }
-    ) {
+  mutation CreateUser($email: String!, $password: String!) {
+    createUser(input: { email: $email, password: $password }) {
       first_name
       last_name
       email
@@ -432,9 +432,6 @@ export type CreateUserMutationFn = ApolloReactCommon.MutationFunction<
  *   variables: {
  *      email: // value for 'email'
  *      password: // value for 'password'
- *      first_name: // value for 'first_name'
- *      last_name: // value for 'last_name'
- *      username: // value for 'username'
  *   },
  * });
  */

@@ -10,17 +10,26 @@ import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
 import type { User } from 'modules/graphql/generated';
+import { Buffer } from 'buffer';
 import {
   useUpdateUserMutation,
   useCreateUserMutation,
   useDeleteUserMutation,
-  useGetUserListLazyQuery
+  useGetUserListLazyQuery,
+  GetUserListDocument
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
 import AddUser from './Action/AddUser';
 import './index.scss';
 import type { DatasetInjector } from 'components/Core/Pagination/Pagination';
+
+const convertNodeToCursor = (node: { _id: string }) => {
+  return Buffer.from(node._id, 'binary').toString('base64');
+};
+// @see https://stackoverflow.com/questions/10593337/is-there-any-way-to-create-mongodb-like-id-strings-without-mongodb
+const ObjectId = (m = Math, d = Date, h = 16, s = (s: number) => m.floor(s).toString(h)) =>
+  s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h));
 
 interface IUserList {
   id: string;
@@ -40,8 +49,8 @@ function UserList({
   const [deletingUser, setDeletingUser] = useState(false);
 
   const [userFilter, { loading, error, data, refetch, fetchMore }] = useGetUserListLazyQuery({
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'cache-first'
+    fetchPolicy: 'cache-and-network'
+    // nextFetchPolicy: 'cache-first'
   });
 
   console.log('useGetUserListLazyQuery', { loading, error, data });
@@ -50,14 +59,14 @@ function UserList({
     userFilter({
       variables: {
         afterCursor: null,
-        first: 2,
+        first: 14,
         filters: ''
       }
     });
-  }, []);
+  }, [userFilter]);
 
   const [createUser] = useCreateUserMutation({
-    onCompleted: refetch as any
+    //onCompleted: refetch as any
   });
 
   const [updateUser] = useUpdateUserMutation({
@@ -109,13 +118,92 @@ function UserList({
     async (user: User): Promise<void> => {
       await createUser({
         variables: {
-          email: user?.email ?? '',
-          password: user?.password ?? '',
-          first_name: user?.first_name ?? '',
-          last_name: user?.last_name ?? '',
-          username: user?.username ?? ''
+          email: user?.email || '',
+          password: user?.password || ''
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createUser: {
+            email: user?.email,
+            first_name: user?.first_name || '',
+            last_name: user?.last_name || '',
+            created_at: Math.floor(Date.now() / 1000),
+            modified_at: Math.floor(Date.now() / 1000),
+            __typename: 'User'
+          }
+        },
+        update(cache, mutationResult: any) {
+          const resultMessage = mutationResult?.data?.createUser;
+          console.log({ cache, resultMessage });
+
+          const t = cache.readQuery({
+            query: GetUserListDocument,
+            variables: {
+              afterCursor: null,
+              first: 14,
+              filters: ''
+            }
+          });
+
+          const existingTodos: any = Object.assign({}, t);
+
+          console.log('existingTodos existingTodos existingTodos', existingTodos);
+
+          const _id = ObjectId();
+
+          const newUser = [
+            ...existingTodos?.users?.edges,
+            ...[
+              {
+                __typename: 'Edge',
+                node: {
+                  ...user,
+                  _id: _id,
+                  first_name: user?.first_name || '',
+                  last_name: user?.last_name || '',
+                  created_at: Math.floor(Date.now() / 1000),
+                  modified_at: Math.floor(Date.now() / 1000),
+                  __typename: 'User'
+                },
+                cursor: convertNodeToCursor({ _id })
+              }
+            ]
+          ];
+
+          console.log('newUser newUser newUser', newUser);
+
+          const newData = {
+            users: {
+              edges: newUser,
+              pageInfo: existingTodos.users.pageInfo,
+              totalCount: existingTodos.users.totalCount + 1,
+              __typename: 'Users'
+            }
+          };
+
+          console.log('newData newData newData', newData);
+
+          cache.writeQuery({
+            query: GetUserListDocument,
+            data: {
+              ...newData
+            }
+          });
+
+          console.log(
+            '::::::::::::::::::::::',
+            cache.readQuery({
+              query: GetUserListDocument,
+              variables: {
+                afterCursor: null,
+                first: 14,
+                filters: ''
+              }
+            })
+          );
         }
       });
+
       setNewUser(user as unknown as SetStateAction<boolean>);
       onClose();
     },

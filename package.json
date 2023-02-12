@@ -65,6 +65,7 @@
     "@graphql-tools/schema": "^9.0.13",
     "@sentry/react": "^7.24.2",
     "@sentry/tracing": "^7.24.2",
+    "buffer": "^6.0.3",
     "clsx": "^1.2.1",
     "css-loader": "^6.7.2",
     "formik": "^2.2.9",
