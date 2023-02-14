@@ -134,9 +134,10 @@ function UserList({
         },
         update(cache, mutationResult: any) {
           const resultMessage = mutationResult?.data?.createUser;
-          console.log({ cache, resultMessage });
 
-          const t = cache.readQuery({
+          console.log('resultMessage', resultMessage)
+
+          const cachedUserList = cache.readQuery({
             query: GetUserListDocument,
             variables: {
               afterCursor: null,
@@ -145,22 +146,19 @@ function UserList({
             }
           });
 
-          const existingTodos: any = Object.assign({}, t);
-
-          console.log('existingTodos existingTodos existingTodos', existingTodos);
+          const existingTodos: any = Object.assign({}, cachedUserList);
 
           const _id = ObjectId();
 
           const newUser = [
             ...existingTodos?.users?.edges,
-            ...[
-              {
+            ...[{
                 __typename: 'Edge',
                 node: {
                   ...user,
-                  _id: _id,
-                  first_name: user?.first_name || '',
-                  last_name: user?.last_name || '',
+                  _id,
+                  first_name: resultMessage?.first_name || '',
+                  last_name: resultMessage?.last_name || '',
                   created_at: Math.floor(Date.now() / 1000),
                   modified_at: Math.floor(Date.now() / 1000),
                   __typename: 'User'
@@ -169,8 +167,6 @@ function UserList({
               }
             ]
           ];
-
-          console.log('newUser newUser newUser', newUser);
 
           const newData = {
             users: {
@@ -181,26 +177,17 @@ function UserList({
             }
           };
 
-          console.log('newData newData newData', newData);
-
           cache.writeQuery({
             query: GetUserListDocument,
+            variables: {
+              afterCursor: null,
+              first: 14,
+              filters: ''
+            },
             data: {
               ...newData
             }
           });
-
-          console.log(
-            '::::::::::::::::::::::',
-            cache.readQuery({
-              query: GetUserListDocument,
-              variables: {
-                afterCursor: null,
-                first: 14,
-                filters: ''
-              }
-            })
-          );
         }
       });
 
