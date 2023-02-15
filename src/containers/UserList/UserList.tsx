@@ -50,8 +50,8 @@ function UserList({
   const [deletingUser, setDeletingUser] = useState(false);
 
   const [userFilter, { loading, error, data, refetch, fetchMore }] = useGetUserListLazyQuery({
-    fetchPolicy: 'cache-and-network'
-    // nextFetchPolicy: 'cache-first'
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first'
   });
 
   console.log('useGetUserListLazyQuery', { loading, error, data });
@@ -72,9 +72,7 @@ function UserList({
     onCompleted: refetch
   } as any);
 
-  const [deleteUser] = useDeleteUserMutation({
-    onCompleted: refetch
-  } as any);
+  const [deleteUser] = useDeleteUserMutation();
 
   const onDelete = useCallback((user: User): void => {
     setNewUser(false);
@@ -148,7 +146,8 @@ function UserList({
 
           const newUser = [
             ...existingTodos?.users?.edges,
-            ...[{
+            ...[
+              {
                 __typename: 'Edge',
                 node: {
                   ...user,
@@ -203,12 +202,12 @@ function UserList({
         optimisticResponse: {
           __typename: 'Mutation',
           deleteUser: {
-            __typename: "User",
+            __typename: 'User',
             _id: user?._id
           }
-          },
+        },
         update(cache, mutationResult: any) {
-          const resultMessage = mutationResult?.data?.createUser;
+          const { _id } = mutationResult?.data?.deleteUser;
           const cachedUserList = cache.readQuery({
             query: GetUserListDocument,
             variables: {
@@ -220,25 +219,13 @@ function UserList({
 
           const existingTodos: any = Object.assign({}, cachedUserList);
 
-          const _id = ObjectId();
+          const filtered = existingTodos?.users?.edges?.filter(
+            (edge: { node: { _id: any } }) => edge?.node?._id !== _id
+          );
 
-          const newUser = [
-            ...existingTodos?.users?.edges,
-            ...[{
-              __typename: 'Edge',
-              node: {
-                ...user,
-                _id,
-                first_name: resultMessage?.first_name || '',
-                last_name: resultMessage?.last_name || '',
-                created_at: Math.floor(Date.now() / 1000),
-                modified_at: Math.floor(Date.now() / 1000),
-                __typename: 'User'
-              },
-              cursor: convertNodeToCursor({ _id })
-            }
-            ]
-          ];
+          console.log(' _id _id _id', { filtered });
+
+          const newUser = [...filtered];
 
           const newData = {
             users: {
