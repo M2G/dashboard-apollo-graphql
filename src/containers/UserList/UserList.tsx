@@ -16,7 +16,8 @@ import {
   useCreateUserMutation,
   useDeleteUserMutation,
   useGetUserListLazyQuery,
-  GetUserListDocument
+  GetUserListDocument,
+  GetUserListQuery
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
@@ -65,9 +66,7 @@ function UserList({
     });
   }, [userFilter]);
 
-  const [createUser] = useCreateUserMutation({
-    //onCompleted: refetch as any
-  });
+  const [createUser] = useCreateUserMutation();
 
   const [updateUser] = useUpdateUserMutation({
     onCompleted: refetch
@@ -134,10 +133,7 @@ function UserList({
         },
         update(cache, mutationResult: any) {
           const resultMessage = mutationResult?.data?.createUser;
-
-          console.log('resultMessage', resultMessage)
-
-          const cachedUserList = cache.readQuery({
+          const cachedUserList = cache.readQuery<GetUserListQuery>({
             query: GetUserListDocument,
             variables: {
               afterCursor: null,
@@ -168,6 +164,82 @@ function UserList({
             ]
           ];
 
+          const newData: any = {
+            users: {
+              edges: newUser,
+              pageInfo: existingTodos.users.pageInfo,
+              totalCount: existingTodos.users.totalCount + 1,
+              __typename: 'Users'
+            }
+          };
+
+          cache.writeQuery<GetUserListQuery>({
+            query: GetUserListDocument,
+            variables: {
+              afterCursor: null,
+              first: 14,
+              filters: ''
+            },
+            data: {
+              __typename: 'Query',
+              ...newData
+            }
+          });
+        }
+      });
+
+      setNewUser(user as unknown as SetStateAction<boolean>);
+      onClose();
+    },
+    [createUser, onClose]
+  );
+
+  const onDeleteUser = useCallback(
+    async (user: User): Promise<void> => {
+      await deleteUser({
+        variables: {
+          id: user?._id || ''
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          deleteUser: {
+            __typename: "User",
+            _id: user?._id
+          }
+          },
+        update(cache, mutationResult: any) {
+          const resultMessage = mutationResult?.data?.createUser;
+          const cachedUserList = cache.readQuery({
+            query: GetUserListDocument,
+            variables: {
+              afterCursor: null,
+              first: 14,
+              filters: ''
+            }
+          });
+
+          const existingTodos: any = Object.assign({}, cachedUserList);
+
+          const _id = ObjectId();
+
+          const newUser = [
+            ...existingTodos?.users?.edges,
+            ...[{
+              __typename: 'Edge',
+              node: {
+                ...user,
+                _id,
+                first_name: resultMessage?.first_name || '',
+                last_name: resultMessage?.last_name || '',
+                created_at: Math.floor(Date.now() / 1000),
+                modified_at: Math.floor(Date.now() / 1000),
+                __typename: 'User'
+              },
+              cursor: convertNodeToCursor({ _id })
+            }
+            ]
+          ];
+
           const newData = {
             users: {
               edges: newUser,
@@ -188,20 +260,6 @@ function UserList({
               ...newData
             }
           });
-        }
-      });
-
-      setNewUser(user as unknown as SetStateAction<boolean>);
-      onClose();
-    },
-    [createUser, onClose]
-  );
-
-  const onDeleteUser = useCallback(
-    async (user: User): Promise<void> => {
-      await deleteUser({
-        variables: {
-          id: user?._id || ''
         }
       });
       onClose();
