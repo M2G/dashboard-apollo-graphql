@@ -17,7 +17,7 @@ import {
   useDeleteUserMutation,
   useGetUserListLazyQuery,
   GetUserListDocument,
-  GetUserListQuery
+  GetUserListQuery,
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
@@ -69,7 +69,7 @@ function UserList({
   const [createUser] = useCreateUserMutation();
 
   const [updateUser] = useUpdateUserMutation({
-    onCompleted: refetch
+    // onCompleted: refetch
   } as any);
 
   const [deleteUser] = useDeleteUserMutation();
@@ -104,6 +104,36 @@ function UserList({
         variables: {
           ...user,
           id: user?._id ?? ''
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          updateUser: {
+            email: user?.email,
+            first_name: user?.first_name || '',
+            last_name: user?.last_name || '',
+            created_at: Math.floor(Date.now() / 1000),
+            modified_at: Math.floor(Date.now() / 1000),
+            __typename: 'User'
+          }
+        },
+        update(cache, mutationResult: any) {
+          const updateUser = mutationResult?.data?.updateUser;
+          const cachedUserList = cache.readQuery<GetUserListQuery>({
+            query: GetUserListDocument,
+            variables: {
+              afterCursor: null,
+              first: 14,
+              filters: ''
+            }
+          });
+
+          console.log('------------', {
+            updateUser,
+            cachedUserList,
+          })
+
+          const userList = cachedUserList?.users?.edges || [];
+
         }
       });
       onClose();
@@ -140,12 +170,12 @@ function UserList({
             }
           });
 
-          const existingTodos: any = Object.assign({}, cachedUserList);
+          const userList = cachedUserList?.users?.edges || [];
 
           const _id = ObjectId();
 
           const newUser = [
-            ...existingTodos?.users?.edges,
+            ...userList,
             ...[
               {
                 __typename: 'Edge',
@@ -166,8 +196,10 @@ function UserList({
           const newData: any = {
             users: {
               edges: newUser,
-              pageInfo: existingTodos.users.pageInfo,
-              totalCount: existingTodos.users.totalCount + 1,
+              pageInfo: cachedUserList?.users?.pageInfo,
+              totalCount: cachedUserList?.users?.totalCount
+                ? cachedUserList.users.totalCount + 1
+                : 0,
               __typename: 'Users'
             }
           };
@@ -222,8 +254,6 @@ function UserList({
           const filtered = existingTodos?.users?.edges?.filter(
             (edge: { node: { _id: any } }) => edge?.node?._id !== _id
           );
-
-          console.log(' _id _id _id', { filtered });
 
           const newUser = [...filtered];
 
