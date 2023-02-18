@@ -3,7 +3,7 @@ import { useCallback, useContext } from 'react';
 import { QueryResult } from '@apollo/client';
 import ProfilForm from 'components/ProfilForm';
 import { INPUT_NAME, INITIAL_VALUES } from 'components/ProfilForm/constants';
-import { AuthContext } from 'AuthContext';
+import { AuthContext } from '../../AuthContext';
 import {
   Exact,
   GetUserQuery,

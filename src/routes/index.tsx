@@ -12,7 +12,7 @@ const ChangePassword = lazy(() => import('containers/ChangePassword'));
 const Profil = lazy(() => import('containers/Profil'));
 
 import TopLineLoading from 'components/Loading/TopLineLoading';
-import { AuthContext } from 'AuthContext';
+import { AuthContext } from '../AuthContext';
 
 /**
  * Top level application router
@@ -24,12 +24,14 @@ const Router = () => {
   const { isAuth } = useContext(AuthContext);
   const { userData } = useContext(AuthContext);
 
-  console.log('isAuth userData', {
+  console.log('isAuth userData userData', {
     isAuth,
     userData
   });
 
   const userId = userData?._id;
+
+  console.log('userId userId', userId)
 
   return (
     <main>
@@ -60,13 +62,12 @@ const Router = () => {
               element={<ForgotPassword />}
             />
           )}
-          {!isAuth && <Route path={ROUTER_PATH.SIGNIN} element={<Signin />} />}
           {!isAuth && <Route path={ROUTER_PATH.SIGNUP} element={<Signup />} />}
-
-          {isAuth && (
+          {!isAuth && <Route path={ROUTER_PATH.SIGNIN} element={<Signin />} />}
+          {!isAuth && (
             <Route
               path="*"
-              element={<Navigate to={ROUTER_PATH.HOME} replace />}
+              element={<Navigate to={ROUTER_PATH.SIGNIN} replace />}
             />
           )}
         </Routes>

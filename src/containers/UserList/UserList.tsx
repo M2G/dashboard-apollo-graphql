@@ -49,7 +49,7 @@ function UserList({
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
 
-  const [userFilter, { loading, error, data, refetch, fetchMore }] = useGetUserListLazyQuery({
+  const [userFilter, { loading, error, data, fetchMore }] = useGetUserListLazyQuery({
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first'
   });
@@ -67,11 +67,7 @@ function UserList({
   }, [userFilter]);
 
   const [createUser] = useCreateUserMutation();
-
-  const [updateUser] = useUpdateUserMutation({
-    // onCompleted: refetch
-  } as any);
-
+  const [updateUser] = useUpdateUserMutation();
   const [deleteUser] = useDeleteUserMutation();
 
   const onDelete = useCallback((user: User): void => {
@@ -103,7 +99,7 @@ function UserList({
       await updateUser({
         variables: {
           ...user,
-          id: user?._id ?? ''
+          id: user?._id || ''
         },
         optimisticResponse: {
           __typename: 'Mutation',
@@ -130,9 +126,14 @@ function UserList({
           console.log('------------', {
             updateUser,
             cachedUserList,
+            id: user?._id
           })
 
           const userList = cachedUserList?.users?.edges || [];
+
+          const find = userList.find(d => d.node._id === user?._id)
+
+          console.log('find find find', find)
 
         }
       });

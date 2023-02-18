@@ -7,10 +7,10 @@ import { clearAuthStorage, clearUserStorage, getAuthStorage } from '../services/
 
 // https://localhost:8282/graphql
 /* Configuration imported from '.env' file */
-const backendProtocol = process.env.REACT_APP_PROTOCOL ?? 'http';
-const backendHost = process.env.REACT_APP_HOST ?? 'localhost';
-const backendPort = process.env.REACT_APP_PORT ?? '8181';
-const backendGraphql = process.env.REACT_APP_GRAPHQL ?? 'graphql';
+const backendProtocol = 'http';
+const backendHost = 'localhost';
+const backendPort = '8181';
+const backendGraphql = 'graphql';
 
 const backendAddress = `${backendProtocol}://${backendHost}:${backendPort}/${backendGraphql}`;
 

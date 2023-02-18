@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import SignupForm from 'components/SignupForm';
-import { AuthContext } from 'AuthContext';
 import { useSigninMutation } from 'modules/graphql/generated';
+import { AuthContext } from '../../AuthContext';
 import { INITIAL_VALUES } from './constants';
 
 function Signup(): JSX.Element {

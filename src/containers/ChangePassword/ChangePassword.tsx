@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import ChangePasswordForm from 'components/ChangePassordForm';
 import { INITIAL_VALUES } from 'components/ChangePassordForm/constants';
-import { AuthContext } from 'AuthContext';
+import { AuthContext } from '../../AuthContext';
 import { useUpdateUserMutation } from 'modules/graphql/generated';
 
 function ChangePassword(): JSX.Element {

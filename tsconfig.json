@@ -1,44 +1,35 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "esnext",
-    "module": "commonjs",
     "jsx": "react-jsx",
-    "moduleResolution": "node",
+
+    "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
-    "allowJs": true,
     "checkJs": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "declaration": true,
     "noImplicitReturns": false,
     "removeComments": true,
-    "forceConsistentCasingInFileNames": true,
     "noImplicitThis": false,
     "noImplicitAny": true,
-    "strict": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
     "outDir": "./build",
-    "lib": [
-      "ES2015",
-      "ES2016",
-      "ES2017",
-      "ES2018",
-      "ES2019",
-      "ES2020",
-      "ESNext",
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
     "rootDirs": ["src"],
     "baseUrl": "src",
     "paths": {
@@ -58,7 +49,7 @@
       "modules/*": ["./modules/*"]
     }
   },
-  "include": ["src/**/*", "src/**/**/*", "test/**/*", "custom.d.ts"],
+  "include": ["./.eslintrc.js", "./src", "./test", "custom.d.ts"],
   "exclude": [
     "src/stories",
     "**/__tests__/*",
@@ -68,6 +59,7 @@
     "node_modules",
     "config"
   ],
+  // "references": [{ "path": "./tsconfig.node.json" }],
   "compileOnSave": false,
   "buildOnSave": false
 }
