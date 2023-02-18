@@ -15,6 +15,7 @@ export default defineConfig(() => ({
       fixtures: path.resolve(__dirname, './src/fixtures/'),
       gql: path.resolve(__dirname, './src/gql/'),
       modules: path.resolve(__dirname, './src/modules/'),
+      routes: path.resolve(__dirname, './src/routes/'),
       sentry: path.resolve(__dirname, './src/sentry/'),
     },
   },

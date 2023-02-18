@@ -1,10 +1,10 @@
 import { createRoot } from 'react-dom/client';
 import { init as initSentry } from '@sentry/react';
-import { SENTRY_CONFIG } from 'sentry/config';
+import SENTRY_CONFIG from 'sentry/config';
 import App from './App';
 import './index.scss';
 
-initSentry(SENTRY_CONFIG);
+initSentry(SENTRY_CONFIG as any);
 
 function render(Component: any): void {
   const MOUNT_NODE: any = document.getElementById('root') ?? document.createElement('div');
