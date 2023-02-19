@@ -10,7 +10,6 @@ import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
 import type { User } from 'modules/graphql/generated';
-import { Buffer } from 'buffer';
 import {
   useUpdateUserMutation,
   useCreateUserMutation,
@@ -24,13 +23,7 @@ import List from 'containers/UserList/List';
 import AddUser from './Action/AddUser';
 import './index.scss';
 import type { DatasetInjector } from 'components/Core/Pagination/Pagination';
-
-const convertNodeToCursor = (node: { _id: string }) => {
-  return Buffer.from(node._id, 'binary').toString('base64');
-};
-// @see https://stackoverflow.com/questions/10593337/is-there-any-way-to-create-mongodb-like-id-strings-without-mongodb
-const ObjectId = (m = Math, d = Date, h = 16, s = (s: number) => m.floor(s).toString(h)) =>
-  s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h));
+import { convertNodeToCursor, objectId } from './helpers';
 
 interface IUserList {
   id: string;
@@ -45,6 +38,18 @@ function UserList({
   canDelete = false,
   canAdd = false
 }: IUserList): JSX.Element {
+  const [state, setState] = useState<
+    {
+      editingUser: boolean | User;
+      newUser: boolean | User;
+        deletingUser: boolean | User;
+    }
+  >({
+    editingUser: false,
+    newUser: false,
+    deletingUser: false,
+  });
+
   const [editingUser, setEditingUser] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [deletingUser, setDeletingUser] = useState(false);
@@ -71,27 +76,27 @@ function UserList({
   const [deleteUser] = useDeleteUserMutation();
 
   const onDelete = useCallback((user: User): void => {
-    setNewUser(false);
-    setEditingUser(false);
-    setDeletingUser(user as unknown as SetStateAction<boolean>);
+   // setNewUser(false);
+    //  setEditingUser(false);
+    //  setDeletingUser(user as unknown as SetStateAction<boolean>);
   }, []);
 
   const onClose = useCallback(() => {
-    setDeletingUser(false);
-    setEditingUser(false);
-    setNewUser(false);
+    //  setDeletingUser(false);
+    //  setEditingUser(false);
+    //  setNewUser(false);
   }, []);
 
   const onAdd = useCallback((): void => {
-    setNewUser(true);
-    setEditingUser(false);
-    setDeletingUser(false);
+    //  setNewUser(true);
+    //  setEditingUser(false);
+    //  setDeletingUser(false);
   }, []);
 
   const onEdit = useCallback((user: User): void => {
-    setEditingUser(user as unknown as SetStateAction<boolean>);
-    setNewUser(false);
-    setDeletingUser(false);
+    //  setEditingUser(user as unknown as SetStateAction<boolean>);
+    //  setNewUser(false);
+    //  setDeletingUser(false);
   }, []);
 
   const onEditUser = useCallback(
@@ -173,7 +178,7 @@ function UserList({
 
           const userList = cachedUserList?.users?.edges || [];
 
-          const _id = ObjectId();
+          const _id = objectId();
 
           const newUser = [
             ...userList,
@@ -220,7 +225,7 @@ function UserList({
         }
       });
 
-      setNewUser(user as unknown as SetStateAction<boolean>);
+      // setNewUser(user as unknown as SetStateAction<boolean>);
       onClose();
     },
     [createUser, onClose]
