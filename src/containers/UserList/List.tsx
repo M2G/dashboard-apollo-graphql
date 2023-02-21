@@ -2,7 +2,16 @@
 import Pagination from 'components/Core/Pagination/Pagination';
 import TableWrapper from 'components/Core/Table';
 
-function List({ id, header, rows, hasNextPage, hasPrevPage, setCurrentPage }: any): JSX.Element {
+type List = {
+  id: any;
+  header: any;
+  rows: any;
+  hasNextPage: any;
+  hasPrevPage: any;
+  setCurrentPage: any;
+};
+
+function List({ id, header, rows, hasNextPage, hasPrevPage, setCurrentPage }: List): JSX.Element {
   return (
     <>
       <TableWrapper id={id} header={header} rows={rows} />

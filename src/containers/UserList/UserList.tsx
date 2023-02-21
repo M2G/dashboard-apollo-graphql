@@ -325,12 +325,7 @@ function UserList({
   );
 
   const users = data?.users?.edges || [];
-
-  console.log('users users users users', users);
-
   const pageInfo = data?.users?.pageInfo || {};
-
-  console.log('pageInfo pageInfo pageInfo', pageInfo);
 
   const rows = useMemo(
     () =>
