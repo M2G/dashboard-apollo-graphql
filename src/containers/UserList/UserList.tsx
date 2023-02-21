@@ -1,6 +1,5 @@
 /*eslint-disable*/
-import { useMemo, useState, useCallback, useEffect } from 'react';
-import type { SetStateAction } from 'react';
+import { useMemo, useCallback, useEffect, useReducer } from 'react';
 import type { IUserListItem } from 'containers/UserList/UserListItem';
 import userListItem from 'containers/UserList/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
@@ -16,14 +15,14 @@ import {
   useDeleteUserMutation,
   useGetUserListLazyQuery,
   GetUserListDocument,
-  GetUserListQuery,
+  GetUserListQuery
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
 import AddUser from './Action/AddUser';
-import './index.scss';
 import type { DatasetInjector } from 'components/Core/Pagination/Pagination';
 import { convertNodeToCursor, objectId } from './helpers';
+import './index.scss';
 
 interface IUserList {
   id: string;
@@ -38,21 +37,25 @@ function UserList({
   canDelete = false,
   canAdd = false
 }: IUserList): JSX.Element {
-  const [state, setState] = useState<
+  const [state, setState] = useReducer(
+    (
+      state: {
+        editingUser?: boolean | User;
+        newUser?: boolean | User;
+        deletingUser?: boolean | User;
+      },
+      newState: {
+        editingUser?: boolean | User;
+        newUser?: boolean | User;
+        deletingUser?: boolean | User;
+      }
+    ) => ({ ...state, ...newState }),
     {
-      editingUser: boolean | User;
-      newUser: boolean | User;
-        deletingUser: boolean | User;
+      editingUser: false,
+      newUser: false,
+      deletingUser: false
     }
-  >({
-    editingUser: false,
-    newUser: false,
-    deletingUser: false,
-  });
-
-  const [editingUser, setEditingUser] = useState(false);
-  const [newUser, setNewUser] = useState(false);
-  const [deletingUser, setDeletingUser] = useState(false);
+  );
 
   const [userFilter, { loading, error, data, fetchMore }] = useGetUserListLazyQuery({
     fetchPolicy: 'cache-and-network',
@@ -76,27 +79,19 @@ function UserList({
   const [deleteUser] = useDeleteUserMutation();
 
   const onDelete = useCallback((user: User): void => {
-   // setNewUser(false);
-    //  setEditingUser(false);
-    //  setDeletingUser(user as unknown as SetStateAction<boolean>);
+    setState({ editingUser: false, newUser: false, deletingUser: user });
   }, []);
 
   const onClose = useCallback(() => {
-    //  setDeletingUser(false);
-    //  setEditingUser(false);
-    //  setNewUser(false);
+    setState({ editingUser: false, newUser: false, deletingUser: false });
   }, []);
 
   const onAdd = useCallback((): void => {
-    //  setNewUser(true);
-    //  setEditingUser(false);
-    //  setDeletingUser(false);
+    setState({ editingUser: false, newUser: true, deletingUser: false });
   }, []);
 
   const onEdit = useCallback((user: User): void => {
-    //  setEditingUser(user as unknown as SetStateAction<boolean>);
-    //  setNewUser(false);
-    //  setDeletingUser(false);
+    setState({ editingUser: user, newUser: false, deletingUser: false });
   }, []);
 
   const onEditUser = useCallback(
@@ -132,14 +127,13 @@ function UserList({
             updateUser,
             cachedUserList,
             id: user?._id
-          })
+          });
 
           const userList = cachedUserList?.users?.edges || [];
 
-          const find = userList.find(d => d.node._id === user?._id)
+          const find = userList.find((d) => d?.node?._id === user?._id);
 
-          console.log('find find find', find)
-
+          console.log('find find find', find);
         }
       });
       onClose();
@@ -224,8 +218,7 @@ function UserList({
           });
         }
       });
-
-      // setNewUser(user as unknown as SetStateAction<boolean>);
+      setState({ newUser: user });
       onClose();
     },
     [createUser, onClose]
@@ -385,19 +378,19 @@ function UserList({
             setCurrentPage={onChangePage}
           />
 
-          <SidebarWrapper isOpened={editingUser} setIsOpened={onClose}>
-            <UserEdit data={editingUser} onSubmit={onEditUser} />
+          <SidebarWrapper isOpened={!!state.editingUser} setIsOpened={onClose}>
+            <UserEdit data={state.editingUser} onSubmit={onEditUser} />
           </SidebarWrapper>
 
-          <SidebarWrapper isOpened={newUser} setIsOpened={onClose}>
+          <SidebarWrapper isOpened={!!state.newUser} setIsOpened={onClose}>
             <UserNew onSubmit={onNewUser} />
           </SidebarWrapper>
 
           <ModalWrapper
             title="Delete"
             hide={onClose}
-            isShowing={deletingUser}
-            onConfirm={async () => onDeleteUser(deletingUser as unknown as User)}
+            isShowing={state.deletingUser}
+            onConfirm={async () => onDeleteUser(state.deletingUser as unknown as User)}
           >
             <p>Warning, you are about to perform an irreversible action</p>
           </ModalWrapper>
