@@ -49,7 +49,7 @@
       "modules/*": ["./modules/*"]
     }
   },
-  "include": ["./.eslintrc.js", "./src", "./test", "custom.d.ts"],
+  "include": ["./src", "./test", "custom.d.ts"],
   "exclude": [
     "src/stories",
     "**/__tests__/*",
@@ -59,7 +59,7 @@
     "node_modules",
     "config"
   ],
-  // "references": [{ "path": "./tsconfig.node.json" }],
+  "references": [{ "path": "./tsconfig.node.json" }],
   "compileOnSave": false,
   "buildOnSave": false
 }

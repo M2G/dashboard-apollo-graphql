@@ -85,7 +85,7 @@
     "vite-plugin-svgr": "^2.4.0"
   },
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "build-storybook": "build-storybook",

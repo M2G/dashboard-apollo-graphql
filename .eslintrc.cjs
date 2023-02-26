@@ -23,7 +23,7 @@ module.exports = {
   parserOptions: {
     project: [
       path.resolve(__dirname, './tsconfig.json'),
-      path.resolve(__dirname, './tsconfig.node.json')
+      path.resolve(__dirname, './tsconfig.node.json'),
     ],
     tsconfigRootDir: __dirname,
     ecmaVersion: 'latest',

@@ -4,7 +4,7 @@ import SENTRY_CONFIG from 'sentry/config';
 import App from './App';
 import './index.scss';
 
-initSentry(SENTRY_CONFIG as any);
+// initSentry(SENTRY_CONFIG as any);
 
 function render(Component: any): void {
   const MOUNT_NODE: any = document.getElementById('root') ?? document.createElement('div');

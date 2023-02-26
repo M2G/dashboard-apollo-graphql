@@ -8,14 +8,14 @@ import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
-import type { User } from 'modules/graphql/generated';
+import type { UpdateUserMutationVariables, User } from 'modules/graphql/generated';
 import {
   useUpdateUserMutation,
   useCreateUserMutation,
   useDeleteUserMutation,
   useGetUserListLazyQuery,
   GetUserListDocument,
-  GetUserListQuery
+  GetUserListQuery,
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
@@ -23,20 +23,14 @@ import AddUser from './Action/AddUser';
 import type { DatasetInjector } from 'components/Core/Pagination/Pagination';
 import { convertNodeToCursor, objectId } from './helpers';
 import './index.scss';
-
-interface IUserList {
-  id: string;
-  canEdit?: boolean;
-  canDelete?: boolean;
-  canAdd?: boolean;
-}
+import type { UserList } from './types';
 
 function UserList({
   id,
   canEdit = false,
   canDelete = false,
   canAdd = false
-}: IUserList): JSX.Element {
+}: UserList): JSX.Element {
   const [state, setState] = useReducer(
     (
       state: {
@@ -99,8 +93,8 @@ function UserList({
       await updateUser({
         variables: {
           ...user,
-          id: user?._id || ''
-        },
+          id: user._id
+        } as UpdateUserMutationVariables,
         optimisticResponse: {
           __typename: 'Mutation',
           updateUser: {
@@ -123,17 +117,41 @@ function UserList({
             }
           });
 
-          console.log('------------', {
-            updateUser,
-            cachedUserList,
-            id: user?._id
-          });
-
           const userList = cachedUserList?.users?.edges || [];
 
-          const find = userList.find((d) => d?.node?._id === user?._id);
+          const users = userList.map((d) => {
+            if (d?.node?._id !== user?._id) return d;
+            return {
+              cursor: d.cursor,
+              node: {
+                ...d.node,
+                ...updateUser,
+              },
+            }
+          });
 
-          console.log('find find find', find);
+          const newData: any = {
+            users: {
+              edges: users,
+              pageInfo: cachedUserList?.users?.pageInfo,
+              totalCount: cachedUserList?.users?.totalCount,
+              __typename: 'Users'
+            }
+          };
+
+          cache.writeQuery<GetUserListQuery>({
+            query: GetUserListDocument,
+            variables: {
+              afterCursor: null,
+              first: 14,
+              filters: ''
+            },
+            data: {
+              __typename: 'Query',
+              ...newData
+            }
+          });
+
         }
       });
       onClose();
