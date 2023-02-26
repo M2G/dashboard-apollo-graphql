@@ -15,7 +15,7 @@ import {
   useDeleteUserMutation,
   useGetUserListLazyQuery,
   GetUserListDocument,
-  GetUserListQuery,
+  GetUserListQuery
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
@@ -125,9 +125,9 @@ function UserList({
               cursor: d.cursor,
               node: {
                 ...d.node,
-                ...updateUser,
-              },
-            }
+                ...updateUser
+              }
+            };
           });
 
           const newData: any = {
@@ -151,7 +151,6 @@ function UserList({
               ...newData
             }
           });
-
         }
       });
       onClose();
