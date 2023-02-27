@@ -7,6 +7,8 @@ import './index.scss';
 // initSentry(SENTRY_CONFIG as any);
 
 function render(Component: any): void {
+  console.log('import.meta.env ', import.meta.env);
+
   const MOUNT_NODE: any = document.getElementById('root') ?? document.createElement('div');
   const root = createRoot(MOUNT_NODE);
   if (root) root.render(<Component />);

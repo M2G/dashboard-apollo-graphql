@@ -342,7 +342,7 @@ function UserList({
   );
 
   const users = data?.users?.edges || [];
-  const pageInfo = data?.users?.pageInfo || {};
+  const pageInfo = data?.users?.pageInfo;
 
   const rows = useMemo(
     () =>
@@ -385,8 +385,8 @@ function UserList({
             id={id}
             header={header}
             rows={rows}
-            hasNextPage={data?.users?.pageInfo?.hasNextPage}
-            hasPrevPage={data?.users?.pageInfo?.hasPrevPage}
+            hasNextPage={pageInfo?.hasNextPage}
+            hasPrevPage={pageInfo?.hasPrevPage}
             setCurrentPage={onChangePage}
           />
 
