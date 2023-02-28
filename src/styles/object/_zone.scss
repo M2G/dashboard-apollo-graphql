@@ -7,4 +7,10 @@
   background-color: $_color-white;
 
   @include clearfix();
+
+  &__head {
+    position: relative;
+    padding-top: _em(25px);
+    padding-bottom: _em(25px);
+  }
 }
