@@ -67,6 +67,7 @@
     "buffer": "^6.0.3",
     "clsx": "^1.2.1",
     "css-loader": "^6.7.2",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
     "formik": "^2.2.9",
     "graphql": "^16.6.0",
     "husky": "^8.0.2",

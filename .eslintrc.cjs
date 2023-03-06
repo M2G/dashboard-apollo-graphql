@@ -23,7 +23,7 @@ module.exports = {
   parserOptions: {
     project: [
       path.resolve(__dirname, './tsconfig.json'),
-      path.resolve(__dirname, './tsconfig.node.json'),
+      path.resolve(__dirname, './tsconfig.node.json')
     ],
     tsconfigRootDir: __dirname,
     ecmaVersion: 'latest',
@@ -33,7 +33,15 @@ module.exports = {
       jsx: true
     }
   },
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'prettier', 'import', 'unused-imports'],
+  plugins: [
+    '@typescript-eslint',
+    'react',
+    'react-hooks',
+    'prettier',
+    'import',
+    'unused-imports',
+    'simple-import-sort'
+  ],
   ignorePatterns: ['!.*', 'dist', 'build', 'node_modules', 'src/modules'],
   rules: {
     'array-element-newline': [
