@@ -207,10 +207,7 @@ export type CreateUserMutation = {
 
 export type UpdateUserMutationVariables = Exact<{
   id: Scalars['String'];
-  email: InputMaybe<Scalars['String']>;
-  first_name: InputMaybe<Scalars['String']>;
-  last_name: InputMaybe<Scalars['String']>;
-  username: InputMaybe<Scalars['String']>;
+  input: InputMaybe<UpdateUserInput>;
 }>;
 
 export type UpdateUserMutation = {
@@ -232,6 +229,24 @@ export type DeleteUserMutationVariables = Exact<{
 export type DeleteUserMutation = {
   __typename: 'Mutation';
   deleteUser: { __typename: 'User'; _id: string | null } | null;
+};
+
+export type ResetPasswordMutationVariables = Exact<{
+  input: ResetPasswordInput;
+}>;
+
+export type ResetPasswordMutation = {
+  __typename: 'Mutation';
+  resetPassword: { __typename: 'Status'; success: boolean | null };
+};
+
+export type ForgotPasswordMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+export type ForgotPasswordMutation = {
+  __typename: 'Mutation';
+  forgotPassword: { __typename: 'Status'; success: boolean | null };
 };
 
 export type UserPartsFragment = {
@@ -454,17 +469,8 @@ export type CreateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<
   CreateUserMutationVariables
 >;
 export const UpdateUserDocument = gql`
-  mutation UpdateUser(
-    $id: String!
-    $email: String
-    $first_name: String
-    $last_name: String
-    $username: String
-  ) {
-    updateUser(
-      id: $id
-      input: { email: $email, first_name: $first_name, last_name: $last_name, username: $username }
-    ) {
+  mutation UpdateUser($id: String!, $input: UpdateUserInput) {
+    updateUser(id: $id, input: $input) {
       first_name
       last_name
       email
@@ -492,10 +498,7 @@ export type UpdateUserMutationFn = ApolloReactCommon.MutationFunction<
  * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
  *   variables: {
  *      id: // value for 'id'
- *      email: // value for 'email'
- *      first_name: // value for 'first_name'
- *      last_name: // value for 'last_name'
- *      username: // value for 'username'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -563,6 +566,100 @@ export type DeleteUserMutationResult = ApolloReactCommon.MutationResult<DeleteUs
 export type DeleteUserMutationOptions = ApolloReactCommon.BaseMutationOptions<
   DeleteUserMutation,
   DeleteUserMutationVariables
+>;
+export const ResetPasswordDocument = gql`
+  mutation ResetPassword($input: ResetPasswordInput!) {
+    resetPassword(input: $input) {
+      success
+    }
+  }
+`;
+export type ResetPasswordMutationFn = ApolloReactCommon.MutationFunction<
+  ResetPasswordMutation,
+  ResetPasswordMutationVariables
+>;
+
+/**
+ * __useResetPasswordMutation__
+ *
+ * To run a mutation, you first call `useResetPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResetPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resetPasswordMutation, { data, loading, error }] = useResetPasswordMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useResetPasswordMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ResetPasswordMutation,
+    ResetPasswordMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useMutation<ResetPasswordMutation, ResetPasswordMutationVariables>(
+    ResetPasswordDocument,
+    options
+  );
+}
+export type ResetPasswordMutationHookResult = ReturnType<typeof useResetPasswordMutation>;
+export type ResetPasswordMutationResult = ApolloReactCommon.MutationResult<ResetPasswordMutation>;
+export type ResetPasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ResetPasswordMutation,
+  ResetPasswordMutationVariables
+>;
+export const ForgotPasswordDocument = gql`
+  mutation ForgotPassword($email: String!) {
+    forgotPassword(email: $email) {
+      success
+    }
+  }
+`;
+export type ForgotPasswordMutationFn = ApolloReactCommon.MutationFunction<
+  ForgotPasswordMutation,
+  ForgotPasswordMutationVariables
+>;
+
+/**
+ * __useForgotPasswordMutation__
+ *
+ * To run a mutation, you first call `useForgotPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useForgotPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [forgotPasswordMutation, { data, loading, error }] = useForgotPasswordMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useForgotPasswordMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ForgotPasswordMutation,
+    ForgotPasswordMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(
+    ForgotPasswordDocument,
+    options
+  );
+}
+export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswordMutation>;
+export type ForgotPasswordMutationResult = ApolloReactCommon.MutationResult<ForgotPasswordMutation>;
+export type ForgotPasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ForgotPasswordMutation,
+  ForgotPasswordMutationVariables
 >;
 export const GetUserListDocument = gql`
   query GetUserList($afterCursor: String, $first: Int!, $filters: String) {

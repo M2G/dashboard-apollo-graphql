@@ -1,6 +1,6 @@
 import UserList from 'containers/UserList/UserList';
 
-function Home() {
+function Home(): JSX.Element {
   return (
     <div className="o-zone">
       <div className="o-grid">

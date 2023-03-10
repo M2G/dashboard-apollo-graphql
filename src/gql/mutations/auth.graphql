@@ -22,17 +22,8 @@ mutation CreateUser($email: String!, $password: String!) {
   }
 }
 
-mutation UpdateUser(
-  $id: String!
-  $email: String
-  $first_name: String
-  $last_name: String
-  $username: String
-) {
-  updateUser(
-    id: $id
-    input: { email: $email, first_name: $first_name, last_name: $last_name, username: $username }
-  ) {
+mutation UpdateUser($id: String!, $input: UpdateUserInput) {
+  updateUser(id: $id, input: $input) {
     first_name
     last_name
     email
@@ -45,4 +36,28 @@ mutation DeleteUser($id: String!) {
   deleteUser(id: $id) {
     _id
   }
+}
+
+mutation ResetPassword($input: ResetPasswordInput!) {
+  resetPassword(input: $input) {
+    success
+  }
+}
+
+mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email) {
+    success
+  }
+}
+
+input ResetPasswordInput {
+  password: String!
+  token: String!
+}
+
+input UpdateUserInput {
+  email: String
+  first_name: String
+  last_name: String
+  username: String
 }

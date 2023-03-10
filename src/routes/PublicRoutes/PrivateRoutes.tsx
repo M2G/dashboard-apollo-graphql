@@ -1,10 +1,10 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
 import { lazy } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import ROUTER_PATH from 'constants/RouterPath';
 
-const Home = lazy(() => import('containers/Home'));
-const ChangePassword = lazy(() => import('containers/ChangePassword'));
-const Profil = lazy(() => import('containers/Profil'));
+const Home = lazy(async () => import('containers/Home'));
+const ChangePassword = lazy(async () => import('containers/ChangePassword'));
+const Profil = lazy(async () => import('containers/Profil'));
 
 function PrivateRoutes(): JSX.Element {
   return (

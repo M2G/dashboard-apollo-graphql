@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import { useMemo, useCallback, useEffect, useReducer } from 'react';
+import { useMemo, useCallback, useEffect, useState } from 'react';
 import type { IUserListItem } from 'containers/UserList/UserListItem';
 import userListItem from 'containers/UserList/UserListItem';
 import UserEdit from 'containers/Users/UserEdit';
@@ -22,8 +22,8 @@ import List from 'containers/UserList/List';
 import AddUser from './Action/AddUser';
 import type { DatasetInjector } from 'components/Core/Pagination/Pagination';
 import { convertNodeToCursor, objectId } from './helpers';
-import './index.scss';
 import type { UserList } from './types';
+import './index.scss';
 
 function UserList({
   id,
@@ -31,25 +31,15 @@ function UserList({
   canDelete = false,
   canAdd = false
 }: UserList): JSX.Element {
-  const [state, setState] = useReducer(
-    (
-      state: {
-        editingUser?: boolean | User;
-        newUser?: boolean | User;
-        deletingUser?: boolean | User;
-      },
-      newState: {
-        editingUser?: boolean | User;
-        newUser?: boolean | User;
-        deletingUser?: boolean | User;
-      }
-    ) => ({ ...state, ...newState }),
-    {
-      editingUser: false,
-      newUser: false,
-      deletingUser: false
-    }
-  );
+  const [state, setState] = useState<{
+    editingUser?: boolean | User;
+    newUser?: boolean | User;
+    deletingUser?: boolean | User;
+  }>({
+    editingUser: false,
+    newUser: false,
+    deletingUser: false
+  });
 
   const [userFilter, { loading, error, data, fetchMore }] = useGetUserListLazyQuery({
     fetchPolicy: 'cache-and-network',
@@ -330,7 +320,7 @@ function UserList({
         });
       }
 
-      fetchMore({
+      await fetchMore({
         updateQuery,
         variables: {
           first: 2,
@@ -374,11 +364,10 @@ function UserList({
   if (loading) return <TopLineLoading />;
 
   return (
-    <div className="c-userlist">
+    <div className="c-user-list">
       <AddUser canAdd={canAdd} onAdd={onAdd} />
 
       {!users.length && <NoData />}
-      {users?.length && (
         <>
           <UserFilters onSubmit={searchTerms} />
           <List
@@ -407,7 +396,6 @@ function UserList({
             <p>Warning, you are about to perform an irreversible action</p>
           </ModalWrapper>
         </>
-      )}
     </div>
   );
 }
