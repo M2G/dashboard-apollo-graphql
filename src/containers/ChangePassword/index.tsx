@@ -1,6 +1,6 @@
 import ChangePassword from './ChangePassword';
 
-function ChangePasswordPage() {
+function ChangePasswordPage(): JSX.Element {
   return <ChangePassword />;
 }
 
