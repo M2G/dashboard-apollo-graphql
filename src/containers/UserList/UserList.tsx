@@ -8,14 +8,14 @@ import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
-import type { UpdateUserMutationVariables, User } from 'modules/graphql/generated';
+import type { User } from 'modules/graphql/generated';
 import {
   useUpdateUserMutation,
   useCreateUserMutation,
   useDeleteUserMutation,
   useGetUserListLazyQuery,
   GetUserListDocument,
-  GetUserListQuery
+  GetUserListQuery,
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/List';
@@ -82,9 +82,9 @@ function UserList({
     async (user: User): Promise<void> => {
       await updateUser({
         variables: {
-          ...user,
-          id: user._id
-        } as UpdateUserMutationVariables,
+          input: {...user },
+          id: user._id || ''
+        },
         optimisticResponse: {
           __typename: 'Mutation',
           updateUser: {
