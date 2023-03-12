@@ -12,13 +12,15 @@ import {
 const {
   ERROR_TEXT_REQUIRED_NEW_PASSWORD,
   ERROR_TEXT_REQUIRED_VERIFY_PASSWORD,
+  ERROR_TEXT_REQUIRED_NOT_EQUAL,
 } = ERROR_TEXT_REQUIRED;
 
 function ResetPassword({ initialValues, onSubmit }: any) {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
     setFieldValue(setFieldName, value);
 
-  const onChange = (setFieldValue: any, setFieldName: any): any =>
+  const onChange =
+    (setFieldValue: any, setFieldName: any): any =>
     ({ target: { value = '' } }: any) =>
       setField(setFieldValue, setFieldName, value);
 
@@ -33,14 +35,20 @@ function ResetPassword({ initialValues, onSubmit }: any) {
       errors[INPUT_NAME.VERIFY_PASSWORD] = ERROR_TEXT_REQUIRED_VERIFY_PASSWORD;
     }
 
+    if (
+      values[INPUT_NAME.NEW_PASSWORD]
+      && values[INPUT_NAME.VERIFY_PASSWORD]
+      && values[INPUT_NAME.NEW_PASSWORD] !== values[INPUT_NAME.VERIFY_PASSWORD]
+    ) {
+      errors[INPUT_NAME.VERIFY_PASSWORD] = ERROR_TEXT_REQUIRED_NOT_EQUAL;
+    }
+
     return errors;
   };
 
   const handleSubmit = (values: object) => onSubmit(values);
 
-  const renderForm = ({
- setFieldValue, values, errors, touched,
-}: any): any => (
+  const renderForm = ({ setFieldValue, values, errors, touched }: any): any => (
     <div className="form-signin">
       <Form>
         <div className="form-floating">
@@ -54,12 +62,8 @@ function ResetPassword({ initialValues, onSubmit }: any) {
             value={values?.[INPUT_NAME.NEW_PASSWORD]}
             required
           />
-          {touched[INPUT_NAME.NEW_PASSWORD]
-          && errors
-          && errors[INPUT_NAME.NEW_PASSWORD] ? (
-            <span className="error-text">
-              {errors[INPUT_NAME.NEW_PASSWORD]}
-            </span>
+          {touched[INPUT_NAME.NEW_PASSWORD] && errors && errors[INPUT_NAME.NEW_PASSWORD] ? (
+            <span className="error-text">{errors[INPUT_NAME.NEW_PASSWORD]}</span>
           ) : null}
           <label htmlFor="floatingInput">{LABEL_NEW_PASSWORD}</label>
         </div>
@@ -74,12 +78,8 @@ function ResetPassword({ initialValues, onSubmit }: any) {
             value={values?.[INPUT_NAME.VERIFY_PASSWORD]}
             required
           />
-          {touched[INPUT_NAME.VERIFY_PASSWORD]
-          && errors
-          && errors[INPUT_NAME.VERIFY_PASSWORD] ? (
-            <span className="error-text">
-              {errors[INPUT_NAME.VERIFY_PASSWORD]}
-            </span>
+          {touched[INPUT_NAME.VERIFY_PASSWORD] && errors && errors[INPUT_NAME.VERIFY_PASSWORD] ? (
+            <span className="error-text">{errors[INPUT_NAME.VERIFY_PASSWORD]}</span>
           ) : null}
           <label htmlFor="floatingInput">{LABEL_VERIFY_PASSWORD}</label>
         </div>

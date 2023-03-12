@@ -23,7 +23,9 @@
   }
 
   .error-text {
-    margin: 5px 0;
+    display: block;
+    margin-bottom: 5px;
+    margin-top: -5px;
     color: $_color-red;
   }
 }

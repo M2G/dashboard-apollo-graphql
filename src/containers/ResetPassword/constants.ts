@@ -10,7 +10,8 @@ export const INITIAL_VALUES = {
 
 export const ERROR_TEXT_REQUIRED = {
   ERROR_TEXT_REQUIRED_NEW_PASSWORD: 'New password requis',
-  ERROR_TEXT_REQUIRED_VERIFY_PASSWORD: 'Verify password requis'
+  ERROR_TEXT_REQUIRED_VERIFY_PASSWORD: 'Verify password requis',
+  ERROR_TEXT_REQUIRED_NOT_EQUAL: 'password are not equal'
 };
 
 export const LABEL_NEW_PASSWORD = 'New password';

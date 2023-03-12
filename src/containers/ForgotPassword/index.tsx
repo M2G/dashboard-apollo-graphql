@@ -7,8 +7,6 @@ import ForgotPasswordStatus from './ForgotPasswordStatus';
 function ForgotPassword(): JSX.Element | string {
   const [forgotPasswordMutation, { loading, error, data }] = useForgotPasswordMutation();
 
-  console.log('ForgotPassword', { loading, error, data });
-
   const success: boolean | null | undefined = data?.forgotPassword?.success;
 
   const onSubmit = useCallback(
