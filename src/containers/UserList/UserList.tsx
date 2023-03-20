@@ -29,7 +29,7 @@ function UserList({
   id,
   canEdit = false,
   canDelete = false,
-  canAdd = false
+  canAdd = false,
 }: UserList): JSX.Element {
   const [state, setState] = useState<{
     editingUser?: boolean | User;
@@ -38,12 +38,11 @@ function UserList({
   }>({
     editingUser: false,
     newUser: false,
-    deletingUser: false
+    deletingUser: false,
   });
 
   const [userFilter, { loading, error, data, fetchMore }] = useGetUserListLazyQuery({
     fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'cache-first'
   });
 
   console.log('useGetUserListLazyQuery', { loading, error, data });
@@ -53,8 +52,8 @@ function UserList({
       variables: {
         afterCursor: null,
         first: 14,
-        filters: ''
-      }
+        filters: '',
+      },
     });
   }, [userFilter]);
 
@@ -82,8 +81,8 @@ function UserList({
     async (user: User): Promise<void> => {
       await updateUser({
         variables: {
-          input: {...user },
-          id: user._id || ''
+          input: { ...user },
+          id: user._id || '',
         },
         optimisticResponse: {
           __typename: 'Mutation',
@@ -93,8 +92,8 @@ function UserList({
             last_name: user?.last_name || '',
             created_at: Math.floor(Date.now() / 1000),
             modified_at: Math.floor(Date.now() / 1000),
-            __typename: 'User'
-          }
+            __typename: 'User',
+          },
         },
         update(cache, mutationResult: any) {
           const updateUser = mutationResult?.data?.updateUser;
@@ -103,8 +102,8 @@ function UserList({
             variables: {
               afterCursor: null,
               first: 14,
-              filters: ''
-            }
+              filters: '',
+            },
           });
 
           const userList = cachedUserList?.users?.edges || [];
@@ -115,8 +114,8 @@ function UserList({
               cursor: d.cursor,
               node: {
                 ...d.node,
-                ...updateUser
-              }
+                ...updateUser,
+              },
             };
           });
 
@@ -125,8 +124,8 @@ function UserList({
               edges: users,
               pageInfo: cachedUserList?.users?.pageInfo,
               totalCount: cachedUserList?.users?.totalCount,
-              __typename: 'Users'
-            }
+              __typename: 'Users',
+            },
           };
 
           cache.writeQuery<GetUserListQuery>({
@@ -134,18 +133,18 @@ function UserList({
             variables: {
               afterCursor: null,
               first: 14,
-              filters: ''
+              filters: '',
             },
             data: {
               __typename: 'Query',
-              ...newData
-            }
+              ...newData,
+            },
           });
-        }
+        },
       });
       onClose();
     },
-    [onClose, updateUser]
+    [onClose, updateUser],
   );
 
   const onNewUser = useCallback(
@@ -153,7 +152,7 @@ function UserList({
       await createUser({
         variables: {
           email: user?.email || '',
-          password: user?.password || ''
+          password: user?.password || '',
         },
         optimisticResponse: {
           __typename: 'Mutation',
@@ -163,8 +162,8 @@ function UserList({
             last_name: user?.last_name || '',
             created_at: Math.floor(Date.now() / 1000),
             modified_at: Math.floor(Date.now() / 1000),
-            __typename: 'User'
-          }
+            __typename: 'User',
+          },
         },
         update(cache, mutationResult: any) {
           const resultMessage = mutationResult?.data?.createUser;
@@ -173,8 +172,8 @@ function UserList({
             variables: {
               afterCursor: null,
               first: 14,
-              filters: ''
-            }
+              filters: '',
+            },
           });
 
           const userList = cachedUserList?.users?.edges || [];
@@ -193,11 +192,11 @@ function UserList({
                   last_name: resultMessage?.last_name || '',
                   created_at: Math.floor(Date.now() / 1000),
                   modified_at: Math.floor(Date.now() / 1000),
-                  __typename: 'User'
+                  __typename: 'User',
                 },
-                cursor: convertNodeToCursor({ _id })
-              }
-            ]
+                cursor: convertNodeToCursor({ _id }),
+              },
+            ],
           ];
 
           const newData: any = {
@@ -207,8 +206,8 @@ function UserList({
               totalCount: cachedUserList?.users?.totalCount
                 ? cachedUserList.users.totalCount + 1
                 : 0,
-              __typename: 'Users'
-            }
+              __typename: 'Users',
+            },
           };
 
           cache.writeQuery<GetUserListQuery>({
@@ -216,33 +215,33 @@ function UserList({
             variables: {
               afterCursor: null,
               first: 14,
-              filters: ''
+              filters: '',
             },
             data: {
               __typename: 'Query',
-              ...newData
-            }
+              ...newData,
+            },
           });
-        }
+        },
       });
       setState({ newUser: user });
       onClose();
     },
-    [createUser, onClose]
+    [createUser, onClose],
   );
 
   const onDeleteUser = useCallback(
     async (user: User): Promise<void> => {
       await deleteUser({
         variables: {
-          id: user?._id || ''
+          id: user?._id || '',
         },
         optimisticResponse: {
           __typename: 'Mutation',
           deleteUser: {
             __typename: 'User',
-            _id: user?._id
-          }
+            _id: user?._id,
+          },
         },
         update(cache, mutationResult: any) {
           const { _id } = mutationResult?.data?.deleteUser;
@@ -251,14 +250,14 @@ function UserList({
             variables: {
               afterCursor: null,
               first: 14,
-              filters: ''
-            }
+              filters: '',
+            },
           });
 
           const existingTodos: any = Object.assign({}, cachedUserList);
 
           const filtered = existingTodos?.users?.edges?.filter(
-            (edge: { node: { _id: any } }) => edge?.node?._id !== _id
+            (edge: { node: { _id: any } }) => edge?.node?._id !== _id,
           );
 
           const newUser = [...filtered];
@@ -268,8 +267,8 @@ function UserList({
               edges: newUser,
               pageInfo: existingTodos.users.pageInfo,
               totalCount: existingTodos.users.totalCount + 1,
-              __typename: 'Users'
-            }
+              __typename: 'Users',
+            },
           };
 
           cache.writeQuery({
@@ -277,30 +276,31 @@ function UserList({
             variables: {
               afterCursor: null,
               first: 14,
-              filters: ''
+              filters: '',
             },
             data: {
-              ...newData
-            }
+              ...newData,
+            },
           });
-        }
+        },
       });
       onClose();
     },
-    [deleteUser, onClose]
+    [deleteUser, onClose],
   );
 
   const searchTerms = useCallback(
     async (params: any): Promise<void> => {
+      console.log('params params', params)
       await userFilter({
         variables: {
           filters: params?.search || '',
           page: undefined,
-          pageSize: undefined
-        } as any
+          pageSize: undefined,
+        } as any,
       });
     },
-    [userFilter]
+    [userFilter],
   );
 
   const updateQuery = (previousResult: { users: any }, { fetchMoreResult }: any) => {
@@ -309,14 +309,15 @@ function UserList({
 
   const onChangePage = useCallback(
     async (dataset: DatasetInjector<any, any>) => {
+      // @TODO revert use classic pagination, not cursor
+      /*
       if (dataset.next) {
-        console.log('setPage', dataset);
         return fetchMore({
           updateQuery,
           variables: {
             first: 2,
-            afterCursor: data?.users?.pageInfo?.endCursor || null
-          }
+            afterCursor: data?.users?.pageInfo?.endCursor || null,
+          },
         });
       }
 
@@ -324,11 +325,11 @@ function UserList({
         updateQuery,
         variables: {
           first: 2,
-          afterCursor: data?.users?.pageInfo?.startCursor || null
-        }
-      });
+          afterCursor: data?.users?.pageInfo?.startCursor || null,
+        },
+      });*/
     },
-    [data, fetchMore, userFilter]
+    [data, fetchMore, userFilter],
   );
 
   const users = data?.users?.edges || [];
@@ -343,10 +344,10 @@ function UserList({
           id,
           onDelete,
           onEdit,
-          user: node
-        } as IUserListItem)
+          user: node,
+        } as IUserListItem),
       ),
-    [users, canDelete, canEdit, id, onDelete, onEdit]
+    [users, canDelete, canEdit, id, onDelete, onEdit],
   );
 
   const header = useMemo(
@@ -356,20 +357,22 @@ function UserList({
       { label: 'Last name', sortable: false },
       { label: 'Email', sortable: false },
       { label: 'Created at', sortable: true, type: 'date' },
-      { label: 'Modified at', sortable: true, type: 'date' }
+      { label: 'Modified at', sortable: true, type: 'date' },
     ],
-    []
+    [],
   );
 
   if (loading) return <TopLineLoading />;
 
   return (
     <div className="c-user-list">
+
       <AddUser canAdd={canAdd} onAdd={onAdd} />
 
       {!users.length && <NoData />}
+      {users.length && (
         <>
-          <UserFilters onSubmit={searchTerms} />
+          <UserFilters onSearchTerm={searchTerms} />
           <List
             id={id}
             header={header}
@@ -396,6 +399,7 @@ function UserList({
             <p>Warning, you are about to perform an irreversible action</p>
           </ModalWrapper>
         </>
+      )}
     </div>
   );
 }

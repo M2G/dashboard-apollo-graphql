@@ -94,6 +94,7 @@ module.exports = {
 
     'jsx-a11y/label-has-associated-control': 0,
 
+    "@typescript-eslint/consistent-type-definitions": 1,
     '@typescript-eslint/no-confusing-void-expression': 1,
     '@typescript-eslint/prefer-readonly-parameter-types': 1,
     '@typescript-eslint/no-unsafe-argument': 1,

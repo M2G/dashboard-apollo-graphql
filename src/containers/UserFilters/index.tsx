@@ -1,14 +1,13 @@
 /*eslint-disable*/
 import UserFiltersView from './UserFilters';
-import { INITIAL_VALUES } from './constants';
 
-function UserFilters({ onSubmit }: any) {
-  function initialValues() {
-    return { ...INITIAL_VALUES };
-  }
+type UserFilters = {
+  onSearchTerm: (searchTerm: string) => void;
+}
 
+function UserFilters({ onSearchTerm }: UserFilters): JSX.Element {
   return (
-    <UserFiltersView initialValues={initialValues()} onSubmit={onSubmit} />
+    <UserFiltersView onSearchTerm={onSearchTerm} />
   );
 }
 

@@ -3,7 +3,12 @@ import { ApolloLink, HttpLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { toast } from 'react-toastify';
 import ROUTER_PATH from 'constants/RouterPath';
-import { clearAuthStorage, clearUserStorage, getAuthStorage } from '../services/storage';
+import { clearAuthStorage, clearUserStorage, getAuthStorage } from 'services/storage';
+
+const ERRORS = {
+  FORBIDDEN: 'FORBIDDEN',
+  UNAUTHENTICATED: 'UNAUTHENTICATED',
+};
 
 // https://localhost:8282/graphql
 /* Configuration imported from '.env' file */
@@ -17,7 +22,7 @@ const backendAddress = `${backendProtocol}://${backendHost}:${backendPort}/${bac
 console.log('backendAddress', backendAddress);
 
 const httpLink = new HttpLink({
-  uri: backendAddress
+  uri: backendAddress,
 });
 
 const authMiddleware = new ApolloLink((operation: any, forward: any) => {
@@ -26,8 +31,8 @@ const authMiddleware = new ApolloLink((operation: any, forward: any) => {
   operation.setContext(({ headers = {} }: any) => ({
     headers: {
       ...headers,
-      authorization
-    }
+      authorization,
+    },
   }));
 
   return forward(operation);
@@ -39,7 +44,7 @@ const errorLink = onError(({ operation, graphQLErrors, networkError, response, .
     graphQLErrors,
     networkError,
     operation,
-    response
+    response,
   });
 
   console.log('------------------>', networkError?.response?.status);
@@ -63,7 +68,7 @@ const errorLink = onError(({ operation, graphQLErrors, networkError, response, .
       }
 
       // err.message, err.locations, err.path, err.extensions
-      if (err.extensions.code === 'UNAUTHENTICATED' || err.extensions.code === 'FORBIDDEN') {
+      if (err.extensions.code === ERRORS.UNAUTHENTICATED || err.extensions.code === ERRORS.FORBIDDEN) {
         clearAuthStorage();
         clearUserStorage();
         window.location.href = ROUTER_PATH.SIGNIN;

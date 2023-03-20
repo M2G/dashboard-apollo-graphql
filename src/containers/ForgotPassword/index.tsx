@@ -10,7 +10,7 @@ function ForgotPassword(): JSX.Element | string {
   const success: boolean | null | undefined = data?.forgotPassword?.success;
 
   const onSubmit = useCallback(
-    async ({ email }: { email: string }) => {
+    async ({ email }: { readonly email: string }) => {
       await forgotPasswordMutation({
         variables: {
           email,
@@ -20,7 +20,7 @@ function ForgotPassword(): JSX.Element | string {
     [forgotPasswordMutation],
   );
 
-  if (success) return <ForgotPasswordStatus />;
+  if (success && !loading) return <ForgotPasswordStatus />;
   if (error) return JSON.stringify(error?.message);
 
   return <ForgotPasswordView initialValues={INITIAL_VALUES} onSubmit={onSubmit} />;

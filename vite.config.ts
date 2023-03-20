@@ -17,6 +17,7 @@ export default defineConfig(() => ({
       modules: path.resolve(__dirname, './src/modules/'),
       routes: path.resolve(__dirname, './src/routes/'),
       sentry: path.resolve(__dirname, './src/sentry/'),
+      services: path.resolve(__dirname, './src/services/'),
     },
   },
 }));

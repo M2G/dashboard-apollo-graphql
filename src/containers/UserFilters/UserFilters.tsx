@@ -1,43 +1,37 @@
-import { Field, Formik, Form } from 'formik';
+import { useEffect, useRef } from 'react';
+import { debounce } from 'lodash';
 import { PLACEHOLDER_SEARCH, INPUT_NAME } from './constants';
 import './index.scss';
 
-function UserFilters({ onSubmit, initialValues }: any) {
-  const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
-    setFieldValue(setFieldName, value);
+type UserFiltersProps = {
+  onSearchTerm: (searchTerm: string) => void;
+};
 
-  const onChange = (setFieldValue: any, setFieldName: any): any =>
-    ({ target: { value = '' } }: any) =>
-      setField(setFieldValue, setFieldName, value);
+function UserFilters({ onSearchTerm }: UserFiltersProps): JSX.Element {
+  const debouncedSearch = useRef(
+    debounce((criteria) => {
+      onSearchTerm(criteria);
+    }, 400),
+  ).current;
 
-  const handleSubmit = (values: object) => onSubmit(values);
+  useEffect(() => () => {
+      debouncedSearch.cancel();
+    }, [debouncedSearch]);
 
-  const renderForm = ({ setFieldValue, values = {} }: any): any => (
-    <Form className="d-flex mb-2">
-      <Field
-        id="floatingInput"
-        name={INPUT_NAME.SEARCH}
-        className="form-control me-2 c-search-input"
-        type="search"
-        aria-label="Search"
-        onChange={onChange(setFieldValue, INPUT_NAME.SEARCH)}
-        placeholder={PLACEHOLDER_SEARCH}
-        value={values[INPUT_NAME.SEARCH]}
-      />
-      <button className="btn btn-light" type="submit">
-        Search
-      </button>
-    </Form>
-  );
+  function handleChange({ target: { value = '' } }: any) {
+    debouncedSearch(value);
+  }
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-    >
-      {renderForm}
-    </Formik>
+    <input
+      id="floatingInput"
+      name={INPUT_NAME.SEARCH}
+      className="form-control my-2 c-search-input"
+      type="search"
+      aria-label="Search"
+      onChange={handleChange}
+      placeholder={PLACEHOLDER_SEARCH}
+    />
   );
 }
 
