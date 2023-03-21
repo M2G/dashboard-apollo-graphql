@@ -8,23 +8,38 @@ fragment UserParts on User {
   password
 }
 
-query GetUserList($afterCursor: String, $first: Int!, $filters: String) {
-  users(afterCursor: $afterCursor, first: $first, filters: $filters) {
-    totalCount
-    edges {
-      node {
-        ...UserParts
-      }
-      cursor
+query GetUserList($filters: String, $pageSize: Int, $page: Int) {
+  users(filters: $filters, pageSize: $pageSize, page: $page) {
+    results {
+      ...UserParts
     }
     pageInfo {
-      startCursor
-      endCursor
-      hasNextPage
-      hasPrevPage
+      count
+      pages
+      next
+      prev
     }
   }
 }
+
+
+# query GetUserList($afterCursor: String, $first: Int!, $filters: String) {
+#   users(afterCursor: $afterCursor, first: $first, filters: $filters) {
+#     totalCount
+#     edges {
+#       node {
+#         ...UserParts
+#       }
+#       cursor
+#     }
+#     pageInfo {
+#       startCursor
+#       endCursor
+#       hasNextPage
+#       hasPrevPage
+#     }
+#   }
+# }
 
 query GetUser($id: String!) {
   getUser(id: $id) {
