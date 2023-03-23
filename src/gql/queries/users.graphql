@@ -8,7 +8,7 @@ fragment UserParts on User {
   password
 }
 
-query GetUserList($filters: String, $pageSize: Int, $page: Int) {
+query GetUsers($filters: String, $pageSize: Int, $page: Int) {
   users(filters: $filters, pageSize: $pageSize, page: $page) {
     results {
       ...UserParts
@@ -22,8 +22,7 @@ query GetUserList($filters: String, $pageSize: Int, $page: Int) {
   }
 }
 
-
-# query GetUserList($afterCursor: String, $first: Int!, $filters: String) {
+# query GetUsers($afterCursor: String, $first: Int!, $filters: String) {
 #   users(afterCursor: $afterCursor, first: $first, filters: $filters) {
 #     totalCount
 #     edges {

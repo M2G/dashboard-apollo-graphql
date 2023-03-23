@@ -4,6 +4,6 @@ export interface PossibleTypesResultData {
   };
 }
 const result: PossibleTypesResultData = {
-  possibleTypes: {}
+  possibleTypes: {},
 };
 export default result;

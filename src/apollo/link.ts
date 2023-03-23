@@ -19,7 +19,7 @@ const backendGraphql = (import.meta as any).env.REACT_APP_GRAPHQL ?? 'graphql';
 
 const backendAddress = `${backendProtocol}://${backendHost}:${backendPort}/${backendGraphql}`;
 
-console.log('backendAddress', backendAddress);
+console.log('backendAddress backendAddress', backendAddress);
 
 const httpLink = new HttpLink({
   uri: backendAddress,
