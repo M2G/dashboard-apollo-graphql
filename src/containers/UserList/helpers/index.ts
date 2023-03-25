@@ -1,3 +1,3 @@
-import { convertNodeToCursor, objectId } from './helpers';
+import { objectId } from './helpers';
 
-export { convertNodeToCursor, objectId };
+export { objectId };

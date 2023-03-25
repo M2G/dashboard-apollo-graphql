@@ -8,20 +8,20 @@ import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
-import type { User } from 'modules/graphql/generated';
+import type { User, Users } from 'modules/graphql/generated';
 import {
   useUpdateUserMutation,
   useCreateUserMutation,
   useDeleteUserMutation,
-  useGetUserListLazyQuery,
-  GetUserListDocument,
-  GetUserListQuery,
+  useGetUsersLazyQuery,
+  GetUsersDocument,
+  GetUsersQuery,
+  GetUserDocument,
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
-import List from 'containers/UserList/List';
+import List from 'containers/UserList/ListLegacy';
 import AddUser from './Action/AddUser';
-import type { DatasetInjector } from 'components/Core/Pagination/Pagination';
-import { convertNodeToCursor, objectId } from './helpers';
+import { objectId } from './helpers';
 import type { UserList } from './types';
 import './index.scss';
 
@@ -31,7 +31,7 @@ function UserList({
   canDelete = false,
   canAdd = false,
 }: UserList): JSX.Element {
-  const [state, setState] = useState<{
+  const [state, setUser] = useState<{
     editingUser?: boolean | User;
     newUser?: boolean | User;
     deletingUser?: boolean | User;
@@ -40,8 +40,15 @@ function UserList({
     newUser: false,
     deletingUser: false,
   });
+  const [page, setPage] = useState<{
+    page: number;
+    pageSize: number;
+  }>({
+    page: 1,
+    pageSize: 5,
+  });
 
-  const [userFilter, { loading, error, data, fetchMore }] = useGetUserListLazyQuery({
+  const [userFilter, { loading, error, data }] = useGetUsersLazyQuery({
     fetchPolicy: 'cache-and-network',
   });
 
@@ -50,8 +57,8 @@ function UserList({
   useEffect(() => {
     userFilter({
       variables: {
-        afterCursor: null,
-        first: 14,
+        page: page.page,
+        pageSize: page.pageSize,
         filters: '',
       },
     });
@@ -62,19 +69,19 @@ function UserList({
   const [deleteUser] = useDeleteUserMutation();
 
   const onDelete = useCallback((user: User): void => {
-    setState({ editingUser: false, newUser: false, deletingUser: user });
+    setUser({ editingUser: false, newUser: false, deletingUser: user });
   }, []);
 
   const onClose = useCallback(() => {
-    setState({ editingUser: false, newUser: false, deletingUser: false });
+    setUser({ editingUser: false, newUser: false, deletingUser: false });
   }, []);
 
   const onAdd = useCallback((): void => {
-    setState({ editingUser: false, newUser: true, deletingUser: false });
+    setUser({ editingUser: false, newUser: true, deletingUser: false });
   }, []);
 
   const onEdit = useCallback((user: User): void => {
-    setState({ editingUser: user, newUser: false, deletingUser: false });
+    setUser({ editingUser: user, newUser: false, deletingUser: false });
   }, []);
 
   const onEditUser = useCallback(
@@ -97,23 +104,21 @@ function UserList({
         },
         update(cache, mutationResult: any) {
           const updateUser = mutationResult?.data?.updateUser;
-          const cachedUserList = cache.readQuery<GetUserListQuery>({
-            query: GetUserListDocument,
+          const cachedUserList = cache.readQuery<GetUsersQuery>({
+            query: GetUsersDocument,
             variables: {
-              afterCursor: null,
-              first: 14,
+              page: 1,
+              pageSize: 5,
               filters: '',
             },
           });
 
-          const userList = cachedUserList?.users?.edges || [];
+          const userList = cachedUserList?.users?.results || [];
 
           const users = userList.map((d) => {
-            if (d?.node?._id !== user?._id) return d;
+            if (d?._id !== user?._id) return d;
             return {
-              cursor: d.cursor,
               node: {
-                ...d.node,
                 ...updateUser,
               },
             };
@@ -121,18 +126,17 @@ function UserList({
 
           const newData: any = {
             users: {
-              edges: users,
+              results: users,
               pageInfo: cachedUserList?.users?.pageInfo,
-              totalCount: cachedUserList?.users?.totalCount,
               __typename: 'Users',
             },
           };
 
-          cache.writeQuery<GetUserListQuery>({
-            query: GetUserListDocument,
+          cache.writeQuery<GetUsersQuery>({
+            query: GetUsersDocument,
             variables: {
-              afterCursor: null,
-              first: 14,
+              page: 1,
+              pageSize: 5,
               filters: '',
             },
             data: {
@@ -148,11 +152,11 @@ function UserList({
   );
 
   const onNewUser = useCallback(
-    async (user: User): Promise<void> => {
+    async (user): Promise<void> => {
       await createUser({
         variables: {
-          email: user?.email || '',
-          password: user?.password || '',
+          email: user.email,
+          password: user.password,
         },
         optimisticResponse: {
           __typename: 'Mutation',
@@ -167,16 +171,16 @@ function UserList({
         },
         update(cache, mutationResult: any) {
           const resultMessage = mutationResult?.data?.createUser;
-          const cachedUserList = cache.readQuery<GetUserListQuery>({
-            query: GetUserListDocument,
+          const cachedUserList = cache.readQuery<GetUsersQuery>({
+            query: GetUsersDocument,
             variables: {
-              afterCursor: null,
-              first: 14,
+              page: 1,
+              pageSize: 5,
               filters: '',
             },
           });
 
-          const userList = cachedUserList?.users?.edges || [];
+          const userList = cachedUserList?.users?.results || [];
 
           const _id = objectId();
 
@@ -184,37 +188,32 @@ function UserList({
             ...userList,
             ...[
               {
-                __typename: 'Edge',
-                node: {
-                  ...user,
-                  _id,
-                  first_name: resultMessage?.first_name || '',
-                  last_name: resultMessage?.last_name || '',
-                  created_at: Math.floor(Date.now() / 1000),
-                  modified_at: Math.floor(Date.now() / 1000),
-                  __typename: 'User',
-                },
-                cursor: convertNodeToCursor({ _id }),
+                ...user,
+                _id,
+                first_name: resultMessage?.first_name || '',
+                last_name: resultMessage?.last_name || '',
+                created_at: Math.floor(Date.now() / 1000),
+                modified_at: Math.floor(Date.now() / 1000),
+                __typename: 'User',
               },
             ],
           ];
 
-          const newData: any = {
+          const newData = {
             users: {
-              edges: newUser,
+              results: newUser,
               pageInfo: cachedUserList?.users?.pageInfo,
-              totalCount: cachedUserList?.users?.totalCount
-                ? cachedUserList.users.totalCount + 1
-                : 0,
               __typename: 'Users',
             },
           };
 
-          cache.writeQuery<GetUserListQuery>({
-            query: GetUserListDocument,
+          console.log('newData newData newData newData', newData);
+
+          cache.writeQuery<GetUsersQuery, any>({
+            query: GetUsersDocument,
             variables: {
-              afterCursor: null,
-              first: 14,
+              page: 1,
+              pageSize: 5,
               filters: '',
             },
             data: {
@@ -224,7 +223,7 @@ function UserList({
           });
         },
       });
-      setState({ newUser: user });
+      setUser({ newUser: user });
       onClose();
     },
     [createUser, onClose],
@@ -246,7 +245,7 @@ function UserList({
         update(cache, mutationResult: any) {
           const { _id } = mutationResult?.data?.deleteUser;
           const cachedUserList = cache.readQuery({
-            query: GetUserListDocument,
+            query: GetUsersDocument,
             variables: {
               afterCursor: null,
               first: 14,
@@ -272,7 +271,7 @@ function UserList({
           };
 
           cache.writeQuery({
-            query: GetUserListDocument,
+            query: GetUsersDocument,
             variables: {
               afterCursor: null,
               first: 14,
@@ -291,7 +290,7 @@ function UserList({
 
   const searchTerms = useCallback(
     async (params: any): Promise<void> => {
-      console.log('params params', params)
+      console.log('params params', params);
       await userFilter({
         variables: {
           filters: params?.search || '',
@@ -303,48 +302,54 @@ function UserList({
     [userFilter],
   );
 
-  const updateQuery = (previousResult: { users: any }, { fetchMoreResult }: any) => {
-    return fetchMoreResult.users.edges.length ? fetchMoreResult : previousResult;
-  };
-
   const onChangePage = useCallback(
-    async (dataset: DatasetInjector<any, any>) => {
-      // @TODO revert use classic pagination, not cursor
-      /*
-      if (dataset.next) {
-        return fetchMore({
-          updateQuery,
-          variables: {
-            first: 2,
-            afterCursor: data?.users?.pageInfo?.endCursor || null,
-          },
-        });
-      }
-
-      await fetchMore({
-        updateQuery,
+    async (currentPage: number) => {
+      console.log('setPage', page);
+      setPage(({ pageSize }) => {
+        {
+          page: currentPage, pageSize;
+        }
+      });
+      await userFilter({
         variables: {
-          first: 2,
-          afterCursor: data?.users?.pageInfo?.startCursor || null,
+          filters: '',
+          page: currentPage || page.page,
+          pageSize: page.pageSize,
         },
-      });*/
+      });
     },
-    [data, fetchMore, userFilter],
+    [page, userFilter],
   );
 
-  const users = data?.users?.edges || [];
-  const pageInfo = data?.users?.pageInfo;
+  const onChangePageSize = useCallback(
+    async (pageSize: number) => {
+      console.log('setPageSize', pageSize);
+      setPage({ pageSize });
+      await userFilter({
+        variables: {
+          filters: '',
+          page: page.page,
+          pageSize: pageSize || page.pageSize,
+        },
+      });
+    },
+    [page, userFilter],
+  );
+
+  const users: any = data?.users || [];
+  const results = users?.results || [];
+  const pageInfo = users?.pageInfo || {};
 
   const rows = useMemo(
     () =>
-      users?.map(({ node }: any) =>
+      results?.map((user: any) =>
         userListItem({
           canDelete,
           canEdit,
           id,
           onDelete,
           onEdit,
-          user: node,
+          user,
         } as IUserListItem),
       ),
     [users, canDelete, canEdit, id, onDelete, onEdit],
@@ -364,22 +369,26 @@ function UserList({
 
   if (loading) return <TopLineLoading />;
 
+  console.log('page page page page page page ', page)
+
   return (
     <div className="c-user-list">
-
       <AddUser canAdd={canAdd} onAdd={onAdd} />
 
-      {!users.length && <NoData />}
-      {users.length && (
+      {!results.length && <NoData />}
+      {results.length && (
         <>
           <UserFilters onSearchTerm={searchTerms} />
           <List
             id={id}
             header={header}
             rows={rows}
-            hasNextPage={pageInfo?.hasNextPage}
-            hasPrevPage={pageInfo?.hasPrevPage}
+            data={results}
+            count={pageInfo?.count}
+            currentPage={page.page}
             setCurrentPage={onChangePage}
+            currentPageSize={page.pageSize}
+            setCurrentPageSize={onChangePageSize}
           />
 
           <SidebarWrapper isOpened={!!state.editingUser} setIsOpened={onClose}>

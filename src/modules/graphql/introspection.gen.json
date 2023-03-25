@@ -336,13 +336,9 @@
               }
             ],
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": { "kind": "OBJECT", "name": "Users", "ofType": null }
-              }
+              "ofType": { "kind": "OBJECT", "name": "Users", "ofType": null }
             },
             "isDeprecated": false,
             "deprecationReason": null
