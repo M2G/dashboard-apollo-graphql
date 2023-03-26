@@ -40,13 +40,14 @@ function UserList({
     newUser: false,
     deletingUser: false,
   });
-  const [page, setPage] = useState<{
+  const [pagination, setPagination] = useState<{
     page: number;
     pageSize: number;
   }>({
     page: 1,
     pageSize: 5,
   });
+  const [term, setTerm] = useState('');
 
   const [userFilter, { loading, error, data }] = useGetUsersLazyQuery({
     fetchPolicy: 'cache-and-network',
@@ -57,9 +58,9 @@ function UserList({
   useEffect(() => {
     userFilter({
       variables: {
-        page: page.page,
-        pageSize: page.pageSize,
-        filters: '',
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        filters: term,
       },
     });
   }, [userFilter]);
@@ -152,7 +153,12 @@ function UserList({
   );
 
   const onNewUser = useCallback(
-    async (user): Promise<void> => {
+    async (user: {
+      email: string;
+      password: string;
+      first_name: string;
+      last_name: string;
+    }): Promise<void> => {
       await createUser({
         variables: {
           email: user.email,
@@ -169,7 +175,7 @@ function UserList({
             __typename: 'User',
           },
         },
-        update(cache, mutationResult: any) {
+        update(cache, mutationResult) {
           const resultMessage = mutationResult?.data?.createUser;
           const cachedUserList = cache.readQuery<GetUsersQuery>({
             query: GetUsersDocument,
@@ -207,8 +213,6 @@ function UserList({
             },
           };
 
-          console.log('newData newData newData newData', newData);
-
           cache.writeQuery<GetUsersQuery, any>({
             query: GetUsersDocument,
             variables: {
@@ -223,15 +227,14 @@ function UserList({
           });
         },
       });
-      setUser({ newUser: user });
       onClose();
     },
     [createUser, onClose],
   );
 
   const onDeleteUser = useCallback(
-    async (user: User): Promise<void> => {
-      await deleteUser({
+    (user: User): void => {
+      deleteUser({
         variables: {
           id: user?._id || '',
         },
@@ -244,28 +247,25 @@ function UserList({
         },
         update(cache, mutationResult: any) {
           const { _id } = mutationResult?.data?.deleteUser;
-          const cachedUserList = cache.readQuery({
+          const cachedUserList: { users: Users } | null = cache.readQuery({
             query: GetUsersDocument,
             variables: {
-              afterCursor: null,
-              first: 14,
-              filters: '',
+              page: pagination.page,
+              pageSize: pagination.pageSize,
+              filters: term,
             },
           });
 
-          const existingTodos: any = Object.assign({}, cachedUserList);
-
-          const filtered = existingTodos?.users?.edges?.filter(
-            (edge: { node: { _id: any } }) => edge?.node?._id !== _id,
+          const filtered = cachedUserList?.users?.results?.filter(
+            ({ _id: userId }: { _id: string }) => userId !== _id,
           );
 
           const newUser = [...filtered];
 
           const newData = {
             users: {
-              edges: newUser,
-              pageInfo: existingTodos.users.pageInfo,
-              totalCount: existingTodos.users.totalCount + 1,
+              results: newUser,
+              pageInfo: cachedUserList?.users.pageInfo,
               __typename: 'Users',
             },
           };
@@ -273,11 +273,12 @@ function UserList({
           cache.writeQuery({
             query: GetUsersDocument,
             variables: {
-              afterCursor: null,
-              first: 14,
-              filters: '',
+              page: pagination.page,
+              pageSize: pagination.pageSize,
+              filters: term,
             },
             data: {
+              __typename: 'Query',
               ...newData,
             },
           });
@@ -285,55 +286,57 @@ function UserList({
       });
       onClose();
     },
-    [deleteUser, onClose],
+    [pagination, deleteUser, onClose],
   );
 
   const searchTerms = useCallback(
-    async (params: any): Promise<void> => {
-      console.log('params params', params);
-      await userFilter({
+    (term: string): void => {
+      setTerm(term);
+      userFilter({
         variables: {
-          filters: params?.search || '',
-          page: undefined,
-          pageSize: undefined,
-        } as any,
+          filters: term,
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+        },
       });
     },
     [userFilter],
   );
 
   const onChangePage = useCallback(
-    async (currentPage: number) => {
-      console.log('setPage', page);
-      setPage(({ pageSize }) => {
-        {
-          page: currentPage, pageSize;
-        }
-      });
-      await userFilter({
+    (page: number): void => {
+      setPagination((prevState) => ({
+        ...prevState,
+        page,
+      }));
+
+      userFilter({
         variables: {
-          filters: '',
-          page: currentPage || page.page,
-          pageSize: page.pageSize,
+          filters: term,
+          page: page || pagination.page,
+          pageSize: pagination.pageSize,
         },
       });
     },
-    [page, userFilter],
+    [pagination, userFilter],
   );
 
   const onChangePageSize = useCallback(
-    async (pageSize: number) => {
-      console.log('setPageSize', pageSize);
-      setPage({ pageSize });
-      await userFilter({
+    (pageSize: number): void => {
+      setPagination((prevState) => ({
+        ...prevState,
+        pageSize,
+      }));
+
+      userFilter({
         variables: {
-          filters: '',
-          page: page.page,
-          pageSize: pageSize || page.pageSize,
+          filters: term,
+          page: pagination.page,
+          pageSize: pageSize || pagination.pageSize,
         },
       });
     },
-    [page, userFilter],
+    [pagination, userFilter],
   );
 
   const users: any = data?.users || [];
@@ -369,25 +372,24 @@ function UserList({
 
   if (loading) return <TopLineLoading />;
 
-  console.log('page page page page page page ', page)
-
   return (
     <div className="c-user-list">
       <AddUser canAdd={canAdd} onAdd={onAdd} />
 
-      {!results.length && <NoData />}
-      {results.length && (
+      {/*!results.length && <NoData />*/}
+      {/* results.length && ( */}
+      {
         <>
-          <UserFilters onSearchTerm={searchTerms} />
+          <UserFilters onSearchTerm={searchTerms} currentTerm={term} />
           <List
             id={id}
             header={header}
             rows={rows}
             data={results}
             count={pageInfo?.count}
-            currentPage={page.page}
+            currentPage={pagination?.page}
             setCurrentPage={onChangePage}
-            currentPageSize={page.pageSize}
+            currentPageSize={pagination?.pageSize}
             setCurrentPageSize={onChangePageSize}
           />
 
@@ -408,7 +410,7 @@ function UserList({
             <p>Warning, you are about to perform an irreversible action</p>
           </ModalWrapper>
         </>
-      )}
+      }
     </div>
   );
 }

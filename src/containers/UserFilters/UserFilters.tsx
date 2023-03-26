@@ -1,13 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 import { PLACEHOLDER_SEARCH, INPUT_NAME } from './constants';
 import './index.scss';
 
 type UserFiltersProps = {
   onSearchTerm: (searchTerm: string) => void;
+  currentTerm?: string;
 };
 
-function UserFilters({ onSearchTerm }: UserFiltersProps): JSX.Element {
+function UserFilters({ onSearchTerm, currentTerm }: UserFiltersProps): JSX.Element {
+  const [term, setTerm] = useState(currentTerm);
   const debouncedSearch = useRef(
     debounce((criteria) => {
       onSearchTerm(criteria);
@@ -20,7 +22,10 @@ function UserFilters({ onSearchTerm }: UserFiltersProps): JSX.Element {
 
   function handleChange({ target: { value = '' } }: any) {
     debouncedSearch(value);
+    setTerm(value);
   }
+
+  console.log('term term term term term', term)
 
   return (
     <input
@@ -31,6 +36,7 @@ function UserFilters({ onSearchTerm }: UserFiltersProps): JSX.Element {
       aria-label="Search"
       onChange={handleChange}
       placeholder={PLACEHOLDER_SEARCH}
+      value={term}
     />
   );
 }
