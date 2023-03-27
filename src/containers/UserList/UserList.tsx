@@ -16,7 +16,6 @@ import {
   useGetUsersLazyQuery,
   GetUsersDocument,
   GetUsersQuery,
-  GetUserDocument,
 } from 'modules/graphql/generated';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/ListLegacy';
@@ -49,21 +48,21 @@ function UserList({
   });
   const [term, setTerm] = useState('');
 
-  const [userFilter, { loading, error, data }] = useGetUsersLazyQuery({
+  const [getUsers, { loading, error, data }] = useGetUsersLazyQuery({
     fetchPolicy: 'cache-and-network',
   });
 
   console.log('useGetUserListLazyQuery', { loading, error, data });
 
   useEffect(() => {
-    userFilter({
+    getUsers({
       variables: {
         page: pagination.page,
         pageSize: pagination.pageSize,
         filters: term,
       },
     });
-  }, [userFilter]);
+  }, [getUsers]);
 
   const [createUser] = useCreateUserMutation();
   const [updateUser] = useUpdateUserMutation();
@@ -86,46 +85,56 @@ function UserList({
   }, []);
 
   const onEditUser = useCallback(
-    async (user: User): Promise<void> => {
-      await updateUser({
+    (user: User): void => {
+      updateUser({
         variables: {
-          input: { ...user },
-          id: user._id || '',
+          input: {
+            username: user?.username,
+            email: user?.email,
+            first_name: user?.first_name,
+            last_name: user?.last_name,
+          },
+          id: user._id,
         },
         optimisticResponse: {
           __typename: 'Mutation',
           updateUser: {
             email: user?.email,
-            first_name: user?.first_name || '',
-            last_name: user?.last_name || '',
+            first_name: user?.first_name,
+            last_name: user?.last_name,
             created_at: Math.floor(Date.now() / 1000),
             modified_at: Math.floor(Date.now() / 1000),
             __typename: 'User',
           },
         },
-        update(cache, mutationResult: any) {
+        update(cache, mutationResult) {
           const updateUser = mutationResult?.data?.updateUser;
           const cachedUserList = cache.readQuery<GetUsersQuery>({
             query: GetUsersDocument,
             variables: {
-              page: 1,
-              pageSize: 5,
-              filters: '',
+              page: pagination.page,
+              pageSize: pagination.pageSize,
+              filters: term,
             },
           });
+
+          console.log('updateUser updateUser updateUser', updateUser)
 
           const userList = cachedUserList?.users?.results || [];
 
           const users = userList.map((d) => {
             if (d?._id !== user?._id) return d;
             return {
-              node: {
-                ...updateUser,
-              },
+              ...updateUser,
+              _id: user._id,
+              password: user.password,
+              modified_at: Math.floor(Date.now() / 1000),
             };
           });
 
-          const newData: any = {
+          console.log('users users users', users)
+
+          const newData = {
             users: {
               results: users,
               pageInfo: cachedUserList?.users?.pageInfo,
@@ -136,9 +145,9 @@ function UserList({
           cache.writeQuery<GetUsersQuery>({
             query: GetUsersDocument,
             variables: {
-              page: 1,
-              pageSize: 5,
-              filters: '',
+              page: pagination.page,
+              pageSize: pagination.pageSize,
+              filters: term,
             },
             data: {
               __typename: 'Query',
@@ -149,17 +158,12 @@ function UserList({
       });
       onClose();
     },
-    [onClose, updateUser],
+    [pagination, onClose, updateUser],
   );
 
   const onNewUser = useCallback(
-    async (user: {
-      email: string;
-      password: string;
-      first_name: string;
-      last_name: string;
-    }): Promise<void> => {
-      await createUser({
+    (user: { email: string; password: string; first_name: string; last_name: string }): void => {
+      createUser({
         variables: {
           email: user.email,
           password: user.password,
@@ -180,9 +184,9 @@ function UserList({
           const cachedUserList = cache.readQuery<GetUsersQuery>({
             query: GetUsersDocument,
             variables: {
-              page: 1,
-              pageSize: 5,
-              filters: '',
+              page: pagination.page,
+              pageSize: pagination.pageSize,
+              filters: term,
             },
           });
 
@@ -213,12 +217,12 @@ function UserList({
             },
           };
 
-          cache.writeQuery<GetUsersQuery, any>({
+          cache.writeQuery({
             query: GetUsersDocument,
             variables: {
-              page: 1,
-              pageSize: 5,
-              filters: '',
+              page: pagination.page,
+              pageSize: pagination.pageSize,
+              filters: term,
             },
             data: {
               __typename: 'Query',
@@ -229,14 +233,14 @@ function UserList({
       });
       onClose();
     },
-    [createUser, onClose],
+    [pagination, createUser, onClose],
   );
 
   const onDeleteUser = useCallback(
     (user: User): void => {
       deleteUser({
         variables: {
-          id: user?._id || '',
+          id: user?._id,
         },
         optimisticResponse: {
           __typename: 'Mutation',
@@ -292,7 +296,7 @@ function UserList({
   const searchTerms = useCallback(
     (term: string): void => {
       setTerm(term);
-      userFilter({
+      getUsers({
         variables: {
           filters: term,
           page: pagination.page,
@@ -300,7 +304,7 @@ function UserList({
         },
       });
     },
-    [userFilter],
+    [getUsers],
   );
 
   const onChangePage = useCallback(
@@ -310,7 +314,7 @@ function UserList({
         page,
       }));
 
-      userFilter({
+      getUsers({
         variables: {
           filters: term,
           page: page || pagination.page,
@@ -318,7 +322,7 @@ function UserList({
         },
       });
     },
-    [pagination, userFilter],
+    [pagination, getUsers],
   );
 
   const onChangePageSize = useCallback(
@@ -328,7 +332,7 @@ function UserList({
         pageSize,
       }));
 
-      userFilter({
+      getUsers({
         variables: {
           filters: term,
           page: pagination.page,
@@ -336,7 +340,7 @@ function UserList({
         },
       });
     },
-    [pagination, userFilter],
+    [pagination, getUsers],
   );
 
   const users: any = data?.users || [];
