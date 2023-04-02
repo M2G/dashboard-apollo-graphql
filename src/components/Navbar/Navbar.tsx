@@ -32,6 +32,11 @@ function Navbar(): JSX.Element {
                 Profil
               </a>
             </li>
+            <li className="nav-item">
+              <a href={ROUTER_PATH.USERS} className="nav-link active">
+                Users
+              </a>
+            </li>
           </ul>
           <button
             type="button"

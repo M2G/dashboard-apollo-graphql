@@ -1,29 +1,7 @@
-import { useCallback } from 'react';
-import { useForgotPasswordMutation } from 'modules/graphql/generated';
-import { INITIAL_VALUES } from './constants';
-import ForgotPasswordView from './ForgotPassword';
-import ForgotPasswordStatus from './ForgotPasswordStatus';
+import ForgotPassword from './ForgotPassword';
 
-function ForgotPassword(): JSX.Element | string {
-  const [forgotPasswordMutation, { loading, error, data }] = useForgotPasswordMutation();
-
-  const success: boolean | null | undefined = data?.forgotPassword?.success;
-
-  const onSubmit = useCallback(
-    async ({ email }: { readonly email: string }) => {
-      await forgotPasswordMutation({
-        variables: {
-          email,
-        },
-      });
-    },
-    [forgotPasswordMutation],
-  );
-
-  if (success && !loading) return <ForgotPasswordStatus />;
-  if (error) return JSON.stringify(error?.message);
-
-  return <ForgotPasswordView initialValues={INITIAL_VALUES} onSubmit={onSubmit} />;
+function ForgotPasswordPage(): JSX.Element {
+  return <ForgotPassword />;
 }
 
-export default ForgotPassword;
+export default ForgotPasswordPage;

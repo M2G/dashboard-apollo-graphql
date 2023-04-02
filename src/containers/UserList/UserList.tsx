@@ -50,6 +50,7 @@ function UserList({
 
   const [getUsers, { loading, error, data }] = useGetUsersLazyQuery({
     fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
   });
 
   console.log('useGetUserListLazyQuery', { loading, error, data });
@@ -118,7 +119,7 @@ function UserList({
             },
           });
 
-          console.log('updateUser updateUser updateUser', updateUser)
+          console.log('updateUser updateUser updateUser', updateUser);
 
           const userList = cachedUserList?.users?.results || [];
 
@@ -132,7 +133,7 @@ function UserList({
             };
           });
 
-          console.log('users users users', users)
+          console.log('users users users', users);
 
           const newData = {
             users: {

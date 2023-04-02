@@ -1,104 +1,37 @@
-import { Formik, Field, Form } from 'formik';
+/*eslint-disable*/
+import { useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useResetPasswordMutation } from 'modules/graphql/generated';
+import { INITIAL_VALUES } from './constants';
+import ResetPasswordView from './ResetPasswordView';
+import ResetPasswordStatus from '../ResetPassword/ResetPasswordStatus';
 
-import {
-  ERROR_TEXT_REQUIRED,
-  INPUT_NAME,
-  LABEL_NEW_PASSWORD,
-  LABEL_VERIFY_PASSWORD,
-  PLACEHOLDER_NEW_PASSWORD,
-  PLACEHOLDER_VERIFY_PASSWORD,
-} from './constants';
+function ResetPassword(): JSX.Element | null {
+  let { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const [resetPasswordMutation, { loading, error, data }] = useResetPasswordMutation();
 
-const {
-  ERROR_TEXT_REQUIRED_NEW_PASSWORD,
-  ERROR_TEXT_REQUIRED_VERIFY_PASSWORD,
-  ERROR_TEXT_REQUIRED_NOT_EQUAL,
-} = ERROR_TEXT_REQUIRED;
+  const success: boolean | null | undefined = data?.resetPassword?.success;
 
-function ResetPassword({ initialValues, onSubmit }: any) {
-  const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
-    setFieldValue(setFieldName, value);
+  if (!searchParams.has('token')) return null;
+  const token = searchParams.get('token') as string;
 
-  const onChange =
-    (setFieldValue: any, setFieldName: any): any =>
-    ({ target: { value = '' } }: any) =>
-      setField(setFieldValue, setFieldName, value);
+  const onSubmit = useCallback(async ({ new_password  }: { readonly new_password: string; }) => {
+    await resetPasswordMutation({
+      variables: {
+        input: {
+          password: new_password,
+          token
+        }
+      },
+    })
+  }, []);
 
-  const onValidate = (values: object): {} => {
-    const errors = {};
-
-    if (!values[INPUT_NAME.NEW_PASSWORD]) {
-      errors[INPUT_NAME.NEW_PASSWORD] = ERROR_TEXT_REQUIRED_NEW_PASSWORD;
-    }
-
-    if (!values[INPUT_NAME.VERIFY_PASSWORD]) {
-      errors[INPUT_NAME.VERIFY_PASSWORD] = ERROR_TEXT_REQUIRED_VERIFY_PASSWORD;
-    }
-
-    if (
-      values[INPUT_NAME.NEW_PASSWORD]
-      && values[INPUT_NAME.VERIFY_PASSWORD]
-      && values[INPUT_NAME.NEW_PASSWORD] !== values[INPUT_NAME.VERIFY_PASSWORD]
-    ) {
-      errors[INPUT_NAME.VERIFY_PASSWORD] = ERROR_TEXT_REQUIRED_NOT_EQUAL;
-    }
-
-    return errors;
-  };
-
-  const handleSubmit = (values: object) => onSubmit(values);
-
-  const renderForm = ({ setFieldValue, values, errors, touched }: any): any => (
-    <div className="form-signin">
-      <Form>
-        <div className="form-floating">
-          <Field
-            id="floatingInput"
-            name={INPUT_NAME.NEW_PASSWORD}
-            className="form-control mb-2"
-            type="text"
-            onChange={onChange(setFieldValue, INPUT_NAME.NEW_PASSWORD)}
-            placeholder={PLACEHOLDER_NEW_PASSWORD}
-            value={values?.[INPUT_NAME.NEW_PASSWORD]}
-            required
-          />
-          {touched[INPUT_NAME.NEW_PASSWORD] && errors && errors[INPUT_NAME.NEW_PASSWORD] ? (
-            <span className="error-text">{errors[INPUT_NAME.NEW_PASSWORD]}</span>
-          ) : null}
-          <label htmlFor="floatingInput">{LABEL_NEW_PASSWORD}</label>
-        </div>
-        <div className="form-floating">
-          <Field
-            id="floatingInput"
-            name={INPUT_NAME.VERIFY_PASSWORD}
-            className="form-control mb-2"
-            type="text"
-            onChange={onChange(setFieldValue, INPUT_NAME.VERIFY_PASSWORD)}
-            placeholder={PLACEHOLDER_VERIFY_PASSWORD}
-            value={values?.[INPUT_NAME.VERIFY_PASSWORD]}
-            required
-          />
-          {touched[INPUT_NAME.VERIFY_PASSWORD] && errors && errors[INPUT_NAME.VERIFY_PASSWORD] ? (
-            <span className="error-text">{errors[INPUT_NAME.VERIFY_PASSWORD]}</span>
-          ) : null}
-          <label htmlFor="floatingInput">{LABEL_VERIFY_PASSWORD}</label>
-        </div>
-        <button className="w-100 btn btn-lg btn-primary" type="submit">
-          Reset Password
-        </button>
-      </Form>
-    </div>
-  );
+  if (success && !loading) return <ResetPasswordStatus />;
+  if (error) return <>{JSON.stringify(error?.message)}</>
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validate={onValidate}
-    >
-      {renderForm}
-    </Formik>
+    <ResetPasswordView initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
   );
 }
 

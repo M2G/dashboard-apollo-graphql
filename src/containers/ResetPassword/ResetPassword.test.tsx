@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { fireEvent, render, cleanup } from '@testing-library/react';
-import ResetPassword from './ResetPassword';
+import ResetPasswordView from './ResetPasswordView';
 import { INPUT_NAME } from './constants';
 
 afterEach(cleanup);
@@ -19,7 +19,7 @@ describe('Signup Container', () => {
       };
 
       wrapper = render(
-        <ResetPassword initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
+        <ResetPasswordView initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
       );
 
       floatingInput = wrapper.container.querySelector('#floatingInput');
