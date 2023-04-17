@@ -24,11 +24,7 @@ mutation CreateUser($email: String!, $password: String!) {
 
 mutation UpdateUser($id: Int!, $input: UpdateUserInput) {
   updateUser(id: $id, input: $input) {
-    first_name
-    last_name
-    email
-    created_at
-    modified_at
+    success
   }
 }
 

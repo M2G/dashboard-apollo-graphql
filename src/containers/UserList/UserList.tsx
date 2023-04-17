@@ -7,7 +7,7 @@ import UserNew from 'containers/Users/UserNew';
 import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
-import NoData from 'components/NoData';
+// import NoData from 'components/NoData';
 import type { User, Users } from 'modules/graphql/generated';
 import {
   useUpdateUserMutation,
@@ -88,7 +88,7 @@ function UserList({
     (user: User): void => {
       console.log('onEditUser', user);
 
-      /*updateUser({
+      updateUser({
         variables: {
           input: {
             username: user?.username,
@@ -96,21 +96,17 @@ function UserList({
             first_name: user?.first_name,
             last_name: user?.last_name,
           },
-          id: user.id,
+          id: user.id as number,
         },
         optimisticResponse: {
           __typename: 'Mutation',
           updateUser: {
-            email: user?.email,
-            first_name: user?.first_name,
-            last_name: user?.last_name,
-            created_at: Math.floor(Date.now() / 1000),
-            modified_at: Math.floor(Date.now() / 1000),
-            __typename: 'User',
+             success: true,
+            __typename: 'Status',
           },
         },
         update(cache, mutationResult) {
-          const updateUser = mutationResult?.data?.updateUser;
+          // const updateUser = mutationResult?.data?.updateUser;
           const cachedUserList = cache.readQuery<GetUsersQuery>({
             query: GetUsersDocument,
             variables: {
@@ -120,21 +116,24 @@ function UserList({
             },
           });
 
-          console.log('updateUser updateUser updateUser', updateUser);
-
           const userList = cachedUserList?.users?.results || [];
+
+          console.log('userList userList userList', userList);
+          console.log('user user user', user);
 
           const users = userList.map((d) => {
             if (d?.id !== user?.id) return d;
             return {
-              ...updateUser,
+              ...user,
               id: user.id,
               password: user.password,
+              created_at: Math.floor(Date.now() / 1000),
               modified_at: Math.floor(Date.now() / 1000),
+              __typename: 'User',
             };
           });
 
-          console.log('users users users', users);
+          console.log('users users users', users)
 
           const newData = {
             users: {
@@ -157,7 +156,7 @@ function UserList({
             },
           });
         },
-      });*/
+      });
       onClose();
     },
     [pagination, onClose, updateUser],
@@ -239,13 +238,13 @@ function UserList({
     (user: User): void => {
       deleteUser({
         variables: {
-          id: user?.id,
+          id: user?.id as number,
         },
         optimisticResponse: {
           __typename: 'Mutation',
           deleteUser: {
-            __typename: 'User',
-            id: user?.id,
+            __typename: 'Status',
+            id: user?.id as number,
           },
         },
         update(cache, mutationResult: any) {

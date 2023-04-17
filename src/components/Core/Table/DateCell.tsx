@@ -7,10 +7,10 @@ interface IDateCell {
 function DateCell({ date }: IDateCell): JSX.Element {
   return (
     <div className="date_cell">
-      {date && date > 0 ? (
+      {date ? (
         <>
-          <div>{new Date(date * 1000).toLocaleDateString()}</div>
-          <div>{new Date(date * 1000).toLocaleTimeString()}</div>
+          <div>{new Date(date).toLocaleDateString()}</div>
+          <div>{new Date(date).toLocaleTimeString()}</div>
         </>
       ) : null}
     </div>

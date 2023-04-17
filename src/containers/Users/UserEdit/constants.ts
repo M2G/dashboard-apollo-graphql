@@ -2,7 +2,7 @@ export const INPUT_NAME = {
   FIRST_NAME: 'first_name',
   LAST_NAME: 'last_name',
   EMAIL: 'email',
-  ID: '_id',
+  ID: 'id',
   USERNAME: 'username',
   CREATED_AT: 'created_at',
   MODIFIED_AT: 'modified_at',
