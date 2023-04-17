@@ -20,7 +20,6 @@ import {
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/ListLegacy';
 import AddUser from './Action/AddUser';
-import { objectId } from './helpers';
 import type { UserList } from './types';
 import './index.scss';
 
@@ -87,7 +86,9 @@ function UserList({
 
   const onEditUser = useCallback(
     (user: User): void => {
-      updateUser({
+      console.log('onEditUser', user);
+
+      /*updateUser({
         variables: {
           input: {
             username: user?.username,
@@ -95,7 +96,7 @@ function UserList({
             first_name: user?.first_name,
             last_name: user?.last_name,
           },
-          id: user._id,
+          id: user.id,
         },
         optimisticResponse: {
           __typename: 'Mutation',
@@ -124,10 +125,10 @@ function UserList({
           const userList = cachedUserList?.users?.results || [];
 
           const users = userList.map((d) => {
-            if (d?._id !== user?._id) return d;
+            if (d?.id !== user?.id) return d;
             return {
               ...updateUser,
-              _id: user._id,
+              id: user.id,
               password: user.password,
               modified_at: Math.floor(Date.now() / 1000),
             };
@@ -156,7 +157,7 @@ function UserList({
             },
           });
         },
-      });
+      });*/
       onClose();
     },
     [pagination, onClose, updateUser],
@@ -193,14 +194,11 @@ function UserList({
 
           const userList = cachedUserList?.users?.results || [];
 
-          const _id = objectId();
-
           const newUser = [
             ...userList,
             ...[
               {
                 ...user,
-                _id,
                 first_name: resultMessage?.first_name || '',
                 last_name: resultMessage?.last_name || '',
                 created_at: Math.floor(Date.now() / 1000),
@@ -241,17 +239,17 @@ function UserList({
     (user: User): void => {
       deleteUser({
         variables: {
-          id: user?._id,
+          id: user?.id,
         },
         optimisticResponse: {
           __typename: 'Mutation',
           deleteUser: {
             __typename: 'User',
-            _id: user?._id,
+            id: user?.id,
           },
         },
         update(cache, mutationResult: any) {
-          const { _id } = mutationResult?.data?.deleteUser;
+          const { id } = mutationResult?.data?.deleteUser;
           const cachedUserList: { users: Users } | null = cache.readQuery({
             query: GetUsersDocument,
             variables: {
@@ -262,7 +260,7 @@ function UserList({
           });
 
           const filtered = cachedUserList?.users?.results?.filter(
-            ({ _id: userId }: { _id: string }) => userId !== _id,
+            ({ id: userId }: { id: number }) => userId !== id,
           );
 
           const newUser = [...filtered];

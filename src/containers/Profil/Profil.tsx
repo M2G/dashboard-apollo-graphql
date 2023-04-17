@@ -8,17 +8,13 @@ import {
   Exact,
   GetUserQuery,
   useGetUserQuery,
-  useUpdateUserMutation
+  useUpdateUserMutation,
 } from 'modules/graphql/generated';
 
 function initialValues(values: Record<any, any>) {
   const initialValues = { ...INITIAL_VALUES };
-
-  console.log('values values values', values);
-
   if (values) {
-    initialValues[INPUT_NAME.FIRST_NAME] =
-      values?.[INPUT_NAME.FIRST_NAME] || '';
+    initialValues[INPUT_NAME.FIRST_NAME] = values?.[INPUT_NAME.FIRST_NAME] || '';
     initialValues[INPUT_NAME.LAST_NAME] = values?.[INPUT_NAME.LAST_NAME] || '';
     initialValues[INPUT_NAME.EMAIL] = values?.[INPUT_NAME.EMAIL] || '';
   }
@@ -33,13 +29,13 @@ function Profil() {
     loading,
     data: userProfil = {
       __typename: 'Query',
-      getUser: null
-    }
-  }: QueryResult<GetUserQuery, Exact<{ id: string }>> = useGetUserQuery({
+      getUser: null,
+    },
+  }: QueryResult<GetUserQuery, Exact<{ id: number }>> = useGetUserQuery({
     fetchPolicy: 'cache-and-network',
     variables: {
-      id: userData?._id
-    }
+      id: userData?.id,
+    },
   });
 
   const [updateUserMutation, { data: updateProfil }] = useUpdateUserMutation();
@@ -48,13 +44,18 @@ function Profil() {
 
   const handleSubmit: any = useCallback(
     async (formData: any) => {
+      console.log('userProfil userProfil', userProfil);
+      console.log('formData formData', formData);
+
       await updateUserMutation({
         variables: {
-          id: userProfil?.getUser?._id || '',
-          email: formData?.email,
-          first_name: formData?.first_name,
-          last_name: formData?.last_name,
-          username: formData?.username
+          id: userProfil?.getUser?.id,
+          input: {
+            email: formData?.email,
+            first_name: formData?.first_name,
+            last_name: formData?.last_name,
+            username: formData?.username,
+          },
         },
         optimisticResponse: {
           __typename: 'Mutation',
@@ -64,24 +65,18 @@ function Profil() {
             last_name: formData?.last_name,
             email: formData?.email,
             created_at: userProfil?.getUser?.created_at || null,
-            modified_at: userProfil?.getUser?.modified_at || null
-          }
-        }
+            modified_at: userProfil?.getUser?.modified_at || null,
+          },
+        },
       });
     },
-    [userProfil, updateUserMutation]
+    [userProfil, updateUserMutation],
   );
 
   if (loading && userProfil?.getUser) return null;
 
   return (
-    <ProfilForm
-      initialValues={initialValues({
-        ...userProfil?.getUser,
-        ...updateProfil?.updateUser
-      })}
-      onSubmit={handleSubmit}
-    />
+    <ProfilForm initialValues={initialValues({ ...userProfil?.getUser })} onSubmit={handleSubmit} />
   );
 }
 

@@ -15,7 +15,10 @@ const Router = () => {
   const { isAuth } = useContext(AuthContext);
   const { userData } = useContext(AuthContext);
 
-  const userId = userData?._id;
+  const userId = userData?.id;
+
+  console.log('Router isAuth', isAuth);
+  console.log('Router userId', userData);
 
   return (
     <main>

@@ -1,5 +1,5 @@
 fragment UserParts on User {
-  _id
+  id
   first_name
   last_name
   email
@@ -40,7 +40,7 @@ query GetUsers($filters: String, $pageSize: Int, $page: Int) {
 #   }
 # }
 
-query GetUser($id: String!) {
+query GetUser($id: Int!) {
   getUser(id: $id) {
     ...UserParts
   }
