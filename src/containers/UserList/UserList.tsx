@@ -101,7 +101,7 @@ function UserList({
         optimisticResponse: {
           __typename: 'Mutation',
           updateUser: {
-             success: true,
+            success: true,
             __typename: 'Status',
           },
         },
@@ -133,7 +133,7 @@ function UserList({
             };
           });
 
-          console.log('users users users', users)
+          console.log('users users users', users);
 
           const newData = {
             users: {
@@ -193,11 +193,15 @@ function UserList({
 
           const userList = cachedUserList?.users?.results || [];
 
+          console.log('resultMessage resultMessage resultMessage', resultMessage);
+          console.log('userList userList userList', userList);
+
           const newUser = [
             ...userList,
             ...[
               {
                 ...user,
+                id: 222, //TODO add math random
                 first_name: resultMessage?.first_name || '',
                 last_name: resultMessage?.last_name || '',
                 created_at: Math.floor(Date.now() / 1000),
@@ -206,6 +210,8 @@ function UserList({
               },
             ],
           ];
+
+          console.log('newUser newUser newUser', newUser);
 
           const newData = {
             users: {
