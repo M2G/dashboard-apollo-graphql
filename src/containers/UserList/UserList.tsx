@@ -85,10 +85,8 @@ function UserList({
   }, []);
 
   const onEditUser = useCallback(
-    (user: User): void => {
-      console.log('onEditUser', user);
-
-      updateUser({
+    async (user: User): Promise<void> => {
+      await updateUser({
         variables: {
           input: {
             username: user?.username,
@@ -105,8 +103,7 @@ function UserList({
             __typename: 'Status',
           },
         },
-        update(cache, mutationResult) {
-          // const updateUser = mutationResult?.data?.updateUser;
+        update(cache, _) {
           const cachedUserList = cache.readQuery<GetUsersQuery>({
             query: GetUsersDocument,
             variables: {
@@ -117,9 +114,6 @@ function UserList({
           });
 
           const userList = cachedUserList?.users?.results || [];
-
-          console.log('userList userList userList', userList);
-          console.log('user user user', user);
 
           const users = userList.map((d) => {
             if (d?.id !== user?.id) return d;
@@ -132,8 +126,6 @@ function UserList({
               __typename: 'User',
             };
           });
-
-          console.log('users users users', users);
 
           const newData = {
             users: {
@@ -163,8 +155,8 @@ function UserList({
   );
 
   const onNewUser = useCallback(
-    (user: { email: string; password: string; first_name: string; last_name: string }): void => {
-      createUser({
+    async (user: { email: string; password: string; first_name: string; last_name: string }): Promise<void> => {
+      await createUser({
         variables: {
           email: user.email,
           password: user.password,
@@ -193,15 +185,12 @@ function UserList({
 
           const userList = cachedUserList?.users?.results || [];
 
-          console.log('resultMessage resultMessage resultMessage', resultMessage);
-          console.log('userList userList userList', userList);
-
           const newUser = [
             ...userList,
             ...[
               {
                 ...user,
-                id: 222, //TODO add math random
+                id: Math.floor(Math.random() * 2),
                 first_name: resultMessage?.first_name || '',
                 last_name: resultMessage?.last_name || '',
                 created_at: Math.floor(Date.now() / 1000),
@@ -210,8 +199,6 @@ function UserList({
               },
             ],
           ];
-
-          console.log('newUser newUser newUser', newUser);
 
           const newData = {
             users: {
@@ -241,8 +228,8 @@ function UserList({
   );
 
   const onDeleteUser = useCallback(
-    (user: User): void => {
-      deleteUser({
+    async (user: User): void => {
+     await deleteUser({
         variables: {
           id: user?.id as number,
         },
@@ -250,11 +237,10 @@ function UserList({
           __typename: 'Mutation',
           deleteUser: {
             __typename: 'Status',
-            id: user?.id as number,
+            success: true,
           },
         },
-        update(cache, mutationResult: any) {
-          const { id } = mutationResult?.data?.deleteUser;
+        update(cache, _) {
           const cachedUserList: { users: Users } | null = cache.readQuery({
             query: GetUsersDocument,
             variables: {
@@ -264,8 +250,8 @@ function UserList({
             },
           });
 
-          const filtered = cachedUserList?.users?.results?.filter(
-            ({ id: userId }: { id: number }) => userId !== id,
+          const filtered: any = cachedUserList?.users?.results?.filter(
+            ({ id: userId }: { id: number }) => userId !== user.id,
           );
 
           const newUser = [...filtered];
@@ -298,9 +284,9 @@ function UserList({
   );
 
   const searchTerms = useCallback(
-    (term: string): void => {
+    async (term: string): Promise<void> => {
       setTerm(term);
-      getUsers({
+      await getUsers({
         variables: {
           filters: term,
           page: pagination.page,
@@ -312,13 +298,13 @@ function UserList({
   );
 
   const onChangePage = useCallback(
-    (page: number): void => {
+    async (page: number): Promise<void> => {
       setPagination((prevState) => ({
         ...prevState,
         page,
       }));
 
-      getUsers({
+     await getUsers({
         variables: {
           filters: term,
           page: page || pagination.page,
@@ -330,13 +316,13 @@ function UserList({
   );
 
   const onChangePageSize = useCallback(
-    (pageSize: number): void => {
+    async (pageSize: number): Promise<void> => {
       setPagination((prevState) => ({
         ...prevState,
         pageSize,
       }));
 
-      getUsers({
+      await getUsers({
         variables: {
           filters: term,
           page: pagination.page,

@@ -3,7 +3,7 @@ import type { User } from 'modules/graphql/generated';
 import { INITIAL_VALUES } from './constants';
 
 interface IUserNew {
-  readonly onSubmit: (user: User) => Promise<void>;
+  readonly onSubmit: (user: User) => void;
 }
 
 function UserNew({ onSubmit }: IUserNew): JSX.Element {
