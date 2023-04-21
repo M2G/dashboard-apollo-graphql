@@ -11,7 +11,16 @@ import {
   useUpdateUserMutation,
 } from 'modules/graphql/generated';
 
-function initialValues(values: Record<any, any>) {
+function initialValues(values: {
+  [x: string]: string;
+  id?: any;
+  first_name?: any;
+  last_name?: any;
+  email?: any;
+  created_at?: any;
+  modified_at?: any;
+  password?: any;
+}) {
   const initialValues = { ...INITIAL_VALUES };
   if (values) {
     initialValues[INPUT_NAME.FIRST_NAME] = values?.[INPUT_NAME.FIRST_NAME] || '';
@@ -22,7 +31,7 @@ function initialValues(values: Record<any, any>) {
   return initialValues;
 }
 
-function Profil() {
+function Profil(): JSX.Element | null {
   const { userData } = useContext(AuthContext);
 
   const {
@@ -60,12 +69,8 @@ function Profil() {
         optimisticResponse: {
           __typename: 'Mutation',
           updateUser: {
-            __typename: 'User',
-            first_name: formData?.first_name,
-            last_name: formData?.last_name,
-            email: formData?.email,
-            created_at: userProfil?.getUser?.created_at || null,
-            modified_at: userProfil?.getUser?.modified_at || null,
+            __typename: 'Status',
+            success: true,
           },
         },
       });
