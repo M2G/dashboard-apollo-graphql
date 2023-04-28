@@ -76,11 +76,11 @@ function SignupForm({ initialValues, onSubmit }: any) {
           <label htmlFor="floatingPassword">{LABEL_PASSWORD}</label>
         </div>
         <button className="w-100 btn btn-lg btn-primary" type="submit">
-          Sign in
+          Sign up
         </button>
       </Form>
-      <Link to={ROUTER_PATH.SIGNUP} className="mt-4 text-muted">
-        Signup
+      <Link to={ROUTER_PATH.SIGNIN} className="mt-4 text-muted">
+        Signin
       </Link>
       <Link to={ROUTER_PATH.FORGOT_PASSWORD} className="mt-1 text-muted">
         Forgot Password
