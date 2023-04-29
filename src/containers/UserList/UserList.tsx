@@ -135,7 +135,7 @@ function UserList({
             },
           };
 
-          cache.writeQuery<GetUsersQuery>({
+          cache.writeQuery({
             query: GetUsersDocument,
             variables: {
               page: pagination.page,

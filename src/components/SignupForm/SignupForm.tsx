@@ -37,10 +37,10 @@ function SignupForm({ initialValues, onSubmit }: any) {
 
   const renderForm = ({
  setFieldValue, values, errors, touched,
-}: any): any => (
+}): any => (
     <div className="form-signin">
       <Form>
-        <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+        <h1 className="h3 mb-3 fw-normal">Please sign up</h1>
         <div className="form-floating">
           <Field
             id="floatingInput"
@@ -68,9 +68,7 @@ function SignupForm({ initialValues, onSubmit }: any) {
             value={values?.[INPUT_NAME.PASSWORD]}
             required
           />
-          {touched[INPUT_NAME.PASSWORD]
-          && errors
-          && errors[INPUT_NAME.PASSWORD] ? (
+          {touched[INPUT_NAME.PASSWORD] && errors && errors[INPUT_NAME.PASSWORD] ? (
             <span className="error-text">{errors[INPUT_NAME.PASSWORD]}</span>
           ) : null}
           <label htmlFor="floatingPassword">{LABEL_PASSWORD}</label>

@@ -1,25 +1,26 @@
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SignupForm from 'components/SignupForm';
 import { useSignupMutation } from 'modules/graphql/generated';
-import { AuthContext } from '../../AuthContext';
+import ROUTER_PATH from 'constants/RouterPath';
 import { INITIAL_VALUES } from './constants';
 
 function Signup(): JSX.Element {
-  const { activateAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [signup] = useSignupMutation({
-    onCompleted: ({ signup: signupData }: { signup: string }) =>
-      activateAuth(signupData),
-  } as any);
+    onCompleted: () => {
+      navigate(ROUTER_PATH.SIGNIN);
+    },
+  });
 
   const handleSubmit = useCallback(
-    async (formData: any) => {
-      await signup({
+    async (formData: any) =>
+      signup({
         variables: {
           email: formData.email,
           password: formData.password,
         },
-      });
-    },
+      }),
     [signup],
   );
 
