@@ -128,7 +128,6 @@ $grid-width: map-get($_layout-grid, width);
 $grid-gutter-width: _em(map-get($_layout-grid, gutters));
 
 // Prefix for :root CSS variables
-
 $variable-prefix:             bs- !default; // Deprecated in v5.2.0 for the shorter `$prefix`
 $prefix:                      $variable-prefix !default;
 
@@ -141,5 +140,28 @@ $grid-gutter-width:           1.5rem !default;
 $grid-row-columns:            6 !default;
 
 // Container padding
-
 $container-padding-x: $grid-gutter-width !default;
+
+[data-theme='light'] {
+  --color-bg: #fcfaff;
+  --color-header-bg: #2a1f3f;
+  --color-header-text: #fcfaff;
+  --color-border: #54495f;
+  --color-link: #1600ed;
+  --color-text: #464064;
+  --color-text-heading: #1d1036;
+  --color-text-muted: #575280;
+}
+
+[data-theme='dark'] {
+  --color-bg: #121212;
+  --color-header-bg: #161617;
+  // #18181B
+  //  --color-header-text: #e9e9f1;
+  //  --color-border: #54495f;
+  // --color-link: #617ff5;
+  --color-text: #FFFFFF;
+  --color-text-heading: #71717A;
+}
+
+

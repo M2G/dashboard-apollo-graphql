@@ -1,10 +1,10 @@
-import Navbar from 'components/Navbar/Navbar';
+import Sidebar from 'components/Sidebar';
 import HomeView from './Home';
 
 function Home(): JSX.Element {
   return (
     <>
-      <Navbar />
+      <Sidebar />
       <HomeView />
     </>
   );
