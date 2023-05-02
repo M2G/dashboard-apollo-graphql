@@ -25,7 +25,7 @@
 
   max-width: map-get($_layout-grid, width);
 
-  background-color: $_color-white;
+  // background-color: $_color-white;
 
   .o-zone:not(.o-zone--advert) + .o-zone &,
   & + & {

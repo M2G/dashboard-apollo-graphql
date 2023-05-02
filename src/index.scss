@@ -1,5 +1,10 @@
 @import 'styles';
 
+$header-height-desktop: 130px;
+
+// menu button
+$header-menu-button-width: 70px;
+
 body {
   font-size: .875rem;
 }
@@ -14,6 +19,7 @@ body {
  */
 
 .sidebar {
+  background-color: var(--color-sidebar-bg);
   position: fixed;
   top: 0;
   /* rtl:raw:
@@ -25,37 +31,36 @@ body {
   z-index: 100; /* Behind the navbar */
   padding: 48px 0 0; /* Height of navbar */
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-}
+  min-width: 250px;
 
-@media (max-width: 767.98px) {
-  .sidebar {
-    top: 5rem;
+  border-color: hsla(0,0%,100%,.1);
+  border-right-style: solid;
+  border-right-width: 1px;
+
+  .nav {
+    padding-right: _rem(map-get($_layout-grid, gutters));
+    padding-left: _rem(map-get($_layout-grid, gutters));
   }
-}
 
-.sidebar-sticky {
-  height: calc(100vh - 48px);
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    svg {
+      width: _rem(18px);
+      height: _rem(18px);
+      stroke: white;
+    }
+  }
+
 }
 
 .sidebar .nav-link {
   font-weight: 500;
-  color: #333;
-}
-
-.sidebar .nav-link .feather {
-  margin-right: 4px;
-  color: #727272;
+  color: var(--color-text);
 }
 
 .sidebar .nav-link.active {
-  color: #2470dc;
-}
-
-.sidebar .nav-link:hover .feather,
-.sidebar .nav-link.active .feather {
-  color: inherit;
+  // color: var(--color-text);
 }
 
 .sidebar-heading {
@@ -65,6 +70,43 @@ body {
 /*
  * Navbar
  */
+
+.navbar {
+  background-color: var( --color-navbar-bg);
+  @include bp(smallest) {
+    margin-left: auto;
+    width: calc(100vw - 250px);
+  }
+
+  @include bp(large) {
+    height: $header-height-desktop / 2;
+    padding-right: $header-menu-button-width;
+
+    transition: height 300ms ease;
+
+    justify-content: space-around;
+    align-items: center;
+  }
+  @include bp(large) {
+    font-size: 12px;
+  }
+  @include bp(1200px) {
+    font-size: 14px;
+  }
+  @include bp(1300px) {
+    font-size: 16px;
+  }
+
+  width: 100vw;
+}
+
+.navbar-nav {
+  .nav-item {
+    .nav-link {
+      color: var(--color-text);
+    }
+  }
+}
 
 .navbar-brand {
   padding-top: .75rem;
@@ -82,6 +124,7 @@ body {
   padding: .75rem 1rem;
 }
 
+
 .form-control-dark {
   color: #fff;
   background-color: rgba(255, 255, 255, .1);
@@ -94,7 +137,6 @@ body {
 }
 
 //
-
 html, body {
   background-color: var(--color-bg);
 }
