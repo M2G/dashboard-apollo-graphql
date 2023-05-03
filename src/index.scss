@@ -18,6 +18,8 @@ body {
  * Sidebar
  */
 
+$sidebar-width: 280px;
+
 .sidebar {
   background-color: var(--color-sidebar-bg);
   position: fixed;
@@ -31,11 +33,17 @@ body {
   z-index: 100; /* Behind the navbar */
   padding: 48px 0 0; /* Height of navbar */
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-  min-width: 250px;
+  min-width: $sidebar-width;
 
   border-color: hsla(0,0%,100%,.1);
   border-right-style: solid;
   border-right-width: 1px;
+
+  h3 {
+    color: white;
+    text-align: center;
+    letter-spacing: 1px;
+  }
 
   .nav {
     padding-right: _rem(map-get($_layout-grid, gutters));
@@ -71,11 +79,18 @@ body {
  * Navbar
  */
 
+nav.navbar {
+  padding-right: 0;
+}
+
 .navbar {
+  border-color: hsla(0,0%,100%,.1);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
   background-color: var( --color-navbar-bg);
   @include bp(smallest) {
     margin-left: auto;
-    width: calc(100vw - 250px);
+    width: calc(100vw - $sidebar-width);
   }
 
   @include bp(large) {
