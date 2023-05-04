@@ -10,6 +10,7 @@ import {
   PLACEHOLDER_EMAIL,
   PLACEHOLDER_PASSWORD,
 } from './constants';
+import './index.scss';
 
 const { ERROR_TEXT_REQUIRED_EMAIL, ERROR_TEXT_REQUIRED_PASSWORD } = ERROR_TEXT_REQUIRED;
 
@@ -17,7 +18,8 @@ function SigninForm({ initialValues, onSubmit }: any) {
   const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
     setFieldValue(setFieldName, value);
 
-  const onChange = (setFieldValue: any, setFieldName: any): any =>
+  const onChange =
+    (setFieldValue: any, setFieldName: any): any =>
     ({ target: { value = '' } }: any) =>
       setField(setFieldValue, setFieldName, value);
 
@@ -35,12 +37,13 @@ function SigninForm({ initialValues, onSubmit }: any) {
     return errors;
   };
 
-  const renderForm = ({
- setFieldValue, values, errors, touched,
-}: any): any => (
+  const renderForm = ({ setFieldValue, values, errors, touched }: any): any => (
     <div className="form-signin">
       <Form>
-        <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+        <div className="mb-4">
+          <h1 className="h3 mb-1">Create your account</h1>
+          <span>to continue</span>
+        </div>
         <div className="form-floating">
           <Field
             id="floatingInput"
@@ -68,23 +71,25 @@ function SigninForm({ initialValues, onSubmit }: any) {
             value={values?.[INPUT_NAME.PASSWORD]}
             required
           />
-          {touched[INPUT_NAME.PASSWORD]
-          && errors
-          && errors[INPUT_NAME.PASSWORD] ? (
+          {touched[INPUT_NAME.PASSWORD] && errors && errors[INPUT_NAME.PASSWORD] ? (
             <span className="error-text">{errors[INPUT_NAME.PASSWORD]}</span>
           ) : null}
           <label htmlFor="floatingPassword">{LABEL_PASSWORD}</label>
         </div>
-        <button className="w-100 btn btn-lg btn-primary" type="submit">
+
+        <button className="w-100 btn btn-lg" type="submit">
           Sign in
         </button>
+        <div className="c-action">
+          <span>Have an account ?</span>
+          <Link to={ROUTER_PATH.SIGNUP} className="text-muted">
+            Signup
+          </Link>
+          <Link to={ROUTER_PATH.FORGOT_PASSWORD} className="text-muted">
+            Forgot Password
+          </Link>
+        </div>
       </Form>
-      <Link to={ROUTER_PATH.SIGNUP} className="mt-4 text-muted">
-        Signup
-      </Link>
-      <Link to={ROUTER_PATH.FORGOT_PASSWORD} className="mt-1 text-muted">
-        Forgot Password
-      </Link>
     </div>
   );
 

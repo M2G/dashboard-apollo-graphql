@@ -3,9 +3,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f5f5f5;
   flex-direction: column;
   margin-bottom: 10px;
+
+  form {
+    border-radius: 1.35em;
+    background-color: var(--color-bg-form);
+  }
 
   h1 {
     margin-bottom: 10px;
