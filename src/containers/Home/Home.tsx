@@ -1,8 +1,10 @@
 import Navbar from 'components/Navbar';
+import Sidebar from 'components/Sidebar';
 
 function Home(): JSX.Element {
   return (
     <>
+      <Sidebar />
       <Navbar />
       <div className="o-grid">
         <div className="o-grid__row">

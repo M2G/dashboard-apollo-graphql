@@ -3,8 +3,8 @@ import ROUTER_PATH from 'constants/RouterPath';
 function Sidebar(): JSX.Element {
   return (
     <nav className="d-md-block sidebar collapse">
-      <div className="position-sticky pt-5 sidebar-sticky">
-        <h3>Test</h3>
+      <div className="position-sticky sidebar-sticky">
+        <h3 className="mb-5">Test</h3>
         <ul className="nav flex-column">
           <li className="nav-item">
             <svg
