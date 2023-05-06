@@ -3,7 +3,7 @@ import UserList from 'containers/UserList/UserList';
 function Users(): JSX.Element {
   return (
     <div className="o-zone">
-      <div className="o-grid">
+      <div className="o-grid u-no-gutters">
         <div className="o-grid__row">
           <div className="o-col">
             <div className="o-cell--one">

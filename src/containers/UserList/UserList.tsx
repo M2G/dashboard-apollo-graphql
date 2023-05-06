@@ -155,7 +155,7 @@ function UserList({
   );
 
   const onNewUser = useCallback(
-    async (user: { email: string; password: string; first_name: string; last_name: string }): Promise<void> => {
+    async (user: User): Promise<void> => {
       await createUser({
         variables: {
           email: user.email,
@@ -228,7 +228,7 @@ function UserList({
   );
 
   const onDeleteUser = useCallback(
-    async (user: User): void => {
+    async (user: User): Promise<void> => {
      await deleteUser({
         variables: {
           id: user?.id as number,
@@ -251,7 +251,7 @@ function UserList({
           });
 
           const filtered: any = cachedUserList?.users?.results?.filter(
-            ({ id: userId }: { id: number }) => userId !== user.id,
+            (({ id: userId }: { id: number }) => userId !== user.id) as any,
           );
 
           const newUser = [...filtered];

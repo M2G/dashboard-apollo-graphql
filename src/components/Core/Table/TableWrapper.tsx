@@ -74,7 +74,7 @@ function TableWrapper({
       <table
         className={clsx(
           styles.table,
-          'c-table table table-bordered',
+          'c-table',
           className
         )}
       >

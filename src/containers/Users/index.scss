@@ -1,0 +1,23 @@
+.sidebar {
+  + .o-zone:has(.c-user-list) {
+    padding-left: 280px !important;
+  }
+}
+
+.o-zone:has(.c-user-list) {
+  --tw-text-opacity: 1;
+  padding-right: 0 !important;
+  .o-grid {
+    max-width: initial;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .c-search-input {
+    background-color: transparent;
+    border-color: hsla(0deg, 0%, 100%, 0.1);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-radius: 0;
+    color: rgb(113 113 122/var(--tw-text-opacity));
+  }
+}

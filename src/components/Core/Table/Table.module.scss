@@ -5,11 +5,10 @@
 table {
   width: 100%;
   border-collapse: collapse;
+  color: var(--color-text);
 }
 
 th {
-  text-align: center;
-  border-bottom: 2px solid black;
 }
 
 button {
@@ -59,11 +58,13 @@ button {
 }
 
 td {
-  padding: 0.5em;
-  border-bottom: 1px solid #ccc;
+  padding: 0;
 }
 
 tr {
+  border-color: hsla(0deg, 0%, 100%, 0.1);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
   &:hover {
     background-color: #eee;
   }

@@ -4,8 +4,8 @@ import Sidebar from 'components/Sidebar';
 function Home(): JSX.Element {
   return (
     <>
-      <Sidebar />
       <Navbar />
+      <Sidebar />
       <div className="o-grid">
         <div className="o-grid__row">
           <div className="o-col">

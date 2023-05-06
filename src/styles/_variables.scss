@@ -47,11 +47,6 @@ $_base-font-links-color-hover: darken($_base-font-links-color, 5%) !default;
 $_base-font-links-color-focus: darken($_base-font-links-color, 10%) !default;
 $_base-font-links-text-decoration: none;
 
-// Tables
-$_base-tables-padding: $_base-font-space !default;
-$_base-tables-border-width: 1px;
-$_base-tables-border-color: $_color-grey-light;
-
 // GFX
 $_transition-default: all ease 0.25s !default;
 
