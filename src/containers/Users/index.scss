@@ -26,5 +26,8 @@
     &:focus {
       box-shadow: none;
     }
+    &::placeholder {
+      color: var(--color-text-heading);
+    }
   }
 }
