@@ -25,13 +25,11 @@ function UserFilters({ onSearchTerm, currentTerm }: UserFiltersProps): JSX.Eleme
     setTerm(value);
   }
 
-  console.log('term term term term term', term)
-
   return (
     <input
       id="floatingInput"
       name={INPUT_NAME.SEARCH}
-      className="form-control my-2 c-search-input"
+      className="form-control c-search-input"
       type="search"
       aria-label="Search"
       onChange={handleChange}

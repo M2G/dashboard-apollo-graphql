@@ -1,3 +1,9 @@
 .pagesize {
+  background-color: transparent;
+  border: none;
   max-height: 40px;
+  color: var(--color-text);
+  &:focus {
+    box-shadow: none;
+  }
 }

@@ -19,5 +19,12 @@
     border-bottom-width: 1px;
     border-radius: 0;
     color: rgb(113 113 122/var(--tw-text-opacity));
+    margin-left: -1px;
+    margin-bottom: 1px;
+    padding: 0.5rem;
+
+    &:focus {
+      box-shadow: none;
+    }
   }
 }

@@ -1,7 +1,3 @@
-.action {
-  padding: 5px;
-}
-
 table {
   width: 100%;
   border-collapse: collapse;
@@ -9,6 +5,16 @@ table {
 }
 
 th {
+  text-align: left;
+  padding: 0.5em;
+  font-weight: 700;
+  font-size: 1.1em;
+  background-color: var(--color-header-bg);
+  color: var(--color-header-text);
+  border-color: hsla(0deg, 0%, 100%, 0.1);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  cursor: pointer;
 }
 
 button {
@@ -20,6 +26,31 @@ button {
   padding: 0.5em;
   margin-bottom: 1px;
   background-color: transparent;
+}
+
+.action {
+  padding: 0 5px;
+}
+
+.actions {
+  display: flex;
+}
+
+.icon {
+  width: 1em;
+}
+
+td {
+  padding: 0.5em;
+}
+
+tr {
+  border-color: hsla(0deg, 0%, 100%, 0.1);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  &:hover {
+    background-color: #eee;
+  }
 }
 
 .ascending {
@@ -54,18 +85,5 @@ button {
     display: inline-block;
     margin-left: 1em;
     opacity: 0.3;
-  }
-}
-
-td {
-  padding: 0;
-}
-
-tr {
-  border-color: hsla(0deg, 0%, 100%, 0.1);
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  &:hover {
-    background-color: #eee;
   }
 }
