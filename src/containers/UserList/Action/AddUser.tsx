@@ -8,9 +8,9 @@ interface IAddUser {
 function AddUser({ canAdd, onAdd }: IAddUser) {
   const { t } = useTranslation();
   return (
-    <div className="py-5 rounded mt-3">
+    <div className="c-add-user">
       {canAdd && (
-        <button className="btn btn-primary my-2" type="submit" onClick={onAdd}>
+        <button className="btn btn-light" type="submit" onClick={onAdd}>
           {t('Add user')}
         </button>
       )}

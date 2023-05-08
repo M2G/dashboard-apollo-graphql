@@ -1,0 +1,10 @@
+@import 'src/styles';
+
+.c-add-user {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: _rem(map-get($_layout-grid, gutters));
+  padding-bottom: _rem(map-get($_layout-grid, gutters));
+  padding-right: _rem(map-get($_layout-grid, gutters));
+  width: 100%;
+}

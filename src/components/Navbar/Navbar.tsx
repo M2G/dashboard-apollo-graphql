@@ -1,7 +1,6 @@
 /*eslint-disable*/
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ROUTER_PATH from '../../constants/RouterPath';
 
 function Navbar(): JSX.Element {
   const { i18n } = useTranslation();
@@ -21,23 +20,8 @@ function Navbar(): JSX.Element {
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarCollapse">
-          <ul className="navbar-nav me-auto mb-2 mb-md-0">
-            <li className="nav-item">
-              <a href={ROUTER_PATH.HOME} className="nav-link active">
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href={ROUTER_PATH.PROFIL} className="nav-link active">
-                Profil
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href={ROUTER_PATH.USERS} className="nav-link active">
-                Users
-              </a>
-            </li>
-          </ul>
+          <div className="navbar-nav me-auto mb-2 mb-md-0">
+          </div>
           <button
             type="button"
             className="me-2 btn btn-light"
