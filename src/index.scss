@@ -5,15 +5,6 @@ $header-height-desktop: 130px;
 // menu button
 $header-menu-button-width: 70px;
 
-body {
-  font-size: .875rem;
-}
-
-.feather {
-  width: 16px;
-  height: 16px;
-}
-
 /*
  * Sidebar
  */
@@ -63,7 +54,7 @@ $sidebar-width: 280px;
 }
 
 .sidebar .nav-link {
-  font-size: _em(18px);
+  font-size: _em(16px);
   font-weight: 500;
   color: var(--color-text);
 }
