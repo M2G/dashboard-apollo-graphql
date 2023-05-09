@@ -50,7 +50,6 @@ $sidebar-width: 280px;
       stroke: white;
     }
   }
-
 }
 
 .sidebar .nav-link {
@@ -147,3 +146,26 @@ nav.navbar {
 html, body {
   background-color: var(--color-bg) !important;
 }
+
+.c-sidebar {
+  .form-control {
+    background-color: var(--color-input-bg);
+    color: var(--color-text);
+    border-color: hsla(0,0%,100%,.1);
+    border-style: solid;
+    border-width: 1px;
+
+    & + label {
+      color: var(--color-text-heading);
+    }
+    &:focus {
+      background-color: var(--color-input-bg);
+      color: var(--color-text);
+      box-shadow: initial;
+      border-color: hsla(0,0%,100%,.1);
+      border-style: solid;
+      border-width: 1px;
+    }
+  }
+}
+

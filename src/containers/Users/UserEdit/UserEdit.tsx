@@ -57,7 +57,7 @@ function UserEdit({ onSubmit, initialValues }: any): any {
         />
         <label htmlFor="userEmail">{LABEL_EMAIL}</label>
       </div>
-      <button className="btn btn-primary" type="submit">
+      <button className="btn btn-light" type="submit">
         Save
       </button>
     </Form>

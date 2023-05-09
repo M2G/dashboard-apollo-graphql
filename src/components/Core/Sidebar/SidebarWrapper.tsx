@@ -17,7 +17,7 @@ interface ISidebarWrapper {
 
 function Sidebar({ show, setIsOpened, children }: ISidebar): JSX.Element {
   return (
-    <div className={clsx(styles.sidebar, show ? styles.active : '')}>
+    <div className={clsx('c-sidebar', styles.sidebar, show ? styles.active : '')}>
       <div className={styles.wrapper}>
         <div
           tabIndex={0}
