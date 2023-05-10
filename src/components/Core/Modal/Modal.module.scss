@@ -1,3 +1,5 @@
+@import 'src/styles/variables';
+
 .overlay {
   position: fixed;
   top: 0;
@@ -23,8 +25,9 @@
 }
 
 .modal {
+  background-color: var(--color-modal-bg) !important;
+  color: var(--color-text-heading);
   z-index: 100;
-  background: #fff;
   position: relative;
   margin: auto;
   border-radius: 5px;
@@ -32,10 +35,21 @@
   padding: 1rem;
 }
 
+.body {
+  color: var(--color-text-heading);
+  margin-bottom: 10px;
+}
+
 .header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.title {
+  color: var(--color-text);
+  margin-bottom: 10px;
 }
 
 .button {
@@ -45,4 +59,14 @@
   cursor: pointer;
   border: none;
   background: transparent;
+}
+
+.close {
+  position: absolute;
+  left: calc(100% - 20px);
+  bottom: 10px;
+  svg {
+    stroke: var(--color-icon);
+    width: 20px;
+  }
 }
