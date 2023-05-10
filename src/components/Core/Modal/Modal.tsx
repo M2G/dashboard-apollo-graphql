@@ -24,7 +24,7 @@ function Modal({
     <Portal id={id}>
       <div className={styles.overlay}>
         <div className={styles.wrapper}>
-          <div className={clsx(styles.modal, 'modal-content rounded-4 shadow')}>
+          <div className={styles.modal}>
             <div className={clsx(styles.header, 'border-bottom-0')}>
               <h5 className={styles.title}>{title}</h5>
               <button

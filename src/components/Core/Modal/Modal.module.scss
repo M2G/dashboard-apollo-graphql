@@ -25,14 +25,15 @@
 }
 
 .modal {
-  background-color: var(--color-modal-bg) !important;
+  background-color: var(--color-modal-bg);
   color: var(--color-text-heading);
   z-index: 100;
   position: relative;
   margin: auto;
-  border-radius: 5px;
+  border-radius: 1rem;
   max-width: 400px;
   padding: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 .body {
