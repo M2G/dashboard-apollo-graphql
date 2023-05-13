@@ -1,16 +1,22 @@
 /* eslint-disable */
 import { render, screen, fireEvent } from '@testing-library/react';
-import ModalWrapper from './ModalWrapper';
+import Modal from './Modal';
 
 describe('test DateCell', () => {
   test('should render', async () => {
     const onClose = jest.fn();
     const onConfirm = jest.fn();
 
+    // id,
+    //                  isShowing,
+    //                  hide,
+    //                  title,
+    //                  onConfirm,
+
     render(
-      <ModalWrapper title="test" isShowing hide={onClose} onConfirm={onConfirm}>
+      <Modal title="test" isShowing hide={onClose} onConfirm={onConfirm}>
         <div>Test</div>
-      </ModalWrapper>
+      </Modal>
     );
 
     expect(screen.getByText('Test')).toBeInTheDocument();

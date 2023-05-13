@@ -74,7 +74,7 @@ function ChangePassordForm({ initialValues, onSubmit }: IForm): JSX.Element {
   }: any): JSX.Element => (
     <div className="form-signin">
       <Form>
-        <h1 className="h3 mb-3 fw-normal">Change password</h1>
+        <h1 className="h3 mb-3">Change password</h1>
         <div className="form-floating">
           <Field
             id="floatingOldPassword"
@@ -136,10 +136,13 @@ function ChangePassordForm({ initialValues, onSubmit }: IForm): JSX.Element {
         <button className="fs-6 w-100 btn btn-lg btn-primary" type="submit">
           Change password
         </button>
+        <div className="c-action">
+          <span>Want to see your ?</span>
+          <Link to={ROUTER_PATH.PROFIL} className="text-muted">
+            Profil
+          </Link>
+        </div>
       </Form>
-      <Link to={ROUTER_PATH.PROFIL} className="mt-4 text-muted">
-        Profil
-      </Link>
     </div>
   );
 

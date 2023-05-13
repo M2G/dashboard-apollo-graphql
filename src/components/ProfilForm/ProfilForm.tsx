@@ -37,7 +37,9 @@ function ProfilForm({ initialValues, onSubmit }: IForm): JSX.Element {
 }: any): any => (
     <div className="form-signin">
       <Form>
-        <h1 className="h3 mb-3 fw-normal">User Profil</h1>
+        <div className="mb-4">
+          <h1 className="h3 mb-1">User Profil</h1>
+        </div>
         <div className="form-floating">
           <Field
             id="floatingInput"
@@ -90,16 +92,19 @@ function ProfilForm({ initialValues, onSubmit }: IForm): JSX.Element {
           ) : null}
           <label htmlFor="floatingPassword">{LABEL_EMAIL}</label>
         </div>
-        <button className="w-100 btn btn-lg btn-primary" type="submit">
+        <button className="w-100 btn btn-lg" type="submit">
           Save
         </button>
+        <div className="c-action">
+          <span>Have an account ?</span>
+          <Link to={ROUTER_PATH.CHANGE_PASSWORD} className="text-muted">
+            Change Password
+          </Link>
+          <Link to={ROUTER_PATH.HOME} className="text-muted">
+            Home
+          </Link>
+        </div>
       </Form>
-      <Link to={ROUTER_PATH.CHANGE_PASSWORD} className="mt-4 text-muted">
-        Change Password
-      </Link>
-      <Link to={ROUTER_PATH.HOME} className="mt-2 text-muted">
-        Home
-      </Link>
     </div>
   );
 
