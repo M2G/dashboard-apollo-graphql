@@ -1,5 +1,4 @@
 import type { MouseEventHandler } from 'react';
-import clsx from 'clsx';
 import Portal from 'components/Core/Portal';
 import styles from './Modal.module.scss';
 
@@ -12,20 +11,13 @@ interface IModal {
   children: any;
 }
 
-function Modal({
-                 id,
-                 isShowing,
-                 hide,
-                 title,
-                 onConfirm,
-                 children,
-               }: IModal): JSX.Element | null {
+function Modal({ id, isShowing, hide, title, onConfirm, children }: IModal): JSX.Element | null {
   return isShowing ? (
     <Portal id={id}>
       <div className={styles.overlay}>
         <div className={styles.wrapper}>
           <div className={styles.modal}>
-            <div className={clsx(styles.header, 'border-bottom-0')}>
+            <div className={styles.header}>
               <h5 className={styles.title}>{title}</h5>
               <button
                 type="button"
@@ -34,9 +26,18 @@ function Modal({
                 aria-label="Close"
                 onClick={hide}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                     strokeLinejoin="round" className="w-4 h-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4"
+                >
                   <line x1="18" x2="6" y1="6" y2="18" />
                   <line x1="6" x2="18" y1="6" y2="18" />
                 </svg>
@@ -44,11 +45,7 @@ function Modal({
             </div>
             <div className={styles.body}>{children}</div>
             <div className="modal-footer border-top-0">
-              <button
-                type="button"
-                className="btn btn-light me-2"
-                onClick={onConfirm}
-              >
+              <button type="button" className="btn btn-light me-2" onClick={onConfirm}>
                 Confirmer
               </button>
               <button

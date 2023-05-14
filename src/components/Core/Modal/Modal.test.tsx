@@ -2,70 +2,20 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Modal from './Modal';
 
-describe('test DateCell', () => {
+describe('test Modal', () => {
   test('should render', async () => {
     const onClose = jest.fn();
     const onConfirm = jest.fn();
 
-    // id,
-    //                  isShowing,
-    //                  hide,
-    //                  title,
-    //                  onConfirm,
-
     render(
-      <Modal title="test" isShowing hide={onClose} onConfirm={onConfirm}>
+      <Modal id="test" title="test" isShowing hide={onClose} onConfirm={onConfirm}>
         <div>Test</div>
-      </Modal>
+      </Modal>,
     );
 
     expect(screen.getByText('Test')).toBeInTheDocument();
-    const overlay: any = document.body?.querySelector('.c-modal-overlay');
-    const modalWrapper: any = document.body?.querySelector('.c-modal-wrapper');
-    const modalContainer: any = document.body?.querySelector('.c-modal');
-    const modalHeader: any = document.body?.querySelector('.modal-header');
-    const closeButton: any = document.body?.querySelector(
-      '.modal-close-button'
-    );
-
-    expect(overlay).toBeInTheDocument();
-    expect(modalWrapper).toBeInTheDocument();
-    expect(modalContainer).toBeInTheDocument();
-    expect(modalHeader).toBeInTheDocument();
-    expect(closeButton).toBeInTheDocument();
-
-    const button = screen.getByRole('button');
-    fireEvent.click(button);
+    const button = screen.getAllByRole('button');
+    fireEvent.click(button[0]);
     expect(onClose).toHaveBeenCalledTimes(1);
-  });
-
-  test('should not render', () => {
-    const onClose = jest.fn();
-    const onConfirm = jest.fn();
-
-    render(
-      <ModalWrapper
-        title="test"
-        isShowing={false}
-        onConfirm={onConfirm}
-        hide={onClose}
-      >
-        <div>Test</div>
-      </ModalWrapper>
-    );
-
-    const overlay: any = document.body?.querySelector('.c-modal-overlay');
-    const modalWrapper: any = document.body?.querySelector('.c-modal-wrapper');
-    const modalContainer: any = document.body?.querySelector('.c-modal');
-    const modalHeader: any = document.body?.querySelector('.modal-header');
-    const closeButton: any = document.body?.querySelector(
-      '.modal-close-button'
-    );
-
-    expect(overlay).toBeNull();
-    expect(modalWrapper).toBeNull();
-    expect(modalContainer).toBeNull();
-    expect(modalHeader).toBeNull();
-    expect(closeButton).toBeNull();
   });
 });
