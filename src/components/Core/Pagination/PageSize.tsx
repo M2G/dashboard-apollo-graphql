@@ -9,16 +9,13 @@ interface IPageSize {
 function PageSize({ currentPageSize, setCurrentPageSize }: IPageSize) {
   const pageSize = useMemo(() => currentPageSize, [currentPageSize]);
 
-  const handleClick = ({
-    target: { value },
-  }: {
-    target: { value: string };
-  }): any => setCurrentPageSize(parseInt(value, 10));
+  const handleClick = ({ target: { value } }: { target: { value: string } }) =>
+    setCurrentPageSize(parseInt(value, 10));
 
   return (
     <select
       aria-label="-1"
-      className={`form-select me-2 ${styles.pagesize}`}
+      className={styles.pagesize}
       onChange={handleClick}
       value={pageSize}
     >

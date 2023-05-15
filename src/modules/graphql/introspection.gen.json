@@ -191,7 +191,11 @@
               {
                 "name": "input",
                 "description": null,
-                "type": { "kind": "INPUT_OBJECT", "name": "SigninInput", "ofType": null },
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": { "kind": "INPUT_OBJECT", "name": "SigninInput", "ofType": null }
+                },
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
@@ -212,7 +216,11 @@
               {
                 "name": "input",
                 "description": null,
-                "type": { "kind": "INPUT_OBJECT", "name": "SignupInput", "ofType": null },
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": { "kind": "INPUT_OBJECT", "name": "SignupInput", "ofType": null }
+                },
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null

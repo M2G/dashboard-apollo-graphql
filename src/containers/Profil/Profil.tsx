@@ -23,7 +23,8 @@ function initialValues(values: {
 }) {
   const initialValues = { ...INITIAL_VALUES };
   if (values) {
-    initialValues[INPUT_NAME.FIRST_NAME] = values?.[INPUT_NAME.FIRST_NAME] || '';
+    initialValues[INPUT_NAME.FIRST_NAME] =
+      values?.[INPUT_NAME.FIRST_NAME] || '';
     initialValues[INPUT_NAME.LAST_NAME] = values?.[INPUT_NAME.LAST_NAME] || '';
     initialValues[INPUT_NAME.EMAIL] = values?.[INPUT_NAME.EMAIL] || '';
   }
@@ -32,7 +33,7 @@ function initialValues(values: {
 }
 
 function Profil(): JSX.Element | null {
-  const { userData } = useContext(AuthContext);
+  const { userData }: { userData: { id: number } } = useContext(AuthContext);
 
   const {
     loading,
@@ -52,7 +53,12 @@ function Profil(): JSX.Element | null {
   console.log('updateProfil updateProfil', updateProfil);
 
   const handleSubmit: any = useCallback(
-    async (formData: any) => {
+    async (formData: {
+      email: any;
+      first_name: any;
+      last_name: any;
+      username: any;
+    }) => {
       console.log('userProfil userProfil', userProfil);
       console.log('formData formData', formData);
 
@@ -81,7 +87,10 @@ function Profil(): JSX.Element | null {
   if (loading && userProfil?.getUser) return null;
 
   return (
-    <ProfilForm initialValues={initialValues({ ...userProfil?.getUser })} onSubmit={handleSubmit} />
+    <ProfilForm
+      initialValues={initialValues({ ...userProfil?.getUser })}
+      onSubmit={handleSubmit}
+    />
   );
 }
 

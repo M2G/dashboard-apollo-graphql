@@ -5,7 +5,6 @@ config
 .eslintrc.js
 custom.d.ts
 jest.config.js
-jest.setup.js
 test
 entrypoint
 constants.ts

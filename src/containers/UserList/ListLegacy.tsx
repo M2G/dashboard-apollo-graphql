@@ -1,4 +1,4 @@
-/*eslint-disable*/
+import { JSX } from 'react';
 import Pagination from 'components/Core/Pagination/PaginationLegacy';
 import PageSize from 'components/Core/Pagination/PageSize';
 import TableWrapper from 'components/Core/Table';
@@ -12,15 +12,8 @@ function List({
   setCurrentPage,
   setCurrentPageSize,
   currentPageSize,
-  currentPage
+  currentPage,
 }: any): JSX.Element {
-  console.log('List List List', {
-    setCurrentPage,
-    setCurrentPageSize,
-    currentPage,
-    currentPageSize
-  });
-
   const perPage = currentPageSize;
   const lastIndex = currentPage * perPage;
   const firstIndex = lastIndex - perPage;

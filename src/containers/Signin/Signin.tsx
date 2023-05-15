@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { useContext, useCallback } from 'react';
 import { useSigninMutation } from 'modules/graphql/generated';
 import SiginForm from 'components/SigninForm';
@@ -15,7 +16,7 @@ function Signin(): JSX.Element {
   });
 
   const handleSubmit = useCallback(
-    async (formData: { email: string; password: string }) => {
+    async (formData: { email: string; password: string }): Promise<void> => {
       await signin({
         variables: {
           email: formData.email,

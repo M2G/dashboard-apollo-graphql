@@ -1,5 +1,5 @@
-import path from "path";
-import { defineConfig } from "vite";
+import path from 'path';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import svgr from 'vite-plugin-svgr';
 
@@ -18,6 +18,15 @@ export default defineConfig(() => ({
       routes: path.resolve(__dirname, './src/routes/'),
       sentry: path.resolve(__dirname, './src/sentry/'),
       services: path.resolve(__dirname, './src/services/'),
+    },
+    css: {
+      modules: {
+        localsConvention: 'camelCaseOnly',
+      },
+    },
+    esbuild: {
+      jsxFactory: 'React.createElement',
+      jsxFragment: 'React.Fragment',
     },
   },
 }));

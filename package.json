@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
     "@graphql-codegen/fragment-matcher": "^3.3.3",
@@ -68,6 +69,7 @@
     "camelcase": "^7.0.1",
     "clsx": "^1.2.1",
     "css-loader": "^6.7.3",
+    "eslint-plugin-jest": "^27.2.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "formik": "^2.2.9",
     "graphql": "^16.6.0",

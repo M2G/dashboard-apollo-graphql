@@ -15,7 +15,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "checkJs": true,
@@ -47,10 +46,12 @@
       "container/*": ["./container/*"],
       "routes/*": ["./routes/*"],
       "modules/*": ["./modules/*"]
-    }
+    },
+    "types": ["jest"],
   },
-  "include": ["./src", "./test", "custom.d.ts"],
+  "include": ["./src", "./test", "./custom.d.ts", "./vite.config.ts"],
   "exclude": [
+    "jest.config.js",
     "src/stories",
     "**/__tests__/*",
     "node_modules",

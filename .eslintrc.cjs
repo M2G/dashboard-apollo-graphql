@@ -18,20 +18,20 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/all',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking'
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   parserOptions: {
     project: [
       path.resolve(__dirname, './tsconfig.json'),
-      path.resolve(__dirname, './tsconfig.node.json')
+      path.resolve(__dirname, './tsconfig.node.json'),
     ],
     tsconfigRootDir: __dirname,
     ecmaVersion: 'latest',
     sourceType: 'module',
     extraFileExtensions: ['.scss'],
     ecmaFeatures: {
-      jsx: true
-    }
+      jsx: true,
+    },
   },
   plugins: [
     '@typescript-eslint',
@@ -40,7 +40,8 @@ module.exports = {
     'prettier',
     'import',
     'unused-imports',
-    'simple-import-sort'
+    'simple-import-sort',
+    "jest"
   ],
   ignorePatterns: ['!.*', 'dist', 'build', 'node_modules', 'src/modules'],
   rules: {
@@ -48,10 +49,9 @@ module.exports = {
       'error',
       {
         ArrayExpression: 'consistent',
-        ArrayPattern: { minItems: 3 }
-      }
+        ArrayPattern: { minItems: 3 },
+      },
     ],
-
     'no-return-assign': 0,
     'no-restricted-syntax': 0,
     'no-cond-assign': 0,
@@ -68,6 +68,7 @@ module.exports = {
     'func-style': 0,
     camelcase: 1,
 
+    'no-duplicate-imports': 1,
     'max-statements': 0,
     'max-lines': 0,
     'max-lines-per-function': 0,
@@ -94,7 +95,7 @@ module.exports = {
 
     'jsx-a11y/label-has-associated-control': 0,
 
-    "@typescript-eslint/consistent-type-definitions": 1,
+    '@typescript-eslint/consistent-type-definitions': 1,
     '@typescript-eslint/no-confusing-void-expression': 1,
     '@typescript-eslint/prefer-readonly-parameter-types': 1,
     '@typescript-eslint/no-unsafe-argument': 1,
@@ -118,28 +119,28 @@ module.exports = {
     '@typescript-eslint/no-unsafe-assignment': 1,
     '@typescript-eslint/explicit-module-boundary-types': 0,
     '@typescript-eslint/no-unsafe-member-access': 1,
-    '@typescript-eslint/no-unsafe-call': 1
+    '@typescript-eslint/no-unsafe-call': 1,
   },
   settings: {
     react: {
-      version: 'detect'
+      version: 'detect',
     },
     'html/html-extensions': ['.html'],
     'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx']
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
     'import/resolver': {
       node: {
         paths: ['src'],
         extensions: ['.js', '.ts'],
-        moduleDirectory: ['node_modules', 'src']
-      }
-    }
+        moduleDirectory: ['node_modules', 'src'],
+      },
+    },
   },
   env: {
     browser: true,
     jest: true,
     node: true,
-    es2021: true
-  }
+    es2021: true,
+  },
 };

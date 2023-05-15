@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import Modal from './Modal';
 
 interface IModalWrapper {

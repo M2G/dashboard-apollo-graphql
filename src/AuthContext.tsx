@@ -1,4 +1,4 @@
-/*eslint-disable*/
+import type { ReactNode, JSX } from 'react';
 import { createContext, useState, useMemo } from 'react';
 
 import jwt_decode from 'jwt-decode';
@@ -11,9 +11,13 @@ import {
   setUserStorage,
 } from './services/storage';
 
-export const AuthContext = createContext<Record<any, any>>({});
+export const AuthContext = createContext({});
 
-function Provider({ children }: any) {
+interface AuthContextProps {
+  children: ReactNode;
+}
+
+function Provider({ children }: AuthContextProps): JSX.Element {
   const [isAuth, setIsAuth] = useState<any>(() => getAuthStorage());
   const [userData, setUserData] = useState(() => getUserStorage());
 
@@ -49,7 +53,9 @@ function Provider({ children }: any) {
 
   const authValue = useMemo(() => value, [value]);
 
-  return <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>
+  );
 }
 
 export default { Consumer: AuthContext.Consumer, Provider };

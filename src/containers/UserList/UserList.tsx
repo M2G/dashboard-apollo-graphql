@@ -1,4 +1,5 @@
 /*eslint-disable*/
+import type { JSX } from 'react';
 import { useMemo, useCallback, useEffect, useState } from 'react';
 import type { IUserListItem } from 'containers/UserList/UserListItem';
 import userListItem from 'containers/UserList/UserListItem';
@@ -229,7 +230,7 @@ function UserList({
 
   const onDeleteUser = useCallback(
     async (user: User): Promise<void> => {
-     await deleteUser({
+      await deleteUser({
         variables: {
           id: user?.id as number,
         },
@@ -304,7 +305,7 @@ function UserList({
         page,
       }));
 
-     await getUsers({
+      await getUsers({
         variables: {
           filters: term,
           page: page || pagination.page,
@@ -399,7 +400,9 @@ function UserList({
             title="Delete"
             hide={onClose}
             isShowing={state.deletingUser}
-            onConfirm={async () => onDeleteUser(state.deletingUser as unknown as User)}
+            onConfirm={async () =>
+              onDeleteUser(state.deletingUser as unknown as User)
+            }
           >
             <p>Warning, you are about to perform an irreversible action</p>
           </ModalWrapper>

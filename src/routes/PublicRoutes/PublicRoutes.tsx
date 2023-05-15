@@ -1,5 +1,6 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import type { JSX } from 'react';
 import { lazy } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import ROUTER_PATH from 'constants/RouterPath';
 
 const Signin = lazy(async () => import('containers/Signin'));
