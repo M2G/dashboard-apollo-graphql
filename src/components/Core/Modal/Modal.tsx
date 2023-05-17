@@ -1,22 +1,43 @@
-import type { MouseEventHandler } from 'react';
+import type { MouseEventHandler, MutableRefObject, JSX } from 'react';
+import { useEffect, useRef } from 'react';
 import Portal from 'components/Core/Portal';
 import styles from './Modal.module.scss';
 
 interface IModal {
   id?: string | undefined;
   isShowing: boolean;
-  hide: MouseEventHandler<HTMLButtonElement>;
+  hide: () => MouseEventHandler<HTMLButtonElement>;
   onConfirm: any;
   title: string;
   children: any;
 }
 
-function Modal({ id, isShowing, hide, title, onConfirm, children }: IModal): JSX.Element | null {
+function Modal({
+  id,
+  isShowing,
+  hide,
+  title,
+  onConfirm,
+  children,
+}: IModal): JSX.Element | null {
+  const ref: MutableRefObject<HTMLDivElement | undefined> = useRef();
+  useEffect(() => {
+    const checkIfClickedOutside = (e: Event): void => {
+      if (ref.current && !ref.current.contains(e.target as HTMLDivElement)) {
+        hide();
+      }
+    };
+    document.addEventListener('mousedown', checkIfClickedOutside);
+    return () => {
+      document.removeEventListener('mousedown', checkIfClickedOutside);
+    };
+  }, [hide]);
+
   return isShowing ? (
     <Portal id={id}>
       <div className={styles.overlay}>
         <div className={styles.wrapper}>
-          <div className={styles.modal}>
+          <div className={styles.modal} ref={ref as any}>
             <div className={styles.header}>
               <h5 className={styles.title}>{title}</h5>
               <button
@@ -45,7 +66,11 @@ function Modal({ id, isShowing, hide, title, onConfirm, children }: IModal): JSX
             </div>
             <div className={styles.body}>{children}</div>
             <div className="modal-footer border-top-0">
-              <button type="button" className="btn btn-light me-2" onClick={onConfirm}>
+              <button
+                type="button"
+                className="btn btn-light me-2"
+                onClick={onConfirm}
+              >
                 Confirmer
               </button>
               <button
