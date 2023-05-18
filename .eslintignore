@@ -4,7 +4,6 @@ build
 config
 .eslintrc.js
 custom.d.ts
-jest.config.js
 test
 entrypoint
 constants.ts
