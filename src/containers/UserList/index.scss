@@ -8,3 +8,9 @@
   padding-right: _rem(map-get($_layout-grid, gutters));
   width: 100%;
 }
+
+.c-page {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}

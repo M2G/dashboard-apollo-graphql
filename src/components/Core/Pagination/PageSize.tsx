@@ -15,7 +15,7 @@ function PageSize({ currentPageSize, setCurrentPageSize }: IPageSize) {
   return (
     <select
       aria-label="-1"
-      className={styles.pagesize}
+      className={styles.select}
       onChange={handleClick}
       value={pageSize}
     >

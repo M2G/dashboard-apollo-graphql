@@ -1,9 +1,12 @@
-/*eslint-disable*/
 import { ApolloLink, HttpLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { toast } from 'react-toastify';
 import ROUTER_PATH from 'constants/RouterPath';
-import { clearAuthStorage, clearUserStorage, getAuthStorage } from 'services/storage';
+import {
+  clearAuthStorage,
+  clearUserStorage,
+  getAuthStorage,
+} from 'services/storage';
 
 const ERRORS = {
   FORBIDDEN: 'FORBIDDEN',
@@ -28,7 +31,7 @@ const httpLink = new HttpLink({
 const authMiddleware = new ApolloLink((operation: any, forward: any) => {
   const token = getAuthStorage();
   const authorization = token ? `Bearer ${token}` : '';
-  operation.setContext(({ headers = {} }: any) => ({
+  operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
       authorization,
@@ -38,44 +41,52 @@ const authMiddleware = new ApolloLink((operation: any, forward: any) => {
   return forward(operation);
 });
 
-const errorLink = onError(({ operation, graphQLErrors, networkError, response, ...arg }: any) => {
-  console.log('ERROR', {
-    arg,
-    graphQLErrors,
-    networkError,
-    operation,
-    response,
-  });
-
-  console.log('------------------>', networkError?.response?.status);
-
-  if (networkError?.response === 'invalid_token' || networkError?.response?.status === 401) {
-    clearAuthStorage();
-    clearUserStorage();
-    window.location.href = ROUTER_PATH.SIGNIN;
-  }
-
-  if (graphQLErrors?.length) {
-    graphQLErrors.forEach((err: any) => {
-      toast.error(err?.message);
-
-      console.log('graphQLErrors', err);
-
-      if (err?.extensions?.exception?.status === 401) {
-        clearAuthStorage();
-        clearUserStorage();
-        window.location.href = ROUTER_PATH.SIGNIN;
-      }
-
-      // err.message, err.locations, err.path, err.extensions
-      if (err.extensions.code === ERRORS.UNAUTHENTICATED || err.extensions.code === ERRORS.FORBIDDEN) {
-        clearAuthStorage();
-        clearUserStorage();
-        window.location.href = ROUTER_PATH.SIGNIN;
-      }
+const errorLink = onError(
+  ({ operation, graphQLErrors, networkError, response, ...arg }) => {
+    console.log('ERROR', {
+      arg,
+      graphQLErrors,
+      networkError,
+      operation,
+      response,
     });
-  }
-});
+
+    console.log('------------------>', networkError?.response?.status);
+
+    if (
+      networkError?.response === 'invalid_token' ||
+      networkError?.response?.status === 401
+    ) {
+      clearAuthStorage();
+      clearUserStorage();
+      window.location.href = ROUTER_PATH.SIGNIN;
+    }
+
+    if (graphQLErrors?.length) {
+      graphQLErrors.forEach((err: any) => {
+        toast.error(err?.message);
+
+        console.log('graphQLErrors', err);
+
+        if (err?.extensions?.exception?.status === 401) {
+          clearAuthStorage();
+          clearUserStorage();
+          window.location.href = ROUTER_PATH.SIGNIN;
+        }
+
+        // err.message, err.locations, err.path, err.extensions
+        if (
+          err.extensions.code === ERRORS.UNAUTHENTICATED ||
+          err.extensions.code === ERRORS.FORBIDDEN
+        ) {
+          clearAuthStorage();
+          clearUserStorage();
+          window.location.href = ROUTER_PATH.SIGNIN;
+        }
+      });
+    }
+  },
+);
 
 const link = ApolloLink.from([authMiddleware, errorLink, httpLink]);
 

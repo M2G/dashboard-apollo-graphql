@@ -18,8 +18,12 @@ interface AuthContextProps {
 }
 
 function Provider({ children }: AuthContextProps): JSX.Element {
-  const [isAuth, setIsAuth] = useState<any>(() => getAuthStorage());
-  const [userData, setUserData] = useState(() => getUserStorage());
+  const [isAuth, setIsAuth] = useState<boolean | string | null>(() =>
+    getAuthStorage(),
+  );
+  const [userData, setUserData] = useState<boolean | string | null>(() =>
+    getUserStorage(),
+  );
 
   const value = {
     isAuth,

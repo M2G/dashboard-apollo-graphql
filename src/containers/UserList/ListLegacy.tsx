@@ -1,7 +1,8 @@
-import { JSX } from 'react';
+import type { JSX } from 'react';
 import Pagination from 'components/Core/Pagination/PaginationLegacy';
 import PageSize from 'components/Core/Pagination/PageSize';
 import TableWrapper from 'components/Core/Table';
+import './index.scss';
 
 function List({
   id,
@@ -15,18 +16,10 @@ function List({
   currentPage,
 }: any): JSX.Element {
   const perPage = currentPageSize;
-  const lastIndex = currentPage * perPage;
-  const firstIndex = lastIndex - perPage;
-
-  const currentDevices = data?.slice(firstIndex, lastIndex);
-
-  console.log('currentDevices', currentDevices);
-  console.log('data', data);
-
   return (
     <>
       <TableWrapper id={id} header={header} rows={rows} />
-      <div className="d-inline-flex">
+      <div className="c-page">
         <PageSize
           currentPageSize={currentPageSize}
           setCurrentPageSize={setCurrentPageSize}

@@ -1,10 +1,9 @@
-/*eslint-disable*/
+import type { JSX } from 'react';
 import DateCell from 'components/Core/Table/DateCell';
-import TableStaticCol, {
-  ITableStaticCol
-} from 'components/Core/Table/TableStaticCol';
+import type { ITableStaticCol } from 'components/Core/Table/TableStaticCol';
+import TableStaticCol from 'components/Core/Table/TableStaticCol';
 import IconNames from 'components/Core/Icon/Icons.types';
-import { Maybe, User } from 'modules/graphql/generated';
+import type { Maybe, User } from 'modules/graphql/generated';
 
 export interface IUserListItem {
   id: string;
@@ -23,16 +22,15 @@ function userListItem({
   onEdit,
   onDelete,
   canDelete,
-  canEdit
+  canEdit,
 }: IUserListItem): (
-  | { display: JSX.Element }
   | {
-      display: Maybe<number> | string | Date | undefined;
-      value: number | string | Date | null | undefined;
+      display: Date | Maybe<number> | string | undefined;
+      value: Date | number | string | null | undefined;
     }
+  | { display: JSX.Element }
 )[] {
-
-  console.log('userListItem', user)
+  console.log('userListItem', user);
 
   const id = `user__row__${rowId}__${user._id}`;
 
@@ -45,7 +43,7 @@ function userListItem({
       id: `${id}__edit`,
       action: (): void => {
         onEdit(user);
-      }
+      },
     });
   }
 
@@ -56,40 +54,40 @@ function userListItem({
       id: `${id}__delete`,
       action: (): void => {
         onDelete(user);
-      }
+      },
     });
   }
 
   const tableStaticColProps: ITableStaticCol = {
     actions,
     id,
-    label
+    label,
   };
 
   return [
     {
-      display: <TableStaticCol {...tableStaticColProps} />
+      display: <TableStaticCol {...tableStaticColProps} />,
     },
     {
       display: user?.first_name,
-      value: user?.first_name
+      value: user?.first_name,
     },
     {
       display: user?.last_name,
-      value: user?.last_name
+      value: user?.last_name,
     },
     {
       display: user?.email,
-      value: user?.email
+      value: user?.email,
     },
     {
       display: <DateCell date={user?.created_at} />,
-      value: new Date(user?.created_at as number)
+      value: new Date(user?.created_at as number),
     },
     {
       display: <DateCell date={user?.modified_at} />,
-      value: new Date(user?.modified_at as number)
-    }
+      value: new Date(user?.modified_at as number),
+    },
   ];
 }
 

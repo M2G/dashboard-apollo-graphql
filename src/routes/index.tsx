@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Suspense, useContext } from 'react';
+import { JSX, Suspense, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import { PublicRoutes, PrivateRoutes } from 'routes/PublicRoutes';
@@ -11,9 +11,14 @@ import { AuthContext } from '../AuthContext';
  * @returns {Component}
  */
 
-const Router = () => {
-  const { isAuth } = useContext(AuthContext);
-  const { userData } = useContext(AuthContext);
+type Auth = {
+  isAuth: boolean;
+  userData: { id: number };
+};
+
+const Router = (): JSX.Element => {
+  const { isAuth } = useContext(AuthContext) as Auth;
+  const { userData } = useContext(AuthContext) as Auth;
 
   const userId = userData?.id;
 
