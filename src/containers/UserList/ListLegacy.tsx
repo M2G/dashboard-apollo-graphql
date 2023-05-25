@@ -19,7 +19,7 @@ function List({
   return (
     <>
       <TableWrapper id={id} header={header} rows={rows} />
-      <div className="c-page">
+      <div className="d-flex w-100 justify-content-end">
         <PageSize
           currentPageSize={currentPageSize}
           setCurrentPageSize={setCurrentPageSize}

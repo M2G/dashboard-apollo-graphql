@@ -22,9 +22,6 @@ const Router = (): JSX.Element => {
 
   const userId = userData?.id;
 
-  console.log('Router isAuth', isAuth);
-  console.log('Router userId', userData);
-
   return (
     <main>
       <Suspense fallback={<TopLineLoading />}>

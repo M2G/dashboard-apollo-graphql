@@ -1,6 +1,7 @@
 overwrite: true
 schema:
   - 'http://localhost:8181/graphql'
+  - 'http://localhost:8282/graphql'
 hooks:
   afterAllFileWrite:
     - node_modules/.bin/prettier --write

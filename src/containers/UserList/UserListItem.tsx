@@ -32,29 +32,29 @@ function userListItem({
 )[] {
   console.log('userListItem', user);
 
-  const id = `user__row__${rowId}__${user._id}`;
+  const id = `user__row__${rowId}__${user.id}`;
 
   const actions: any = [];
 
   if (canEdit) {
     actions.push({
-      label: IconNames.EDIT,
-      icon: IconNames.EDIT,
-      id: `${id}__edit`,
       action: (): void => {
         onEdit(user);
       },
+      icon: IconNames.EDIT,
+      id: `${id}__edit`,
+      label: IconNames.EDIT,
     });
   }
 
   if (canDelete) {
     actions.push({
-      label: IconNames.DELETE,
-      icon: IconNames.DELETE,
-      id: `${id}__delete`,
       action: (): void => {
         onDelete(user);
       },
+      icon: IconNames.DELETE,
+      id: `${id}__delete`,
+      label: IconNames.DELETE,
     });
   }
 

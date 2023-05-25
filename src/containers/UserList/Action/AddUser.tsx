@@ -8,7 +8,7 @@ interface IAddUser {
 function AddUser({ canAdd, onAdd }: IAddUser) {
   const { t } = useTranslation();
   return (
-    <div className="c-add-user">
+    <div className="c-btn-user">
       {canAdd && (
         <button className="btn btn-light" type="submit" onClick={onAdd}>
           {t('Add user')}

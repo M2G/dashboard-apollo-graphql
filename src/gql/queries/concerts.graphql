@@ -1,0 +1,59 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+fragment ArtistParts on Artist {
+  artist_id
+  concert_id
+  uri
+  datetime
+}
+
+fragment ConcertParts on Concert {
+  concert_id
+  type
+  uri
+  displayName
+  status
+  popularity
+  datetime
+  city
+  lng
+  lat
+  artists {
+    ...ArtistParts
+  }
+}
+
+query GetConcerts($afterCursor: String, $first: Int!, $filters: String) {
+  concerts(afterCursor: $afterCursor, first: $first, filters: $filters) {
+    totalCount
+    edges {
+      node {
+        ...ConcertParts
+        artists {
+          artist_id
+          concert_id
+          uri
+          datetime
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPrevPage
+    }
+  }
+}
+
+#type Query {
+#  concert(id: Int!): Concert
+#}
+
+#enum sortOrder {
+#  ASC
+#  DESC
+#}

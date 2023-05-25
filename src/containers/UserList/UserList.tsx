@@ -8,7 +8,7 @@ import UserNew from 'containers/Users/UserNew';
 import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
 import TopLineLoading from 'components/Loading/TopLineLoading';
-// import NoData from 'components/NoData';
+import NoData from 'components/NoData';
 import type { User, Users } from 'modules/graphql/generated';
 import {
   useUpdateUserMutation,
@@ -371,8 +371,7 @@ function UserList({
     <div className="c-user-list">
       <AddUser canAdd={canAdd} onAdd={onAdd} />
 
-      {/*!results.length && <NoData />*/}
-      {/* results.length && ( */}
+      {results.length && <NoData />}
       {
         <>
           <UserFilters onSearchTerm={searchTerms} currentTerm={term} />

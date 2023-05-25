@@ -24,11 +24,17 @@ const backendAddress = `${backendProtocol}://${backendHost}:${backendPort}/${bac
 
 console.log('backendAddress backendAddress', backendAddress);
 
+// https://github.com/apollographql/apollo-client/issues/84#issuecomment-763833895
 const httpLink = new HttpLink({
   uri: backendAddress,
 });
+const httpLink2 = new HttpLink({
+  uri: 'http://localhost:8282/graphql',
+});
 
 const authMiddleware = new ApolloLink((operation: any, forward: any) => {
+  console.log('operation operation operation operation', operation);
+
   const token = getAuthStorage();
   const authorization = token ? `Bearer ${token}` : '';
   operation.setContext(({ headers = {} }) => ({
@@ -88,6 +94,12 @@ const errorLink = onError(
   },
 );
 
-const link = ApolloLink.from([authMiddleware, errorLink, httpLink]);
+const graphqlEndpoints = ApolloLink.split(
+  (operation) => operation.operationName === null,
+  httpLink2,
+  httpLink,
+);
+
+const link = ApolloLink.from([authMiddleware, errorLink, graphqlEndpoints]);
 
 export default link;
