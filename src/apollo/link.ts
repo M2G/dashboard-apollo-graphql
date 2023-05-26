@@ -48,7 +48,7 @@ const authMiddleware = new ApolloLink((operation: any, forward: any) => {
 });
 
 const errorLink = onError(
-  ({ operation, graphQLErrors, networkError, response, ...arg }) => {
+  ({ operation, graphQLErrors, networkError, response, ...arg }: any) => {
     console.log('ERROR', {
       arg,
       graphQLErrors,
@@ -95,7 +95,7 @@ const errorLink = onError(
 );
 
 const graphqlEndpoints = ApolloLink.split(
-  (operation) => operation.operationName === null,
+  (operation) => operation.operationName === 'GetConcerts',
   httpLink2,
   httpLink,
 );
