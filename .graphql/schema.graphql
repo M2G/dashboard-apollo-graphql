@@ -1,0 +1,124 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Artist {
+  artist_id: Int
+  concert_id: Int
+  datetime: String
+  uri: String
+}
+
+type Concert {
+  artists: Artist
+  city: String
+  concert_id: Int
+  datetime: String
+  displayName: String
+  lat: Float
+  lng: Float
+  popularity: String
+  status: String
+  type: String
+  uri: String
+}
+
+type Concerts {
+  edges: [Edge]
+  pageInfo: PageInfo
+  totalCount: Int
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+scalar Date
+
+scalar DateTime
+
+type Edge {
+  cursor: String
+  node: Concert
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+  deleteUser(id: Int!): Status!
+  forgotPassword(email: String!): Status!
+  resetPassword(input: ResetPasswordInput!): Status!
+  signin(input: SigninInput!): String!
+  signup(input: SignupInput!): User!
+  updateUser(id: Int!, input: UpdateUserInput): Status!
+}
+
+type PageInfo {
+  count: Int
+  endCursor: String
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  next: Int
+  pages: Int
+  prev: Int
+  startCursor: String
+}
+
+type Query {
+  concert(id: Int!): Concert
+  concerts(afterCursor: String, filters: String, first: Int!): Concerts!
+  getUser(id: Int!): User
+  users(filters: String, page: Int, pageSize: Int): Users!
+}
+
+input ResetPasswordInput {
+  password: String!
+  token: String!
+}
+
+input SigninInput {
+  email: String!
+  password: String!
+}
+
+input SignupInput {
+  email: String!
+  password: String!
+}
+
+type Status {
+  success: Boolean
+}
+
+input UpdateUserInput {
+  email: String
+  first_name: String
+  last_name: String
+  username: String
+}
+
+type User {
+  created_at: Date
+  deleted_at: Int
+  email: String
+  first_name: String
+  id: Int
+  last_connected_at: Int
+  last_name: String
+  modified_at: Date
+  password: String
+  reset_password_expires: Date
+  reset_password_token: String
+  username: String
+}
+
+type Users {
+  pageInfo: PageInfo
+  results: [User]
+}
+
+enum sortOrder {
+  ASC
+  DESC
+}
