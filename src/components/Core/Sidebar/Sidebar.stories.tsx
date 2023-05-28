@@ -1,11 +1,10 @@
 /*eslint-disable*/
 import { useState } from 'react';
 import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
-import './index.scss';
 
 export default {
   component: SidebarWrapper,
-  title: 'SidebarWrapper'
+  title: 'SidebarWrapper',
 };
 
 function Template(args: any) {

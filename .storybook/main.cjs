@@ -35,6 +35,7 @@ module.exports = {
             styles: resolve("./src/styles"),
             fixtures: resolve("./src/fixtures"),
             utils: resolve("./src/utils"),
+            assets: resolve("./src/assets"),
             // gql: resolve(__dirname,"./src/gql")
           }
         }
