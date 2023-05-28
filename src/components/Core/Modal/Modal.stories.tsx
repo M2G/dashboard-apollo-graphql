@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import ModalWrapper from 'components/Core/Modal/ModalWrapper';
-import './index.scss';
 
 export default {
   component: ModalWrapper,
@@ -12,14 +11,21 @@ function Template(args: any) {
 
   return (
     <>
-      <button type="button" onClick={() => { setIsOpened(!isOpened); }}>
+      <button
+        type="button"
+        onClick={() => {
+          setIsOpened(!isOpened);
+        }}
+      >
         OK
       </button>
       <ModalWrapper
         title="test"
         onConfirm={() => {}}
         isShowing={isOpened}
-        hide={() => { setIsOpened(false); }}
+        hide={() => {
+          setIsOpened(false);
+        }}
       >
         <div>Test</div>
       </ModalWrapper>

@@ -1,4 +1,4 @@
-import type { SVGAttributes } from 'react';
+import type { SVGAttributes, JSX } from 'react';
 import { useMemo } from 'react';
 import Icons from 'components/Core/Icon/Icons';
 import type IconNames from 'components/Core/Icon/Icons.types';

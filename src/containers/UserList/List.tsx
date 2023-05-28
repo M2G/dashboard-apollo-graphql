@@ -1,8 +1,8 @@
-/*eslint-disable*/
+import type { JSX } from 'react';
 import Pagination from 'components/Core/Pagination/Pagination';
 import TableWrapper from 'components/Core/Table';
 
-type List = {
+type ListProps = {
   header: any;
   hasNextPage: any;
   hasPrevPage: any;
@@ -11,7 +11,14 @@ type List = {
   setCurrentPage: any;
 };
 
-function List({ id, header, rows, hasNextPage, hasPrevPage, setCurrentPage }: List): JSX.Element {
+function List({
+  id,
+  header,
+  rows,
+  hasNextPage,
+  hasPrevPage,
+  setCurrentPage,
+}: ListProps): JSX.Element {
   return (
     <>
       <TableWrapper id={id} header={header} rows={rows} />
