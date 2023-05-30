@@ -5,17 +5,17 @@ schema {
 
 type Artist {
   artist_id: Int
-  concert_id: Int
   datetime: String
   uri: String
 }
 
 type Concert {
-  artists: Artist
+  artist: Artist
+  artist_id: Int
   city: String
   concert_id: Int
   datetime: String
-  displayName: String
+  display_name: String
   lat: Float
   lng: Float
   popularity: String

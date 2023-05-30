@@ -4,7 +4,6 @@
 
 fragment ArtistParts on Artist {
   artist_id
-  concert_id
   uri
   datetime
 }
@@ -13,14 +12,14 @@ fragment ConcertParts on Concert {
   concert_id
   type
   uri
-  displayName
+  display_name
   status
   popularity
   datetime
   city
   lng
   lat
-  artists {
+  artist {
     ...ArtistParts
   }
 }
@@ -31,9 +30,8 @@ query GetConcerts($afterCursor: String, $first: Int!, $filters: String) {
     edges {
       node {
         ...ConcertParts
-        artists {
+        artist {
           artist_id
-          concert_id
           uri
           datetime
         }

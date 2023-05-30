@@ -18,14 +18,6 @@
             "deprecationReason": null
           },
           {
-            "name": "concert_id",
-            "description": null,
-            "args": [],
-            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "datetime",
             "description": null,
             "args": [],
@@ -63,10 +55,18 @@
         "description": null,
         "fields": [
           {
-            "name": "artists",
+            "name": "artist",
             "description": null,
             "args": [],
             "type": { "kind": "OBJECT", "name": "Artist", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "artist_id",
+            "description": null,
+            "args": [],
+            "type": { "kind": "SCALAR", "name": "Int", "ofType": null },
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -95,7 +95,7 @@
             "deprecationReason": null
           },
           {
-            "name": "displayName",
+            "name": "display_name",
             "description": null,
             "args": [],
             "type": { "kind": "SCALAR", "name": "String", "ofType": null },

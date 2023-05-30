@@ -27,18 +27,18 @@ export type Scalars = {
 export type Artist = {
   __typename: 'Artist';
   artist_id: Maybe<Scalars['Int']>;
-  concert_id: Maybe<Scalars['Int']>;
   datetime: Maybe<Scalars['String']>;
   uri: Maybe<Scalars['String']>;
 };
 
 export type Concert = {
   __typename: 'Concert';
-  artists: Maybe<Artist>;
+  artist: Maybe<Artist>;
+  artist_id: Maybe<Scalars['Int']>;
   city: Maybe<Scalars['String']>;
   concert_id: Maybe<Scalars['Int']>;
   datetime: Maybe<Scalars['String']>;
-  displayName: Maybe<Scalars['String']>;
+  display_name: Maybe<Scalars['String']>;
   lat: Maybe<Scalars['Float']>;
   lng: Maybe<Scalars['Float']>;
   popularity: Maybe<Scalars['String']>;
@@ -280,7 +280,6 @@ export type ForgotPasswordMutation = {
 export type ArtistPartsFragment = {
   __typename: 'Artist';
   artist_id: number | null;
-  concert_id: number | null;
   uri: string | null;
   datetime: string | null;
 };
@@ -290,17 +289,16 @@ export type ConcertPartsFragment = {
   concert_id: number | null;
   type: string | null;
   uri: string | null;
-  displayName: string | null;
+  display_name: string | null;
   status: string | null;
   popularity: string | null;
   datetime: string | null;
   city: string | null;
   lng: number | null;
   lat: number | null;
-  artists: {
+  artist: {
     __typename: 'Artist';
     artist_id: number | null;
-    concert_id: number | null;
     uri: string | null;
     datetime: string | null;
   } | null;
@@ -325,17 +323,16 @@ export type GetConcertsQuery = {
         concert_id: number | null;
         type: string | null;
         uri: string | null;
-        displayName: string | null;
+        display_name: string | null;
         status: string | null;
         popularity: string | null;
         datetime: string | null;
         city: string | null;
         lng: number | null;
         lat: number | null;
-        artists: {
+        artist: {
           __typename: 'Artist';
           artist_id: number | null;
-          concert_id: number | null;
           uri: string | null;
           datetime: string | null;
         } | null;
@@ -413,7 +410,6 @@ export type GetUserQuery = {
 export const ArtistPartsFragmentDoc = gql`
   fragment ArtistParts on Artist {
     artist_id
-    concert_id
     uri
     datetime
   }
@@ -423,14 +419,14 @@ export const ConcertPartsFragmentDoc = gql`
     concert_id
     type
     uri
-    displayName
+    display_name
     status
     popularity
     datetime
     city
     lng
     lat
-    artists {
+    artist {
       ...ArtistParts
     }
   }
@@ -812,9 +808,8 @@ export const GetConcertsDocument = gql`
       edges {
         node {
           ...ConcertParts
-          artists {
+          artist {
             artist_id
-            concert_id
             uri
             datetime
           }
