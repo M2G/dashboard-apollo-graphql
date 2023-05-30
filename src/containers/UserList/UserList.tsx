@@ -29,13 +29,13 @@ function UserList({
   canAdd = false,
 }: UserList): JSX.Element {
   const [state, setUser] = useState<{
+    deletingUser?: User | boolean;
     editingUser?: User | boolean;
     newUser?: User | boolean;
-    deletingUser?: User | boolean;
   }>({
+    deletingUser: false,
     editingUser: false,
     newUser: false,
-    deletingUser: false,
   });
   const [pagination, setPagination] = useState<{
     page: number;
@@ -294,7 +294,7 @@ function UserList({
         },
       });
     },
-    [getUsers],
+    [getUsers, pagination.page, pagination.pageSize],
   );
 
   const onChangePage = useCallback(
@@ -312,7 +312,7 @@ function UserList({
         },
       });
     },
-    [pagination, getUsers],
+    [getUsers, term, pagination.page, pagination.pageSize],
   );
 
   const onChangePageSize = useCallback(

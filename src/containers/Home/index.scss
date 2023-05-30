@@ -1,9 +1,14 @@
+@import 'src/styles/variables.scss';
+
 .c-home {
   .card {
     background: transparent;
-    color: #71717A;
+    color: var(--color-text-heading);
     border-color: hsla(0, 0%, 100%, 0.1);
     border-bottom-style: solid;
     border-bottom-width: 1px;
+  }
+  .card-title {
+    color: var(--color-text);
   }
 }

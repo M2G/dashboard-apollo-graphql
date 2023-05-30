@@ -27,7 +27,7 @@ export type Scalars = {
 export type Artist = {
   __typename: 'Artist';
   artist_id: Maybe<Scalars['Int']>;
-  datetime: Maybe<Scalars['String']>;
+  display_name: Maybe<Scalars['String']>;
   uri: Maybe<Scalars['String']>;
 };
 
@@ -281,7 +281,7 @@ export type ArtistPartsFragment = {
   __typename: 'Artist';
   artist_id: number | null;
   uri: string | null;
-  datetime: string | null;
+  display_name: string | null;
 };
 
 export type ConcertPartsFragment = {
@@ -300,7 +300,7 @@ export type ConcertPartsFragment = {
     __typename: 'Artist';
     artist_id: number | null;
     uri: string | null;
-    datetime: string | null;
+    display_name: string | null;
   } | null;
 };
 
@@ -334,7 +334,7 @@ export type GetConcertsQuery = {
           __typename: 'Artist';
           artist_id: number | null;
           uri: string | null;
-          datetime: string | null;
+          display_name: string | null;
         } | null;
       } | null;
     } | null> | null;
@@ -411,7 +411,7 @@ export const ArtistPartsFragmentDoc = gql`
   fragment ArtistParts on Artist {
     artist_id
     uri
-    datetime
+    display_name
   }
 `;
 export const ConcertPartsFragmentDoc = gql`
@@ -808,11 +808,6 @@ export const GetConcertsDocument = gql`
       edges {
         node {
           ...ConcertParts
-          artist {
-            artist_id
-            uri
-            datetime
-          }
         }
         cursor
       }
