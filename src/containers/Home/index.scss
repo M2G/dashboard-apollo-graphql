@@ -11,4 +11,8 @@
   .card-title {
     color: var(--color-text);
   }
+
+  .o-grid__row:not(:first-child) {
+    margin-top: 10px;
+  }
 }
