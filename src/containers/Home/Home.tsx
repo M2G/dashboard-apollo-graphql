@@ -14,7 +14,7 @@ function Home(): JSX.Element | null {
     variables: {
       afterCursor: null,
       filters: '',
-      first: 5,
+      first: 20,
     },
   });
 
@@ -41,27 +41,29 @@ function Home(): JSX.Element | null {
         <InfiniteScroll
           loading={loading}
           onLoadMore={() => {
-            console.log(':::::::::::::');
-
             fetchMore({
               variables: {
                 afterCursor: null,
                 filters: '',
-                first: 5,
+                first: 4,
               },
               updateQuery: (previousResult, { fetchMoreResult }) => {
                 const newEdges = fetchMoreResult.concerts.edges;
-                const { pageInfo } = fetchMoreResult.concerts;
+                const { pageInfo, totalCount } = fetchMoreResult.concerts;
+
+                console.log('fetchMoreResult', fetchMoreResult);
+                console.log('newEdges', newEdges);
 
                 return newEdges?.length
                   ? {
-                      allNews: {
+                      concerts: {
                         __typename: previousResult.concerts.__typename,
                         edges: [
                           ...(previousResult.concerts.edges as any),
                           ...newEdges,
                         ],
                         pageInfo,
+                        totalCount,
                       },
                     }
                   : previousResult;

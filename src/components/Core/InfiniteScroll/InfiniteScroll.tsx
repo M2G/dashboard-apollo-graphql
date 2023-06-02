@@ -17,7 +17,7 @@ function InfiniteScroll({
       const scrollPos = ref.current.scrollTop;
       const scrollBottom =
         ref.current.scrollHeight - ref.current.clientHeight - scrollPos;
-      if (scrollBottom < 100) {
+      if (scrollBottom < 400) {
         onLoadMore();
       }
     };
@@ -27,23 +27,6 @@ function InfiniteScroll({
       ref?.current?.removeEventListener('scroll', scrollHandler);
     };
   }, [onLoadMore]);
-
-  /* componentDidMount() {
-    this.refs.iScroll.addEventListener('scroll', this.handleOnScroll);
-  }
-
-  componentWillUnmount() {
-    this.refs.iScroll.removeEventListener('scroll', this.handleOnScroll);
-  }
-
-  handleOnScroll = () => {
-    if (
-      this.refs.iScroll.scrollTop + this.refs.iScroll.clientHeight >=
-      this.refs.iScroll.scrollHeight
-    ) {
-      this.props.onLoadMore();
-    }
-  }; */
 
   if (loading) return <p>Loading....</p>;
   const windowHeight = window.screen.height - 200;
@@ -55,7 +38,7 @@ function InfiniteScroll({
         height: windowHeight,
         overflowX: 'hidden',
         overflowY: 'scroll',
-        paddingBottom: '100px',
+        paddingBottom: '400px',
       }}
     >
       {children}
