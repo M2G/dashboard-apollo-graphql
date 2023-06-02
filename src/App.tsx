@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { ApolloProvider } from '@apollo/client/react';
 import * as Sentry from '@sentry/react';
 import { ErrorBoundary } from 'react-error-boundary';
