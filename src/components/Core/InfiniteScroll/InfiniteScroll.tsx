@@ -17,7 +17,7 @@ function InfiniteScroll({
       const scrollPos = ref.current.scrollTop;
       const scrollBottom =
         ref.current.scrollHeight - ref.current.clientHeight - scrollPos;
-      if (scrollBottom < 400) {
+      if (scrollBottom < 500) {
         onLoadMore();
       }
     };
@@ -38,7 +38,7 @@ function InfiniteScroll({
         height: windowHeight,
         overflowX: 'hidden',
         overflowY: 'scroll',
-        paddingBottom: '400px',
+        paddingBottom: '500px',
       }}
     >
       {children}

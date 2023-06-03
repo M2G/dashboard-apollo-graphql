@@ -1,4 +1,5 @@
 import type { JSX, Key } from 'react';
+import { useCallback } from 'react';
 import {
   useGetConcertsQuery,
   GetConcertsQuery,
@@ -7,11 +8,11 @@ import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
 import InfiniteScroll from 'components/Core/InfiniteScroll';
 import './index.scss';
-import { useCallback } from 'react';
 
 function Home(): JSX.Element | null {
   const { data, loading, fetchMore } = useGetConcertsQuery({
     fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
     variables: {
       afterCursor: null,
       filters: '',
@@ -73,10 +74,12 @@ function Home(): JSX.Element | null {
             (concert: { node: any }[], index: Key | null | undefined) => (
               <div key={index} className="o-grid__row">
                 {concert?.map(({ node }) => (
-                  // console.log('item item item', node),
                   <div
-                    key={node?.concert_id}
+                    key={`${index}_${node?.concert_id}`}
                     className="o-col--one-quarter--large o-col--half--medium"
+                    onClick={() => {
+                      console.log('ok');
+                    }}
                   >
                     <div className="o-cell--one">
                       <div className="card">
