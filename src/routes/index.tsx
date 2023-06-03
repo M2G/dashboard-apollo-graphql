@@ -12,10 +12,10 @@ import { AuthContext } from '../AuthContext';
  * @returns {Component}
  */
 
-type Auth = {
+interface Auth {
   isAuth: boolean;
   userData: { id: number };
-};
+}
 
 const Router = (): JSX.Element => {
   const { isAuth } = useContext(AuthContext) as Auth;
