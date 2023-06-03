@@ -77,9 +77,6 @@ function Home(): JSX.Element | null {
                   <div
                     key={`${index}_${node?.concert_id}`}
                     className="o-col--one-quarter--large o-col--half--medium"
-                    onClick={() => {
-                      console.log('ok');
-                    }}
                   >
                     <div className="o-cell--one">
                       <div className="card">

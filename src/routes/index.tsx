@@ -1,5 +1,5 @@
-/* eslint-disable */
-import { JSX, Suspense, useContext } from 'react';
+import type { JSX } from 'react';
+import { Suspense, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import PublicRoutes from './PublicRoutes';
