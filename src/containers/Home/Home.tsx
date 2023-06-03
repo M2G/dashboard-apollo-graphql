@@ -51,11 +51,10 @@ function Home(): JSX.Element | null {
 
   if (!data?.concerts?.edges) return <NoData />;
 
-  // const pageInfo = data?.concerts.pageInfo;
   const concerts = data?.concerts?.edges;
 
-  //console.log('data data data', data);
-  //console.log('data data data', concerts);
+  // console.log('data data data', data);
+  // console.log('data data data', concerts);
 
   const chunk = (arr: any[] | string | null, size: number) =>
     arr?.length &&
