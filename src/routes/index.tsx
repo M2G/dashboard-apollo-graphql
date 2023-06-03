@@ -2,7 +2,8 @@
 import { JSX, Suspense, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import TopLineLoading from 'components/Loading/TopLineLoading';
-import { PublicRoutes, PrivateRoutes } from 'routes/PublicRoutes';
+import PublicRoutes from './PublicRoutes';
+import PrivateRoutes from './PublicRoutes';
 import { AuthContext } from '../AuthContext';
 
 /**
