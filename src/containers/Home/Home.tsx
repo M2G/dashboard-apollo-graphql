@@ -72,24 +72,26 @@ function Home(): JSX.Element | null {
           {(chunk(concerts, 4) || [])?.map(
             (concert, index: Key | null | undefined) => (
               <div key={index} className="o-grid__row">
-                {concert?.map(({ node }) => (
-                  <div
-                    key={`${index}_${node?.concert_id}`}
-                    className="o-col--one-quarter--large o-col--half--medium"
-                  >
-                    <div className="o-cell--one">
-                      <div className="card">
-                        <div className="card-body">
-                          <h5 className="card-title">{node?.display_name}</h5>
-                          <p className="card-text">{node?.city}</p>
-                          <a href={node?.uri || ''} className="btn btn-light">
-                            Go somewhere
-                          </a>
+                {concert?.map(
+                  ({ node }: { node: any }[], concertIdx: number) => (
+                    <div
+                      key={`${index}_${concertIdx}_${node?.concert_id}`}
+                      className="o-col--one-quarter--large o-col--half--medium"
+                    >
+                      <div className="o-cell--one">
+                        <div className="card">
+                          <div className="card-body">
+                            <h5 className="card-title">{node?.display_name}</h5>
+                            <p className="card-text">{node?.city}</p>
+                            <a href={node?.uri || ''} className="btn btn-light">
+                              Go somewhere
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ),
+                )}
               </div>
             ),
           )}
