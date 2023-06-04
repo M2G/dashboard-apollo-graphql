@@ -1,13 +1,17 @@
-import type { Key, MutableRefObject, JSX } from 'react';
-import { useEffect, useRef } from 'react';
+import type { MutableRefObject, JSX } from 'react';
+import { useEffect, useRef, ReactNode } from 'react';
 
-// import NewsCard from './NewsCard';
+interface IInfiniteScroll {
+  children: ReactNode;
+  loading: boolean;
+  onLoadMore: () => void;
+}
 
 function InfiniteScroll({
   children,
   loading,
   onLoadMore,
-}: any): JSX.Element | null {
+}: IInfiniteScroll): JSX.Element | null {
   const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
   useEffect(() => {
     const scrollHandler = () => {

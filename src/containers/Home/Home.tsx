@@ -1,9 +1,6 @@
 import type { JSX, Key } from 'react';
 import { useCallback } from 'react';
-import {
-  useGetConcertsQuery,
-  GetConcertsQuery,
-} from 'modules/graphql/generated';
+import { useGetConcertsQuery } from 'modules/graphql/generated';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
 import InfiniteScroll from 'components/Core/InfiniteScroll';
@@ -23,6 +20,8 @@ function Home(): JSX.Element | null {
   const pageInfo = data?.concerts.pageInfo;
 
   const loadMore = useCallback(() => {
+    if (!pageInfo?.hasNextPage) return;
+
     fetchMore({
       variables: {
         afterCursor: pageInfo?.endCursor,
@@ -46,7 +45,7 @@ function Home(): JSX.Element | null {
           : previousResult;
       },
     });
-  }, [fetchMore, pageInfo?.endCursor]);
+  }, [fetchMore, pageInfo?.endCursor, pageInfo?.hasNextPage]);
 
   if (loading) return <TopLineLoading />;
 
@@ -71,7 +70,7 @@ function Home(): JSX.Element | null {
       <div className="o-grid">
         <InfiniteScroll loading={loading} onLoadMore={loadMore}>
           {(chunk(concerts, 4) || [])?.map(
-            (concert: { node: any }[], index: Key | null | undefined) => (
+            (concert, index: Key | null | undefined) => (
               <div key={index} className="o-grid__row">
                 {concert?.map(({ node }) => (
                   <div
