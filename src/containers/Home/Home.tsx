@@ -17,6 +17,7 @@ function Home(): JSX.Element | null {
     },
   });
 
+  //@TODO add filter input
   const pageInfo = data?.concerts.pageInfo;
 
   const loadMore = useCallback(() => {
