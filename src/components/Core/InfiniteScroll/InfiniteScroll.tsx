@@ -26,6 +26,7 @@ function InfiniteScroll({
       }
     };
 
+    //@TODO add trottle lodash
     ref?.current?.addEventListener('scroll', scrollHandler);
     return () => {
       ref?.current?.removeEventListener('scroll', scrollHandler);
