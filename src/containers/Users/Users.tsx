@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import UserList from 'containers/UserList/UserList';
 
 function Users(): JSX.Element {
