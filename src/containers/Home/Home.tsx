@@ -1,5 +1,6 @@
 import type { JSX, Key } from 'react';
 import { useCallback } from 'react';
+import { throttle } from 'lodash';
 import { useGetConcertsQuery } from 'modules/graphql/generated';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';

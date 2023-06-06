@@ -1,5 +1,7 @@
 import type { MutableRefObject, JSX } from 'react';
 import { useEffect, useRef, ReactNode } from 'react';
+import { throttle } from 'lodash';
+import TopLineLoading from 'components/Loading/TopLineLoading';
 
 interface IInfiniteScroll {
   children: ReactNode;
@@ -26,14 +28,19 @@ function InfiniteScroll({
       }
     };
 
+    function debounceScroll() {
+      // execute the last handleScroll function call, in every 100ms
+      return throttle(scrollHandler, 100);
+    }
+
     //@TODO add trottle lodash
-    ref?.current?.addEventListener('scroll', scrollHandler);
+    ref?.current?.addEventListener('scroll', debounceScroll());
     return () => {
-      ref?.current?.removeEventListener('scroll', scrollHandler);
+      ref?.current?.removeEventListener('scroll', debounceScroll());
     };
   }, [onLoadMore]);
 
-  if (loading) return <p>Loading....</p>;
+  if (loading) return <TopLineLoading />;
   const windowHeight = window.screen.height - 200;
 
   return (
