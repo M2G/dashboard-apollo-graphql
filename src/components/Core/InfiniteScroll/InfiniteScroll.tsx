@@ -20,6 +20,7 @@ function InfiniteScroll({
       if (!ref.current) {
         return;
       }
+
       const scrollPos = ref.current.scrollTop;
       const scrollBottom =
         ref.current.scrollHeight - ref.current.clientHeight - scrollPos;
@@ -30,10 +31,9 @@ function InfiniteScroll({
 
     function debounceScroll() {
       // execute the last handleScroll function call, in every 100ms
-      return throttle(scrollHandler, 100);
+      return throttle(scrollHandler, 1000);
     }
 
-    //@TODO add trottle lodash
     ref?.current?.addEventListener('scroll', debounceScroll());
     return () => {
       ref?.current?.removeEventListener('scroll', debounceScroll());

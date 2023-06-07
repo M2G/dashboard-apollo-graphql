@@ -41,6 +41,8 @@ function Home(): JSX.Element {
   const pageInfo = data?.concerts.pageInfo;
 
   const loadMore = useCallback(() => {
+    console.log('loadMore loadMore loadMore');
+
     if (!pageInfo?.hasNextPage) return;
 
     fetchMore({
