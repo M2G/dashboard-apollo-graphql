@@ -1,13 +1,14 @@
 import type { JSX, Key } from 'react';
-import { useCallback } from 'react';
-import { throttle } from 'lodash';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { debounce } from 'lodash';
 import { useGetConcertsQuery } from 'modules/graphql/generated';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
 import InfiniteScroll from 'components/Core/InfiniteScroll';
 import './index.scss';
 
-function Home(): JSX.Element | null {
+function Home(): JSX.Element {
+  const [term, setTerm] = useState('');
   const { data, loading, fetchMore } = useGetConcertsQuery({
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first',
@@ -18,7 +19,25 @@ function Home(): JSX.Element | null {
     },
   });
 
-  //@TODO add filter input
+  const debouncedSearch = useRef(
+    debounce((criteria) => {
+      // onSearchTerm(criteria);
+      console.log('criteria criteria criteria', criteria);
+    }, 400),
+  ).current;
+
+  useEffect(
+    () => () => {
+      debouncedSearch.cancel();
+    },
+    [debouncedSearch],
+  );
+
+  function handleChange({ target: { value = '' } }: any) {
+    debouncedSearch(value);
+    setTerm(value);
+  }
+
   const pageInfo = data?.concerts.pageInfo;
 
   const loadMore = useCallback(() => {
@@ -32,8 +51,8 @@ function Home(): JSX.Element | null {
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.concerts.edges;
-        console.log('fetchMoreResult', fetchMoreResult);
-        console.log('newEdges', newEdges);
+        // console.log('fetchMoreResult', fetchMoreResult);
+        // console.log('newEdges', newEdges);
 
         return newEdges?.length
           ? {
@@ -65,11 +84,20 @@ function Home(): JSX.Element | null {
       arr?.slice(i * size, i * size + size),
     );
 
-  // console.log('arr arr arr', chunk(concerts, 4));
-
+  // input text filter
   return (
     <div className="o-zone c-home">
       <div className="o-grid">
+        <input
+          id="floatingInput"
+          name="search"
+          className="form-control c-search-input"
+          type="search"
+          aria-label="Search"
+          placeholder="Search"
+          onChange={handleChange}
+          value={term}
+        />
         <InfiniteScroll loading={loading} onLoadMore={loadMore}>
           {(chunk(concerts, 4) || [])?.map(
             (concert, index: Key | null | undefined) => (

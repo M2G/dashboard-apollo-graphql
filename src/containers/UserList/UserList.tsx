@@ -68,19 +68,19 @@ function UserList({
   const [deleteUser] = useDeleteUserMutation();
 
   const onDelete = useCallback((user: User): void => {
-    setUser({ editingUser: false, newUser: false, deletingUser: user });
+    setUser({ deletingUser: user, editingUser: false, newUser: false });
   }, []);
 
   const onClose = useCallback(() => {
-    setUser({ editingUser: false, newUser: false, deletingUser: false });
+    setUser({ deletingUser: false, editingUser: false, newUser: false });
   }, []);
 
   const onAdd = useCallback((): void => {
-    setUser({ editingUser: false, newUser: true, deletingUser: false });
+    setUser({ deletingUser: false, editingUser: false, newUser: true });
   }, []);
 
   const onEdit = useCallback((user: User): void => {
-    setUser({ editingUser: user, newUser: false, deletingUser: false });
+    setUser({ deletingUser: false, editingUser: user, newUser: false });
   }, []);
 
   const onEditUser = useCallback(
@@ -223,7 +223,7 @@ function UserList({
       });
       onClose();
     },
-    [pagination, createUser, onClose],
+    [createUser, onClose, pagination.page, pagination.pageSize, term],
   );
 
   const onDeleteUser = useCallback(

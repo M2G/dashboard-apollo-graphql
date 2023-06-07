@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 import { PLACEHOLDER_SEARCH, INPUT_NAME } from './constants';
@@ -8,7 +9,10 @@ type UserFiltersProps = {
   currentTerm?: string;
 };
 
-function UserFilters({ onSearchTerm, currentTerm }: UserFiltersProps): JSX.Element {
+function UserFilters({
+  onSearchTerm,
+  currentTerm,
+}: UserFiltersProps): JSX.Element {
   const [term, setTerm] = useState(currentTerm);
   const debouncedSearch = useRef(
     debounce((criteria) => {
@@ -16,9 +20,12 @@ function UserFilters({ onSearchTerm, currentTerm }: UserFiltersProps): JSX.Eleme
     }, 400),
   ).current;
 
-  useEffect(() => () => {
+  useEffect(
+    () => () => {
       debouncedSearch.cancel();
-    }, [debouncedSearch]);
+    },
+    [debouncedSearch],
+  );
 
   function handleChange({ target: { value = '' } }: any) {
     debouncedSearch(value);

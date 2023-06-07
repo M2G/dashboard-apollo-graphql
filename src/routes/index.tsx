@@ -17,7 +17,7 @@ interface Auth {
   userData: { id: number };
 }
 
-const Router = (): JSX.Element => {
+function Router(): JSX.Element {
   const { isAuth } = useContext(AuthContext) as Auth;
   const { userData } = useContext(AuthContext) as Auth;
 
@@ -36,6 +36,6 @@ const Router = (): JSX.Element => {
       </Suspense>
     </main>
   );
-};
+}
 
 export default Router;

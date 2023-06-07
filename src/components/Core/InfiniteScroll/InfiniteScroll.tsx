@@ -1,5 +1,5 @@
-import type { MutableRefObject, JSX } from 'react';
-import { useEffect, useRef, ReactNode } from 'react';
+import type { MutableRefObject, JSX, ReactNode } from 'react';
+import { useEffect, useRef } from 'react';
 import { throttle } from 'lodash';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 
