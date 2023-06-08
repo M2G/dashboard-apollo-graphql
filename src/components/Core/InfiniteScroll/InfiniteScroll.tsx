@@ -7,41 +7,51 @@ interface IInfiniteScroll {
   children: ReactNode;
   loading: boolean;
   onLoadMore: () => void;
+  hasMore: boolean;
 }
 
 function InfiniteScroll({
   children,
   loading,
   onLoadMore,
+  hasMore,
 }: IInfiniteScroll): JSX.Element | null {
   const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
+  const isMounted = useRef(true);
   useEffect(() => {
-    const scrollHandler = () => {
+    const scrollHandler = (): void => {
       if (!ref.current) {
         return;
       }
 
-      const scrollPos = ref.current.scrollTop;
-      const scrollBottom =
-        ref.current.scrollHeight - ref.current.clientHeight - scrollPos;
-      if (scrollBottom < 500) {
-        onLoadMore();
+      if (
+        ref.current.scrollTop + ref.current.clientHeight >=
+        ref.current.scrollHeight
+      ) {
+        console.log('onLoadMore', { hasMore, test: isMounted.current });
+
+        if (hasMore && isMounted.current) {
+          onLoadMore();
+        }
+
+        if (!hasMore) {
+          isMounted.current = false;
+        }
       }
     };
-
     function debounceScroll() {
       // execute the last handleScroll function call, in every 100ms
-      return throttle(scrollHandler, 1000);
+      return throttle(scrollHandler, 100);
     }
 
     ref?.current?.addEventListener('scroll', debounceScroll());
     return () => {
       ref?.current?.removeEventListener('scroll', debounceScroll());
     };
-  }, [onLoadMore]);
+  }, [hasMore, onLoadMore]);
 
   if (loading) return <TopLineLoading />;
-  const windowHeight = window.screen.height - 200;
+  const windowHeight = window.screen.height - 500;
 
   return (
     <div

@@ -40,12 +40,10 @@ function Home(): JSX.Element {
 
   const pageInfo = data?.concerts.pageInfo;
 
-  const loadMore = useCallback(() => {
-    console.log('loadMore loadMore loadMore');
-
-    if (!pageInfo?.hasNextPage) return;
-
-    fetchMore({
+  const loadMore = useCallback(async (): Promise<void> => {
+    console.log('loadMore loadMore loadMore', pageInfo?.hasNextPage);
+    await fetchMore({
+      skip: !pageInfo?.hasNextPage,
       variables: {
         afterCursor: pageInfo?.endCursor,
         filters: '',
@@ -53,9 +51,6 @@ function Home(): JSX.Element {
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.concerts.edges;
-        // console.log('fetchMoreResult', fetchMoreResult);
-        // console.log('newEdges', newEdges);
-
         return newEdges?.length
           ? {
               concerts: {
@@ -75,9 +70,6 @@ function Home(): JSX.Element {
   if (!data?.concerts?.edges) return <NoData />;
 
   const concerts = data?.concerts?.edges;
-
-  // console.log('data data data', data);
-  // console.log('data data data', concerts);
 
   const chunk = (arr: any[] | string | null, size: number) =>
     arr?.length &&
@@ -100,7 +92,11 @@ function Home(): JSX.Element {
           onChange={handleChange}
           value={term}
         />
-        <InfiniteScroll loading={loading} onLoadMore={loadMore}>
+        <InfiniteScroll
+          loading={loading}
+          onLoadMore={loadMore}
+          hasMore={pageInfo?.hasNextPage}
+        >
           {(chunk(concerts, 4) || [])?.map(
             (concert, index: Key | null | undefined) => (
               <div key={index} className="o-grid__row">
