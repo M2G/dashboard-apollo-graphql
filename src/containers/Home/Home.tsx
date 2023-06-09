@@ -1,7 +1,7 @@
 import type { JSX, Key } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { debounce } from 'lodash';
-import { useGetConcertsQuery } from 'modules/graphql/generated';
+import { useGetConcertsLazyQuery } from 'modules/graphql/generated';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
 import InfiniteScroll from 'components/Core/InfiniteScroll';
@@ -9,20 +9,34 @@ import './index.scss';
 
 function Home(): JSX.Element {
   const [term, setTerm] = useState('');
-  const { data, loading, fetchMore } = useGetConcertsQuery({
+  const [getConcerts, { data, loading, fetchMore }] = useGetConcertsLazyQuery({
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first',
-    variables: {
-      afterCursor: null,
-      filters: '',
-      first: 20,
-    },
   });
 
+  async function getData() {
+    await getConcerts({
+      variables: {
+        afterCursor: null,
+        filters: '',
+        first: 20,
+      },
+    });
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   const debouncedSearch = useRef(
-    debounce((criteria) => {
-      // onSearchTerm(criteria);
-      console.log('criteria criteria criteria', criteria);
+    debounce(async (filters) => {
+      await getConcerts({
+        variables: {
+          afterCursor: null,
+          filters,
+          first: 20,
+        },
+      });
     }, 400),
   ).current;
 
@@ -97,32 +111,28 @@ function Home(): JSX.Element {
           onLoadMore={loadMore}
           hasMore={pageInfo?.hasNextPage}
         >
-          {(chunk(concerts, 4) || [])?.map(
-            (concert, index: Key | null | undefined) => (
-              <div key={index} className="o-grid__row">
-                {concert?.map(
-                  ({ node }: { node: any }[], concertIdx: number) => (
-                    <div
-                      key={`${index}_${concertIdx}_${node?.concert_id}`}
-                      className="o-col--one-quarter--large o-col--half--medium"
-                    >
-                      <div className="o-cell--one">
-                        <div className="card">
-                          <div className="card-body">
-                            <h5 className="card-title">{node?.display_name}</h5>
-                            <p className="card-text">{node?.city}</p>
-                            <a href={node?.uri || ''} className="btn btn-light">
-                              Go somewhere
-                            </a>
-                          </div>
-                        </div>
+          {(chunk(concerts, 4) || [])?.map((concert, index: Key) => (
+            <div key={index} className="o-grid__row">
+              {concert?.map(({ node }: { node: any }[], concertIdx: number) => (
+                <div
+                  key={`${index}_${concertIdx}_${node?.concert_id}`}
+                  className="o-col--one-quarter--large o-col--half--medium"
+                >
+                  <div className="o-cell--one">
+                    <div className="card">
+                      <div className="card-body">
+                        <h5 className="card-title">{node?.display_name}</h5>
+                        <p className="card-text">{node?.city}</p>
+                        <a href={node?.uri || ''} className="btn btn-light">
+                          Go somewhere
+                        </a>
                       </div>
                     </div>
-                  ),
-                )}
-              </div>
-            ),
-          )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
         </InfiniteScroll>
       </div>
     </div>

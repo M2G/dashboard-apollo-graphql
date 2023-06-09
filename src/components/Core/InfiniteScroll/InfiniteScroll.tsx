@@ -7,7 +7,7 @@ interface IInfiniteScroll {
   children: ReactNode;
   loading: boolean;
   onLoadMore: () => void;
-  hasMore: boolean;
+  hasMore?: boolean | null;
 }
 
 function InfiniteScroll({
@@ -19,7 +19,7 @@ function InfiniteScroll({
   const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
   const isMounted = useRef(true);
   useEffect(() => {
-    const scrollHandler = (): void => {
+    const scrollHandler = () => {
       if (!ref.current) {
         return;
       }
@@ -28,15 +28,11 @@ function InfiniteScroll({
         ref.current.scrollTop + ref.current.clientHeight >=
         ref.current.scrollHeight
       ) {
-        console.log('onLoadMore', { hasMore, test: isMounted.current });
-
         if (hasMore && isMounted.current) {
-          onLoadMore();
+          return onLoadMore();
         }
 
-        if (!hasMore) {
-          isMounted.current = false;
-        }
+        isMounted.current = false;
       }
     };
     function debounceScroll() {
