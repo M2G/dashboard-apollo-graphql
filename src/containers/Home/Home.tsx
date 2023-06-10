@@ -5,7 +5,15 @@ import { useGetConcertsLazyQuery } from 'modules/graphql/generated';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
 import InfiniteScroll from 'components/Core/InfiniteScroll';
+import Input from 'components/Core/Input';
 import './index.scss';
+
+const chunk = (arr: any[] | string | null, size: number) =>
+  arr?.length &&
+  size &&
+  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    arr?.slice(i * size, i * size + size),
+  );
 
 function Home(): JSX.Element {
   const [term, setTerm] = useState('');
@@ -47,7 +55,7 @@ function Home(): JSX.Element {
     [debouncedSearch],
   );
 
-  function handleChange({ target: { value = '' } }: any) {
+  function handleChange({ target: { value = '' } }: any): void {
     debouncedSearch(value);
     setTerm(value);
   }
@@ -55,7 +63,6 @@ function Home(): JSX.Element {
   const pageInfo = data?.concerts.pageInfo;
 
   const loadMore = useCallback(async (): Promise<void> => {
-    console.log('loadMore loadMore loadMore', pageInfo?.hasNextPage);
     await fetchMore({
       skip: !pageInfo?.hasNextPage,
       variables: {
@@ -85,27 +92,32 @@ function Home(): JSX.Element {
 
   const concerts = data?.concerts?.edges;
 
-  const chunk = (arr: any[] | string | null, size: number) =>
-    arr?.length &&
-    size &&
-    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-      arr?.slice(i * size, i * size + size),
-    );
-
   // input text filter
   return (
     <div className="o-zone c-home">
       <div className="o-grid">
-        <input
+        <Input
+          aria-label="Search"
+          className="form-control c-search-input"
           id="floatingInput"
           name="search"
-          className="form-control c-search-input"
-          type="search"
-          aria-label="Search"
-          placeholder="Search"
           onChange={handleChange}
+          placeholder="Search"
+          type="search"
           value={term}
         />
+        {/*
+          <input
+            id="floatingInput"
+            name="search"
+            className="form-control c-search-input"
+            type="search"
+            aria-label="Search"
+            placeholder="Search"
+            onChange={handleChange}
+            value={term}
+          />
+        */}
         <InfiniteScroll
           loading={loading}
           onLoadMore={loadMore}
