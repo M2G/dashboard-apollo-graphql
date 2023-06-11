@@ -5,16 +5,16 @@ import TopLineLoading from 'components/Loading/TopLineLoading';
 
 interface IInfiniteScroll {
   children: ReactNode;
+  hasMore?: boolean | null;
   loading: boolean;
   onLoadMore: () => void;
-  hasMore?: boolean | null;
 }
 
 function InfiniteScroll({
   children,
+  hasMore,
   loading,
   onLoadMore,
-  hasMore,
 }: IInfiniteScroll): JSX.Element | null {
   const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
   const isMounted = useRef(true);
@@ -28,6 +28,7 @@ function InfiniteScroll({
         ref.current.scrollTop + ref.current.clientHeight >=
         ref.current.scrollHeight
       ) {
+        // Fix for the issue where the scroll event is triggered multiple times
         if (hasMore && isMounted.current) {
           return onLoadMore();
         }
