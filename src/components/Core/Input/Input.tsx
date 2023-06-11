@@ -1,6 +1,7 @@
-import { forwardRef } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import { forwardRef } from 'react';
+
 import styles from './Input.module.scss';
 
 interface InputProps {
@@ -27,12 +28,12 @@ interface InputProps {
   required: boolean;
   reset: boolean;
   reverse: boolean;
+  spellCheck: boolean;
   step: boolean;
   touched: boolean;
   type: string;
   valid: boolean;
   value: string;
-  spellCheck: boolean;
 }
 
 const Input = forwardRef(
@@ -46,7 +47,6 @@ const Input = forwardRef(
       error,
       helper,
       hidden,
-      iconComponent,
       id,
       indicator,
       label,
@@ -75,31 +75,31 @@ const Input = forwardRef(
 
     return (
       <input
-        ref={ref}
-        id={id}
+        aria-hidden={type === 'hidden'}
+        aria-label={label && label}
+        aria-required={required}
+        autoComplete={autoComplete}
+        autoCorrect={autoCorrect}
         className={inputStyle}
-        type={type}
-        name={name}
-        value={value}
-        required={required}
+        data-qa={dataQa}
         disabled={disabled}
         hidden={hidden}
-        minLength={minLength}
+        id={id}
+        max={max}
         maxLength={maxLength}
+        min={min}
+        minLength={minLength}
+        name={name}
+        onBlur={onBlur}
         onChange={onChange}
         onFocus={onFocus}
         onKeyDown={onKeyDown}
-        onBlur={onBlur}
-        min={min}
-        max={max}
-        step={step}
-        autoCorrect={autoCorrect}
+        ref={ref}
+        required={required}
         spellCheck={spellCheck}
-        autoComplete={autoComplete}
-        aria-required={required}
-        aria-label={label && label}
-        aria-hidden={type === 'hidden'}
-        data-qa={dataQa}
+        step={step}
+        type={type}
+        value={value}
       />
     );
   },
@@ -142,6 +142,7 @@ Input.propTypes = {
   required: PropTypes.bool,
   reset: PropTypes.bool,
   reverse: PropTypes.bool,
+  spellCheck: PropTypes.bool,
   step: PropTypes.bool,
   touched: PropTypes.bool,
   type: PropTypes.oneOf([
@@ -155,29 +156,24 @@ Input.propTypes = {
   ]).isRequired,
   valid: PropTypes.bool,
   value: PropTypes.string,
-  spellCheck: PropTypes.bool,
 };
 
 Input.defaultProps = {
   autoComplete: undefined,
   autoCorrect: undefined,
   className: undefined,
-  iconComponent: undefined,
-  id: undefined,
   dataQa: '',
   disabled: false,
   error: '',
   helper: '',
   hidden: false,
-  label: '',
-  reverse: false,
-  touched: true,
-  valid: false,
-  value: '',
+  iconComponent: undefined,
+  id: undefined,
   indicator: undefined,
+  label: '',
   max: undefined,
-  min: undefined,
   maxLength: undefined,
+  min: undefined,
   minLength: undefined,
   onBlur: () => {},
   onChange: () => {},
@@ -185,8 +181,12 @@ Input.defaultProps = {
   onKeyDown: () => {},
   required: false,
   reset: false,
-  step: undefined,
+  reverse: false,
   spellCheck: false,
+  step: undefined,
+  touched: true,
+  valid: false,
+  value: '',
 };
 
 export default Input;

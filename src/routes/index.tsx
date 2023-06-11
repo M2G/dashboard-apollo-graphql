@@ -1,10 +1,12 @@
 import type { JSX } from 'react';
+
 import { Suspense, useContext } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+
 import TopLineLoading from 'components/Loading/TopLineLoading';
-import PublicRoutes from './PublicRoutes';
-import PrivateRoutes from './PrivateRoutes';
 import { AuthContext } from '../AuthContext';
+import PrivateRoutes from './PrivateRoutes';
+import PublicRoutes from './PublicRoutes';
 
 /**
  * Top level application router
@@ -28,9 +30,9 @@ function Router(): JSX.Element {
       <Suspense fallback={<TopLineLoading />}>
         <Routes>
           {isAuth && userId ? (
-            <Route path="/*" element={<PrivateRoutes />} />
+            <Route element={<PrivateRoutes />} path="/*" />
           ) : (
-            <Route path="/*" element={<PublicRoutes />} />
+            <Route element={<PublicRoutes />} path="/*" />
           )}
         </Routes>
       </Suspense>

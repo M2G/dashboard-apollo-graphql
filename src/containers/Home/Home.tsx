@@ -1,21 +1,16 @@
 import type { JSX, Key } from 'react';
 
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { debounce } from 'lodash';
+import { useGetConcertsLazyQuery } from 'modules/graphql/generated';
+
 import InfiniteScroll from 'components/Core/InfiniteScroll';
 import Input from 'components/Core/Input';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
-import { debounce } from 'lodash';
-import { useGetConcertsLazyQuery } from 'modules/graphql/generated';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import chunk from './helpers';
 
 import './index.scss';
-
-const chunk = (arr: any[] | string | null, size: number) =>
-  arr?.length &&
-  size &&
-  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-    arr?.slice(i * size, i * size + size),
-  );
 
 function Home(): JSX.Element {
   const [term, setTerm] = useState('');
@@ -57,13 +52,18 @@ function Home(): JSX.Element {
     [debouncedSearch],
   );
 
-  function handleChange({ target: { value = '' } }: any): void {
+  function handleChange({
+    target: { value = '' },
+  }: {
+    target: { value: string };
+  }): void {
     debouncedSearch(value);
     setTerm(value);
   }
 
-  const pageInfo = data?.concerts.pageInfo;
-  const concerts = data?.concerts?.edges;
+  const constList = data?.concerts;
+  const pageInfo = constList?.pageInfo;
+  const concerts = constList?.edges;
 
   const loadMore = useCallback(async (): Promise<void> => {
     await fetchMore({

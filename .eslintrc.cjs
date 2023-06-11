@@ -19,7 +19,8 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/all',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    "plugin:perfectionist/recommended-alphabetical"
+    "plugin:perfectionist/recommended-alphabetical",
+    "plugin:perfectionist/recommended-natural"
   ],
   parserOptions: {
     project: path.resolve(__dirname, './tsconfig.json'),

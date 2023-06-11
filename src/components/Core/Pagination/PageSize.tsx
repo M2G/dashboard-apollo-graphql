@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
+
 import styles from './Pagination.module.scss';
 
 interface IPageSize {
   currentPageSize: number;
-  setCurrentPageSize: (params: any) => {};
+  setCurrentPageSize: (params: number) => void;
 }
 
 function PageSize({ currentPageSize, setCurrentPageSize }: IPageSize) {
