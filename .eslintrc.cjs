@@ -19,6 +19,7 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/all',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    "plugin:perfectionist/recommended-alphabetical"
   ],
   parserOptions: {
     project: path.resolve(__dirname, './tsconfig.json'),
@@ -38,7 +39,8 @@ module.exports = {
     'import',
     'unused-imports',
     'simple-import-sort',
-    "jest"
+    "jest",
+    "perfectionist"
   ],
   ignorePatterns: ['!.*', 'dist', 'build', 'node_modules', 'src/modules'],
   rules: {
@@ -92,6 +94,7 @@ module.exports = {
 
     'jsx-a11y/label-has-associated-control': 0,
 
+    "@typescript-eslint/no-floating-promises": 1,
     '@typescript-eslint/consistent-type-definitions': 1,
     '@typescript-eslint/no-confusing-void-expression': 1,
     '@typescript-eslint/prefer-readonly-parameter-types': 1,

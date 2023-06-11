@@ -20,10 +20,10 @@ interface InputProps {
   min: number;
   minLength: number;
   name: string;
-  onBlur: () => {};
-  onChange: () => {};
-  onFocus: () => {};
-  onKeyDown: () => {};
+  onBlur: () => NonNullable<unknown>;
+  onChange: ({ target: { value } }: any) => void;
+  onFocus: () => NonNullable<unknown>;
+  onKeyDown: () => NonNullable<unknown>;
   required: boolean;
   reset: boolean;
   reverse: boolean;

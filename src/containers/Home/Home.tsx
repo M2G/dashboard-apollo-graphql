@@ -1,11 +1,13 @@
 import type { JSX, Key } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { debounce } from 'lodash';
-import { useGetConcertsLazyQuery } from 'modules/graphql/generated';
-import TopLineLoading from 'components/Loading/TopLineLoading';
-import NoData from 'components/NoData';
+
 import InfiniteScroll from 'components/Core/InfiniteScroll';
 import Input from 'components/Core/Input';
+import TopLineLoading from 'components/Loading/TopLineLoading';
+import NoData from 'components/NoData';
+import { debounce } from 'lodash';
+import { useGetConcertsLazyQuery } from 'modules/graphql/generated';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 import './index.scss';
 
 const chunk = (arr: any[] | string | null, size: number) =>
@@ -17,7 +19,7 @@ const chunk = (arr: any[] | string | null, size: number) =>
 
 function Home(): JSX.Element {
   const [term, setTerm] = useState('');
-  const [getConcerts, { data, loading, fetchMore }] = useGetConcertsLazyQuery({
+  const [getConcerts, { data, fetchMore, loading }] = useGetConcertsLazyQuery({
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first',
   });
@@ -61,15 +63,11 @@ function Home(): JSX.Element {
   }
 
   const pageInfo = data?.concerts.pageInfo;
+  const concerts = data?.concerts?.edges;
 
   const loadMore = useCallback(async (): Promise<void> => {
     await fetchMore({
       skip: !pageInfo?.hasNextPage,
-      variables: {
-        afterCursor: pageInfo?.endCursor,
-        filters: '',
-        first: 4,
-      },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.concerts.edges;
         return newEdges?.length
@@ -83,16 +81,18 @@ function Home(): JSX.Element {
             }
           : previousResult;
       },
+      variables: {
+        afterCursor: pageInfo?.endCursor,
+        filters: '',
+        first: 4,
+      },
     });
   }, [fetchMore, pageInfo?.endCursor, pageInfo?.hasNextPage]);
 
   if (loading) return <TopLineLoading />;
 
-  if (!data?.concerts?.edges) return <NoData />;
+  if (!concerts) return <NoData />;
 
-  const concerts = data?.concerts?.edges;
-
-  // input text filter
   return (
     <div className="o-zone c-home">
       <div className="o-grid">
@@ -106,36 +106,24 @@ function Home(): JSX.Element {
           type="search"
           value={term}
         />
-        {/*
-          <input
-            id="floatingInput"
-            name="search"
-            className="form-control c-search-input"
-            type="search"
-            aria-label="Search"
-            placeholder="Search"
-            onChange={handleChange}
-            value={term}
-          />
-        */}
         <InfiniteScroll
+          hasMore={pageInfo?.hasNextPage}
           loading={loading}
           onLoadMore={loadMore}
-          hasMore={pageInfo?.hasNextPage}
         >
           {(chunk(concerts, 4) || [])?.map((concert, index: Key) => (
-            <div key={index} className="o-grid__row">
+            <div className="o-grid__row" key={index}>
               {concert?.map(({ node }: { node: any }[], concertIdx: number) => (
                 <div
-                  key={`${index}_${concertIdx}_${node?.concert_id}`}
                   className="o-col--one-quarter--large o-col--half--medium"
+                  key={`${index}_${concertIdx}_${node?.concert_id}`}
                 >
                   <div className="o-cell--one">
                     <div className="card">
                       <div className="card-body">
                         <h5 className="card-title">{node?.display_name}</h5>
                         <p className="card-text">{node?.city}</p>
-                        <a href={node?.uri || ''} className="btn btn-light">
+                        <a className="btn btn-light" href={node?.uri || ''}>
                           Go somewhere
                         </a>
                       </div>
