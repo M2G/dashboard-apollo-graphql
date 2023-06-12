@@ -7,12 +7,12 @@ interface IBackground {
   show: boolean;
 }
 
-function Background({ show, setIsOpened }: IBackground): JSX.Element {
+function Background({ setIsOpened, show }: IBackground): JSX.Element {
   return (
     <div
       aria-hidden="true"
       className={clsx(styles.background, show ? styles.active : '')}
-      onClick={() => { setIsOpened(false); }}
+      onClick={() => setIsOpened(false)}
     />
   );
 }

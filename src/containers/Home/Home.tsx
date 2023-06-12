@@ -29,12 +29,8 @@ function Home(): JSX.Element {
     });
   }
 
-  useEffect(() => {
-    getData();
-  }, []);
-
   const debouncedSearch = useRef(
-    debounce(async (filters) => {
+    debounce(async (filters: string): Promise<void> => {
       await getConcerts({
         variables: {
           afterCursor: null,
@@ -44,6 +40,10 @@ function Home(): JSX.Element {
       });
     }, 400),
   ).current;
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   useEffect(
     () => () => {
@@ -113,24 +113,38 @@ function Home(): JSX.Element {
         >
           {(chunk(concerts, 4) || [])?.map((concert, index: Key) => (
             <div className="o-grid__row" key={index}>
-              {concert?.map(({ node }: { node: any }[], concertIdx: number) => (
-                <div
-                  className="o-col--one-quarter--large o-col--half--medium"
-                  key={`${index}_${concertIdx}_${node?.concert_id}`}
-                >
-                  <div className="o-cell--one">
-                    <div className="card">
-                      <div className="card-body">
-                        <h5 className="card-title">{node?.display_name}</h5>
-                        <p className="card-text">{node?.city}</p>
-                        <a className="btn btn-light" href={node?.uri || ''}>
-                          Go somewhere
-                        </a>
+              {concert?.map(
+                (
+                  {
+                    node,
+                  }: {
+                    node: {
+                      city: string;
+                      concert_id: string;
+                      display_name: string;
+                      uri: string;
+                    };
+                  }[],
+                  concertIdx: number,
+                ) => (
+                  <div
+                    className="o-col--one-quarter--large o-col--half--medium"
+                    key={`${index}_${concertIdx}_${node?.concert_id}`}
+                  >
+                    <div className="o-cell--one">
+                      <div className="card">
+                        <div className="card-body">
+                          <h5 className="card-title">{node?.display_name}</h5>
+                          <p className="card-text">{node?.city}</p>
+                          <a className="btn btn-light" href={node?.uri || ''}>
+                            Go somewhere
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ),
+              )}
             </div>
           ))}
         </InfiniteScroll>

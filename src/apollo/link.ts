@@ -8,6 +8,8 @@ import {
   getAuthStorage,
 } from 'services/storage';
 
+const operationName = 'GetConcerts';
+
 const ERRORS = {
   FORBIDDEN: 'FORBIDDEN',
   UNAUTHENTICATED: 'UNAUTHENTICATED',
@@ -69,33 +71,38 @@ const errorLink = onError(
     }
 
     if (graphQLErrors?.length) {
-      graphQLErrors.forEach((err: any) => {
-        toast.error(err?.message);
+      graphQLErrors.forEach(
+        (err: {
+          extensions: { exception: { status: number }; code: string };
+          message: string | null | undefined;
+        }) => {
+          toast.error(err?.message);
 
-        console.log('graphQLErrors', err);
+          console.log('graphQLErrors', err);
 
-        if (err?.extensions?.exception?.status === 401) {
-          clearAuthStorage();
-          clearUserStorage();
-          window.location.href = ROUTER_PATH.SIGNIN;
-        }
+          if (err?.extensions?.exception?.status === 401) {
+            clearAuthStorage();
+            clearUserStorage();
+            window.location.href = ROUTER_PATH.SIGNIN;
+          }
 
-        // err.message, err.locations, err.path, err.extensions
-        if (
-          err.extensions.code === ERRORS.UNAUTHENTICATED ||
-          err.extensions.code === ERRORS.FORBIDDEN
-        ) {
-          clearAuthStorage();
-          clearUserStorage();
-          window.location.href = ROUTER_PATH.SIGNIN;
-        }
-      });
+          // err.message, err.locations, err.path, err.extensions
+          if (
+            err.extensions.code === ERRORS.UNAUTHENTICATED ||
+            err.extensions.code === ERRORS.FORBIDDEN
+          ) {
+            clearAuthStorage();
+            clearUserStorage();
+            window.location.href = ROUTER_PATH.SIGNIN;
+          }
+        },
+      );
     }
   },
 );
 
 const graphqlEndpoints = ApolloLink.split(
-  (operation) => operation.operationName === 'GetConcerts',
+  (operation) => operation.operationName === operationName,
   httpLink2,
   httpLink,
 );

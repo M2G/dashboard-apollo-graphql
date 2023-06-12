@@ -5,7 +5,6 @@ enum IconNames {
   EDIT = 'Edit',
 }
 
-// eslint-disable-next-line
 export type IconComponent = ComponentType<SVGAttributes<SVGElement>>;
 
 export default IconNames;

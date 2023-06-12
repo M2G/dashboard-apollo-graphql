@@ -48,20 +48,20 @@ function InfiniteScroll({
   }, [hasMore, onLoadMore]);
 
   if (loading) return <TopLineLoading />;
+
   const windowHeight = window.screen.height - 500;
 
   return (
     <div
-      ref={ref}
       style={{
         height: windowHeight,
         overflowX: 'hidden',
         overflowY: 'scroll',
         paddingBottom: '500px',
       }}
+      ref={ref}
     >
       {children}
-      {loading && <h2>Loading...</h2>}
     </div>
   );
 }
