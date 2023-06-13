@@ -1,32 +1,34 @@
 import type { JSX } from 'react';
-import { useMemo, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import type { UserList } from './types';
 import type { IUserListItem } from 'containers/UserList/UserListItem';
-import userListItem from 'containers/UserList/UserListItem';
-import UserEdit from 'containers/Users/UserEdit';
-import UserNew from 'containers/Users/UserNew';
-import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
-import ModalWrapper from 'components/Core/Modal/ModalWrapper';
-import TopLineLoading from 'components/Loading/TopLineLoading';
-import NoData from 'components/NoData';
-import type { User, Users, GetUsersQuery } from 'modules/graphql/generated';
+import type { GetUsersQuery, User, Users } from 'modules/graphql/generated';
 import {
-  useUpdateUserMutation,
+  GetUsersDocument,
   useCreateUserMutation,
   useDeleteUserMutation,
   useGetUsersLazyQuery,
-  GetUsersDocument,
+  useUpdateUserMutation,
 } from 'modules/graphql/generated';
+import ModalWrapper from 'components/Core/Modal/ModalWrapper';
+import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
+import TopLineLoading from 'components/Loading/TopLineLoading';
+import NoData from 'components/NoData';
 import UserFilters from 'containers/UserFilters';
 import List from 'containers/UserList/ListLegacy';
+import userListItem from 'containers/UserList/UserListItem';
+import UserEdit from 'containers/Users/UserEdit';
+import UserNew from 'containers/Users/UserNew';
+
 import AddUser from './Action/AddUser';
-import type { UserList } from './types';
 import './index.scss';
 
 function UserList({
-  id,
-  canEdit = false,
-  canDelete = false,
   canAdd = false,
+  canDelete = false,
+  canEdit = false,
+  id,
 }: UserList): JSX.Element {
   const [state, setUser] = useState<{
     deletingUser?: User | boolean;
@@ -46,22 +48,26 @@ function UserList({
   });
   const [term, setTerm] = useState('');
 
-  const [getUsers, { loading, error, data }] = useGetUsersLazyQuery({
+  const [getUsers, { data, error, loading }] = useGetUsersLazyQuery({
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first',
   });
 
-  console.log('useGetUserListLazyQuery', { loading, error, data });
+  console.log('useGetUserListLazyQuery', { data, error, loading });
 
-  useEffect(() => {
-    getUsers({
+  async function getData(): Promise<void> {
+    await getUsers({
       variables: {
         filters: term,
         page: pagination.page,
         pageSize: pagination.pageSize,
       },
     });
-  }, [getUsers, pagination, term]);
+  }
+
+  useEffect((): void => {
+    getData();
+  }, [pagination, term]);
 
   const [createUser] = useCreateUserMutation();
   const [updateUser] = useUpdateUserMutation();
@@ -86,29 +92,20 @@ function UserList({
   const onEditUser = useCallback(
     async (user: User): Promise<void> => {
       await updateUser({
-        variables: {
-          input: {
-            username: user?.username,
-            email: user?.email,
-            first_name: user?.first_name,
-            last_name: user?.last_name,
-          },
-          id: user.id!,
-        },
         optimisticResponse: {
           __typename: 'Mutation',
           updateUser: {
-            success: true,
             __typename: 'Status',
+            success: true,
           },
         },
         update(cache, _) {
           const cachedUserList = cache.readQuery<GetUsersQuery>({
             query: GetUsersDocument,
             variables: {
+              filters: term,
               page: pagination.page,
               pageSize: pagination.pageSize,
-              filters: term,
             },
           });
 
@@ -118,34 +115,43 @@ function UserList({
             if (d?.id !== user?.id) return d;
             return {
               ...user,
-              id: user.id,
-              password: user.password,
-              created_at: Math.floor(Date.now() / 1000),
-              modified_at: Math.floor(Date.now() / 1000),
               __typename: 'User',
+              created_at: Math.floor(Date.now() / 1000),
+              id: user.id,
+              modified_at: Math.floor(Date.now() / 1000),
+              password: user.password,
             };
           });
 
           const newData = {
             users: {
-              results: users,
-              pageInfo: cachedUserList?.users?.pageInfo,
               __typename: 'Users',
+              pageInfo: cachedUserList?.users?.pageInfo,
+              results: users,
             },
           };
 
           cache.writeQuery({
-            query: GetUsersDocument,
-            variables: {
-              page: pagination.page,
-              pageSize: pagination.pageSize,
-              filters: term,
-            },
             data: {
               __typename: 'Query',
               ...newData,
             },
+            query: GetUsersDocument,
+            variables: {
+              filters: term,
+              page: pagination.page,
+              pageSize: pagination.pageSize,
+            },
           });
+        },
+        variables: {
+          id: user.id!,
+          input: {
+            email: user?.email,
+            first_name: user?.first_name,
+            last_name: user?.last_name,
+            username: user?.username,
+          },
         },
       });
       onClose();
@@ -156,19 +162,15 @@ function UserList({
   const onNewUser = useCallback(
     async (user: User): Promise<void> => {
       await createUser({
-        variables: {
-          email: user.email,
-          password: user.password,
-        },
         optimisticResponse: {
           __typename: 'Mutation',
           createUser: {
+            __typename: 'User',
+            created_at: Math.floor(Date.now() / 1000),
             email: user?.email,
             first_name: user?.first_name || '',
             last_name: user?.last_name || '',
-            created_at: Math.floor(Date.now() / 1000),
             modified_at: Math.floor(Date.now() / 1000),
-            __typename: 'User',
           },
         },
         update(cache, mutationResult) {
@@ -176,9 +178,9 @@ function UserList({
           const cachedUserList = cache.readQuery<GetUsersQuery>({
             query: GetUsersDocument,
             variables: {
+              filters: term,
               page: pagination.page,
               pageSize: pagination.pageSize,
-              filters: term,
             },
           });
 
@@ -189,36 +191,40 @@ function UserList({
             ...[
               {
                 ...user,
-                id: Math.floor(Math.random() * 2),
-                first_name: resultMessage?.first_name || '',
-                last_name: resultMessage?.last_name || '',
-                created_at: Math.floor(Date.now() / 1000),
-                modified_at: Math.floor(Date.now() / 1000),
                 __typename: 'User',
+                created_at: Math.floor(Date.now() / 1000),
+                first_name: resultMessage?.first_name || '',
+                id: Math.floor(Math.random() * 2),
+                last_name: resultMessage?.last_name || '',
+                modified_at: Math.floor(Date.now() / 1000),
               },
             ],
           ];
 
           const newData = {
             users: {
-              results: newUser,
-              pageInfo: cachedUserList?.users?.pageInfo,
               __typename: 'Users',
+              pageInfo: cachedUserList?.users?.pageInfo,
+              results: newUser,
             },
           };
 
           cache.writeQuery({
-            query: GetUsersDocument,
-            variables: {
-              page: pagination.page,
-              pageSize: pagination.pageSize,
-              filters: term,
-            },
             data: {
               __typename: 'Query',
               ...newData,
             },
+            query: GetUsersDocument,
+            variables: {
+              filters: term,
+              page: pagination.page,
+              pageSize: pagination.pageSize,
+            },
           });
+        },
+        variables: {
+          email: user.email,
+          password: user.password,
         },
       });
       onClose();
@@ -229,9 +235,6 @@ function UserList({
   const onDeleteUser = useCallback(
     async (user: User): Promise<void> => {
       await deleteUser({
-        variables: {
-          id: user?.id!,
-        },
         optimisticResponse: {
           __typename: 'Mutation',
           deleteUser: {
@@ -276,6 +279,9 @@ function UserList({
               pageSize: pagination.pageSize,
             },
           });
+        },
+        variables: {
+          id: user?.id!,
         },
       });
       onClose();
@@ -371,16 +377,16 @@ function UserList({
       <AddUser canAdd={canAdd} onAdd={onAdd} />
 
       {!results.length && <NoData />}
-      <UserFilters onSearchTerm={searchTerms} currentTerm={term} />
+      <UserFilters currentTerm={term} onSearchTerm={searchTerms} />
       <List
-        id={id}
-        header={header}
-        rows={rows}
-        data={results}
         count={pageInfo?.count}
         currentPage={pagination?.page}
-        setCurrentPage={onChangePage}
         currentPageSize={pagination?.pageSize}
+        data={results}
+        header={header}
+        id={id}
+        rows={rows}
+        setCurrentPage={onChangePage}
         setCurrentPageSize={onChangePageSize}
       />
 
@@ -393,12 +399,12 @@ function UserList({
       </SidebarWrapper>
 
       <ModalWrapper
-        title="Delete"
-        hide={onClose}
-        isShowing={state.deletingUser}
         onConfirm={async () =>
           onDeleteUser(state.deletingUser as unknown as User)
         }
+        hide={onClose}
+        isShowing={state.deletingUser}
+        title="Delete"
       >
         <p>Warning, you are about to perform an irreversible action</p>
       </ModalWrapper>

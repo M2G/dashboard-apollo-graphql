@@ -2,6 +2,7 @@ import type { JSX, Key } from 'react';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { debounce } from 'lodash';
+import type { GetConcertsQuery } from 'modules/graphql/generated';
 import { useGetConcertsLazyQuery } from 'modules/graphql/generated';
 
 import InfiniteScroll from 'components/Core/InfiniteScroll';
@@ -19,7 +20,7 @@ function Home(): JSX.Element {
     nextFetchPolicy: 'cache-first',
   });
 
-  async function getData() {
+  async function getData(): Promise<void> {
     await getConcerts({
       variables: {
         afterCursor: null,
@@ -41,12 +42,12 @@ function Home(): JSX.Element {
     }, 400),
   ).current;
 
-  useEffect(() => {
+  useEffect((): void => {
     getData();
   }, []);
 
   useEffect(
-    () => () => {
+    () => (): void => {
       debouncedSearch.cancel();
     },
     [debouncedSearch],
@@ -68,7 +69,7 @@ function Home(): JSX.Element {
   const loadMore = useCallback(async (): Promise<void> => {
     await fetchMore({
       skip: !pageInfo?.hasNextPage,
-      updateQuery: (previousResult, { fetchMoreResult }) => {
+      updateQuery: (previousResult: GetConcertsQuery, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.concerts.edges;
         return newEdges?.length
           ? {

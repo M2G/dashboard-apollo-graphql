@@ -1,24 +1,26 @@
-import type { MouseEventHandler, MutableRefObject, JSX } from 'react';
+import type { JSX, MouseEventHandler, MutableRefObject } from 'react';
 import { useEffect, useRef } from 'react';
+
 import Portal from 'components/Core/Portal';
+
 import styles from './Modal.module.scss';
 
 interface IModal {
+  children: any;
+  hide: () => MouseEventHandler<HTMLButtonElement>;
   id?: string | undefined;
   isShowing: boolean;
-  hide: () => MouseEventHandler<HTMLButtonElement>;
   onConfirm: any;
   title: string;
-  children: any;
 }
 
 function Modal({
+  children,
+  hide,
   id,
   isShowing,
-  hide,
-  title,
   onConfirm,
-  children,
+  title,
 }: IModal): JSX.Element | null {
   const ref: MutableRefObject<HTMLDivElement | undefined> = useRef();
   useEffect(() => {
@@ -37,27 +39,27 @@ function Modal({
     <Portal id={id}>
       <div className={styles.overlay}>
         <div className={styles.wrapper}>
-          <div className={styles.modal} ref={ref as any}>
+          <div className={styles.modal} ref={ref}>
             <div className={styles.header}>
               <h5 className={styles.title}>{title}</h5>
               <button
-                type="button"
+                aria-label="Close"
                 className={styles.close}
                 data-bs-dismiss="modal"
-                aria-label="Close"
                 onClick={hide}
+                type="button"
               >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
+                  className="w-4 h-4"
                   fill="none"
+                  height="24"
                   stroke="currentColor"
-                  strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="w-4 h-4"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <line x1="18" x2="6" y1="6" y2="18" />
                   <line x1="6" x2="18" y1="6" y2="18" />
@@ -67,17 +69,17 @@ function Modal({
             <div className={styles.body}>{children}</div>
             <div className="modal-footer border-top-0">
               <button
-                type="button"
                 className="btn btn-light me-2"
                 onClick={onConfirm}
+                type="button"
               >
                 Confirmer
               </button>
               <button
-                type="button"
                 className="btn btn-light"
                 data-bs-dismiss="modal"
                 onClick={hide}
+                type="button"
               >
                 Close
               </button>

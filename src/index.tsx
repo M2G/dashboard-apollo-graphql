@@ -12,7 +12,7 @@ function render(
   Component: FC<Record<string, any>> | JSX.IntrinsicAttributes,
 ): void {
   console.log('import.meta.env ', import.meta.env);
-  const MOUNT_NODE: any =
+  const MOUNT_NODE =
     document.getElementById('root') ?? document.createElement('div');
   const root = createRoot(MOUNT_NODE);
   if (root) root.render(<Component />);

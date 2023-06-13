@@ -17,19 +17,23 @@ function UserFilters({
 }: UserFiltersProps): JSX.Element {
   const [term, setTerm] = useState(currentTerm);
   const debouncedSearch = useRef(
-    debounce((criteria) => {
+    debounce((criteria): void => {
       onSearchTerm(criteria);
     }, 400),
   ).current;
 
   useEffect(
-    () => () => {
+    () => (): void => {
       debouncedSearch.cancel();
     },
     [debouncedSearch],
   );
 
-  function handleChange({ target: { value = '' } }: any) {
+  function handleChange({
+    target: { value = '' },
+  }: {
+    target: { value: string };
+  }): void {
     debouncedSearch(value);
     setTerm(value);
   }

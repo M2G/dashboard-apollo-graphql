@@ -1,4 +1,5 @@
-/*eslint-disable*/
+import type { JSX } from 'react';
+
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -9,27 +10,26 @@ function Navbar(): JSX.Element {
     <nav className="navbar navbar-expand-md">
       <div className="container-fluid">
         <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarCollapse"
           aria-controls="navbarCollapse"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          className="navbar-toggler"
+          data-bs-target="#navbarCollapse"
+          data-bs-toggle="collapse"
+          type="button"
         >
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarCollapse">
-          <div className="navbar-nav me-auto mb-2 mb-md-0">
-          </div>
+          <div className="navbar-nav me-auto mb-2 mb-md-0" />
           <button
-            type="button"
-            className="me-2 btn btn-light"
-            onClick={() => {
+            onClick={async () => {
               setState(!state);
               if (state) return i18n?.changeLanguage('fr');
               i18n?.changeLanguage('en');
             }}
+            className="me-2 btn btn-light"
+            type="button"
           >
             {state ? 'fr' : 'en'}
           </button>
