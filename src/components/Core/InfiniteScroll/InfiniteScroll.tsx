@@ -1,7 +1,8 @@
-import type { MutableRefObject, JSX, ReactNode } from 'react';
-import { useEffect, useRef } from 'react';
-import { throttle } from 'lodash';
+import type { JSX, MutableRefObject, ReactNode } from 'react';
+
 import TopLineLoading from 'components/Loading/TopLineLoading';
+import { throttle } from 'lodash';
+import { useEffect, useRef } from 'react';
 
 interface IInfiniteScroll {
   children: ReactNode;
@@ -17,9 +18,9 @@ function InfiniteScroll({
   onLoadMore,
 }: IInfiniteScroll): JSX.Element | null {
   const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
-  const isMounted = useRef(true);
+  const isMounted: MutableRefObject<boolean> = useRef(true);
   useEffect(() => {
-    const scrollHandler = () => {
+    const scrollHandler = (): typeof onLoadMore | undefined | void => {
       if (!ref.current) {
         return;
       }
@@ -30,7 +31,8 @@ function InfiniteScroll({
       ) {
         // Fix for the issue where the scroll event is triggered multiple times
         if (hasMore && isMounted.current) {
-          return onLoadMore();
+          onLoadMore();
+          return;
         }
 
         isMounted.current = false;

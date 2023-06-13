@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 
-import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
+import { debounce } from 'lodash';
 
 import { INPUT_NAME, PLACEHOLDER_SEARCH } from './constants';
 import './index.scss';
