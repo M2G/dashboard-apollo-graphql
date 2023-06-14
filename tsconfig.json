@@ -45,7 +45,8 @@
       "components/*": ["./components/*"],
       "container/*": ["./container/*"],
       "routes/*": ["./routes/*"],
-      "modules/*": ["./modules/*"]
+      "modules/*": ["./modules/*"],
+      "hooks/*": ["./hooks/*"]
     },
     "types": ["jest"]
   },
