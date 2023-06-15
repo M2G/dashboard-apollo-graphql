@@ -1,8 +1,8 @@
 import type { JSX, MutableRefObject, ReactNode } from 'react';
 
-import TopLineLoading from 'components/Loading/TopLineLoading';
-import { throttle } from 'lodash';
 import { useEffect, useRef } from 'react';
+import { throttle } from 'lodash';
+import TopLineLoading from 'components/Loading/TopLineLoading';
 import { useWindowSize } from 'hooks';
 
 interface IInfiniteScroll {
@@ -50,11 +50,11 @@ function InfiniteScroll({
     };
   }, [hasMore, onLoadMore]);
 
-  if (loading) return <TopLineLoading />;
-
   const size = useWindowSize();
 
-  const windowHeight = size?.height - 500;
+  if (loading) return <TopLineLoading />;
+
+  const windowHeight = size.height - 500;
 
   return (
     <div

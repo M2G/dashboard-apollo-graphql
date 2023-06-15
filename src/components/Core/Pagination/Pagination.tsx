@@ -1,5 +1,4 @@
-/*eslint-disable*/
-import { ChangeEventHandler, MouseEventHandler } from 'react';
+import type { ChangeEventHandler, MouseEventHandler } from 'react';
 
 interface IPagination {
   hasNextPage: boolean;
@@ -7,7 +6,10 @@ interface IPagination {
   setCurrentPage: (dataset: any) => void;
 }
 
-export type DatasetInjector<HTMLAnchorElement, D extends DOMStringMap> = HTMLAnchorElement & {
+export type DatasetInjector<
+  HTMLAnchorElement,
+  D extends DOMStringMap,
+> = HTMLAnchorElement & {
   dataset: D;
 };
 
@@ -28,7 +30,9 @@ function Pagination({ hasNextPage, hasPrevPage, setCurrentPage }: IPagination) {
             data-prev
             className="page-link"
             href="#"
-            onClick={handlePrevClick as unknown as MouseEventHandler<HTMLAnchorElement>}
+            onClick={
+              handlePrevClick as unknown as MouseEventHandler<HTMLAnchorElement>
+            }
           >
             Prev
           </a>
@@ -38,7 +42,9 @@ function Pagination({ hasNextPage, hasPrevPage, setCurrentPage }: IPagination) {
             data-next
             className="page-link"
             href="#"
-            onClick={handleNextClick as unknown as MouseEventHandler<HTMLAnchorElement>}
+            onClick={
+              handleNextClick as unknown as MouseEventHandler<HTMLAnchorElement>
+            }
           >
             Next
           </a>
