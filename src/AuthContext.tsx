@@ -27,14 +27,12 @@ function Provider({ children }: AuthContextProps): JSX.Element {
 
   const value = {
     isAuth,
-    userData: userData ? JSON.parse(JSON.stringify(userData)) : null,
+    userData: userData ? JSON.parse(userData) : null,
     activateAuth: (token: string) => {
       const decodedToken: {
         email: string;
         id: number;
       } = jwt_decode(token) || {};
-
-      console.log('decodedToken', decodedToken);
 
       const user = {
         email: decodedToken.email,
