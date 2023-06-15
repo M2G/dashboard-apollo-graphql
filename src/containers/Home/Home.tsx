@@ -1,5 +1,4 @@
 import type { JSX, Key } from 'react';
-
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 import type { GetConcertsQuery } from 'modules/graphql/generated';
@@ -10,7 +9,6 @@ import Input from 'components/Core/Input';
 import TopLineLoading from 'components/Loading/TopLineLoading';
 import NoData from 'components/NoData';
 import chunk from './helpers';
-
 import './index.scss';
 
 function Home(): JSX.Element {

@@ -27,7 +27,7 @@ function Provider({ children }: AuthContextProps): JSX.Element {
 
   const value = {
     isAuth,
-    userData: userData ? JSON.parse(userData) : null,
+    userData: userData ? JSON.parse(JSON.stringify(userData)) : null,
     activateAuth: (token: string) => {
       const decodedToken: {
         email: string;
@@ -47,13 +47,11 @@ function Provider({ children }: AuthContextProps): JSX.Element {
     },
     removeAuth: () => {
       setIsAuth(false);
-      setUserStorage(JSON.stringify({}));
+      setUserStorage(null);
       clearUserStorage();
       clearAuthStorage();
     },
   };
-
-  console.log('AuthContext value', value);
 
   const authValue = useMemo(() => value, [value]);
 
