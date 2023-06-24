@@ -50,17 +50,7 @@ const authMiddleware = new ApolloLink((operation: any, forward: any) => {
 });
 
 const errorLink = onError(
-  ({ operation, graphQLErrors, networkError, response, ...arg }: any) => {
-    console.log('ERROR', {
-      arg,
-      graphQLErrors,
-      networkError,
-      operation,
-      response,
-    });
-
-    console.log('------------------>', networkError?.response?.status);
-
+  ({ graphQLErrors, networkError, operation, response, ...arg }) => {
     if (
       networkError?.response === 'invalid_token' ||
       networkError?.response?.status === 401
