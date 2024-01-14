@@ -1,0 +1,25 @@
+{
+  "extends": "tsconfig/react-app.json",
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/assets/*": ["src/assets/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/api/*": ["src/api"],
+      "@/api2/*": ["src/api2"],
+      "@/services/*": ["src/services/*"],
+      "@/sentry/*": ["src/sentry/*"],
+      "@/exceptions/*": ["src/exceptions/*"],
+      "@/fixtures/*": ["src/fixtures/*"],
+      "@/constants/*": ["src/constants/*"],
+      "@/components/*": ["src/components/*"],
+      "@/container/*": ["src/container/*"],
+      "@/routes/*": ["src/routes/*"],
+      "@/modules/*": ["src/modules/*"],
+      "@/hooks/*": ["src/hooks/*"]
+    },
+  }
+}

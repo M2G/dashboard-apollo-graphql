@@ -1,0 +1,4 @@
+{
+  "name": "Fronts",
+  "description": "Monorepo with multiple React JS apps bundled with Vite, sharing a UI Library"
+}
