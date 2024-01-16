@@ -3,16 +3,16 @@ tutorial:
 	@echo "Please read the 'Makefile' file to go through this tutorial"
 
 start:
-	npm run start
+	pnpm run dev
 
 test:
-	npm run test
+	pnpm run test
 
 build:
-	npm run build
+	pnpm run build
 
 story:
-	npm run storybook
+	pnpm run storybook
 
 cypress:
-	npm run cypress:open
+	pnpm run cypress:open
