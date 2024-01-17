@@ -1,8 +1,8 @@
 import type { JSX } from 'react';
 
 import { useCallback, useContext } from 'react';
-import SiginForm from 'components/SigninForm';
-import { useSigninMutation } from 'modules/graphql/generated';
+import SiginForm from '@/components/SigninForm';
+import { useSigninMutation } from '@/modules/graphql/generated';
 
 import { AuthContext } from '../../AuthContext';
 import { INITIAL_VALUES } from './constants';

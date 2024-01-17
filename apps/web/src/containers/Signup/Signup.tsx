@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SignupForm from 'components/SignupForm';
-import { useSignupMutation } from 'modules/graphql/generated';
-import ROUTER_PATH from 'constants/RouterPath';
+import SignupForm from '@/components/SignupForm';
+import { useSignupMutation } from '@/modules/graphql/generated';
+import ROUTER_PATH from '@/constants/RouterPath';
 import { INITIAL_VALUES } from './constants';
 
 function Signup(): JSX.Element {

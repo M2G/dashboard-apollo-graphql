@@ -1,12 +1,12 @@
 import { ApolloLink, HttpLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { toast } from 'react-toastify';
-import ROUTER_PATH from 'constants/RouterPath';
+import ROUTER_PATH from '@/constants/RouterPath';
 import {
   clearAuthStorage,
   clearUserStorage,
   getAuthStorage,
-} from 'services/storage';
+} from '@/services/storage';
 
 const operationName = 'GetConcerts';
 

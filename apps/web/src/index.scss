@@ -1,4 +1,48 @@
 @import 'styles';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.floating-input > input::placeholder {
+  color: transparent;
+}
+
+.floating-input > input:focus,
+.floating-input > input:not(:placeholder-shown) {
+  @apply pt-8;
+}
+
+.floating-input > input:focus ~ label,
+.floating-input > input:not(:placeholder-shown) ~ label {
+  @apply -translate-y-4 translate-x-[2px] scale-75 opacity-75;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px $_color-white inset;
+}
+
+// signup and signin
+#form-signup,
+#form-signin,
+#form-profil,
+#form-forgot-password,
+#form-reset-password {
+  input {
+    background-color: $_color-white;
+    color: $_color-black;
+  }
+  label {
+    color: $_color-black;
+  }
+}
 
 body {
   overflow: hidden;
@@ -16,58 +60,14 @@ $header-menu-button-width: 70px;
 $sidebar-width: 280px;
 
 .sidebar {
-  background-color: var(--color-sidebar-bg);
-  position: fixed;
-  top: 0;
-  /* rtl:raw:
-  right: 0;
-  */
-  bottom: 0;
-  /* rtl:remove */
-  left: 0;
-  z-index: 100; /* Behind the navbar */
-  padding: 48px 0 0; /* Height of navbar */
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-  min-width: $sidebar-width;
-
-  border-color: hsla(0,0%,100%,.1);
-  border-right-style: solid;
-  border-right-width: 1px;
-
-  h3 {
-    color: white;
-    text-align: center;
-    letter-spacing: 1px;
-  }
-
   .nav {
     padding-right: _rem(map-get($_layout-grid, gutters));
     padding-left: _rem(map-get($_layout-grid, gutters));
   }
-
-  .nav-item {
-    display: flex;
-    align-items: center;
-    svg {
-      width: 20px;
-      height: 20px;
-      stroke: white;
-    }
-  }
-}
-
-.sidebar .nav-link {
-  font-size: _em(16px);
-  font-weight: 500;
-  color: var(--color-text);
-}
-
-.sidebar .nav-link.active {
-  // color: var(--color-text);
 }
 
 .sidebar-heading {
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 /*
@@ -79,10 +79,10 @@ nav.navbar {
 }
 
 .navbar {
-  border-color: hsla(0,0%,100%,.1);
+  border-color: hsla(0, 0%, 100%, 0.1);
   border-bottom-style: solid;
   border-bottom-width: 1px;
-  background-color: var( --color-navbar-bg);
+  background-color: var(--color-navbar-bg);
   @include bp(smallest) {
     margin-left: auto;
     width: calc(100vw - $sidebar-width);
@@ -110,66 +110,12 @@ nav.navbar {
   width: 100vw;
 }
 
-.navbar-nav {
-  .nav-item {
-    .nav-link {
-      color: var(--color-text);
-    }
-  }
-}
-
-.navbar-brand {
-  padding-top: .75rem;
-  padding-bottom: .75rem;
-  background-color: rgba(0, 0, 0, .25);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-}
-
-.navbar .navbar-toggler {
-  top: .25rem;
-  right: 1rem;
-}
-
-.navbar .form-control {
-  padding: .75rem 1rem;
-}
-
-
-.form-control-dark {
-  color: #fff;
-  background-color: rgba(255, 255, 255, .1);
-  border-color: rgba(255, 255, 255, .1);
-}
-
-.form-control-dark:focus {
-  border-color: transparent;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
-}
-
 //
-html, body {
+html,
+body {
   background-color: var(--color-bg) !important;
 }
 
-.c-sidebar {
-  .form-control {
-    background-color: var(--color-input-bg);
-    color: var(--color-text);
-    border-color: hsla(0,0%,100%,.1);
-    border-style: solid;
-    border-width: 1px;
-
-    & + label {
-      color: var(--color-text-heading);
-    }
-    &:focus {
-      background-color: var(--color-input-bg);
-      color: var(--color-text);
-      box-shadow: initial;
-      border-color: hsla(0,0%,100%,.1);
-      border-style: solid;
-      border-width: 1px;
-    }
-  }
+.error-text {
+  color: var(--color-error);
 }
-

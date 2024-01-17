@@ -10,8 +10,8 @@ import packageJson from './package.json';
 export default defineConfig(() => {
   return {
     define: {
-      'process.env': {},
       'import.meta.env.PACKAGE_VERSION': JSON.stringify(packageJson.version),
+      'process.env': {},
     },
     plugins: [
       react({
