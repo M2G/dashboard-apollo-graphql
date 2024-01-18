@@ -4,7 +4,7 @@ import { useCallback, useContext } from 'react';
 import SiginForm from '@/components/SigninForm';
 import { useSigninMutation } from '@/modules/graphql/generated';
 
-import { AuthContext } from '../../AuthContext';
+import { AuthContext } from '@/AuthContext';
 import { INITIAL_VALUES } from './constants';
 
 function Signin(): JSX.Element {
