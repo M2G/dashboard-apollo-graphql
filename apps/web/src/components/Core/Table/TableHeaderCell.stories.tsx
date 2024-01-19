@@ -1,9 +1,8 @@
-/*eslint-disable*/
 import TableHeaderCell from './TableHeaderCell';
 
 export default {
   component: TableHeaderCell,
-  title: 'TableHeaderCell'
+  title: 'TableHeaderCell',
 };
 
 function Template(args: any) {
@@ -23,28 +22,28 @@ export const Default: any = Template.bind({});
 Default.args = [
   {
     label: '',
-    sortable: false
+    sortable: false,
   },
   {
     label: 'First name',
-    sortable: false
+    sortable: false,
   },
   {
     label: 'Last name',
-    sortable: false
+    sortable: false,
   },
   {
     label: 'Email',
-    sortable: false
+    sortable: false,
   },
   {
     label: 'Created at',
     sortable: true,
-    type: 'date'
+    type: 'date',
   },
   {
     label: 'Modified at',
     sortable: true,
-    type: 'date'
-  }
+    type: 'date',
+  },
 ];

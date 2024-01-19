@@ -1,60 +1,55 @@
-/*eslint-disable*/
-import { useEffect, useMemo, useState, createContext } from 'react';
-import clsx from 'clsx';
-import TableHead from 'components/Core/Table/TableHead';
-import TableBody from 'components/Core/Table/TableBody';
-import styles from './Table.module.scss';
+import { createContext, useEffect, useMemo, useState } from 'react';
+import TableBody from '@/components/Core/Table/TableBody';
+import TableHead from '@/components/Core/Table/TableHead';
 
 export const TableContext = createContext<Record<string, any>>({});
 
 interface ITableWrapper {
-  header: any;
-  rows: any;
-  id: string | number;
   className?: string;
+  header: any;
+  id: number | string;
+  rows: any;
 }
 
 function TableWrapper({
+  className = '',
   header,
-  rows,
   id,
-  className = ''
+  rows,
 }: ITableWrapper): JSX.Element {
-  console.log('rows rows', rows);
-
   const [sortData, setSortData] = useState<any>(null);
-
-  const handleSort = (index: any, sortDirection: string, type: any) =>
+  function handleSort(index: any, sortDirection: string, type: any) {
     setSortData({
-      index,
       direction: sortDirection,
-      type
+      index,
+      type,
     } as any);
+  }
 
   const getSortedTable = useMemo(() => {
     if (!sortData) return rows;
-    const { index, direction, type }: any = sortData;
+    const { direction, index, type }: any = sortData;
 
     if (!type || type === 'string') {
       return rows?.sort(
         (
           a: { [x: string]: { value: any } },
-          b: { [x: string]: { value: string } }
+          b: { [x: string]: { value: string } },
         ) =>
           direction === 'descending'
             ? a[index].value.localeCompare(b[index].value)
-            : b[index].value.localeCompare(a[index].value)
+            : b[index].value.localeCompare(a[index].value),
       );
     }
     if (type === 'date') {
       return rows?.sort(
         (
           a: { [x: string]: { value: number } },
-          b: { [x: string]: { value: number } }
+          b: { [x: string]: { value: number } },
         ) =>
           direction === 'ascending'
             ? a[index].value - b[index].value
-            : b[index].value - a[index].value
+            : b[index].value - a[index].value,
       );
     }
 
@@ -69,17 +64,10 @@ function TableWrapper({
 
   return (
     <TableContext.Provider
-      value={{ header, handleSort, sortData, getSortedTable }}
-    >
-      <table
-        className={clsx(
-          styles.table,
-          'c-table',
-          className
-        )}
-      >
-        <TableHead key="tableHead" id={id} />
-        <TableBody key="tableBody" id={id} />
+      value={{ getSortedTable, handleSort, header, sortData }}>
+      <table className="c-table text-grey-dark w-full border-collapse">
+        <TableHead id={id} />
+        <TableBody id={id} />
       </table>
     </TableContext.Provider>
   );

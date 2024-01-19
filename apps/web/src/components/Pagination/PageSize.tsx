@@ -12,11 +12,7 @@ function PageSize({ currentPageSize, setCurrentPageSize }: IPageSize) {
     setCurrentPageSize(parseInt(value, 10));
 
   return (
-    <select
-      aria-label="-1"
-      className="mt-[15px] block appearance-none border-none bg-transparent px-2 text-base font-normal leading-normal text-white outline-none"
-      onChange={handleClick}
-      value={pageSize}>
+    <select aria-label="-1" onChange={handleClick} value={pageSize}>
       <option value="2">2</option>
       <option value="5">5</option>
       <option value="10">10</option>

@@ -1,6 +1,5 @@
-/* eslint-disable */
-import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import * as React from 'react';
 import TopLineLoading from './TopLineLoading';
 
 export interface LoadingNS {
@@ -16,7 +15,7 @@ const Loading: React.FC<LoadingNS> = ({ isLoading }: boolean | any) => {
 Loading.displayName = 'Loading';
 
 Loading.propTypes = {
-  isLoading: PropTypes.bool.isRequired
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default Loading;

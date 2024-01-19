@@ -1,37 +1,35 @@
-import type { JSX } from 'react';
-
-import { useState } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/LanguageProvider';
+
+enum Language {
+  EN = 'en',
+  FR = 'fr',
+}
 
 function Navbar(): JSX.Element {
+  const { userLanguage, userLanguageChange } = useLanguage();
   const { i18n } = useTranslation();
-  const [state, setState] = useState<boolean>(false);
+
+  const lang = useMemo(
+    () => (userLanguage === Language.EN ? Language.FR : Language.EN),
+    [userLanguage],
+  );
+
+  const handleLanguage = useCallback(() => {
+    userLanguageChange(lang);
+    i18n.changeLanguage(lang);
+  }, [i18n, lang, userLanguageChange]);
+
   return (
-    <nav className="navbar navbar-expand-md">
-      <div className="container-fluid">
-        <button
-          aria-controls="navbarCollapse"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-          className="navbar-toggler"
-          data-bs-target="#navbarCollapse"
-          data-bs-toggle="collapse"
-          type="button"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarCollapse">
-          <div className="navbar-nav me-auto mb-2 mb-md-0" />
+    <nav className="navbar flex">
+      <div className="w-full">
+        <div className="mr-2 flex justify-end">
           <button
-            onClick={async () => {
-              setState(!state);
-              if (state) return i18n?.changeLanguage('fr');
-              i18n?.changeLanguage('en');
-            }}
-            className="me-2 btn btn-light"
-            type="button"
-          >
-            {state ? 'fr' : 'en'}
+            className="rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200"
+            onClick={handleLanguage}
+            type="button">
+            {userLanguage}
           </button>
         </div>
       </div>

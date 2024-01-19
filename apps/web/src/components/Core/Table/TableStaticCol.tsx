@@ -1,30 +1,28 @@
-import Action from 'components/Core/Table/Action';
-import type IconNames from 'components/Core/Icon/Icons.types';
-import styles from './Table.module.scss';
+import type IconNames from 'ui/components/atoms/Icon/Icons.types';
+
+import Action from '@/components/Core/Table/Action';
 
 export interface ITableStaticCol {
   actions: [
     {
-      id: string;
       action: () => void;
       icon: IconNames | undefined;
+      id: string;
     },
   ];
-  id?: string | undefined;
-  label?: string | undefined;
+  id?: string;
+  label?: string;
 }
 
-function TableStaticCol({ id, label, actions }: ITableStaticCol): JSX.Element {
+function TableStaticCol({ actions, id, label }: ITableStaticCol): JSX.Element {
   return (
-    <div className="tableStaticCol">
-      <div className={styles.actions}>
-        {label && (
-          <div className="labelHandler">
-            <label id={id}>{label}</label>
-          </div>
-        )}
-        {actions?.length > 0 && Action({ actions })}
-      </div>
+    <div className="flex">
+      {label && (
+        <div className="labelHandler">
+          <label id={id}>{label}</label>
+        </div>
+      )}
+      {actions?.length > 0 && Action({ actions })}
     </div>
   );
 }

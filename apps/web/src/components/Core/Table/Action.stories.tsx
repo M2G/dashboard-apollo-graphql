@@ -1,9 +1,8 @@
-/*eslint-disable*/
 import Action from './Action';
 
 export default {
   title: 'Action',
-  component: Action
+  component: Action,
 };
 
 const Template = (args: any) => Action({ ...args });
@@ -15,13 +14,13 @@ Default.args = {
       id: 'test0',
       label: 'edit',
       icon: 'fa-edit',
-      action: () => {}
+      action: () => {},
     },
     {
       id: 'test1',
       label: 'remove',
       icon: 'fa-remove',
-      action: () => {}
-    }
-  ]
+      action: () => {},
+    },
+  ],
 };

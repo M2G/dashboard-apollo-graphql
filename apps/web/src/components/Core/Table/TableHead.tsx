@@ -1,8 +1,9 @@
 import type { JSX } from 'react';
+
 import { useContext } from 'react';
-import styles from 'components/Core/Table/Table.module.scss';
-import TableHeaderCell from 'components/Core/Table/TableHeaderCell';
-import { TableContext } from 'components/Core/Table/TableWrapper';
+
+import TableHeaderCell from '@/components/Core/Table/TableHeaderCell';
+import { TableContext } from '@/components/Core/Table/TableWrapper';
 
 interface ITableHead {
   id: number | string;
@@ -11,17 +12,15 @@ interface ITableHead {
 function TableHead({ id }: ITableHead): JSX.Element {
   const { handleSort, header, sortData } = useContext(TableContext);
   return (
-    <thead className="c-table-head">
-      <tr className={styles.tr}>
-        {header?.map(({ label, sortable, type }: any, index: number) => (
+    <thead className="text-left">
+      <tr className="border-semi-10-contrast border-b-solid border-b-[1px]">
+        {header?.map(({ label, sortable, type }: never, index: number) => (
           <TableHeaderCell
-            onSort={(sortDirection: any) =>
-              handleSort(index, sortDirection, type)
-            }
             currentSortedData={sortData?.index === index ? sortData : null}
             isSortable={sortable}
-            key={`tableHeaderCell__${id}__${index}` as any}
+            key={`tableHeaderCell__${id}__${index}`}
             label={label}
+            onSort={(sortDirection) => handleSort(index, sortDirection, type)}
           />
         ))}
       </tr>

@@ -1,46 +1,56 @@
-/*eslint-disable*/
-import clsx from 'clsx';
-import styles from './Table.module.scss';
+import { memo, useMemo } from 'react';
+import { Icon } from 'ui';
+import IconNames from 'ui/components/atoms/Icon/Icons.types';
+
+enum SortDirection {
+  ASCENDING = 'ascending',
+  DESCENDING = 'descending',
+}
 
 interface ITableHeaderCell {
-  label: any;
-  onSort: any;
-  isSortable: any;
   currentSortedData: any;
+  isSortable: boolean;
+  label: string;
+  onSort: (arg: SortDirection) => void;
 }
 
 function TableHeaderCell({
+  currentSortedData,
+  isSortable,
   label,
   onSort,
-  isSortable,
-  currentSortedData
-}: ITableHeaderCell) {
-  const onSortClick = () =>
+}: ITableHeaderCell): JSX.Element {
+  function onSortClick(): void {
     onSort(
-      !currentSortedData || currentSortedData.direction === 'ascending'
-        ? 'descending'
-        : 'ascending'
+      currentSortedData?.direction === SortDirection.ASCENDING
+        ? SortDirection.DESCENDING
+        : SortDirection.ASCENDING,
     );
+  }
 
-  const sortedClass =
-    currentSortedData?.direction === styles.ascending
-      ? styles.ascending
-      : styles.descending;
+  const sortedClass = useMemo(
+    () =>
+      currentSortedData?.direction === SortDirection.ASCENDING
+        ? IconNames.ARROW_DOWN
+        : IconNames.ARROW_UP,
+    [currentSortedData?.direction],
+  );
 
   return (
-    <th className={styles.th}>
+    <th className="border-b-0 p-2 pl-0 text-base font-bold">
       {label}
       {isSortable && (
         <button
-          onClick={onSortClick}
-          className={clsx(
-            styles.button,
-            `sort-icon ${currentSortedData ? sortedClass : ''}`
-          )}
-        />
+          className="sort-icon mb-0 rounded-none border-0 bg-transparent px-2 font-bold"
+          onClick={onSortClick}>
+          <Icon
+            as={sortedClass}
+            className="fill-grey-dark w-4 cursor-pointer"
+          />
+        </button>
       )}
     </th>
   );
 }
 
-export default TableHeaderCell;
+export default memo(TableHeaderCell);

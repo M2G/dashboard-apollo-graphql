@@ -1,160 +1,108 @@
+import { useMemo } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import type { FormikHelpers } from 'formik';
-import { Formik, Field, Form } from 'formik';
+import { Button, Field } from 'ui';
+import type { z } from 'zod';
 
-import ROUTER_PATH from 'constants/RouterPath';
+import ROUTER_PATH from '@/constants/RouterPath';
+
 import {
-  ERROR_TEXT_REQUIRED,
   INPUT_NAME,
   LABEL_OLD_PASSWORD,
   LABEL_PASSWORD,
   LABEL_PASSWORD2,
-  PLACEHOLDER_OLD_PASSWORD,
-  PLACEHOLDER_PASSWORD,
-  PLACEHOLDER_PASSWORD2,
+  formSchema,
 } from './constants';
 
-const {
-  ERROR_TEXT_REQUIRED_OLD_PASSWORD,
-  ERROR_TEXT_REQUIRED_PASSWORD,
-  ERROR_TEXT_REQUIRED_PASSWORD2,
-  ERROR_TEXT_REQUIRED_MATCH,
-} = ERROR_TEXT_REQUIRED;
+type FormSchemaType = z.infer<typeof formSchema>;
 
 interface IForm {
-  initialValues: Record<any, unknown>;
-  onSubmit: (value: any) => Record<any, any>;
+  initialValues: { [x: string]: string | undefined };
+  onSubmit: SubmitHandler<FormSchemaType>;
 }
 
 function ChangePassordForm({ initialValues, onSubmit }: IForm): JSX.Element {
-  const setField = (setFieldValue: any, setFieldName: any, value: any): any =>
-    setFieldValue(setFieldName, value);
-
-  const onChange = (setFieldValue: any, setFieldName: any): any =>
-    ({ target: { value = '' } }: any) =>
-      setField(setFieldValue, setFieldName, value);
-
-  const onValidate = (values: object): Record<any, any> => {
-    const errors = {};
-
-    if (!values[INPUT_NAME.OLD_PASSWORD]) {
-      errors[INPUT_NAME.OLD_PASSWORD] = ERROR_TEXT_REQUIRED_OLD_PASSWORD;
-    }
-
-    if (!values[INPUT_NAME.PASSWORD]) {
-      errors[INPUT_NAME.PASSWORD] = ERROR_TEXT_REQUIRED_PASSWORD;
-    }
-
-    if (!values[INPUT_NAME.PASSWORD2]) {
-      errors[INPUT_NAME.PASSWORD2] = ERROR_TEXT_REQUIRED_PASSWORD2;
-    }
-
-    if (
-      values[INPUT_NAME.PASSWORD]
-      && values[INPUT_NAME.PASSWORD2]
-      && values[INPUT_NAME.PASSWORD] !== values[INPUT_NAME.PASSWORD2]
-    ) {
-      errors[INPUT_NAME.PASSWORD2] = ERROR_TEXT_REQUIRED_MATCH;
-    }
-
-    return errors;
-  };
-
-  const handleSubmit: ((
-    values: any,
-    formikHelpers: FormikHelpers<any>
-  ) => any) &
-    ((values: any) => any) = (values: any) => onSubmit(values);
-
-  const renderForm = ({
-    setFieldValue,
-    values,
-    errors,
-    touched,
-  }: any): JSX.Element => (
-    <div className="form-signin">
-      <Form>
-        <h1 className="h3 mb-3">Change password</h1>
-        <div className="form-floating">
-          <Field
-            id="floatingOldPassword"
-            className="form-control mb-2"
-            name={INPUT_NAME.OLD_PASSWORD}
-            type="password"
-            onChange={onChange(setFieldValue, INPUT_NAME.OLD_PASSWORD)}
-            placeholder={PLACEHOLDER_OLD_PASSWORD}
-            value={values?.[INPUT_NAME.OLD_PASSWORD]}
-            required
-          />
-          {touched[INPUT_NAME.OLD_PASSWORD]
-          && errors
-          && errors[INPUT_NAME.OLD_PASSWORD] ? (
-            <span className="error-text">
-              {errors[INPUT_NAME.OLD_PASSWORD]}
-            </span>
-          ) : null}
-          <label htmlFor="floatingOldPassword">{LABEL_OLD_PASSWORD}</label>
-        </div>
-        <div className="form-floating">
-          <Field
-            id="floatingPassword"
-            className="form-control mb-2"
-            name={INPUT_NAME.PASSWORD}
-            type="password"
-            onChange={onChange(setFieldValue, INPUT_NAME.PASSWORD)}
-            placeholder={PLACEHOLDER_PASSWORD}
-            value={values?.[INPUT_NAME.PASSWORD]}
-            required
-          />
-          {touched[INPUT_NAME.PASSWORD]
-          && errors
-          && errors[INPUT_NAME.PASSWORD] ? (
-            <span className="error-text">{errors[INPUT_NAME.PASSWORD]}</span>
-          ) : null}
-          <label htmlFor="floatingPassword">{LABEL_PASSWORD}</label>
-        </div>
-        <div className="form-floating">
-          <Field
-            id="floatingPasswordAgain"
-            name={INPUT_NAME.PASSWORD2}
-            className="form-control mb-2"
-            type="password"
-            onChange={onChange(setFieldValue, INPUT_NAME.PASSWORD2)}
-            placeholder={PLACEHOLDER_PASSWORD2}
-            value={values?.[INPUT_NAME.PASSWORD2]}
-            required
-          />
-          {touched[INPUT_NAME.PASSWORD2]
-          && errors
-          && errors[INPUT_NAME.PASSWORD2] ? (
-            <span className="error-text mb-1">
-              {errors[INPUT_NAME.PASSWORD2]}
-            </span>
-          ) : null}
-          <label htmlFor="floatingPasswordAgain">{LABEL_PASSWORD2}</label>
-        </div>
-        <button className="fs-6 w-100 btn btn-lg btn-primary" type="submit">
-          Change password
-        </button>
-        <div className="c-action">
-          <span>Want to see your ?</span>
-          <Link to={ROUTER_PATH.PROFIL} className="text-muted">
-            Profil
-          </Link>
-        </div>
-      </Form>
-    </div>
-  );
+  const { t } = useTranslation();
+  const {
+    control,
+    formState: { errors, isValid },
+    handleSubmit,
+    register,
+  } = useForm<FormSchemaType>({
+    defaultValues: useMemo(
+      () => ({
+        ...initialValues,
+      }),
+      [initialValues],
+    ),
+    mode: 'all',
+    resolver: zodResolver(formSchema),
+  });
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validate={onValidate}
-    >
-      {renderForm}
-    </Formik>
+    <div
+      className="flex min-h-screen flex-col items-center justify-center"
+      id="form-forgot-password">
+      <form
+        className="rounded-2xl bg-white p-[25px]"
+        onSubmit={handleSubmit(onSubmit)}>
+        <div className="mb-4">
+          <h1 className="text-3xl font-bold dark:text-black">
+            {t('form.forgotPassword')}
+          </h1>
+          <span>{t('form.toContinue')}</span>
+        </div>
+        <Field
+          className="_:mb-2"
+          label={LABEL_OLD_PASSWORD}
+          name={INPUT_NAME.OLD_PASSWORD}
+          type="password"
+          {...{ control, errors, register }}
+          required
+        />
+        <Field
+          className="_:mb-2"
+          label={LABEL_PASSWORD}
+          name={INPUT_NAME.PASSWORD}
+          type="password"
+          {...{ control, errors, register }}
+          required
+        />
+        <Field
+          className="_:mb-2"
+          label={LABEL_PASSWORD2}
+          name={INPUT_NAME.PASSWORD2}
+          type="password"
+          {...{ control, errors, register }}
+          required
+        />
+        <Button
+          className="w-full"
+          disabled={!isValid}
+          type="submit"
+          variant="primary">
+          {t('form.changePassword')}
+        </Button>
+        <div className="c-action gab-1 mt-3 flex flex-nowrap justify-start">
+          <span className="m-0 box-border text-sm font-normal leading-tight">
+            {t('form.wantToSeeYour')}
+          </span>
+          <Link
+            className="mx-1 box-border inline-flex cursor-pointer items-center text-sm font-normal leading-tight text-gray-950 no-underline hover:text-gray-600"
+            to={ROUTER_PATH.PROFIL}>
+            {t('form.profile')}
+          </Link>
+          <Link
+            className="box-border inline-flex cursor-pointer items-center text-sm font-normal leading-tight text-gray-950 no-underline hover:text-gray-600"
+            to={ROUTER_PATH.HOME}>
+            {t('form.home')}
+          </Link>
+        </div>
+      </form>
+    </div>
   );
 }
 

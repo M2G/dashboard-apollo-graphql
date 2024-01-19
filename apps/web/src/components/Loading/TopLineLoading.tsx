@@ -1,8 +1,7 @@
-import type { JSX } from 'react';
-import styles from './TopLineLoading.module.scss';
+import './TopLineLoading.scss';
 
-function TopLineLoading(): JSX.Element {
-  return <div className={styles.loader} />;
+function TopLineLoading() {
+  return <div className="top-line-loader" />;
 }
 
 export default TopLineLoading;

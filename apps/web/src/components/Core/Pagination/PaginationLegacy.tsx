@@ -1,4 +1,3 @@
-/*eslint-disable*/
 interface IPagination {
   currentPage: number;
   totalItems: number;
@@ -8,14 +7,14 @@ interface IPagination {
 
 function Pagination({
   currentPage,
-  totalItems,
   perPage,
-  setCurrentPage
-}: IPagination) {
+  setCurrentPage,
+  totalItems,
+}: IPagination): JSX.Element {
   const handleClick = ({
     target: {
-      dataset: { id }
-    }
+      dataset: { id },
+    },
   }: {
     target: { dataset: { id: string } };
   }): any => setCurrentPage(parseInt(id, 10));
@@ -31,44 +30,48 @@ function Pagination({
   }
 
   const displayNumbers = pageNumbers.slice(
-    currentPage - 5 > 0 ? currentPage - 5 : 0,
-    currentPage + 5
+    currentPage - 2 > 0 ? currentPage - 2 : 0,
+    currentPage + 2,
   );
-
-  console.log('pageNumbers', pageNumbers);
-  console.log('currentPage', currentPage);
-  console.log('displayNumbers', displayNumbers);
 
   return (
     <nav aria-label="-1">
       {pageNumbers.length > 1 && (
-        <ul className="pagination">
-          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-            <a className="page-link" href="#" onClick={handlePrevClick}>
+        <ul className="inline-flex h-10 -space-x-px px-4 py-2 text-base">
+          <li>
+            <a
+              className={`border-semi-10-contrast ml-0 flex h-10 items-center justify-center rounded-l-lg border px-4 leading-tight hover:bg-gray-100 hover:text-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white ${
+                currentPage === 1 ? '_:dark:text-grey-dark pointer-events-none' : ''
+              }`}
+              href="#"
+              onClick={handlePrevClick}>
               Prev
             </a>
           </li>
-          {displayNumbers?.map((number) => (
-            <li
-              key={number}
-              className={`page-item ${currentPage === number ? 'active' : ''}`}
-            >
+          {displayNumbers?.map((number, index) => (
+            <li key={`${number}-${index}`}>
               <a
+                className={`border-semi-10-contrast text-grey-dark flex h-10 items-center justify-center border px-4 leading-tight hover:bg-gray-100 hover:text-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white ${
+                  currentPage === number
+                    ? 'flex h-10 items-center justify-center border px-4 text-blue-600 dark:text-white'
+                    : ''
+                }`}
                 data-id={number}
-                className="page-link"
                 href="#"
-                onClick={handleClick as any}
-              >
+                onClick={handleClick}>
                 {number}
               </a>
             </li>
           ))}
-          <li
-            className={`page-item ${
-              currentPage === pageNumbers.length ? 'disabled' : ''
-            }`}
-          >
-            <a className="page-link" href="#" onClick={handleNextClick}>
+          <li>
+            <a
+              className={`border-semi-10-contrast text-grey-dark flex h-10 items-center justify-center rounded-r-lg border px-4 leading-tight hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white ${
+                currentPage === pageNumbers.length
+                  ? '_:dark:text-grey-dark pointer-events-none'
+                  : ''
+              }`}
+              href="#"
+              onClick={handleNextClick}>
               Next
             </a>
           </li>

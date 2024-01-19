@@ -1,14 +1,13 @@
-/*eslint-disable*/
-import TableStaticCol from './TableStaticCol';
-import { actions } from 'fixtures/action';
-import TableWrapper from './TableWrapper';
+import Icon from '@/components/Core/Icon';
+import { actions } from '@/fixtures/action';
+import IconNames from '@/components/Core/Icon/Icons.types';
 import DateCell from './DateCell';
-import Icon from 'components/Core/Icon';
-import IconNames from 'components/Core/Icon/Icons.types';
+import TableStaticCol from './TableStaticCol';
+import TableWrapper from './TableWrapper';
 
 export default {
   title: 'TableWrapper',
-  component: TableWrapper
+  component: TableWrapper,
 };
 
 const Template = (args: any) => <TableWrapper {...args} />;
@@ -19,19 +18,19 @@ const headerRow = [
     label: 'Publication Date',
     sortable: true,
     type: 'date',
-    defaultSort: true
+    defaultSort: true,
   },
   { label: 'Test2', sortable: true },
   { label: 'Test3' },
   { label: 'Test4' },
-  { label: 'Test5' }
+  { label: 'Test5' },
 ];
 
 const dateTable: any = [
   new Date(Date.now()),
   new Date(Date.now() - 3600000 * 25),
   new Date(Date.now() - 3600000 * 2),
-  new Date(Date.now() - 3600000 * 90)
+  new Date(Date.now() - 3600000 * 90),
 ];
 
 export const Default: any = Template.bind({});
@@ -46,7 +45,7 @@ Default.args = {
       { display: 'Row1', value: 'Row1' },
       { display: 'Row1', value: 'Row1' },
       { display: 'Row1', value: 'Row1' },
-      { display: 'Row1', value: 'Row1' }
+      { display: 'Row1', value: 'Row1' },
     ],
     [
       { display: <div style={{ color: 'blue' }}>Row1</div>, value: 'Row1' },
@@ -54,7 +53,7 @@ Default.args = {
       { display: 'qsdqsd', value: 'qsdqsd' },
       { display: 'qsdqsd', value: 'qsdqsd' },
       { display: 'qsdqsd', value: 'qsdqsd' },
-      { display: 'qdsqsd', value: 'qsdqsd' }
+      { display: 'qdsqsd', value: 'qsdqsd' },
     ],
     [
       { display: <div style={{ color: 'blue' }}>Row1</div>, value: 'Row1' },
@@ -62,7 +61,7 @@ Default.args = {
       { display: 'Row2', value: 'Row2' },
       { display: 'azeaze', value: 'azeaze' },
       { display: 'Row1', value: 'Row1' },
-      { display: 'Row1', value: 'Row1' }
+      { display: 'Row1', value: 'Row1' },
     ],
     [
       { display: <div style={{ color: 'blue' }}>Row1</div>, value: 'Row1' },
@@ -70,10 +69,10 @@ Default.args = {
       { display: 'ttttt', value: 'ttttt' },
       { display: 'Row1', value: 'Row1' },
       { display: 'fffff', value: 'fffff' },
-      { display: 'Row1', value: 'Row1' }
-    ]
+      { display: 'Row1', value: 'Row1' },
+    ],
   ],
-  columnsWidth: [4, 2, 2, 2, 2, 2]
+  columnsWidth: [4, 2, 2, 2, 2, 2],
 };
 
 export const WithStaticBlock: any = Template.bind({});
@@ -85,7 +84,7 @@ const tableStaticBlockProps: any = (n: number) => ({
   label:
     n === 0
       ? "This is a very long label supposed to crop because it's a very long paragraph containing lots of words"
-      : 'This is a label'
+      : 'This is a label',
 });
 
 const getArray = (size: any) => new Array(size).fill('*');
@@ -96,29 +95,29 @@ const generateTable = (nbRows: number, nbCols: number) =>
       if (indexCol === 0)
         return {
           display: <TableStaticCol {...tableStaticBlockProps(index)} />,
-          value: ''
+          value: '',
         };
       if (indexCol === 1)
         return {
           display: <DateCell date={dateTable[index]} />,
-          value: dateTable[index]
+          value: dateTable[index],
         };
       if (indexCol === 3) {
         return {
           display: <Icon icon={IconNames.DELETE} className={''} />,
-          value: ''
+          value: '',
         };
       }
       return {
         display: `Row ${index + 1}, Col ${indexCol + 1}`,
-        value: `Row ${index + 1}, Col ${indexCol + 1}`
+        value: `Row ${index + 1}, Col ${indexCol + 1}`,
       };
-    })
+    }),
   );
 
 WithStaticBlock.args = {
   id: 'testWithStaticCol',
   header: headerRow,
   rows: generateTable(4, 6),
-  columnsWidth: [4, 1, 1, 1, 1, 1]
+  columnsWidth: [4, 1, 1, 1, 1, 1],
 };
