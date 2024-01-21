@@ -17,7 +17,10 @@ export default defineConfig(() => {
       react({
         jsxImportSource: '@welldone-software/why-did-you-render', // <-----
       }),
-      svgr(),
+      svgr({
+        svgrOptions: { exportType: 'named', ref: true },
+        include: '**/*.svg',
+      }),
     ],
     publicDir: 'public',
     resolve: {

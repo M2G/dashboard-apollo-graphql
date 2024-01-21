@@ -18,11 +18,9 @@ function ChangePassword(): JSX.Element {
     }) => {
       await changePassword({
         variables: {
-          // eslint-disable-next-line
-          // @ts-ignore
           id,
           ...formData,
-        } as any,
+        },
       });
     },
     [changePassword, id],

@@ -1,7 +1,6 @@
-import type { ReactNode, JSX } from 'react';
-import { createContext, useState, useMemo } from 'react';
+import type { Context, JSX, ReactNode } from 'react';
 
-import jwt_decode from 'jwt-decode';
+import { createContext, useContext, useMemo, useState } from 'react';
 import {
   clearAuthStorage,
   clearUserStorage,
@@ -9,30 +8,32 @@ import {
   getUserStorage,
   setAuthStorage,
   setUserStorage,
-} from './services/storage';
+} from '@/services/storage';
 
-export const AuthContext = createContext({});
+import { jwtDecode } from 'jwt-decode';
+
+export const AuthContext: Context<NonNullable<unknown>> = createContext({});
+
+export const useAuth = () => useContext(AuthContext);
 
 interface AuthContextProps {
   children: ReactNode;
 }
 
 function Provider({ children }: AuthContextProps): JSX.Element {
-  const [isAuth, setIsAuth] = useState<boolean | string | null>(() =>
+  const [isAuth, setIsAuth] = useState<boolean | null | string>(() =>
     getAuthStorage(),
   );
-  const [userData, setUserData] = useState<boolean | string | null>(() =>
+  const [userData, setUserData] = useState<boolean | null | string>(() =>
     getUserStorage(),
   );
 
   const value = {
-    isAuth,
-    userData: userData ? JSON.parse(userData) : null,
     activateAuth: (token: string) => {
       const decodedToken: {
         email: string;
         id: number;
-      } = jwt_decode(token) || {};
+      } = jwtDecode(token) || {};
 
       const user = {
         email: decodedToken.email,
@@ -43,12 +44,14 @@ function Provider({ children }: AuthContextProps): JSX.Element {
       setAuthStorage(token);
       setIsAuth(true);
     },
+    isAuth,
     removeAuth: () => {
       setIsAuth(false);
       setUserStorage(null);
       clearUserStorage();
       clearAuthStorage();
     },
+    userData: userData ? JSON.parse(userData as string) : null,
   };
 
   const authValue = useMemo(() => value, [value]);
