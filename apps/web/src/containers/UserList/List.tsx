@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
-import Pagination from 'components/Core/Pagination/Pagination';
-import TableWrapper from 'components/Core/Table';
+import Pagination from '@/components/Core/Pagination/Pagination';
+import TableWrapper from '@/components/Core/Table';
 
 type ListProps = {
   header: any;

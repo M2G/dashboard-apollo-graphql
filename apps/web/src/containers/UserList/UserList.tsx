@@ -2,24 +2,23 @@ import type { JSX } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { UserList } from './types';
-import type { IUserListItem } from 'containers/UserList/UserListItem';
-import type { GetUsersQuery, User, Users } from 'modules/graphql/generated';
+import type { IUserListItem } from '@/containers/UserList/UserListItem';
+import type { GetUsersQuery, User, Users } from '@/modules/graphql/generated';
 import {
   GetUsersDocument,
   useCreateUserMutation,
   useDeleteUserMutation,
   useGetUsersLazyQuery,
   useUpdateUserMutation,
-} from 'modules/graphql/generated';
-import ModalWrapper from 'components/Core/Modal/ModalWrapper';
-import SidebarWrapper from 'components/Core/Sidebar/SidebarWrapper';
-import TopLineLoading from 'components/Loading/TopLineLoading';
-import NoData from 'components/NoData';
-import UserFilters from 'containers/UserFilters';
-import List from 'containers/UserList/ListLegacy';
-import userListItem from 'containers/UserList/UserListItem';
-import UserEdit from 'containers/Users/UserEdit';
-import UserNew from 'containers/Users/UserNew';
+} from '@/modules/graphql/generated';
+import { Modal, Sidebar } from 'ui';
+import TopLineLoading from '@/components/Loading/TopLineLoading';
+import NoData from '@/components/NoData';
+import UserFilters from '@/containers/UserFilters';
+import List from '@/containers/UserList/ListLegacy';
+import userListItem from '@/containers/UserList/UserListItem';
+import UserEdit from '@/containers/Users/UserEdit';
+import UserNew from '@/containers/Users/UserNew';
 
 import AddUser from './Action/AddUser';
 import './index.scss';
@@ -390,24 +389,23 @@ function UserList({
         setCurrentPageSize={onChangePageSize}
       />
 
-      <SidebarWrapper isOpened={!!state.editingUser} setIsOpened={onClose}>
+      <Sidebar isOpened={!!state.editingUser} setIsOpened={onClose}>
         <UserEdit data={state.editingUser} onSubmit={onEditUser} />
-      </SidebarWrapper>
+      </Sidebar>
 
-      <SidebarWrapper isOpened={!!state.newUser} setIsOpened={onClose}>
+      <Sidebar isOpened={!!state.newUser} setIsOpened={onClose}>
         <UserNew onSubmit={onNewUser} />
-      </SidebarWrapper>
+      </Sidebar>
 
-      <ModalWrapper
+      <Modal
         onConfirm={async () =>
           onDeleteUser(state.deletingUser as unknown as User)
         }
         hide={onClose}
         isShowing={state.deletingUser}
-        title="Delete"
-      >
+        title="Delete">
         <p>Warning, you are about to perform an irreversible action</p>
-      </ModalWrapper>
+      </Modal>
     </div>
   );
 }

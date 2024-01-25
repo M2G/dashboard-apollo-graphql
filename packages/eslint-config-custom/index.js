@@ -21,6 +21,7 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript',
     'plugin:perfectionist/recommended-natural',
+    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
   ],
@@ -76,6 +77,9 @@ module.exports = {
     'react/jsx-filename-extension': 0,
     'react/jsx-uses-react': 0,
     'react/react-in-jsx-scope': 0,
-    'sort-imports': ['error', { ignoreCase: true, ignoreDeclarationSort: true }],
+    'sort-imports': [
+      'error',
+      { ignoreCase: true, ignoreDeclarationSort: true },
+    ],
   },
 };

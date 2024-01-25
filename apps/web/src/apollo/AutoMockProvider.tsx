@@ -1,17 +1,13 @@
 import React from 'react';
-import {
-  ApolloProvider,
-  ApolloClient,
-  InMemoryCache,
-} from '@apollo/client';
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import { SchemaLink } from '@apollo/client/link/schema';
-import {printSchema, buildClientSchema} from 'graphql/utilities';
-import {makeExecutableSchema} from '@graphql-tools/schema';
-import type { IMocks} from '@graphql-tools/mock';
-import {addMocksToSchema} from '@graphql-tools/mock';
+import { printSchema, buildClientSchema } from 'graphql/utilities';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import type { IMocks } from '@graphql-tools/mock';
+import { addMocksToSchema } from '@graphql-tools/mock';
 
-import introspectionResult from 'modules/graphql/introspection.gen';
-import introspectionQueryResultData from 'modules/graphql/introspection.gen.json';
+import introspectionResult from '@/modules/graphql/introspection.gen';
+import introspectionQueryResultData from '@/modules/graphql/introspection.gen.json';
 
 /**
  * **AutoMockProvider** can be used instead of **MockProvider** to avoid having to define queries and their exact results
@@ -39,7 +35,7 @@ const AutoMockProvider: React.FunctionComponent<
     children: React.ReactNode;
     mockResolvers?: IMocks;
   }>
-> = ({children, mockResolvers}) => {
+> = ({ children, mockResolvers }) => {
   // In memory normalized cache
   const cache = new InMemoryCache({
     possibleTypes: introspectionResult.possibleTypes,
@@ -61,7 +57,7 @@ const AutoMockProvider: React.FunctionComponent<
   });
 
   // Apply mock resolvers to executable schema
-  schema = addMocksToSchema({mocks: mockResolvers, schema});
+  schema = addMocksToSchema({ mocks: mockResolvers, schema });
 
   // Define ApolloClient
   const client = new ApolloClient({

@@ -17,6 +17,7 @@ export default defineConfig(() => {
       react({
         jsxImportSource: '@welldone-software/why-did-you-render', // <-----
       }),
+      // @see https://github.com/pd4d10/vite-plugin-svgr/issues/44#issuecomment-1877593407
       svgr({
         svgrOptions: { exportType: 'named', ref: true },
         include: '**/*.svg',
