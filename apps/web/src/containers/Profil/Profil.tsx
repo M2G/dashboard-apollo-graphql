@@ -1,15 +1,15 @@
 /*eslint-disable*/
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import { QueryResult } from '@apollo/client';
-import ProfilForm from 'components/ProfilForm';
-import { INPUT_NAME, INITIAL_VALUES } from 'components/ProfilForm/constants';
-import { AuthContext } from '../../AuthContext';
+import ProfilForm from '@/components/ProfilForm';
+import { INPUT_NAME, INITIAL_VALUES } from '@/components/ProfilForm/constants';
+import { useAuth } from '@/AuthContext';
 import {
   Exact,
   GetUserQuery,
   useGetUserQuery,
   useUpdateUserMutation,
-} from 'modules/graphql/generated';
+} from '@/modules/graphql/generated';
 
 function initialValues(values: {
   [x: string]: string;
@@ -33,7 +33,7 @@ function initialValues(values: {
 }
 
 function Profil(): JSX.Element | null {
-  const { userData }: { userData: { id: number } } = useContext(AuthContext);
+  const { userData }: { userData: { id: number } } = useAuth();
 
   const {
     loading,

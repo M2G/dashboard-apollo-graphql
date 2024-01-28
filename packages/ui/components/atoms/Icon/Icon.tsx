@@ -4,6 +4,7 @@ import { SVGProps, useMemo } from 'react';
 import type IconNames from './Icons.types';
 
 import Icons from './Icons';
+
 export interface IconProps extends SVGProps<SVGElement> {
   as: IconNames;
 }

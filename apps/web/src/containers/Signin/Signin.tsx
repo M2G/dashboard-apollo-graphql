@@ -1,14 +1,14 @@
 import type { JSX } from 'react';
 
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import SiginForm from '@/components/SigninForm';
 import { useSigninMutation } from '@/modules/graphql/generated';
 
-import { AuthContext } from '@/AuthContext';
+import { useAuth } from '@/AuthContext';
 import { INITIAL_VALUES } from './constants';
 
 function Signin(): JSX.Element {
-  const { activateAuth }: any = useContext(AuthContext);
+  const { activateAuth } = useAuth();
   const [signin, { reset }] = useSigninMutation({
     onCompleted: ({ signin: signinData }: { signin: string }) =>
       activateAuth(signinData),

@@ -1,13 +1,13 @@
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import ChangePasswordForm from '@/components/ChangePassordForm';
 import { INITIAL_VALUES } from '@/components/ChangePassordForm/constants';
 import { useUpdateUserMutation } from '@/modules/graphql/generated';
-import { AuthContext } from '@/AuthContext';
+import { useAuth } from '@/AuthContext';
 
 function ChangePassword(): JSX.Element {
   const {
     userData: { _id: id },
-  } = useContext(AuthContext);
+  } = useAuth();
   const [changePassword] = useUpdateUserMutation();
   const handleSubmit = useCallback(
     async (formData: {

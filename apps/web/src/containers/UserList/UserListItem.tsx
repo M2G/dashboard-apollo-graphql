@@ -1,32 +1,34 @@
 import type { JSX } from 'react';
-import DateCell from '@/components/Core/Table/DateCell';
 import type { ITableStaticCol } from '@/components/Core/Table/TableStaticCol';
-import TableStaticCol from '@/components/Core/Table/TableStaticCol';
-import IconNames from '@/components/Core/Icon/Icons.types';
 import type { Maybe, User } from '@/modules/graphql/generated';
 
+import DateCell from '@/components/Core/Table/DateCell';
+import TableStaticCol from '@/components/Core/Table/TableStaticCol';
+
+import IconNames from 'ui/components/atoms/Icon/Icons.types';
+
 export interface IUserListItem {
-  id: string;
-  user: User;
-  label: string;
-  onEdit: (user: User) => void;
-  onDelete: (user: User) => void;
   canDelete: boolean | undefined;
   canEdit: boolean | undefined;
+  id: string;
+  label: string;
+  onDelete: (user: User) => void;
+  onEdit: (user: User) => void;
+  user: User;
 }
 
 function userListItem({
-  id: rowId,
-  user,
-  label,
-  onEdit,
-  onDelete,
   canDelete,
   canEdit,
+  id: rowId,
+  label,
+  onDelete,
+  onEdit,
+  user,
 }: IUserListItem): (
   | {
       display: Date | Maybe<number> | string | undefined;
-      value: Date | number | string | null | undefined;
+      value: Date | null | number | string | undefined;
     }
   | { display: JSX.Element }
 )[] {
@@ -34,7 +36,7 @@ function userListItem({
 
   const id = `user__row__${rowId}__${user.id}`;
 
-  const actions: any = [];
+  const actions = [];
 
   if (canEdit) {
     actions.push({
