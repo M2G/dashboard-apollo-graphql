@@ -1,27 +1,28 @@
 import type { JSX } from 'react';
+
 import Pagination from '@/components/Core/Pagination/Pagination';
 import TableWrapper from '@/components/Core/Table';
 
 type ListProps = {
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
   header: any;
-  hasNextPage: any;
-  hasPrevPage: any;
-  id: any;
+  id: string;
   rows: any;
-  setCurrentPage: any;
+  setCurrentPage: (page: number) => void;
 };
 
 function List({
-  id,
-  header,
-  rows,
   hasNextPage,
   hasPrevPage,
+  header,
+  id,
+  rows,
   setCurrentPage,
 }: ListProps): JSX.Element {
   return (
     <>
-      <TableWrapper id={id} header={header} rows={rows} />
+      <TableWrapper header={header} id={id} rows={rows} />
       <div className="d-inline-flex">
         <Pagination
           hasNextPage={hasNextPage}

@@ -1,8 +1,8 @@
 function ErrorFallback({
-  error,
   componentStack,
+  error,
   resetErrorBoundary,
-}: any): JSX.Element {
+}): JSX.Element {
   return (
     <div role="alert">
       <p>Something went wrong:</p>

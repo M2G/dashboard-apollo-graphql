@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import type { UserList } from './types';
+import type { UserList as UserListType } from './types';
 import type { IUserListItem } from '@/containers/UserList/UserListItem';
 import type { GetUsersQuery, User, Users } from '@/modules/graphql/generated';
 import {
@@ -28,7 +28,7 @@ function UserList({
   canDelete = false,
   canEdit = false,
   id,
-}: UserList): JSX.Element {
+}: UserListType): JSX.Element {
   const [state, setUser] = useState<{
     deletingUser?: User | boolean;
     editingUser?: User | boolean;
@@ -338,13 +338,13 @@ function UserList({
     [pagination, getUsers],
   );
 
-  const users: any = data?.users || [];
-  const results = users?.results || [];
-  const pageInfo = users?.pageInfo || {};
+  const users = data?.users;
+  const results = users?.results;
+  const pageInfo = users?.pageInfo;
 
   const rows = useMemo(
     () =>
-      results?.map((user: any) =>
+      results?.map((user) =>
         userListItem({
           canDelete,
           canEdit,
@@ -398,9 +398,7 @@ function UserList({
       </Sidebar>
 
       <Modal
-        onConfirm={async () =>
-          onDeleteUser(state.deletingUser as unknown as User)
-        }
+        onConfirm={() => onDeleteUser(state.deletingUser as unknown as User)}
         hide={onClose}
         isShowing={state.deletingUser}
         title="Delete">
