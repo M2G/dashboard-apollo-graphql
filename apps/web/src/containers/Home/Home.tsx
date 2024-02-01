@@ -1,13 +1,13 @@
 import type { JSX, Key } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { debounce } from 'lodash';
-import type { GetConcertsQuery } from 'modules/graphql/generated';
-import { useGetConcertsLazyQuery } from 'modules/graphql/generated';
+import type { GetConcertsQuery } from '@/modules/graphql/generated';
+import { useGetConcertsLazyQuery } from '@/modules/graphql/generated';
 
-import InfiniteScroll from 'components/Core/InfiniteScroll';
-import Input from 'components/Core/Input';
-import TopLineLoading from 'components/Loading/TopLineLoading';
-import NoData from 'components/NoData';
+import InfiniteScroll from '@/components/Core/InfiniteScroll';
+import Field from 'ui/components/molecules/Field';
+import TopLineLoading from '@/components/Loading/TopLineLoading';
+import NoData from '@/components/NoData';
 import chunk from './helpers';
 import './index.scss';
 
@@ -95,7 +95,7 @@ function Home(): JSX.Element {
   return (
     <div className="o-zone c-home">
       <div className="o-grid">
-        <Input
+        <Field
           aria-label="Search"
           className="form-control c-search-input"
           id="floatingInput"
@@ -108,8 +108,7 @@ function Home(): JSX.Element {
         <InfiniteScroll
           hasMore={pageInfo?.hasNextPage}
           loading={loading}
-          onLoadMore={loadMore}
-        >
+          onLoadMore={loadMore}>
           {(chunk(concerts, 4) || [])?.map((concert, index: Key) => (
             <div className="o-grid__row" key={index}>
               {concert?.map(
@@ -128,8 +127,7 @@ function Home(): JSX.Element {
                 ) => (
                   <div
                     className="o-col--one-quarter--large o-col--half--medium"
-                    key={`${index}_${concertIdx}_${node?.concert_id}`}
-                  >
+                    key={`${index}_${concertIdx}_${node?.concert_id}`}>
                     <div className="o-cell--one">
                       <div className="card">
                         <div className="card-body">

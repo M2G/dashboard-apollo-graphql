@@ -3,7 +3,6 @@ module.exports = {
     node: true,
   },
   extends: [
-    /*
     'airbnb',
     'airbnb/hooks',
     'airbnb-typescript',
@@ -16,8 +15,6 @@ module.exports = {
     '../../node_modules/eslint-config-airbnb-base/rules/style.js',
     '../../node_modules/eslint-config-airbnb-base/rules/variables.js',
     '../../node_modules/eslint-config-airbnb-base/rules/es6.js',
-
-     */
     'eslint:recommended',
     'plugin:react-hooks/recommended',
     'plugin:import/errors',
