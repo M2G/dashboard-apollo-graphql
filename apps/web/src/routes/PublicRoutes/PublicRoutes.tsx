@@ -1,12 +1,12 @@
 import type { JSX } from 'react';
 import { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import ROUTER_PATH from 'constants/RouterPath';
+import ROUTER_PATH from '@/constants/RouterPath';
 
-const Signin = lazy(() => import('containers/Signin'));
-const Signup = lazy(() => import('containers/Signup'));
-const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
-const ResetPassword = lazy(() => import('containers/ResetPassword'));
+const Signin = lazy(() => import('@/containers/Signin'));
+const Signup = lazy(() => import('@/containers/Signup'));
+const ForgotPassword = lazy(() => import('@/containers/ForgotPassword'));
+const ResetPassword = lazy(() => import('@/containers/ResetPassword'));
 
 function PublicRoutes(): JSX.Element {
   return (
