@@ -15,11 +15,11 @@ describe('Signin Container', () => {
     beforeEach(() => {
       const INITIAL_VALUES = {
         [INPUT_NAME.EMAIL]: '',
-        [INPUT_NAME.PASSWORD]: ''
+        [INPUT_NAME.PASSWORD]: '',
       };
 
       wrapper = render(
-        <ProfilForm initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
+        <ProfilForm initialValues={INITIAL_VALUES} onSubmit={onSubmit} />,
       );
 
       floatingInput = wrapper.container.querySelector('#floatingInput');
@@ -39,7 +39,7 @@ describe('Signin Container', () => {
       expect(onSubmit).toHaveBeenCalledTimes(1);
       expect(onSubmit).toHaveBeenCalledWith({
         email: 'test@gmail.com',
-        password: 'test'
+        password: 'test',
       });
     });
   });

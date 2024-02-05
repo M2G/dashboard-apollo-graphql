@@ -3,7 +3,7 @@ import { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import ROUTER_PATH from '@/constants/RouterPath';
 
-const Home = lazy(() => import('@/containers/Home'));
+const Concert = lazy(() => import('@/containers/Concert'));
 const Users = lazy(() => import('@/containers/Users'));
 const ChangePassword = lazy(() => import('@/containers/ChangePassword'));
 const Profil = lazy(() => import('@/containers/Profil'));
@@ -11,7 +11,7 @@ const Profil = lazy(() => import('@/containers/Profil'));
 function PrivateRoutes(): JSX.Element {
   return (
     <Routes>
-      <Route path={ROUTER_PATH.HOME} element={<Home />} />
+      <Route path={ROUTER_PATH.HOME} element={<Concert />} />
       <Route path={ROUTER_PATH.USERS} element={<Users />} />
       <Route path={ROUTER_PATH.PROFIL} element={<Profil />} />
       <Route path={ROUTER_PATH.CHANGE_PASSWORD} element={<ChangePassword />} />

@@ -64,8 +64,8 @@ function Home(): JSX.Element {
   const pageInfo = constList?.pageInfo;
   const concerts = constList?.edges;
 
-  const loadMore = useCallback(async (): Promise<void> => {
-    await fetchMore({
+  const loadMore = useCallback((): void => {
+    fetchMore({
       skip: !pageInfo?.hasNextPage,
       updateQuery: (previousResult: GetConcertsQuery, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.concerts.edges;

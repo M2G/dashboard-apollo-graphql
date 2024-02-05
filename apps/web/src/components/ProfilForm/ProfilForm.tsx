@@ -1,7 +1,5 @@
+/* eslint-disable */
 import type { JSX } from 'react';
-
-import ROUTER_PATH from '@/constants/RouterPath';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +7,9 @@ import { Link } from 'react-router-dom';
 import { Button, Field } from 'ui';
 
 import { z } from 'zod';
+
+import ROUTER_PATH from '@/constants/RouterPath';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
   formSchema,
