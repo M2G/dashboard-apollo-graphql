@@ -3,6 +3,11 @@ import { fireEvent, render, cleanup } from '@testing-library/react';
 import ProfilForm from './ProfilForm';
 import { INPUT_NAME } from './constants';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: () => ['key'] }),
+  t: () => jest.fn(),
+}));
+
 afterEach(cleanup);
 
 describe('Signin Container', () => {

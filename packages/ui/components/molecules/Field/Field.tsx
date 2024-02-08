@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {
   FC,
   HTMLInputTypeAttribute,
@@ -114,11 +113,3 @@ const Field: FC<FieldProps> = ({
 };
 
 export default Field;
-
-Field.propTypes = {
-  label: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  status: PropTypes.oneOf(['default', 'danger', 'success', 'warning']),
-  tag: PropTypes.oneOf(['input', 'textarea']),
-  type: PropTypes.oneOf(['text', 'email', 'password', 'number', 'tel']),
-};

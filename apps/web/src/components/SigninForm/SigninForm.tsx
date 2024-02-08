@@ -58,6 +58,7 @@ function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
           <span>{t('form.toContinue')}</span>
         </div>
         <Field
+          data-testid="email"
           className="_:mb-2"
           label={t('field.email')}
           name={INPUT_NAME.EMAIL}
@@ -66,6 +67,7 @@ function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
           type="email"
         />
         <Field
+          data-testid="password"
           className="_:mb-2"
           label={t('field.password')}
           name={INPUT_NAME.PASSWORD}

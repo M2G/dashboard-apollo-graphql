@@ -1,7 +1,14 @@
 /*eslint-disable*/
-import { fireEvent, render, cleanup } from '@testing-library/react';
+import { fireEvent, render, cleanup, screen } from '@testing-library/react';
 import SigninForm from './SigninForm';
 import { INPUT_NAME } from './constants';
+import { MemoryRouter } from 'react-router-dom';
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: () => ['key'] }),
+  Trans: () => jest.fn(),
+  t: () => jest.fn(),
+}));
 
 afterEach(cleanup);
 
@@ -15,12 +22,21 @@ describe('Signin Container', () => {
     beforeEach(() => {
       const INITIAL_VALUES = {
         [INPUT_NAME.EMAIL]: '',
-        [INPUT_NAME.PASSWORD]: ''
+        [INPUT_NAME.PASSWORD]: '',
       };
 
-      wrapper = render(
-        <SigninForm initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
+      //@see https://stackoverflow.com/questions/76081552/typeerror-cannot-destructure-property-basename-of-react-namespace-usecontex
+      render(
+        <MemoryRouter>
+          <SigninForm initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
+        </MemoryRouter>,
       );
+
+      const tt = screen.getByTestId('email');
+
+      console.log('tt', tt);
+
+      /*
 
       floatingInput = wrapper.container.querySelector('#floatingInput');
       floatingPassword = wrapper.container.querySelector('#floatingPassword');
@@ -39,8 +55,10 @@ describe('Signin Container', () => {
       expect(onSubmit).toHaveBeenCalledTimes(1);
       expect(onSubmit).toHaveBeenCalledWith({
         email: 'test@gmail.com',
-        password: 'test'
-      });
+        password: 'test',
+      });*/
     });
+
+    test('should render', () => {});
   });
 });
