@@ -11,7 +11,12 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { Button, Field } from 'ui';
 
-import { formSchema, INPUT_NAME, LABEL_EMAIL, LABEL_PASSWORD } from './constants';
+import {
+  formSchema,
+  INPUT_NAME,
+  LABEL_EMAIL,
+  LABEL_PASSWORD,
+} from './constants';
 import { useMemo } from 'react';
 
 type FormSchemaType = z.infer<typeof formSchema>;
@@ -25,6 +30,7 @@ function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
   const { t } = useTranslation();
   const {
     formState: { errors, isValid },
+    control,
     handleSubmit,
     register,
   } = useForm<FormSchemaType>({
@@ -39,29 +45,41 @@ function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
   });
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center" id="form-signin">
-      <form className="rounded-2xl bg-white p-[25px]" onSubmit={handleSubmit(onSubmit)}>
+    <div
+      className="flex min-h-screen flex-col items-center justify-center"
+      id="form-signin">
+      <form
+        className="rounded-2xl bg-white p-[25px]"
+        onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <h1 className="text-3xl font-bold dark:text-black">{t('form.createAccount')}</h1>
+          <h1 className="text-3xl font-bold dark:text-black">
+            {t('form.createAccount')}
+          </h1>
           <span>{t('form.toContinue')}</span>
         </div>
         <Field
           className="_:mb-2"
-          label={LABEL_EMAIL}
+          data-testid="email"
+          label={t('field.email')}
           name={INPUT_NAME.EMAIL}
-          type="email"
-          {...{ errors, register }}
+          {...{ control, errors, register }}
           required
+          type="email"
         />
         <Field
           className="_:mb-2"
-          label={LABEL_PASSWORD}
+          label={t('field.password')}
           name={INPUT_NAME.PASSWORD}
-          type="email"
-          {...{ errors, register }}
+          {...{ control, errors, register }}
           required
+          type="password"
         />
-        <Button className="w-full" disabled={!isValid} type="submit" variant="primary">
+        <Button
+          className="w-full"
+          data-testid="submit"
+          disabled={!isValid}
+          type="submit"
+          variant="primary">
           {t('form.signup')}
         </Button>
         <div className="c-action gab-1 mt-3 flex flex-nowrap justify-start">
