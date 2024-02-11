@@ -1,43 +1,68 @@
-import { cleanup, fireEvent, render } from '@testing-library/react';
-import { INPUT_NAME } from './constants';
-import SignupForm from './SignupForm';
+/*eslint-disable*/
+import {
+  fireEvent,
+  render,
+  cleanup,
+  screen,
+  act,
+} from '@testing-library/react';
+import ForgotPasswordForm from './ForgotPasswordForm';
+import { INPUT_NAME, INITIAL_VALUES } from './constants';
+import { MemoryRouter } from 'react-router-dom';
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: () => ['key'] }),
+  Trans: () => jest.fn(),
+  t: () => jest.fn(),
+}));
 
 afterEach(cleanup);
 
-describe('Signin Container', () => {
+describe('Reset Password Form Component', () => {
   describe('Submitting form', () => {
-    let wrapper: any;
-    let floatingInput: HTMLInputElement;
-    let floatingPassword: HTMLInputElement;
+    let floatingEmail: HTMLInputElement;
+    let floatingSubmit: HTMLInputElement;
     const onSubmit = jest.fn();
 
-    beforeEach(() => {
-      const INITIAL_VALUES = {
-        [INPUT_NAME.EMAIL]: '',
-        [INPUT_NAME.PASSWORD]: '',
-      };
+    beforeEach(async () => {
+      //@see https://stackoverflow.com/questions/76081552/typeerror-cannot-destructure-property-basename-of-react-namespace-usecontex
+      render(
+        <MemoryRouter>
+          <ForgotPasswordForm
+            initialValues={INITIAL_VALUES}
+            onSubmit={onSubmit}
+          />
+        </MemoryRouter>,
+      );
 
-      wrapper = render(<SignupForm initialValues={INITIAL_VALUES} onSubmit={onSubmit} />);
+      floatingEmail = screen.getByTestId('email');
+      floatingSubmit = screen.getByTestId('submit');
 
-      floatingInput = wrapper.container.querySelector('#floatingInput');
-      floatingPassword = wrapper.container.querySelector('#floatingPassword');
+      fireEvent.change(floatingEmail, { target: { value: 'test' } });
 
-      fireEvent.change(floatingInput, { target: { value: 'test@gmail.com' } });
-      fireEvent.change(floatingPassword, { target: { value: 'test' } });
-
-      expect(floatingInput).toBeInTheDocument();
-      expect(floatingPassword).toBeInTheDocument();
-
-      const button: any = wrapper.container.querySelector('.btn');
-      fireEvent.click(button);
+      await act(() => {
+        fireEvent.submit(floatingSubmit);
+      });
     });
 
-    test('should render', () => {
+    test('should display correctly value form input', () => {
+      expect(floatingEmail.value).toBe('test');
+    });
+
+    test('should submit data', () => {
       expect(onSubmit).toHaveBeenCalledTimes(1);
-      expect(onSubmit).toHaveBeenCalledWith({
-        email: 'test@gmail.com',
-        password: 'test',
+      expect(onSubmit.mock.calls[0][0]).toMatchObject({
+        email: 'test',
       });
+
+      /*
+      expect(onSubmit).toHaveBeenCalledWith(
+        {
+          email: 'test@gmail.com',
+          password: 'test',
+        }
+      );
+      */
     });
   });
 });
