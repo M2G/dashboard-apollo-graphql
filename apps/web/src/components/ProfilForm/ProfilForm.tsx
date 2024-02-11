@@ -29,6 +29,7 @@ type FormSchemaType = z.infer<typeof formSchema>;
 function ProfilForm({ initialValues, onSubmit }: IForm): JSX.Element {
   const { t } = useTranslation();
   const {
+    control,
     formState: { errors, isValid },
     handleSubmit,
     register,
@@ -59,29 +60,30 @@ function ProfilForm({ initialValues, onSubmit }: IForm): JSX.Element {
         </div>
         <Field
           className="_:mb-2"
-          label={LABEL_FIRST_NAME}
+          label={t('field.firstName')}
           name={INPUT_NAME.FIRST_NAME}
           type="text"
-          {...{ errors, register }}
+          {...{ control, errors, register }}
           required
         />
         <Field
           className="_:mb-2"
-          label={LABEL_LAST_NAME}
+          label={t('field.lastName')}
           name={INPUT_NAME.LAST_NAME}
           type="text"
-          {...{ errors, register }}
+          {...{ control, errors, register }}
           required
         />
         <Field
           className="_:mb-2"
-          label={LABEL_EMAIL}
+          label={t('field.email')}
           name={INPUT_NAME.EMAIL}
           type="email"
-          {...{ errors, register }}
+          {...{ control, errors, register }}
           required
         />
         <Button
+          data-testid="submit"
           className="w-full"
           disabled={!isValid}
           type="submit"
