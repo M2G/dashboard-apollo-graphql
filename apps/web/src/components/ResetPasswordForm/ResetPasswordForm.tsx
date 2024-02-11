@@ -6,7 +6,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { Button, Field } from 'ui';
-import { formSchema, INPUT_NAME, LABEL_NEW_PASSWORD, LABEL_VERIFY_PASSWORD } from './constants';
+import {
+  formSchema,
+  INPUT_NAME,
+  LABEL_NEW_PASSWORD,
+  LABEL_VERIFY_PASSWORD,
+} from './constants';
 import { Link } from 'react-router-dom';
 import ROUTER_PATH from '@/constants/RouterPath';
 import { useMemo } from 'react';
@@ -22,6 +27,7 @@ function ResetPasswordForm({ initialValues, onSubmit }: IForm) {
   const { t } = useTranslation();
   const {
     formState: { errors, isValid },
+    control,
     handleSubmit,
     register,
   } = useForm<FormSchemaType>({
@@ -39,9 +45,13 @@ function ResetPasswordForm({ initialValues, onSubmit }: IForm) {
     <div
       className="flex min-h-screen flex-col items-center justify-center"
       id="form-reset-password">
-      <form className="rounded-2xl bg-white p-[25px]" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="rounded-2xl bg-white p-[25px]"
+        onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <h1 className="text-3xl font-bold dark:text-black">{t('form.resetPassword')}</h1>
+          <h1 className="text-3xl font-bold dark:text-black">
+            {t('form.resetPassword')}
+          </h1>
           <span>{t('form.toContinue')}</span>
         </div>
         <Field
@@ -49,7 +59,7 @@ function ResetPasswordForm({ initialValues, onSubmit }: IForm) {
           label={t('field.newPassword')}
           name={INPUT_NAME.NEW_PASSWORD}
           type="email"
-          {...{ errors, register }}
+          {...{ control, errors, register }}
           required
         />
         <Field
@@ -57,10 +67,15 @@ function ResetPasswordForm({ initialValues, onSubmit }: IForm) {
           label={t('field.verifyPassword')}
           name={INPUT_NAME.VERIFY_PASSWORD}
           type="email"
-          {...{ errors, register }}
+          {...{ control, errors, register }}
           required
         />
-        <Button className="w-full" disabled={!isValid} type="submit" variant="primary">
+        <Button
+          data-testid="submit"
+          className="w-full"
+          disabled={!isValid}
+          type="submit"
+          variant="primary">
           {t('form.submit')}
         </Button>
         <div className="c-action gab-1 mt-3 flex flex-nowrap justify-start">
