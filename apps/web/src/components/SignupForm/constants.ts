@@ -11,8 +11,8 @@ export const INITIAL_VALUES = {
 };
 
 export const ERROR_TEXT_REQUIRED = {
-  ERROR_TEXT_REQUIRED_PASSWORD: 'Mot de passe requis',
-  ERROR_TEXT_REQUIRED_EMAIL: 'Email requis',
+  ERROR_TEXT_REQUIRED_EMAIL: 'Email is required',
+  ERROR_TEXT_REQUIRED_PASSWORD: 'Password is required',
 };
 
 export const LABEL_EMAIL = 'Email';
@@ -22,7 +22,10 @@ export const PLACEHOLDER_EMAIL = 'Email';
 export const PLACEHOLDER_PASSWORD = 'Mot de passe';
 
 export const formSchema = z.object({
-  email: z.string().email('Invalid email').min(1, ERROR_TEXT_REQUIRED.ERROR_TEXT_REQUIRED_EMAIL),
+  email: z
+    .string()
+    .email('Invalid email')
+    .min(1, ERROR_TEXT_REQUIRED.ERROR_TEXT_REQUIRED_EMAIL),
   password: z.string().min(1, ERROR_TEXT_REQUIRED.ERROR_TEXT_REQUIRED_PASSWORD),
   // .min(8, 'Password must have more than 8 characters'),
 });
