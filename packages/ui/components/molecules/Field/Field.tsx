@@ -86,6 +86,7 @@ const Field: FC<FieldProps> = ({
             StatusVariants[status],
             errors && errors[name] && '_:border-2 _:border-danger',
           ].join(' ')}
+          data-testid={name}
           aria-invalid={errors && errors[name] ? 'true' : 'false'}
           type={type}
           defaultValue={defaultValue}
@@ -104,8 +105,8 @@ const Field: FC<FieldProps> = ({
         </label>
       </div>
       {errors?.[name]?.message ? (
-        <div className="mt-1 border bg-red-100 px-4 py-3" role="alert">
-          <span>{errors[name].message}</span>
+        <div className="py-1" role="alert">
+          <span className="text-danger">{errors[name].message}</span>
         </div>
       ) : null}
     </div>
