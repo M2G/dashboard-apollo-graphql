@@ -25,7 +25,9 @@ export const formSchema = z.object({
   [INPUT_NAME.EMAIL]: z
     .string()
     .email('Invalid email')
-    .min(1, ERROR_TEXT_REQUIRED.ERROR_TEXT_REQUIRED_EMAIL),
-  [INPUT_NAME.PASSWORD]: z.string().min(1, ERROR_TEXT_REQUIRED.ERROR_TEXT_REQUIRED_PASSWORD),
-  // .min(8, 'Password must have more than 8 characters'),
+    .min(1, { message: 'Email is required' })
+    .email('Invalid email address'),
+  [INPUT_NAME.PASSWORD]: z
+    .string()
+    .min(6, { message: 'Password must be at least 6 characters' }),
 });
