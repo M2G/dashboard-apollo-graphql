@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { Button, Field } from 'ui';
 
 import { useMemo } from 'react';
-import { formSchema, INPUT_NAME, LABEL_EMAIL } from './constants';
+import { formSchema, INPUT_NAME } from './constants';
 
 type FormSchemaType = z.infer<typeof formSchema>;
 
@@ -22,6 +22,7 @@ interface IForm {
 function ForgotPasswordForm({ initialValues, onSubmit }: IForm) {
   const { t } = useTranslation();
   const {
+    control,
     formState: { errors, isValid },
     handleSubmit,
     register,
@@ -40,20 +41,29 @@ function ForgotPasswordForm({ initialValues, onSubmit }: IForm) {
     <div
       className="flex min-h-screen flex-col items-center justify-center"
       id="form-forgot-password">
-      <form className="rounded-2xl bg-white p-[25px]" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="rounded-2xl bg-white p-[25px]"
+        onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <h1 className="text-3xl font-bold dark:text-black">Forgot password</h1>
+          <h1 className="text-3xl font-bold dark:text-black">
+            Forgot password
+          </h1>
           <span>to continue</span>
         </div>
         <Field
+          label={t('field.email')}
           className="_:mb-2"
-          label={LABEL_EMAIL}
           name={INPUT_NAME.EMAIL}
           type="email"
-          {...{ errors, register }}
+          {...{ control, errors, register }}
           required
         />
-        <Button className="w-full" disabled={!isValid} type="submit" variant="primary">
+        <Button
+          data-testid="submit"
+          className="w-full"
+          disabled={!isValid}
+          type="submit"
+          variant="primary">
           Submit
         </Button>
         <div className="c-action gab-1 mt-3 flex flex-nowrap justify-start">
