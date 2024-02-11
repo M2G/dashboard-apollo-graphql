@@ -1,24 +1,17 @@
 import type { JSX } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
+
 import type { z } from 'zod';
 
-import { useTranslation } from 'react-i18next';
 import ROUTER_PATH from '@/constants/RouterPath';
 import { zodResolver } from '@hookform/resolvers/zod';
-
+import { useMemo } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-
 import { Button, Field } from 'ui';
 
-import {
-  INITIAL_VALUES,
-  INPUT_NAME,
-  LABEL_EMAIL,
-  LABEL_PASSWORD,
-  formSchema,
-} from './constants';
-import { useMemo } from 'react';
+import { formSchema, INITIAL_VALUES, INPUT_NAME } from './constants';
 
 type FormSchemaType = z.infer<typeof formSchema>;
 
@@ -31,6 +24,7 @@ function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
   const { t } = useTranslation();
   const {
     formState: { errors, isValid },
+    control,
     handleSubmit,
     register,
   } = useForm<FormSchemaType>({
@@ -58,25 +52,24 @@ function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
           <span>{t('form.toContinue')}</span>
         </div>
         <Field
-          data-testid="email"
           className="_:mb-2"
           label={t('field.email')}
           name={INPUT_NAME.EMAIL}
-          {...{ errors, register }}
+          {...{ control, errors, register }}
           required
           type="email"
         />
         <Field
-          data-testid="password"
           className="_:mb-2"
           label={t('field.password')}
           name={INPUT_NAME.PASSWORD}
-          {...{ errors, register }}
+          {...{ control, errors, register }}
           required
           type="password"
         />
         <Button
           className="w-full"
+          data-testid="submit"
           disabled={!isValid}
           type="submit"
           variant="primary">
