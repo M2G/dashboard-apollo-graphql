@@ -16,6 +16,7 @@ const resources = {
         lastname: 'Last name',
         updateAt: 'Update at',
         newPassword: 'New password',
+        confirmPassword: 'Confirm password',
         verifyPassword: 'Verify password',
       },
       form: {
@@ -52,8 +53,9 @@ const resources = {
       field: {
         createdAt: 'Créé à',
         email: 'Email',
-        firstname: 'Prénom',
-        lastname: 'Nom de famille',
+        firstName: 'Prénom',
+        lastName: 'Nom de famille',
+        oldPassword: 'Ancien Mot de passe',
         password: 'Mot de passe',
         updateAt: 'Mise à jour à',
       },
