@@ -9,13 +9,7 @@ import type { z } from 'zod';
 
 import ROUTER_PATH from '@/constants/RouterPath';
 
-import {
-  INPUT_NAME,
-  LABEL_OLD_PASSWORD,
-  LABEL_PASSWORD,
-  LABEL_PASSWORD2,
-  formSchema,
-} from './constants';
+import { INPUT_NAME, formSchema } from './constants';
 
 type FormSchemaType = z.infer<typeof formSchema>;
 
@@ -38,7 +32,7 @@ function ChangePassordForm({ initialValues, onSubmit }: IForm): JSX.Element {
       }),
       [initialValues],
     ),
-    mode: 'all',
+    mode: 'onBlur',
     resolver: zodResolver(formSchema),
   });
 
@@ -57,7 +51,7 @@ function ChangePassordForm({ initialValues, onSubmit }: IForm): JSX.Element {
         </div>
         <Field
           className="_:mb-2"
-          label={LABEL_OLD_PASSWORD}
+          label={t('field.oldPassword')}
           name={INPUT_NAME.OLD_PASSWORD}
           type="password"
           {...{ control, errors, register }}
@@ -65,7 +59,7 @@ function ChangePassordForm({ initialValues, onSubmit }: IForm): JSX.Element {
         />
         <Field
           className="_:mb-2"
-          label={LABEL_PASSWORD}
+          label={t('field.password')}
           name={INPUT_NAME.PASSWORD}
           type="password"
           {...{ control, errors, register }}
@@ -73,13 +67,14 @@ function ChangePassordForm({ initialValues, onSubmit }: IForm): JSX.Element {
         />
         <Field
           className="_:mb-2"
-          label={LABEL_PASSWORD2}
-          name={INPUT_NAME.PASSWORD2}
+          label={t('field.confirmPassword')}
+          name={INPUT_NAME.CONFIRM_PASSWORD}
           type="password"
           {...{ control, errors, register }}
           required
         />
         <Button
+          data-testid="submit"
           className="w-full"
           disabled={!isValid}
           type="submit"
