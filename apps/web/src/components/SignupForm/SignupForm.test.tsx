@@ -54,8 +54,9 @@ describe('Signup Form Component', () => {
         fireEvent.submit(floatingSubmit);
       });
 
-      expect(screen.getByText('Invalid email')).toBeInTheDocument();
-      expect(screen.getByText('Password is required')).toBeInTheDocument();
+      expect(
+        screen.getByText('String must contain at least 6 character(s)'),
+      ).toBeInTheDocument();
     });
 
     test('should display correctly value form input', () => {

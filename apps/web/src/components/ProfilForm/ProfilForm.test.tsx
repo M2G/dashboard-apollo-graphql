@@ -47,7 +47,7 @@ describe('Profil Form Component', () => {
       });
     });
 
-    test('should display error validatiob', async () => {
+    test('should display error validation', async () => {
       fireEvent.change(floatingEmail, { target: { value: '' } });
       fireEvent.change(floatingFirstName, { target: { value: '' } });
       fireEvent.change(floatingLastName, { target: { value: '' } });

@@ -15,9 +15,15 @@ const resources = {
         password: 'Password',
         lastname: 'Last name',
         updateAt: 'Update at',
+        oldPassword: 'Old password',
         newPassword: 'New password',
         confirmPassword: 'Confirm password',
         verifyPassword: 'Verify password',
+      },
+      fieldError: {
+        required: 'Required',
+        passwordLength: 'Password must be at least 6 characters',
+        passwordMatch: 'Passwords does not match',
       },
       form: {
         createAccount: 'Create account',
@@ -58,6 +64,11 @@ const resources = {
         oldPassword: 'Ancien Mot de passe',
         password: 'Mot de passe',
         updateAt: 'Mise à jour à',
+      },
+      fieldError: {
+        required: 'Requis',
+        passwordLength: 'Le mot de passe doit comporter au moins 6 caractères',
+        passwordMatch: 'Les mots de passe ne correspondent pas',
       },
       form: {
         createAccount: 'Créer un compte',
