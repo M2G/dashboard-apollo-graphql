@@ -45,7 +45,7 @@ function ChangePassordForm({ initialValues, onSubmit }: IForm): JSX.Element {
         onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
           <h1 className="text-3xl font-bold dark:text-black">
-            {t('form.forgotPassword')}
+            {t('form.changePassword')}
           </h1>
           <span>{t('form.toContinue')}</span>
         </div>
