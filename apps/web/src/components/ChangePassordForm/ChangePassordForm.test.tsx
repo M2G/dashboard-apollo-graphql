@@ -72,24 +72,21 @@ describe('Reset Password Form Component', () => {
       expect(submit).toBeDisabled();
     });
 
-    /*
     //TODO error validation match password
-      test('should display error match validation', async () => {
-        fireEvent.change(oldPassword, { target: { value: 'bbbbbbbbbbbbbb' } });
-        fireEvent.change(newPassword, { target: { value: 'aaaaaaaaaaaaaaaaa' } });
-        fireEvent.blur(newPassword);
-        fireEvent.change(confirmPassword, { target: { value: 'cccccccccccccccc' } });
-        fireEvent.blur(confirmPassword);
-
-        await act(() => {
-          fireEvent.submit(submit);
-        });
-
-        screen.debug();
-
-        expect(submit).toBeDisabled();
+    test('should display error match validation', async () => {
+      fireEvent.change(oldPassword, { target: { value: 'bbbbbbbbbbbbbb' } });
+      fireEvent.change(newPassword, { target: { value: 'aaaaaaaaaaaaaaaaa' } });
+      fireEvent.change(confirmPassword, {
+        target: { value: 'cccccccccccccccc' },
       });
-     */
+      await act(() => {
+        fireEvent.submit(submit);
+      });
+
+      screen.debug();
+
+      expect(submit).toBeDisabled();
+    });
 
     test('should submit data', () => {
       expect(onSubmit).toHaveBeenCalledTimes(1);
