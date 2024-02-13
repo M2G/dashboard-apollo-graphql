@@ -20,8 +20,8 @@ afterEach(cleanup);
 
 describe('Reset Password Form Component', () => {
   describe('Submitting form', () => {
-    let floatingEmail: HTMLInputElement;
-    let floatingSubmit: HTMLInputElement;
+    let fieldEmail: HTMLInputElement;
+    let fieldSubmit: HTMLInputElement;
     const onSubmit = jest.fn();
 
     beforeEach(async () => {
@@ -35,18 +35,29 @@ describe('Reset Password Form Component', () => {
         </MemoryRouter>,
       );
 
-      floatingEmail = screen.getByTestId('email');
-      floatingSubmit = screen.getByTestId('submit');
+      fieldEmail = screen.getByTestId('email');
+      fieldSubmit = screen.getByTestId('submit');
 
-      fireEvent.change(floatingEmail, { target: { value: 'test' } });
+      fireEvent.change(fieldEmail, { target: { value: 'test@gmail.com' } });
 
       await act(() => {
-        fireEvent.submit(floatingSubmit);
+        fireEvent.submit(fieldSubmit);
       });
     });
 
+    test('should display error validation', async () => {
+      fireEvent.change(fieldEmail, { target: { value: '' } });
+
+      await act(() => {
+        fireEvent.submit(fieldSubmit);
+      });
+
+      expect(screen.getByText('Invalid email')).toBeInTheDocument();
+      expect(fieldSubmit).toBeDisabled();
+    });
+
     test('should display correctly value form input', () => {
-      expect(floatingEmail.value).toBe('test');
+      expect(fieldEmail.value).toBe('test@gmail.com');
     });
 
     test('should submit data', () => {
