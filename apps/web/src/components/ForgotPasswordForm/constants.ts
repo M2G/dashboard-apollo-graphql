@@ -21,13 +21,20 @@ export const LABEL_PASSWORD = 'Password';
 export const PLACEHOLDER_EMAIL = 'Email';
 export const PLACEHOLDER_PASSWORD = 'Mot de passe';
 
-export const formSchema = z.object({
-  [INPUT_NAME.EMAIL]: z
-    .string()
-    .email('Invalid email')
-    .min(1, { message: 'Email is required' })
-    .email('Invalid email address'),
-  [INPUT_NAME.PASSWORD]: z
-    .string()
-    .min(6, { message: 'Password must be at least 6 characters' }),
-});
+export function formSchema(
+  t,
+): z.ZodObject<Record<string, z.ZodType<any, any, any>>> {
+  return z.object({
+    [INPUT_NAME.EMAIL]: z
+      .string({
+        required_error: t('fieldError.emailRequired'),
+      })
+      .email(t('fieldError.emailInvalid'))
+      .min(1, { message: t('fieldError.emailRequired') }),
+    [INPUT_NAME.PASSWORD]: z
+      .string({
+        required_error: t('fieldError.passwordRequired'),
+      })
+      .min(6, { message: t('fieldError.passwordLength') }),
+  });
+}
