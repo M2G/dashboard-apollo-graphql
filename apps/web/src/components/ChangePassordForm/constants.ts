@@ -18,14 +18,24 @@ export function formSchema(
   return z
     .object({
       [INPUT_NAME.OLD_PASSWORD]: z
-        .string()
+        .string({
+          required_error: t('fieldError.oldPasswordRequired'),
+        })
         .min(6, t('fieldError.passwordLength')),
-      [INPUT_NAME.PASSWORD]: z.string().min(6, {
-        message: t('fieldError.passwordLength'),
-      }),
-      [INPUT_NAME.CONFIRM_PASSWORD]: z.string().min(6, {
-        message: t('fieldError.passwordLength'),
-      }),
+      [INPUT_NAME.PASSWORD]: z
+        .string({
+          required_error: t('fieldError.passwordRequired'),
+        })
+        .min(6, {
+          message: t('fieldError.passwordLength'),
+        }),
+      [INPUT_NAME.CONFIRM_PASSWORD]: z
+        .string({
+          required_error: t('fieldError.confirmPasswordRequired'),
+        })
+        .min(6, {
+          message: t('fieldError.passwordLength'),
+        }),
     })
     .refine(
       (data) => data[INPUT_NAME.PASSWORD] === data[INPUT_NAME.CONFIRM_PASSWORD],
