@@ -20,10 +20,10 @@ afterEach(cleanup);
 
 describe('Reset Password Form Component', () => {
   describe('Submitting form', () => {
-    let oldPassword: HTMLInputElement;
-    let newPassword: HTMLInputElement;
-    let confirmPassword: HTMLInputElement;
-    let submit: HTMLInputElement;
+    let fieldOldPassword: HTMLInputElement;
+    let fieldNewPassword: HTMLInputElement;
+    let fieldConfirmPassword: HTMLInputElement;
+    let buttonSubmit: HTMLInputElement;
     const onSubmit = jest.fn();
 
     beforeEach(async () => {
@@ -37,55 +37,63 @@ describe('Reset Password Form Component', () => {
         </MemoryRouter>,
       );
 
-      oldPassword = screen.getByTestId('oldPassword');
-      newPassword = screen.getByTestId('password');
-      confirmPassword = screen.getByTestId('confirmPassword');
-      submit = screen.getByTestId('submit');
+      fieldOldPassword = screen.getByTestId('oldPassword');
+      fieldNewPassword = screen.getByTestId('password');
+      fieldConfirmPassword = screen.getByTestId('confirmPassword');
+      buttonSubmit = screen.getByTestId('submit');
 
-      fireEvent.change(oldPassword, { target: { value: 'bbbbbbbbbbbbbb' } });
-      fireEvent.change(newPassword, { target: { value: 'aaaaaaaaaaaa' } });
-      fireEvent.change(confirmPassword, { target: { value: 'aaaaaaaaaaaa' } });
+      fireEvent.change(fieldOldPassword, {
+        target: { value: 'bbbbbbbbbbbbbb' },
+      });
+      fireEvent.change(fieldNewPassword, { target: { value: 'aaaaaaaaaaaa' } });
+      fireEvent.change(fieldConfirmPassword, {
+        target: { value: 'aaaaaaaaaaaa' },
+      });
 
       await act(() => {
-        fireEvent.submit(submit);
+        fireEvent.submit(buttonSubmit);
       });
     });
 
     test('should display correctly value form input', () => {
-      expect(oldPassword.value).toBe('test');
-      expect(newPassword.value).toBe('test2');
-      expect(confirmPassword.value).toBe('test2');
+      expect(fieldOldPassword.value).toBe('bbbbbbbbbbbbbb');
+      expect(fieldNewPassword.value).toBe('aaaaaaaaaaaa');
+      expect(fieldConfirmPassword.value).toBe('aaaaaaaaaaaa');
     });
 
     test('should display error validation', async () => {
-      fireEvent.change(oldPassword, { target: { value: '' } });
-      fireEvent.change(newPassword, { target: { value: '' } });
-      fireEvent.change(confirmPassword, { target: { value: '' } });
+      fireEvent.change(fieldOldPassword, { target: { value: '' } });
+      fireEvent.change(fieldNewPassword, { target: { value: '' } });
+      fireEvent.change(fieldConfirmPassword, { target: { value: '' } });
 
       await act(() => {
-        fireEvent.submit(submit);
+        fireEvent.submit(buttonSubmit);
       });
 
       expect(
         screen.getByText('String must contain at least 6 character(s)'),
       ).toBeInTheDocument();
-      expect(submit).toBeDisabled();
+      expect(buttonSubmit).toBeDisabled();
     });
 
     //TODO error validation match password
     test('should display error match validation', async () => {
-      fireEvent.change(oldPassword, { target: { value: 'bbbbbbbbbbbbbb' } });
-      fireEvent.change(newPassword, { target: { value: 'aaaaaaaaaaaaaaaaa' } });
-      fireEvent.change(confirmPassword, {
+      fireEvent.change(fieldOldPassword, {
+        target: { value: 'bbbbbbbbbbbbbb' },
+      });
+      fireEvent.change(fieldNewPassword, {
+        target: { value: 'aaaaaaaaaaaaaaaaa' },
+      });
+      fireEvent.change(fieldConfirmPassword, {
         target: { value: 'cccccccccccccccc' },
       });
       await act(() => {
-        fireEvent.submit(submit);
+        fireEvent.submit(buttonSubmit);
       });
 
       screen.debug();
 
-      expect(submit).toBeDisabled();
+      expect(buttonSubmit).toBeDisabled();
     });
 
     test('should submit data', () => {
