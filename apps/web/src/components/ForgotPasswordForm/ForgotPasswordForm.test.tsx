@@ -60,10 +60,21 @@ describe('Reset Password Form Component', () => {
       expect(fieldEmail.value).toBe('test@gmail.com');
     });
 
+    test('should display error validation', async () => {
+      fireEvent.change(fieldEmail, { target: { value: '' } });
+
+      await act(() => {
+        fireEvent.submit(fieldSubmit);
+      });
+
+      expect(screen.getByText('Invalid email')).toBeInTheDocument();
+      expect(fieldSubmit).toBeDisabled();
+    });
+
     test('should submit data', () => {
       expect(onSubmit).toHaveBeenCalledTimes(1);
       expect(onSubmit.mock.calls[0][0]).toMatchObject({
-        email: 'test',
+        email: 'test@gmail.com',
       });
 
       /*
