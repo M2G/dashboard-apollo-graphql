@@ -30,6 +30,7 @@ export function formSchema(t) {
     [INPUT_NAME.LAST_NAME]: z.string().min(1, t('fieldError.passwordLength')),
     [INPUT_NAME.EMAIL]: z
       .string()
-      .min(1, ERROR_TEXT_REQUIRED.ERROR_TEXT_REQUIRED_EMAIL),
+      .email(t('fieldError.emailInvalid'))
+      .min(1, { message: t('fieldError.emailRequired') }),
   });
 }
