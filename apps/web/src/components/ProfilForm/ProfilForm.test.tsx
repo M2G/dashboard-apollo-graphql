@@ -20,10 +20,10 @@ afterEach(cleanup);
 describe('Profil Form Component', () => {
   describe('Submitting form', () => {
     let wrapper: any;
-    let floatingEmail: HTMLInputElement;
-    let floatingFirstName: HTMLInputElement;
-    let floatingLastName: HTMLInputElement;
-    let floatingSubmit: HTMLInputElement;
+    let inputEmail: HTMLInputElement;
+    let inputFirstName: HTMLInputElement;
+    let inputLastName: HTMLInputElement;
+    let inputSubmit: HTMLInputElement;
     const onSubmit = jest.fn();
 
     beforeEach(async () => {
@@ -33,34 +33,34 @@ describe('Profil Form Component', () => {
         </MemoryRouter>,
       );
 
-      floatingEmail = screen.getByTestId('email');
-      floatingFirstName = screen.getByTestId('first_name');
-      floatingLastName = screen.getByTestId('last_name');
-      floatingSubmit = screen.getByTestId('submit');
+      inputEmail = screen.getByTestId('email');
+      inputFirstName = screen.getByTestId('first_name');
+      inputLastName = screen.getByTestId('last_name');
+      inputSubmit = screen.getByTestId('submit');
 
-      fireEvent.change(floatingEmail, { target: { value: 'test' } });
-      fireEvent.change(floatingFirstName, { target: { value: 'test' } });
-      fireEvent.change(floatingLastName, { target: { value: 'test' } });
+      fireEvent.change(inputEmail, { target: { value: 'testtest@gmail.com' } });
+      fireEvent.change(inputFirstName, { target: { value: 'test' } });
+      fireEvent.change(inputLastName, { target: { value: 'test' } });
 
       await act(() => {
-        fireEvent.submit(floatingSubmit);
+        fireEvent.submit(inputSubmit);
       });
     });
 
     test('should display error validation', async () => {
-      fireEvent.change(floatingEmail, { target: { value: '' } });
-      fireEvent.change(floatingFirstName, { target: { value: '' } });
-      fireEvent.change(floatingLastName, { target: { value: '' } });
+      fireEvent.change(inputEmail, { target: { value: '' } });
+      fireEvent.change(inputFirstName, { target: { value: '' } });
+      fireEvent.change(inputLastName, { target: { value: '' } });
 
       await act(() => {
-        fireEvent.submit(floatingSubmit);
+        fireEvent.submit(inputSubmit);
       });
     });
 
     test('should render', () => {
       expect(onSubmit).toHaveBeenCalledTimes(1);
       expect(onSubmit.mock.calls[0][0]).toMatchObject({
-        email: 'test',
+        email: 'test@gmail.com',
         first_name: 'test',
         last_name: 'test',
       });
