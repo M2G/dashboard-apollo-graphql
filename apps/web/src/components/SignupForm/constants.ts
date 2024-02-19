@@ -21,11 +21,20 @@ export const LABEL_PASSWORD = 'Password';
 export const PLACEHOLDER_EMAIL = 'Email';
 export const PLACEHOLDER_PASSWORD = 'Mot de passe';
 
-export const formSchema = z.object({
-  email: z
-    .string()
-    .email('Invalid email')
-    .min(1, ERROR_TEXT_REQUIRED.ERROR_TEXT_REQUIRED_EMAIL),
-  password: z.string().min(1, ERROR_TEXT_REQUIRED.ERROR_TEXT_REQUIRED_PASSWORD),
-  // .min(8, 'Password must have more than 8 characters'),
-});
+export function formSchema(t) {
+  return z.object({
+    [INPUT_NAME.PASSWORD]: z
+      .string({
+        required_error: t('fieldError.passwordRequired'),
+      })
+      .min(6, {
+        message: t('fieldError.passwordLength'),
+      }),
+    [INPUT_NAME.EMAIL]: z
+      .string({
+        required_error: t('fieldError.emailRequired'),
+      })
+      .email(t('fieldError.emailInvalid'))
+      .min(1, { message: t('fieldError.emailRequired') }),
+  });
+}
