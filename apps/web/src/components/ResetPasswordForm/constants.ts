@@ -22,19 +22,34 @@ export const LABEL_VERIFY_PASSWORD = 'Verify password';
 export const PLACEHOLDER_NEW_PASSWORD = 'New password';
 export const PLACEHOLDER_VERIFY_PASSWORD = 'Verify password';
 
-export const formSchema = z.object({
-  [INPUT_NAME.NEW_PASSWORD]: z
-    .string()
-    .min(8, ERROR_TEXT_REQUIRED.ERROR_TEXT_REQUIRED_VERIFY_PASSWORD),
-  [INPUT_NAME.VERIFY_PASSWORD]: z
-    .string()
-    .min(8, ERROR_TEXT_REQUIRED.ERROR_TEXT_REQUIRED_VERIFY_PASSWORD)
+export function formSchema(t) {
+  return z
+    .object({
+      [INPUT_NAME.NEW_PASSWORD]: z
+        .string({
+          required_error: t('fieldError.newPasswordRequired'),
+        })
+        .min(8, {
+          message: t('fieldError.passwordLength'),
+        }),
+      [INPUT_NAME.VERIFY_PASSWORD]: z
+        .string({
+          required_error: t('fieldError.verifyPasswordRequired'),
+        })
+        .min(8, {
+          message: t('fieldError.passwordLength'),
+        }),
+    })
     .refine(
-      (data) =>
-        data[INPUT_NAME.NEW_PASSWORD] === data[INPUT_NAME.VERIFY_PASSWORD],
+      (data) => {
+        console.log('data', data);
+        return (
+          data[INPUT_NAME.NEW_PASSWORD] === data[INPUT_NAME.VERIFY_PASSWORD]
+        );
+      },
       {
         path: [INPUT_NAME.VERIFY_PASSWORD],
-        message: "Password don't match",
+        message: t('fieldError.passwordMatch'),
       },
-    ),
-});
+    );
+}
