@@ -1,0 +1,53 @@
+{
+  "translation": {
+    "alert": {
+      "warning": "Warning, you are about to perform an irreversible action"
+    },
+    "field": {
+      "createdAt": "Created at",
+      "email": "Email",
+      "firstname": "First name",
+      "password": "Password",
+      "lastname": "Last name",
+      "updateAt": "Update at",
+      "oldPassword": "Old password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "verifyPassword": "Verify password"
+    },
+    "fieldError": {
+      "emailRequired": "Email is required",
+      "passwordRequired": "Password is required",
+      "newPasswordRequired": "New password is required",
+      "verifyPasswordRequired": "Verify password is required",
+      "confirmPasswordRequired": "Confirm password is required",
+      "oldPasswordRequired": "Old password is required",
+      "emailInvalid": "Email is invalid",
+      "passwordLength": "Password must be at least 6 characters",
+      "passwordMatch": "Passwords does not match"
+    },
+    "form": {
+      "createAccount": "Create account",
+      "forgotPassword": "Forgot password",
+      "pleaseAuthenticate": "Please authenticate",
+      "changePassword": "Change Password",
+      "resetPassword": "Reset password",
+      "toContinue": "to continue",
+      "userProfile": "User Profile",
+      "save": "Save",
+      "signup": "Signup",
+      "haveAnAccount": "Have an account ?",
+      "signin": "Signin",
+      "home": "Home",
+      "submit": "Submit",
+      "profile": "Profile",
+      "wantToSeeYour": "Want to see your ?"
+    },
+    "navbar": {
+      "concerts": "Concerts",
+      "home": "Home",
+      "profil": "Profil",
+      "users": "Users"
+    }
+  }
+}
