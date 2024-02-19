@@ -38,7 +38,7 @@ function ResetPasswordForm({ initialValues, onSubmit }: IForm) {
       [initialValues],
     ),
     mode: 'onBlur',
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema(t)),
   });
 
   return (
@@ -58,7 +58,7 @@ function ResetPasswordForm({ initialValues, onSubmit }: IForm) {
           className="_:mb-2"
           label={t('field.newPassword')}
           name={INPUT_NAME.NEW_PASSWORD}
-          type="email"
+          type="password"
           {...{ control, errors, register }}
           required
         />
@@ -66,7 +66,7 @@ function ResetPasswordForm({ initialValues, onSubmit }: IForm) {
           className="_:mb-2"
           label={t('field.verifyPassword')}
           name={INPUT_NAME.VERIFY_PASSWORD}
-          type="email"
+          type="password"
           {...{ control, errors, register }}
           required
         />
