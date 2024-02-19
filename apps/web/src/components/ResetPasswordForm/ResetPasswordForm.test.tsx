@@ -5,25 +5,49 @@ import {
   cleanup,
   screen,
   act,
+  waitFor,
 } from '@testing-library/react';
 import ResetPasswordForm from './ResetPasswordForm';
 import { INPUT_NAME, INITIAL_VALUES } from './constants';
 import { MemoryRouter } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import userEvent from '@testing-library/user-event';
 
+function setup(jsx) {
+  return {
+    user: userEvent.setup(),
+    ...render(jsx),
+  };
+}
+
+//@see https://stackoverflow.com/questions/45020842/how-do-i-mock-react-i18next-and-i18n-js-in-jest
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: () => ['key'] }),
-  Trans: () => jest.fn(),
-  t: () => jest.fn(),
+  useTranslation: jest.fn(),
 }));
+
+const tSpy = jest.fn((str) => str);
+const changeLanguageSpy = jest.fn((lng: string) => new Promise(() => {}));
+const useTranslationSpy = useTranslation as jest.Mock;
+
+beforeEach(() => {
+  jest.clearAllMocks();
+
+  useTranslationSpy.mockReturnValue({
+    t: tSpy,
+    i18n: {
+      changeLanguage: changeLanguageSpy,
+      language: 'en',
+    },
+  });
+});
 
 afterEach(cleanup);
 
 describe('Reset Password Form Component', () => {
   describe('Submitting form', () => {
-    let wrapper: any;
-    let floatingNewPassword: HTMLInputElement;
-    let floatingVerifyPassword: HTMLInputElement;
-    let floatingSubmit: HTMLInputElement;
+    let inputNewPassword: HTMLInputElement;
+    let inputVerifyPassword: HTMLInputElement;
+    let btnSubmit: HTMLButtonElement;
     const onSubmit = jest.fn();
 
     beforeEach(async () => {
@@ -37,54 +61,64 @@ describe('Reset Password Form Component', () => {
         </MemoryRouter>,
       );
 
-      floatingNewPassword = screen.getByTestId('new_password');
-      floatingVerifyPassword = screen.getByTestId('verify_password');
-      floatingSubmit = screen.getByTestId('submit');
-
-      fireEvent.change(floatingNewPassword, { target: { value: 'test' } });
-      fireEvent.change(floatingVerifyPassword, { target: { value: 'test' } });
-
-      await act(() => {
-        fireEvent.submit(floatingSubmit);
-      });
+      inputNewPassword = screen.getByTestId('new_password');
+      inputVerifyPassword = screen.getByTestId('verify_password');
+      btnSubmit = screen.getByTestId('submit');
     });
 
-    test('should display error validatiob', async () => {
-      fireEvent.change(floatingNewPassword, { target: { value: '' } });
-      fireEvent.change(floatingVerifyPassword, { target: { value: '' } });
-
-      await act(() => {
-        fireEvent.submit(floatingSubmit);
+    test('should display correctly value form input', async () => {
+      fireEvent.change(inputNewPassword, {
+        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
+      });
+      fireEvent.change(inputVerifyPassword, {
+        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
 
-      expect(
-        screen.getAllByText('Verify password requis')[0],
-      ).toBeInTheDocument();
-      expect(
-        screen.getAllByText('Verify password requis')[1],
-      ).toBeInTheDocument();
-    });
+      expect(inputNewPassword.value).toBe('9Ij!Z-Tb)nft73OpLpw£71');
+      expect(inputVerifyPassword.value).toBe('9Ij!Z-Tb)nft73OpLpw£71');
 
-    test('should display correctly value form input', () => {
-      expect(floatingVerifyPassword.value).toBe('test');
-      expect(floatingVerifyPassword.value).toBe('test');
-    });
+      await act(() => {
+        fireEvent.submit(btnSubmit);
+      });
 
-    test('should submit data', () => {
       expect(onSubmit).toHaveBeenCalledTimes(1);
       expect(onSubmit.mock.calls[0][0]).toMatchObject({
-        new_password: 'test',
-        verify_password: 'test',
+        new_password: '9Ij!Z-Tb)nft73OpLpw£71',
+        verify_password: '9Ij!Z-Tb)nft73OpLpw£71',
+      });
+      /*
+        expect(onSubmit).toHaveBeenCalledWith(
+          {
+            email: 'test@gmail.com',
+            password: 'test',
+          }
+        );
+      */
+    });
+
+    test('should display error validation', async () => {
+      fireEvent.input(inputNewPassword, {
+        target: { value: 'eeeeeeeeeeeeeeeeee' },
+      });
+      fireEvent.input(inputVerifyPassword, {
+        target: { value: 'cccccccccccccccc' },
       });
 
-      /*
-      expect(onSubmit).toHaveBeenCalledWith(
-        {
-          email: 'test@gmail.com',
-          password: 'test',
-        }
-      );
-      */
+      await act(() => {
+        fireEvent.submit(btnSubmit);
+      });
+
+      screen.debug();
+
+      expect(
+        screen.getAllByText('String must contain at least 8 character(s)')[0],
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getAllByText('String must contain at least 8 character(s)')[1],
+      ).toBeInTheDocument();
+
+      expect(btnSubmit).toBeDisabled();
     });
   });
 });
