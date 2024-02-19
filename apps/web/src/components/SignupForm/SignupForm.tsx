@@ -41,7 +41,7 @@ function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
       [initialValues],
     ),
     mode: 'onBlur',
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema(t)),
   });
 
   return (
@@ -59,7 +59,6 @@ function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
         </div>
         <Field
           className="_:mb-2"
-          data-testid="email"
           label={t('field.email')}
           name={INPUT_NAME.EMAIL}
           {...{ control, errors, register }}
