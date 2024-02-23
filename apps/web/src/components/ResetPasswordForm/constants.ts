@@ -42,14 +42,13 @@ export function formSchema(t) {
     })
     .refine(
       (data) => {
-        console.log('data', data);
         return (
           data[INPUT_NAME.NEW_PASSWORD] === data[INPUT_NAME.VERIFY_PASSWORD]
         );
       },
       {
         path: [INPUT_NAME.VERIFY_PASSWORD],
-        message: t('fieldError.passwordMatch'),
+        message: t('fieldError.passwordMatch', 'Passwords does not match'),
       },
     );
 }
