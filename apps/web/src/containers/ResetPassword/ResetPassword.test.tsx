@@ -45,7 +45,7 @@ beforeEach(() => {
 
 afterEach(cleanup);
 
-describe('Signup Container', () => {
+describe('Reseet Password Container', () => {
   describe('Submitting form', () => {
     let inputNewPassword: HTMLInputElement;
     let inputVerifyPassword: HTMLInputElement;
