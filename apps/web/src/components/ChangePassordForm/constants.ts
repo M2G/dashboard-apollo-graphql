@@ -12,9 +12,7 @@ export const INITIAL_VALUES = {
   [INPUT_NAME.CONFIRM_PASSWORD]: '',
 };
 
-export function formSchema(
-  t,
-): z.ZodObject<Record<string, z.ZodType<any, any, any>>> {
+export function formSchema(t) {
   return z
     .object({
       [INPUT_NAME.OLD_PASSWORD]: z
@@ -40,7 +38,7 @@ export function formSchema(
     .refine(
       (data) => data[INPUT_NAME.PASSWORD] === data[INPUT_NAME.CONFIRM_PASSWORD],
       {
-        message: t('fieldError.passwordMatch'),
+        message: t('fieldError.passwordMatch', 'Passwords does not match'),
         path: [INPUT_NAME.CONFIRM_PASSWORD],
       },
     );
