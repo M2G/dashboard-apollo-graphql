@@ -8,7 +8,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import ResetPasswordForm from './ResetPasswordForm';
-import { INPUT_NAME, INITIAL_VALUES } from './constants';
+import { INITIAL_VALUES } from './constants';
 import { MemoryRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -17,7 +17,13 @@ jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(),
 }));
 
-const tSpy = (key: any, parameters: any) => (parameters ? parameters : key);
+const tSpy = (_: any, parameters: any) => {
+  if (parameters) {
+    return parameters;
+  }
+  jest.fn((str) => str);
+};
+
 const changeLanguageSpy = jest.fn((lng: string) => new Promise(() => {}));
 const useTranslationSpy = useTranslation as jest.Mock;
 
@@ -42,7 +48,7 @@ describe('Reset Password Form Component', () => {
     let btnSubmit: HTMLButtonElement;
     const onSubmit = jest.fn();
 
-    beforeEach(async () => {
+    beforeEach(() => {
       //@see https://stackoverflow.com/questions/76081552/typeerror-cannot-destructure-property-basename-of-react-namespace-usecontex
       render(
         <MemoryRouter>
