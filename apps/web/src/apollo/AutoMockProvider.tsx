@@ -1,7 +1,7 @@
 import React from 'react';
-import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { SchemaLink } from '@apollo/client/link/schema';
-import { printSchema, buildClientSchema } from 'graphql/utilities';
+import { buildClientSchema, printSchema } from 'graphql/utilities';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import type { IMocks } from '@graphql-tools/mock';
 import { addMocksToSchema } from '@graphql-tools/mock';
