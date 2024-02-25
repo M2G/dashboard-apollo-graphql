@@ -9,12 +9,34 @@ import {
 import ChangePassordForm from './ChangePassordForm';
 import { INPUT_NAME, INITIAL_VALUES } from './constants';
 import { MemoryRouter } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
+//@see https://stackoverflow.com/questions/45020842/how-do-i-mock-react-i18next-and-i18n-js-in-jest
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: () => ['key'] }),
-  Trans: () => jest.fn(),
-  t: () => jest.fn(),
+  useTranslation: jest.fn(),
 }));
+
+const tSpy = (_: any, parameters: any) => {
+  if (parameters) {
+    return parameters;
+  }
+  jest.fn((str) => str);
+};
+
+const changeLanguageSpy = jest.fn((lng: string) => new Promise(() => {}));
+const useTranslationSpy = useTranslation as jest.Mock;
+
+beforeEach(() => {
+  jest.clearAllMocks();
+
+  useTranslationSpy.mockReturnValue({
+    t: tSpy,
+    i18n: {
+      changeLanguage: changeLanguageSpy,
+      language: 'en',
+    },
+  });
+});
 
 afterEach(cleanup);
 
@@ -41,24 +63,28 @@ describe('Reset Password Form Component', () => {
       fieldNewPassword = screen.getByTestId('password');
       fieldConfirmPassword = screen.getByTestId('confirmPassword');
       buttonSubmit = screen.getByTestId('submit');
+    });
 
+    test('should display correctly value form input', async () => {
       fireEvent.change(fieldOldPassword, {
-        target: { value: 'bbbbbbbbbbbbbb' },
+        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
-      fireEvent.change(fieldNewPassword, { target: { value: 'aaaaaaaaaaaa' } });
+      fireEvent.change(fieldNewPassword, {
+        target: { value: 'Li)~zpS^Q%Pj9>D"833' },
+      });
       fireEvent.change(fieldConfirmPassword, {
-        target: { value: 'aaaaaaaaaaaa' },
+        target: { value: 'Li)~zpS^Q%Pj9>D"833' },
       });
+
+      expect(fieldOldPassword.value).toBe('9Ij!Z-Tb)nft73OpLpw£71');
+      expect(fieldNewPassword.value).toBe('Li)~zpS^Q%Pj9>D"833');
+      expect(fieldConfirmPassword.value).toBe('Li)~zpS^Q%Pj9>D"833');
 
       await act(() => {
         fireEvent.submit(buttonSubmit);
       });
-    });
 
-    test('should display correctly value form input', () => {
-      expect(fieldOldPassword.value).toBe('bbbbbbbbbbbbbb');
-      expect(fieldNewPassword.value).toBe('aaaaaaaaaaaa');
-      expect(fieldConfirmPassword.value).toBe('aaaaaaaaaaaa');
+      expect(buttonSubmit).toBeEnabled();
     });
 
     test('should display error validation', async () => {
@@ -71,37 +97,51 @@ describe('Reset Password Form Component', () => {
       });
 
       expect(
-        screen.getByText('String must contain at least 6 character(s)'),
+        screen.queryAllByText('String must contain at least 6 character(s)')[0],
       ).toBeInTheDocument();
       expect(buttonSubmit).toBeDisabled();
     });
 
-    //TODO error validation match password
-    test('should display error match validation', async () => {
+    test('should display error validation (match password)', async () => {
       fireEvent.change(fieldOldPassword, {
-        target: { value: 'bbbbbbbbbbbbbb' },
+        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
-      fireEvent.change(fieldNewPassword, {
-        target: { value: 'aaaaaaaaaaaaaaaaa' },
+      fireEvent.input(fieldNewPassword, {
+        target: { value: 'Li)~zpS^Q%Pj9>D"833' },
       });
-      fireEvent.change(fieldConfirmPassword, {
-        target: { value: 'cccccccccccccccc' },
+      fireEvent.input(fieldConfirmPassword, {
+        target: { value: 'Li)~zpS^Q%Pj9>D"833----' },
       });
+
       await act(() => {
         fireEvent.submit(buttonSubmit);
       });
 
-      screen.debug();
+      expect(screen.getByText('Passwords does not match')).toBeInTheDocument();
 
       expect(buttonSubmit).toBeDisabled();
     });
 
-    test('should submit data', () => {
+    test('should submit data', async () => {
+      fireEvent.change(fieldOldPassword, {
+        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
+      });
+      fireEvent.change(fieldNewPassword, {
+        target: { value: 'Li)~zpS^Q%Pj9>D"833' },
+      });
+      fireEvent.change(fieldConfirmPassword, {
+        target: { value: 'Li)~zpS^Q%Pj9>D"833' },
+      });
+
+      await act(() => {
+        fireEvent.submit(buttonSubmit);
+      });
+
       expect(onSubmit).toHaveBeenCalledTimes(1);
       expect(onSubmit.mock.calls[0][0]).toMatchObject({
-        oldPassword: 'bbbbbbbbbbbbbb',
-        password: 'aaaaaaaaaaaa',
-        confirmPassword: 'aaaaaaaaaaaa',
+        oldPassword: '9Ij!Z-Tb)nft73OpLpw£71',
+        password: 'Li)~zpS^Q%Pj9>D"833',
+        confirmPassword: 'Li)~zpS^Q%Pj9>D"833',
       });
 
       /*
