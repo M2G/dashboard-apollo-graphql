@@ -38,8 +38,9 @@ beforeEach(() => {
     },
   });
 
-  jest.spyOn(URLSearchParams.prototype, 'has').mockReturnValue(true);
-  jest.spyOn(URLSearchParams.prototype, 'get').mockReturnValue('token');
+  jest
+    .spyOn(URLSearchParams.prototype, 'get')
+    .mockReturnValue('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9');
 });
 
 afterEach(cleanup);
