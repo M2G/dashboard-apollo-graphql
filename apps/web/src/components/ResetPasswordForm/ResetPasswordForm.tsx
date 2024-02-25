@@ -6,12 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { Button, Field } from 'ui';
-import {
-  formSchema,
-  INPUT_NAME,
-  LABEL_NEW_PASSWORD,
-  LABEL_VERIFY_PASSWORD,
-} from './constants';
+import { formSchema, INPUT_NAME } from './constants';
 import { Link } from 'react-router-dom';
 import ROUTER_PATH from '@/constants/RouterPath';
 import { useMemo } from 'react';
