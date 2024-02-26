@@ -14,11 +14,14 @@ function ResetPassword(): JSX.Element | null {
 
   const success: boolean | null | undefined = data?.resetPassword?.success;
 
+  console.log('success success success success', success);
+
   const token = searchParams.get('token') as string;
   if (!token) return null;
 
   const onSubmit = useCallback(
     ({ new_password }: { readonly new_password: string }) => {
+      console.log('onSubmit onSubmit onSubmit');
       resetPasswordMutation({
         variables: {
           input: {

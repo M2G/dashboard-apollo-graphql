@@ -10,8 +10,8 @@ import {
 import { MemoryRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ResetPassword from './ResetPassword';
-import { INPUT_NAME } from './constants';
 import AutoMockProvider from '@/apollo/AutoMockProvider';
+import { useResetPasswordMutation } from '@/modules/graphql/generated';
 
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(),
@@ -45,53 +45,49 @@ beforeEach(() => {
 
 afterEach(cleanup);
 
-describe('Reseet Password Container', () => {
+const data = {
+  resetPassword: {
+    success: true,
+  },
+};
+
+describe('Reset Password Container', () => {
   describe('Submitting form', () => {
     let inputNewPassword: HTMLInputElement;
     let inputVerifyPassword: HTMLInputElement;
     let btnSubmit: HTMLButtonElement;
-    const onSubmit = jest.fn();
 
     beforeEach(() => {
-      const INITIAL_VALUES = {
-        [INPUT_NAME.NEW_PASSWORD]: '',
-        [INPUT_NAME.VERIFY_PASSWORD]: '',
+      const resolver = {
+        useResetPasswordMutation: () => data,
       };
 
       render(
-        <AutoMockProvider mockResolvers={{}}>
+        <AutoMockProvider mockResolvers={resolver}>
           <MemoryRouter initialEntries={['/reset-password']}>
-            <ResetPassword initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
+            <ResetPassword />
           </MemoryRouter>
         </AutoMockProvider>,
       );
 
-      //inputNewPassword = screen.getByTestId('new_password');
-      //inputVerifyPassword = screen.getByTestId('verify_password');
-      //btnSubmit = screen.getByTestId('submit');
+      inputNewPassword = screen.getByTestId('new_password');
+      inputVerifyPassword = screen.getByTestId('verify_password');
+      btnSubmit = screen.getByTestId('submit');
     });
 
     test('should render', async () => {
-      screen.debug();
-      /*  fireEvent.change(inputNewPassword, {
+      fireEvent.change(inputNewPassword, {
         target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
       fireEvent.change(inputVerifyPassword, {
         target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
 
-      expect(inputNewPassword).toBeInTheDocument();
-      expect(inputVerifyPassword).toBeInTheDocument();
-
       await act(() => {
         fireEvent.submit(btnSubmit);
       });
 
-      expect(onSubmit).toHaveBeenCalledTimes(1);
-      expect(onSubmit.mock.calls[0][0]).toMatchObject({
-        new_password: '9Ij!Z-Tb)nft73OpLpw£71',
-        verify_password: '9Ij!Z-Tb)nft73OpLpw£71',
-      });*/
+      screen.debug();
     });
   });
 });
