@@ -51,6 +51,12 @@ const data = {
   },
 };
 
+const data2 = {
+  resetPassword: {
+    success: false,
+  },
+};
+
 describe('Reset Password Container', () => {
   describe('Submitting form', () => {
     let inputNewPassword: HTMLInputElement;
@@ -75,7 +81,7 @@ describe('Reset Password Container', () => {
       btnSubmit = screen.getByTestId('submit');
     });
 
-    test('should render', async () => {
+    test('should success reset password', async () => {
       fireEvent.change(inputNewPassword, {
         target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
@@ -86,6 +92,48 @@ describe('Reset Password Container', () => {
       await act(() => {
         fireEvent.submit(btnSubmit);
       });
+
+      screen.getByText('Password reset confirmation');
+
+      screen.debug();
+    });
+  });
+  describe('Submitting form 2', () => {
+    let inputNewPassword: HTMLInputElement;
+    let inputVerifyPassword: HTMLInputElement;
+    let btnSubmit: HTMLButtonElement;
+
+    beforeEach(() => {
+      const resolver = {
+        useResetPasswordMutation: () => data2,
+      };
+
+      render(
+        <AutoMockProvider mockResolvers={resolver}>
+          <MemoryRouter initialEntries={['/reset-password']}>
+            <ResetPassword />
+          </MemoryRouter>
+        </AutoMockProvider>,
+      );
+
+      inputNewPassword = screen.getByTestId('new_password');
+      inputVerifyPassword = screen.getByTestId('verify_password');
+      btnSubmit = screen.getByTestId('submit');
+    });
+
+    test('should success reset password', async () => {
+      fireEvent.change(inputNewPassword, {
+        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
+      });
+      fireEvent.change(inputVerifyPassword, {
+        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
+      });
+
+      await act(() => {
+        fireEvent.submit(btnSubmit);
+      });
+
+      // screen.getByText('Password reset confirmation');
 
       screen.debug();
     });

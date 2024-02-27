@@ -5,6 +5,8 @@ import { useResetPasswordMutation } from '@/modules/graphql/generated';
 import { INITIAL_VALUES } from './constants';
 import ResetPasswordForm from '@/components/ResetPasswordForm';
 import ResetPasswordStatus from './ResetPasswordStatus';
+import Loading from '@/components/Loading';
+import TopLineLoading from '@/components/Loading/TopLineLoading';
 
 function ResetPassword(): JSX.Element | null {
   let { search } = useLocation();
@@ -34,7 +36,8 @@ function ResetPassword(): JSX.Element | null {
     [],
   );
 
-  if (success && !loading) return <ResetPasswordStatus />;
+  if (loading) return <TopLineLoading />;
+  if (success) return <ResetPasswordStatus success />;
   if (error) return <>{JSON.stringify(error?.message)}</>;
 
   return (
