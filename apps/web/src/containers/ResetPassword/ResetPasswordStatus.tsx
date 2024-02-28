@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 enum Status {
   SUCCESS = 'success',
   ERROR = 'error',
@@ -8,7 +9,12 @@ interface IResetPasswordStatus {
 }
 
 function ResetPasswordStatus(status: IResetPasswordStatus): JSX.Element {
-  return status === Status.SUCCESS && <div>Password reset confirmation</div>;
+  const { t } = useTranslation();
+  return status === Status.SUCCESS ? (
+    <div>{t('resetPassword.passwordResetConfirmation')}</div>
+  ) : (
+    <div>{t('resetPassword.passwordResetError')}</div>
+  );
 }
 
 export default ResetPasswordStatus;

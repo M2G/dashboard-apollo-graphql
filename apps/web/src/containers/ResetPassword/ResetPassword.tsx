@@ -37,7 +37,7 @@ function ResetPassword(): JSX.Element | null {
   );
 
   if (loading) return <TopLineLoading />;
-  if (success) return <ResetPasswordStatus success />;
+  if (success) return <ResetPasswordStatus status={success} />;
   if (error) return <>{JSON.stringify(error?.message)}</>;
 
   return (

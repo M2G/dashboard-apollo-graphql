@@ -39,6 +39,10 @@
       "profile": "Profile",
       "wantToSeeYour": "Voulez-vous voir votre ?"
     },
+    "resetPassword" : {
+      "passwordResetConfirmation" : "Votre mot de passe a été réinitialisé avec succès",
+      "passwordResetError" : "Une erreur s'est produite lors de la réinitialisation de votre mot de passe"
+    },
     "navbar": {
       "concerts": "Concerts",
       "home": "Accueil",

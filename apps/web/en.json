@@ -43,6 +43,10 @@
       "profile": "Profile",
       "wantToSeeYour": "Want to see your ?"
     },
+    "resetPassword": {
+      "passwordResetConfirmation": "Your password has been reset successfully",
+      "passwordResetError": "An error occured while resetting your password"
+    },
     "navbar": {
       "concerts": "Concerts",
       "home": "Home",
