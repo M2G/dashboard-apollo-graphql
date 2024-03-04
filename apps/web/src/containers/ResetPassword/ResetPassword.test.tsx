@@ -5,75 +5,55 @@ import {
   cleanup,
   screen,
   act,
-  waitFor,
 } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import ResetPassword from './ResetPassword';
-import AutoMockProvider from '@/apollo/AutoMockProvider';
-import { useResetPasswordMutation } from '@/modules/graphql/generated';
-
-jest.mock('react-i18next', () => ({
-  useTranslation: jest.fn(),
-}));
-
-const tSpy = (_: any, parameters: any) => {
-  if (parameters) {
-    return parameters;
-  }
-  jest.fn((str) => str);
-};
-
-const changeLanguageSpy = jest.fn((lng: string) => new Promise(() => {}));
-const useTranslationSpy = useTranslation as jest.Mock;
+import { MockedProvider } from '@apollo/client/testing';
+import { ResetPasswordDocument } from '@/modules/graphql/generated';
+import { GraphQLError } from 'graphql';
 
 beforeEach(() => {
-  useTranslationSpy.mockReturnValue({
-    t: tSpy,
-    i18n: {
-      changeLanguage: changeLanguageSpy,
-      language: 'en',
-    },
-  });
-
+  jest.clearAllMocks();
   jest
     .spyOn(URLSearchParams.prototype, 'get')
     .mockReturnValue('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9');
-
-  //jest.clearAllMocks();
 });
-
-afterEach(cleanup);
-
-const data = {
-  resetPassword: {
-    success: true,
-  },
-};
-
-const data2 = {
-  resetPassword: {
-    success: false,
-  },
-};
 
 describe('Reset Password Container', () => {
   describe('Submitting form', () => {
     let inputNewPassword: HTMLInputElement;
     let inputVerifyPassword: HTMLInputElement;
     let btnSubmit: HTMLButtonElement;
-
     beforeEach(() => {
-      const resolver = {
-        useResetPasswordMutation: () => ({ data, loading: false }),
-      };
+      const mocks = [
+        {
+          //delay: 30,
+          request: {
+            query: ResetPasswordDocument,
+            variables: {
+              input: {
+                password: '9Ij!Z-Tb)nft73OpLpw£71',
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+              },
+            },
+          },
+          result: {
+            data: {
+              resetPassword: {
+                __typename: 'Status',
+                success: true,
+              },
+            },
+          },
+        },
+      ];
 
       render(
-        <AutoMockProvider mockResolvers={resolver}>
+        <MockedProvider mocks={mocks} addTypename={false}>
           <MemoryRouter initialEntries={['/reset-password']}>
             <ResetPassword />
           </MemoryRouter>
-        </AutoMockProvider>,
+        </MockedProvider>,
       );
 
       inputNewPassword = screen.getByTestId('new_password');
@@ -81,7 +61,7 @@ describe('Reset Password Container', () => {
       btnSubmit = screen.getByTestId('submit');
     });
 
-    test('should success reset password', async () => {
+    it('should success reset password', async () => {
       fireEvent.change(inputNewPassword, {
         target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
@@ -93,27 +73,53 @@ describe('Reset Password Container', () => {
         fireEvent.submit(btnSubmit);
       });
 
-      // screen.getByText('Password reset confirmation');
-
-      screen.debug();
+      expect(
+        await screen.findByText('Your password has been reset successfully'),
+      ).toBeInTheDocument();
     });
   });
-  /* describe('Submitting form 2', () => {
+
+  describe('Submitting form (2)', () => {
     let inputNewPassword: HTMLInputElement;
     let inputVerifyPassword: HTMLInputElement;
     let btnSubmit: HTMLButtonElement;
 
+    afterEach(cleanup);
     beforeEach(() => {
-      const resolver = {
-        useResetPasswordMutation: () => data2,
-      };
+      const mocks = [
+        {
+          //delay: 30,
+          request: {
+            query: ResetPasswordDocument,
+            variables: {
+              input: {
+                password: '9Ij!Z-Tb)nft73OpLpw£71',
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+              },
+            },
+          },
+          result: {
+            errors: [
+              new GraphQLError(
+                'An error occured while resetting your password',
+              ),
+            ],
+            data: {
+              resetPassword: {
+                __typename: 'Status',
+                success: false,
+              },
+            },
+          },
+        },
+      ];
 
       render(
-        <AutoMockProvider mockResolvers={resolver}>
+        <MockedProvider mocks={mocks} addTypename={false}>
           <MemoryRouter initialEntries={['/reset-password']}>
             <ResetPassword />
           </MemoryRouter>
-        </AutoMockProvider>,
+        </MockedProvider>,
       );
 
       inputNewPassword = screen.getByTestId('new_password');
@@ -121,7 +127,7 @@ describe('Reset Password Container', () => {
       btnSubmit = screen.getByTestId('submit');
     });
 
-    test('should success reset password', async () => {
+    it('should fail reset password', async () => {
       fireEvent.change(inputNewPassword, {
         target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
@@ -133,9 +139,11 @@ describe('Reset Password Container', () => {
         fireEvent.submit(btnSubmit);
       });
 
-      // screen.getByText('Password reset confirmation');
-
-      screen.debug();
+      expect(
+        await screen.findByText(
+          'An error occured while resetting your password',
+        ),
+      ).toBeInTheDocument();
     });
-  });*/
+  });
 });
