@@ -47,6 +47,10 @@
       "passwordResetConfirmation": "Your password has been reset successfully",
       "passwordResetError": "An error occured while resetting your password"
     },
+    "forgotPassword": {
+      "forgotPasswordConfirmation": "Your request has been processed successfully",
+      "forgotPasswordError": "An error has occurred during your request"
+    },
     "navbar": {
       "concerts": "Concerts",
       "home": "Home",
