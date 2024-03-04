@@ -17,8 +17,8 @@ const resources = {
   // keySeparator: false,
   lng: 'en',
   resources,
-  //ns: ['en'],
-  //defaultNS: 'en',
+  // ns: ['en'],
+  // defaultNS: 'en',
 });
 
 export default i18n;
