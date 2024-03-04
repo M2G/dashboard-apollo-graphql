@@ -12,10 +12,4 @@ const Loading: React.FC<LoadingNS> = ({ isLoading }: boolean | any) => {
   return <TopLineLoading />;
 };
 
-Loading.displayName = 'Loading';
-
-Loading.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-};
-
 export default Loading;
