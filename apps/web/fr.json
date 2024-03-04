@@ -43,6 +43,10 @@
       "passwordResetConfirmation" : "Votre mot de passe a été réinitialisé avec succès",
       "passwordResetError" : "Une erreur s'est produite lors de la réinitialisation de votre mot de passe"
     },
+    "forgotPassword": {
+      "forgotPasswordConfirmation": "votre demande a été traitée avec succès",
+      "forgotPasswordError": "Une erreur s'est produite lors de votre demande"
+    },
     "navbar": {
       "concerts": "Concerts",
       "home": "Accueil",
