@@ -1,19 +1,30 @@
 import { useTranslation } from 'react-i18next';
-enum Status {
-  SUCCESS = 'success',
-  ERROR = 'error',
-}
 
 interface IResetPasswordStatus {
-  status: Status;
+  success?: boolean;
 }
 
-function ResetPasswordStatus(status: IResetPasswordStatus): JSX.Element {
+function ResetPasswordStatus({
+  success = false,
+}: IResetPasswordStatus): JSX.Element {
   const { t } = useTranslation();
-  return status === Status.SUCCESS ? (
-    <div>{t('resetPassword.passwordResetConfirmation')}</div>
-  ) : (
-    <div>{t('resetPassword.passwordResetError')}</div>
+
+  return (
+    <div
+      className="flex min-h-screen flex-col items-center justify-center"
+      id="form-forgot-password">
+      <div>
+        {success
+          ? t(
+              'resetPassword.passwordResetConfirmation',
+              'Your password has been reset successfully',
+            )
+          : t(
+              'resetPassword.passwordResetError',
+              'An error occured while resetting your password',
+            )}
+      </div>
+    </div>
   );
 }
 
