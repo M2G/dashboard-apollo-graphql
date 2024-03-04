@@ -6,7 +6,6 @@ import { INITIAL_VALUES } from './constants';
 import ResetPasswordForm from '@/components/ResetPasswordForm';
 import ResetPasswordStatus from './ResetPasswordStatus';
 import Loading from '@/components/Loading';
-import TopLineLoading from '@/components/Loading/TopLineLoading';
 
 function ResetPassword(): JSX.Element | null {
   let { search } = useLocation();
@@ -16,8 +15,10 @@ function ResetPassword(): JSX.Element | null {
 
   const success: boolean | null | undefined = data?.resetPassword?.success;
 
+  console.log('data data data data', data);
   console.log('success success success success', success);
-
+  console.log('loading loading loading loading', loading);
+  console.log('error error error error', error);
   const token = searchParams.get('token') as string;
   if (!token) return null;
 
@@ -33,12 +34,12 @@ function ResetPassword(): JSX.Element | null {
         },
       });
     },
-    [],
+    [resetPasswordMutation, token],
   );
 
-  if (loading) return <TopLineLoading />;
-  if (success) return <ResetPasswordStatus status={success} />;
-  if (error) return <>{JSON.stringify(error?.message)}</>;
+  if (loading) return <Loading isLoading={loading} />;
+  if (success) return <ResetPasswordStatus success />;
+  if (error) return <ResetPasswordStatus />;
 
   return (
     <ResetPasswordForm initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
