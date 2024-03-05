@@ -47,6 +47,10 @@
       "forgotPasswordConfirmation": "votre demande a été traitée avec succès",
       "forgotPasswordError": "Une erreur s'est produite lors de votre demande"
     },
+    "changePassword": {
+      "changePasswordConfirmation": "Votre mot de passe a été mise à jours avec succès",
+      "changePasswordError": "Une erreur s'est produite lors de votre demande"
+    },
     "navbar": {
       "concerts": "Concerts",
       "home": "Accueil",

@@ -9,25 +9,20 @@ import {
 import { MemoryRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MockedProvider } from '@apollo/client/testing';
-import ForgotPassword from './ForgotPassword';
-import {
-  ForgotPasswordDocument,
-  ResetPasswordDocument,
-} from '@/modules/graphql/generated';
+import ChangePassword from './ChangePassword';
+import { UpdateUserDocument } from '@/modules/graphql/generated';
 import { GraphQLError } from 'graphql';
-import ResetPassword from '@/containers/ResetPassword';
 
 beforeEach(() => {
   jest.clearAllMocks();
-  jest
-    .spyOn(URLSearchParams.prototype, 'get')
-    .mockReturnValue('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9');
 });
 
-describe('Forgot password Container', () => {
-  describe('Forgot password success', () => {
+describe('Change password Container', () => {
+  describe('Change password success', () => {
     let wrapper: any;
-    let inputEmail: HTMLInputElement;
+    let inputOldPassword: HTMLInputElement;
+    let inputPassword: HTMLInputElement;
+    let inputConfirmPassword: HTMLInputElement;
     let btnSubmit: HTMLButtonElement;
 
     afterEach(cleanup);
@@ -36,14 +31,14 @@ describe('Forgot password Container', () => {
         {
           //delay: 30,
           request: {
-            query: ForgotPasswordDocument,
+            query: UpdateUserDocument,
             variables: {
-              email: 'test@gmail.com',
+              password: '9Ij!Z-Tb)nft73OpLpw£71',
             },
           },
           result: {
             data: {
-              forgotPassword: {
+              updateUser: {
                 __typename: 'Status',
                 success: true,
               },
@@ -54,22 +49,34 @@ describe('Forgot password Container', () => {
 
       render(
         <MockedProvider mocks={mocks} addTypename={false}>
-          <MemoryRouter initialEntries={['/forgot-password']}>
-            <ForgotPassword />
+          <MemoryRouter initialEntries={['/change-password']}>
+            <ChangePassword />
           </MemoryRouter>
         </MockedProvider>,
       );
 
-      inputEmail = screen.getByTestId('email');
+      inputOldPassword = screen.getByTestId('oldPassword');
+      inputPassword = screen.getByTestId('password');
+      inputConfirmPassword = screen.getByTestId('confirmPassword');
       btnSubmit = screen.getByTestId('submit');
     });
 
     it('should success forgot password', async () => {
-      fireEvent.change(inputEmail, { target: { value: 'test@gmail.com' } });
+      fireEvent.change(oldPassword, {
+        target: { value: '9Ij!Z-Tb)nft73OpLpw£71----' },
+      });
+      fireEvent.change(password, {
+        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
+      });
+      fireEvent.change(confirmPassword, {
+        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
+      });
 
       await act(() => {
         fireEvent.submit(btnSubmit);
       });
+
+      screen.debug();
 
       expect(
         await screen.findByText('Your request has been processed successfully'),

@@ -51,6 +51,10 @@
       "forgotPasswordConfirmation": "Your request has been processed successfully",
       "forgotPasswordError": "An error has occurred during your request"
     },
+    "changePassword": {
+      "changePasswordConfirmation": "Your password has been updated successfully",
+      "changePasswordError": "An error has occurred during your request"
+    },
     "navbar": {
       "concerts": "Concerts",
       "home": "Home",
