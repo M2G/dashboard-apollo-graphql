@@ -6,7 +6,7 @@ hooks:
   afterAllFileWrite:
     - node_modules/.bin/prettier --write
 generates:
-  src/modules/graphql/generated.tsx:
+  apps/web/src/modules/graphql/generated.tsx:
     config:
       apolloReactCommonImportFrom: '@apollo/client'
       apolloReactComponentsImportFrom: '@apollo/client'
@@ -21,7 +21,7 @@ generates:
       namingConvention: 'keep'
       nonOptionalTypename: true
       useTypeImports: true
-    documents: 'src/**/*.graphql'
+    documents: 'apps/web/src/**/**/*.graphql' # add path to your graphql files (absolute or relative), can include file patterns
     plugins:
       - 'typescript'
       - 'typescript-operations'
@@ -34,11 +34,11 @@ generates:
     plugins:
       - 'schema-ast'
 
-  src/modules/graphql/introspection.gen.json:
+  apps/web/src/modules/graphql/introspection.gen.json:
     plugins:
       - introspection
     config:
       minify: true
-  src/modules/graphql/introspection.gen.ts:
+  apps/web/src/modules/graphql/introspection.gen.ts:
     plugins:
       - 'fragment-matcher'
