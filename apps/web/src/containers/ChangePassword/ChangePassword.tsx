@@ -3,29 +3,31 @@ import { useAuth } from '@/AuthContext';
 import ChangePasswordForm from '@/components/ChangePassordForm';
 import ChangePasswordStatus from '@/containers/ChangePassword/ChangePasswordStatus';
 import { INITIAL_VALUES } from '@/components/ChangePassordForm/constants';
-import { useUpdateUserMutation } from '@/modules/graphql/generated';
+import { useChangePasswordMutation } from '@/modules/graphql/generated';
 import Loading from '@/components/Loading';
 
 function ChangePassword(): JSX.Element {
   const {
     userData: { id },
   } = useAuth();
-  const [changePassword, { data, error, loading }] = useUpdateUserMutation();
+  const [changePasswordMutation, { data, error, loading }] =
+    useChangePasswordMutation();
+
+  console.log('useAuth useAuth useAuth', id);
+
   const handleSubmit = useCallback(
-    (formData: {
-      id: string;
-      old_password: string;
-      password: string;
-      password_again: string;
-    }) => {
-      changePassword({
+    (formData: { id: string; oldPassword: string; password: string }) => {
+      changePasswordMutation({
         variables: {
           id,
-          ...formData,
+          input: {
+            oldPassword: formData.oldPassword,
+            password: formData.password,
+          },
         },
       });
     },
-    [changePassword, id],
+    [changePasswordMutation, id],
   );
 
   console.log(
