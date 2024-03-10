@@ -7,10 +7,10 @@ import {
   act,
 } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { MockedProvider } from '@apollo/client/testing';
 import ChangePassword from './ChangePassword';
-import { UpdateUserDocument } from '@/modules/graphql/generated';
+import { ChangePasswordDocument } from '@/modules/graphql/generated';
+import AuthContext from '@/AuthContext';
 import { GraphQLError } from 'graphql';
 
 beforeEach(() => {
@@ -19,7 +19,6 @@ beforeEach(() => {
 
 describe('Change password Container', () => {
   describe('Change password success', () => {
-    let wrapper: any;
     let inputOldPassword: HTMLInputElement;
     let inputPassword: HTMLInputElement;
     let inputConfirmPassword: HTMLInputElement;
@@ -31,14 +30,18 @@ describe('Change password Container', () => {
         {
           //delay: 30,
           request: {
-            query: UpdateUserDocument,
+            query: ChangePasswordDocument,
             variables: {
-              password: '9Ij!Z-Tb)nft73OpLpw£71',
+              id: 1,
+              input: {
+                oldPassword: '9Ij!Z-Tb)nft73OpLpw£71----',
+                password: '9Ij!Z-Tb)nft73OpLpw£71',
+              },
             },
           },
           result: {
             data: {
-              updateUser: {
+              changePassword: {
                 __typename: 'Status',
                 success: true,
               },
@@ -49,9 +52,11 @@ describe('Change password Container', () => {
 
       render(
         <MockedProvider mocks={mocks} addTypename={false}>
-          <MemoryRouter initialEntries={['/change-password']}>
-            <ChangePassword />
-          </MemoryRouter>
+          <AuthContext.Provider>
+            <MemoryRouter initialEntries={['/change-password']}>
+              <ChangePassword />
+            </MemoryRouter>
+          </AuthContext.Provider>
         </MockedProvider>,
       );
 
@@ -61,14 +66,14 @@ describe('Change password Container', () => {
       btnSubmit = screen.getByTestId('submit');
     });
 
-    it('should success forgot password', async () => {
-      fireEvent.change(oldPassword, {
+    it('should success change password', async () => {
+      fireEvent.change(inputOldPassword, {
         target: { value: '9Ij!Z-Tb)nft73OpLpw£71----' },
       });
-      fireEvent.change(password, {
+      fireEvent.change(inputPassword, {
         target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
-      fireEvent.change(confirmPassword, {
+      fireEvent.change(inputConfirmPassword, {
         target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
 
@@ -83,9 +88,10 @@ describe('Change password Container', () => {
       ).toBeInTheDocument();
     });
   });
-  describe('Submitting form (2)', () => {
-    let inputNewPassword: HTMLInputElement;
-    let inputVerifyPassword: HTMLInputElement;
+  describe('Change password fail', () => {
+    let inputOldPassword: HTMLInputElement;
+    let inputPassword: HTMLInputElement;
+    let inputConfirmPassword: HTMLInputElement;
     let btnSubmit: HTMLButtonElement;
 
     afterEach(cleanup);
@@ -94,14 +100,21 @@ describe('Change password Container', () => {
         {
           //delay: 30,
           request: {
-            query: ForgotPasswordDocument,
+            query: ChangePasswordDocument,
             variables: {
-              email: 'test@gmail.com',
+              id: 1,
+              input: {
+                oldPassword: '9Ij!Z-Tb)nft73OpLpw£71----',
+                password: '9Ij!Z-Tb)nft73OpLpw£71',
+              },
             },
           },
           result: {
+            errors: [
+              new GraphQLError('An error has occurred during your request'),
+            ],
             data: {
-              forgotPassword: {
+              changePassword: {
                 __typename: 'Status',
                 success: false,
               },
@@ -112,22 +125,28 @@ describe('Change password Container', () => {
 
       render(
         <MockedProvider mocks={mocks} addTypename={false}>
-          <MemoryRouter initialEntries={['/reset-password']}>
-            <ResetPassword />
-          </MemoryRouter>
+          <AuthContext.Provider>
+            <MemoryRouter initialEntries={['/change-password']}>
+              <ChangePassword />
+            </MemoryRouter>
+          </AuthContext.Provider>
         </MockedProvider>,
       );
 
-      inputNewPassword = screen.getByTestId('new_password');
-      inputVerifyPassword = screen.getByTestId('verify_password');
+      inputOldPassword = screen.getByTestId('oldPassword');
+      inputPassword = screen.getByTestId('password');
+      inputConfirmPassword = screen.getByTestId('confirmPassword');
       btnSubmit = screen.getByTestId('submit');
     });
 
-    it('should fail reset password', async () => {
-      fireEvent.change(inputNewPassword, {
+    it('should success forgot password', async () => {
+      fireEvent.change(inputOldPassword, {
+        target: { value: '9Ij!Z-Tb)nft73OpLpw£71----' },
+      });
+      fireEvent.change(inputPassword, {
         target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
-      fireEvent.change(inputVerifyPassword, {
+      fireEvent.change(inputConfirmPassword, {
         target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
       });
 
@@ -135,10 +154,10 @@ describe('Change password Container', () => {
         fireEvent.submit(btnSubmit);
       });
 
+      screen.debug();
+
       expect(
-        await screen.findByText(
-          'An error occured while resetting your password',
-        ),
+        await screen.findByText('An error has occurred during your request'),
       ).toBeInTheDocument();
     });
   });
