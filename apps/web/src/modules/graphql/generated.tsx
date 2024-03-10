@@ -12,68 +12,88 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>;
 };
+export type MakeEmpty<
+  T extends { [key: string]: unknown },
+  K extends keyof T,
+> = { [_ in K]?: never };
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+    };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  Date: any;
-  DateTime: any;
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  Date: { input: any; output: any };
+  DateTime: { input: any; output: any };
 };
 
 export type Artist = {
   __typename: 'Artist';
-  artist_id: Maybe<Scalars['Int']>;
-  display_name: Maybe<Scalars['String']>;
-  uri: Maybe<Scalars['String']>;
+  artist_id: Maybe<Scalars['Int']['output']>;
+  display_name: Maybe<Scalars['String']['output']>;
+  uri: Maybe<Scalars['String']['output']>;
+};
+
+export type ChangePasswordInput = {
+  oldPassword: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type Concert = {
   __typename: 'Concert';
   artist: Maybe<Artist>;
-  artist_id: Maybe<Scalars['Int']>;
-  city: Maybe<Scalars['String']>;
-  concert_id: Maybe<Scalars['Int']>;
-  datetime: Maybe<Scalars['String']>;
-  display_name: Maybe<Scalars['String']>;
-  lat: Maybe<Scalars['Float']>;
-  lng: Maybe<Scalars['Float']>;
-  popularity: Maybe<Scalars['String']>;
-  status: Maybe<Scalars['String']>;
-  type: Maybe<Scalars['String']>;
-  uri: Maybe<Scalars['String']>;
+  artist_id: Maybe<Scalars['Int']['output']>;
+  city: Maybe<Scalars['String']['output']>;
+  concert_id: Maybe<Scalars['Int']['output']>;
+  datetime: Maybe<Scalars['String']['output']>;
+  display_name: Maybe<Scalars['String']['output']>;
+  lat: Maybe<Scalars['Float']['output']>;
+  lng: Maybe<Scalars['Float']['output']>;
+  popularity: Maybe<Scalars['String']['output']>;
+  status: Maybe<Scalars['String']['output']>;
+  type: Maybe<Scalars['String']['output']>;
+  uri: Maybe<Scalars['String']['output']>;
 };
 
 export type Concerts = {
   __typename: 'Concerts';
   edges: Maybe<Array<Maybe<Edge>>>;
   pageInfo: Maybe<PageInfo>;
-  totalCount: Maybe<Scalars['Int']>;
+  totalCount: Maybe<Scalars['Int']['output']>;
 };
 
 export type CreateUserInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type Edge = {
   __typename: 'Edge';
-  cursor: Maybe<Scalars['String']>;
+  cursor: Maybe<Scalars['String']['output']>;
   node: Maybe<Concert>;
 };
 
 export type Mutation = {
   __typename: 'Mutation';
+  changePassword: Status;
   createUser: User;
   deleteUser: Status;
   forgotPassword: Status;
   resetPassword: Status;
-  signin: Scalars['String'];
+  signin: Scalars['String']['output'];
   signup: User;
   updateUser: Status;
+};
+
+export type MutationchangePasswordArgs = {
+  id: Scalars['Int']['input'];
+  input: InputMaybe<ChangePasswordInput>;
 };
 
 export type MutationcreateUserArgs = {
@@ -81,11 +101,11 @@ export type MutationcreateUserArgs = {
 };
 
 export type MutationdeleteUserArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type MutationforgotPasswordArgs = {
-  email: Scalars['String'];
+  email: Scalars['String']['input'];
 };
 
 export type MutationresetPasswordArgs = {
@@ -101,20 +121,20 @@ export type MutationsignupArgs = {
 };
 
 export type MutationupdateUserArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
   input: InputMaybe<UpdateUserInput>;
 };
 
 export type PageInfo = {
   __typename: 'PageInfo';
-  count: Maybe<Scalars['Int']>;
-  endCursor: Maybe<Scalars['String']>;
-  hasNextPage: Maybe<Scalars['Boolean']>;
-  hasPrevPage: Maybe<Scalars['Boolean']>;
-  next: Maybe<Scalars['Int']>;
-  pages: Maybe<Scalars['Int']>;
-  prev: Maybe<Scalars['Int']>;
-  startCursor: Maybe<Scalars['String']>;
+  count: Maybe<Scalars['Int']['output']>;
+  endCursor: Maybe<Scalars['String']['output']>;
+  hasNextPage: Maybe<Scalars['Boolean']['output']>;
+  hasPrevPage: Maybe<Scalars['Boolean']['output']>;
+  next: Maybe<Scalars['Int']['output']>;
+  pages: Maybe<Scalars['Int']['output']>;
+  prev: Maybe<Scalars['Int']['output']>;
+  startCursor: Maybe<Scalars['String']['output']>;
 };
 
 export type Query = {
@@ -126,66 +146,66 @@ export type Query = {
 };
 
 export type QueryconcertArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type QueryconcertsArgs = {
-  afterCursor: InputMaybe<Scalars['String']>;
-  filters: InputMaybe<Scalars['String']>;
-  first: Scalars['Int'];
+  afterCursor: InputMaybe<Scalars['String']['input']>;
+  filters: InputMaybe<Scalars['String']['input']>;
+  first: Scalars['Int']['input'];
 };
 
 export type QuerygetUserArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type QueryusersArgs = {
-  filters: InputMaybe<Scalars['String']>;
-  page: InputMaybe<Scalars['Int']>;
-  pageSize: InputMaybe<Scalars['Int']>;
+  filters: InputMaybe<Scalars['String']['input']>;
+  page: InputMaybe<Scalars['Int']['input']>;
+  pageSize: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type ResetPasswordInput = {
-  password: Scalars['String'];
-  token: Scalars['String'];
+  password: Scalars['String']['input'];
+  token: Scalars['String']['input'];
 };
 
 export type SigninInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type SignupInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type Status = {
   __typename: 'Status';
-  success: Maybe<Scalars['Boolean']>;
+  success: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type UpdateUserInput = {
-  email: InputMaybe<Scalars['String']>;
-  first_name: InputMaybe<Scalars['String']>;
-  last_name: InputMaybe<Scalars['String']>;
-  username: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']['input']>;
+  first_name: InputMaybe<Scalars['String']['input']>;
+  last_name: InputMaybe<Scalars['String']['input']>;
+  username: InputMaybe<Scalars['String']['input']>;
 };
 
 export type User = {
   __typename: 'User';
-  created_at: Maybe<Scalars['Date']>;
-  deleted_at: Maybe<Scalars['Int']>;
-  email: Maybe<Scalars['String']>;
-  first_name: Maybe<Scalars['String']>;
-  id: Maybe<Scalars['Int']>;
-  last_connected_at: Maybe<Scalars['Int']>;
-  last_name: Maybe<Scalars['String']>;
-  modified_at: Maybe<Scalars['Date']>;
-  password: Maybe<Scalars['String']>;
-  reset_password_expires: Maybe<Scalars['Date']>;
-  reset_password_token: Maybe<Scalars['String']>;
-  username: Maybe<Scalars['String']>;
+  created_at: Maybe<Scalars['Date']['output']>;
+  deleted_at: Maybe<Scalars['Int']['output']>;
+  email: Maybe<Scalars['String']['output']>;
+  first_name: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars['Int']['output']>;
+  last_connected_at: Maybe<Scalars['Int']['output']>;
+  last_name: Maybe<Scalars['String']['output']>;
+  modified_at: Maybe<Scalars['Date']['output']>;
+  password: Maybe<Scalars['String']['output']>;
+  reset_password_expires: Maybe<Scalars['Date']['output']>;
+  reset_password_token: Maybe<Scalars['String']['output']>;
+  username: Maybe<Scalars['String']['output']>;
 };
 
 export type Users = {
@@ -200,15 +220,15 @@ export enum sortOrder {
 }
 
 export type SigninMutationVariables = Exact<{
-  email: Scalars['String'];
-  password: Scalars['String'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 }>;
 
 export type SigninMutation = { __typename: 'Mutation'; signin: string };
 
 export type SignupMutationVariables = Exact<{
-  email: Scalars['String'];
-  password: Scalars['String'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 }>;
 
 export type SignupMutation = {
@@ -224,8 +244,8 @@ export type SignupMutation = {
 };
 
 export type CreateUserMutationVariables = Exact<{
-  email: Scalars['String'];
-  password: Scalars['String'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 }>;
 
 export type CreateUserMutation = {
@@ -241,7 +261,7 @@ export type CreateUserMutation = {
 };
 
 export type UpdateUserMutationVariables = Exact<{
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
   input: InputMaybe<UpdateUserInput>;
 }>;
 
@@ -251,7 +271,7 @@ export type UpdateUserMutation = {
 };
 
 export type DeleteUserMutationVariables = Exact<{
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 }>;
 
 export type DeleteUserMutation = {
@@ -268,8 +288,18 @@ export type ResetPasswordMutation = {
   resetPassword: { __typename: 'Status'; success: boolean | null };
 };
 
+export type ChangePasswordMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  input: ChangePasswordInput;
+}>;
+
+export type ChangePasswordMutation = {
+  __typename: 'Mutation';
+  changePassword: { __typename: 'Status'; success: boolean | null };
+};
+
 export type ForgotPasswordMutationVariables = Exact<{
-  email: Scalars['String'];
+  email: Scalars['String']['input'];
 }>;
 
 export type ForgotPasswordMutation = {
@@ -305,9 +335,9 @@ export type ConcertPartsFragment = {
 };
 
 export type GetConcertsQueryVariables = Exact<{
-  afterCursor: InputMaybe<Scalars['String']>;
-  first: Scalars['Int'];
-  filters: InputMaybe<Scalars['String']>;
+  afterCursor: InputMaybe<Scalars['String']['input']>;
+  first: Scalars['Int']['input'];
+  filters: InputMaybe<Scalars['String']['input']>;
 }>;
 
 export type GetConcertsQuery = {
@@ -360,9 +390,9 @@ export type UserPartsFragment = {
 };
 
 export type GetUsersQueryVariables = Exact<{
-  filters: InputMaybe<Scalars['String']>;
-  pageSize: InputMaybe<Scalars['Int']>;
-  page: InputMaybe<Scalars['Int']>;
+  filters: InputMaybe<Scalars['String']['input']>;
+  pageSize: InputMaybe<Scalars['Int']['input']>;
+  page: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetUsersQuery = {
@@ -390,7 +420,7 @@ export type GetUsersQuery = {
 };
 
 export type GetUserQueryVariables = Exact<{
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 }>;
 
 export type GetUserQuery = {
@@ -750,6 +780,58 @@ export type ResetPasswordMutationOptions =
     ResetPasswordMutation,
     ResetPasswordMutationVariables
   >;
+export const ChangePasswordDocument = gql`
+  mutation ChangePassword($id: Int!, $input: ChangePasswordInput!) {
+    changePassword(id: $id, input: $input) {
+      success
+    }
+  }
+`;
+export type ChangePasswordMutationFn = ApolloReactCommon.MutationFunction<
+  ChangePasswordMutation,
+  ChangePasswordMutationVariables
+>;
+
+/**
+ * __useChangePasswordMutation__
+ *
+ * To run a mutation, you first call `useChangePasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangePasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changePasswordMutation, { data, loading, error }] = useChangePasswordMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useChangePasswordMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ChangePasswordMutation,
+    ChangePasswordMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useMutation<
+    ChangePasswordMutation,
+    ChangePasswordMutationVariables
+  >(ChangePasswordDocument, options);
+}
+export type ChangePasswordMutationHookResult = ReturnType<
+  typeof useChangePasswordMutation
+>;
+export type ChangePasswordMutationResult =
+  ApolloReactCommon.MutationResult<ChangePasswordMutation>;
+export type ChangePasswordMutationOptions =
+  ApolloReactCommon.BaseMutationOptions<
+    ChangePasswordMutation,
+    ChangePasswordMutationVariables
+  >;
 export const ForgotPasswordDocument = gql`
   mutation ForgotPassword($email: String!) {
     forgotPassword(email: $email) {
@@ -864,9 +946,24 @@ export function useGetConcertsLazyQuery(
     GetConcertsQueryVariables
   >(GetConcertsDocument, options);
 }
+export function useGetConcertsSuspenseQuery(
+  baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<
+    GetConcertsQuery,
+    GetConcertsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useSuspenseQuery<
+    GetConcertsQuery,
+    GetConcertsQueryVariables
+  >(GetConcertsDocument, options);
+}
 export type GetConcertsQueryHookResult = ReturnType<typeof useGetConcertsQuery>;
 export type GetConcertsLazyQueryHookResult = ReturnType<
   typeof useGetConcertsLazyQuery
+>;
+export type GetConcertsSuspenseQueryHookResult = ReturnType<
+  typeof useGetConcertsSuspenseQuery
 >;
 export type GetConcertsQueryResult = ApolloReactCommon.QueryResult<
   GetConcertsQuery,
@@ -931,9 +1028,24 @@ export function useGetUsersLazyQuery(
     options,
   );
 }
+export function useGetUsersSuspenseQuery(
+  baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<
+    GetUsersQuery,
+    GetUsersQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useSuspenseQuery<
+    GetUsersQuery,
+    GetUsersQueryVariables
+  >(GetUsersDocument, options);
+}
 export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
 export type GetUsersLazyQueryHookResult = ReturnType<
   typeof useGetUsersLazyQuery
+>;
+export type GetUsersSuspenseQueryHookResult = ReturnType<
+  typeof useGetUsersSuspenseQuery
 >;
 export type GetUsersQueryResult = ApolloReactCommon.QueryResult<
   GetUsersQuery,
@@ -988,8 +1100,23 @@ export function useGetUserLazyQuery(
     options,
   );
 }
+export function useGetUserSuspenseQuery(
+  baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<
+    GetUserQuery,
+    GetUserQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useSuspenseQuery<GetUserQuery, GetUserQueryVariables>(
+    GetUserDocument,
+    options,
+  );
+}
 export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserSuspenseQueryHookResult = ReturnType<
+  typeof useGetUserSuspenseQuery
+>;
 export type GetUserQueryResult = ApolloReactCommon.QueryResult<
   GetUserQuery,
   GetUserQueryVariables
