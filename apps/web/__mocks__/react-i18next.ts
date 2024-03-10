@@ -1,7 +1,15 @@
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/AuthContext';
 
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(),
+}));
+
+jest.mock('@/AuthContext', () => ({
+  useAuth: jest.fn(),
+  __esModule: true,
+  default: React.createContext(),
 }));
 
 const tSpy = (_: any, parameters: string) => {
@@ -13,6 +21,7 @@ const tSpy = (_: any, parameters: string) => {
 
 const changeLanguageSpy = jest.fn((lng: string) => new Promise(() => {}));
 const useTranslationSpy = useTranslation as jest.Mock;
+const useAuthSpy = useAuth as jest.Mock;
 
 useTranslationSpy.mockReturnValue({
   i18n: {
@@ -20,4 +29,10 @@ useTranslationSpy.mockReturnValue({
     language: 'en',
   },
   t: tSpy,
+});
+
+useAuthSpy.mockReturnValue({
+  userData: {
+    id: 1,
+  },
 });
