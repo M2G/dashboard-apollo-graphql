@@ -40,10 +40,22 @@ mutation ResetPassword($input: ResetPasswordInput!) {
   }
 }
 
+mutation ChangePassword($id: Int!, $input: ChangePasswordInput!) {
+  changePassword(id: $id, input: $input) {
+    success
+  }
+}
+
+
 mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email) {
     success
   }
+}
+
+input ChangePasswordInput {
+  password: String!
+  oldPassword: String!
 }
 
 input ResetPasswordInput {
