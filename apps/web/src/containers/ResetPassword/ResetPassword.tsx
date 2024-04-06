@@ -1,16 +1,16 @@
-/*eslint-disable*/
 import { useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useResetPasswordMutation } from '@/modules/graphql/generated';
-import { INITIAL_VALUES } from './constants';
-import ResetPasswordForm from '@/components/ResetPasswordForm';
-import ResetPasswordStatus from './ResetPasswordStatus';
 import Loading from '@/components/Loading';
+import ResetPasswordForm from '@/components/ResetPasswordForm';
+import { useResetPasswordMutation } from '@/modules/graphql/generated';
+import { useLocation } from 'react-router-dom';
+
+import { INITIAL_VALUES } from './constants';
+import ResetPasswordStatus from './ResetPasswordStatus';
 
 function ResetPassword(): JSX.Element | null {
-  let { search } = useLocation();
+  const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
-  const [resetPasswordMutation, { loading, error, data }] =
+  const [resetPasswordMutation, { data, error, loading }] =
     useResetPasswordMutation();
 
   const success: boolean | null | undefined = data?.resetPassword?.success;
@@ -38,11 +38,14 @@ function ResetPassword(): JSX.Element | null {
   );
 
   if (loading) return <Loading isLoading={loading} />;
-  if (success) return <ResetPasswordStatus success />;
-  if (error) return <ResetPasswordStatus />;
 
   return (
-    <ResetPasswordForm initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
+    <ResetPasswordForm
+      error={error}
+      initialValues={INITIAL_VALUES}
+      onSubmit={onSubmit}
+      success={success}
+    />
   );
 }
 
