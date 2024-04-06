@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { SVGProps, useMemo } from 'react';
 
 import type IconNames from './Icons.types';
@@ -25,6 +24,7 @@ function Icon({ as, ...rest }: IconProps): JSX.Element {
     () => Icons?.[as || (`${as}` as IconNames)],
     [as],
   );
+
   return (
     <DynamicIcon
       {...rest}
@@ -36,7 +36,3 @@ function Icon({ as, ...rest }: IconProps): JSX.Element {
 }
 
 export default Icon;
-
-Icon.propTypes = {
-  as: PropTypes.any.isRequired,
-};
