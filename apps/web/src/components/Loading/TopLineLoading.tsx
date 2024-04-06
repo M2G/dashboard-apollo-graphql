@@ -1,7 +1,7 @@
 import './TopLineLoading.scss';
 
 function TopLineLoading() {
-  return <div className="top-line-loader" />;
+  return <div data-testid="loader" className="top-line-loader" />;
 }
 
 export default TopLineLoading;
