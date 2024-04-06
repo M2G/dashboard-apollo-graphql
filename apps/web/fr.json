@@ -1,5 +1,6 @@
 {
   "translation": {
+    "noData": "Aucune donnée",
     "alert": {
       "warning": "Attention, vous êtes sur le point d'effectuer une action irréversible"
     },
@@ -51,6 +52,29 @@
       "changePasswordConfirmation": "Votre mot de passe a été mise à jours avec succès",
       "changePasswordError": "Une erreur s'est produite lors de votre demande"
     },
+
+
+
+    "errorsSignin": {
+      "WRONG_COMBINATION": "Combinaison email/mot de passe incorrecte",
+      "USER_NOT_FOUND": "Utilisateur non trouvé"
+    },
+    "errorsRegister": {
+      "DUPLICATE_ERROR": "Email déjà existant"
+    },
+    "errorsResetPassword": {
+      "RESET_PASSWORD_ERROR": "Erreur lors de la réinitialisation du mot de passe"
+    },
+    "errorsChangePassword": {
+      "CHANGE_PASSWORD_MATCH_ERROR": "Les mots de passe ne correspondent pas"
+    },
+
+
+
+    "successChangePassword": {
+      "CHANGE_PASSWORD": "Mot de passe mis à jour avec succès"
+    },
+
     "navbar": {
       "concerts": "Concerts",
       "home": "Accueil",
