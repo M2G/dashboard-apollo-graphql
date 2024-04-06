@@ -9,12 +9,10 @@ import { INITIAL_VALUES } from './constants';
 
 function Signin(): JSX.Element {
   const { activateAuth } = useAuth();
-  const [signin, { reset }] = useSigninMutation({
+
+  const [signin, { error }] = useSigninMutation({
     onCompleted: ({ signin: signinData }: { signin: string }) =>
       activateAuth(signinData),
-    onError: () => {
-      reset();
-    },
   });
 
   const handleSubmit = useCallback(
@@ -29,7 +27,15 @@ function Signin(): JSX.Element {
     [signin],
   );
 
-  return <SiginForm initialValues={INITIAL_VALUES} onSubmit={handleSubmit} />;
+  const messageError = error?.networkError?.result?.errors?.[0]?.message;
+
+  return (
+    <SiginForm
+      initialValues={INITIAL_VALUES}
+      onSubmit={handleSubmit}
+      error={messageError}
+    />
+  );
 }
 
 export default Signin;
