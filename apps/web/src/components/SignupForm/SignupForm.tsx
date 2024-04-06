@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { Link } from 'react-router-dom';
-import { Button, Field } from 'ui';
+import { Alert, Button, Field } from 'ui';
 
 import {
   formSchema,
@@ -26,7 +26,7 @@ interface IForm {
   onSubmit: SubmitHandler<FormSchemaType>;
 }
 
-function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
+function SigninForm({ initialValues, onSubmit, error }: IForm): JSX.Element {
   const { t } = useTranslation();
   const {
     formState: { errors, isValid },
@@ -81,6 +81,13 @@ function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
           variant="primary">
           {t('form.signup')}
         </Button>
+        {error && (
+          <Alert className="w-full mt-2" type="danger">
+            <div className="whitespace-nowrap max-w-[170px]">
+              {t(`errorsRegister.${error}`)}
+            </div>
+          </Alert>
+        )}
         <div className="c-action gab-1 mt-3 flex flex-nowrap justify-start">
           <span className="m-0 box-border text-sm font-normal leading-tight">
             {t('form.haveAnAccount')}
