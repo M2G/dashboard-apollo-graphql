@@ -1,6 +1,6 @@
 /* eslint-disable */
 import Navbar from './Navbar';
-import { render, screen, fireEvent } from '../../test-utils/test-utils';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 describe('test Navbar', () => {
   test('should render', () => {
