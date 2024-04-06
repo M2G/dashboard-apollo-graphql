@@ -1,19 +1,11 @@
 /* eslint-disable */
-import Navbar from './Navbar';
-import { render, screen, fireEvent } from '../../test-utils/test-utils';
+import NoData from './NoData';
+import { render, screen } from '@testing-library/react';
 
-describe('test Navbar', () => {
+describe('test NoData', () => {
   test('should render', () => {
-    const initialState = { auth: {} };
-    const options: any = { initialState };
+    render(<NoData />);
 
-    const { container }: any = render(<Navbar />, options);
-
-    expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('Search')).toBeInTheDocument();
-
-    const button: any = container?.querySelector('.btn');
-    expect(button).toBeInTheDocument();
-    fireEvent.click(button);
+    expect(screen.getByText('No Data')).toBeInTheDocument();
   });
 });
