@@ -8,8 +8,8 @@ import {
 } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
-import ChangePassword from './ChangePassword';
-import { ChangePasswordDocument } from '@/modules/graphql/generated';
+import Concert from './Concert';
+import { GetConcertsDocument } from '@/modules/graphql/generated';
 import AuthContext from '@/AuthContext';
 import { GraphQLError } from 'graphql';
 
@@ -17,33 +17,59 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe('Change password Container', () => {
-  describe('Change password success', () => {
-    let inputOldPassword: HTMLInputElement;
-    let inputPassword: HTMLInputElement;
-    let inputConfirmPassword: HTMLInputElement;
-    let btnSubmit: HTMLButtonElement;
-
+describe('Concert Container', () => {
+  describe('Concert success', () => {
     afterEach(cleanup);
     beforeEach(() => {
       const mocks = [
         {
-          //delay: 30,
+          delay: 10,
           request: {
-            query: ChangePasswordDocument,
+            query: GetConcertsDocument,
             variables: {
-              id: 1,
-              input: {
-                oldPassword: '9Ij!Z-Tb)nft73OpLpw£71----',
-                password: '9Ij!Z-Tb)nft73OpLpw£71',
-              },
+              afterCursor: null,
+              filters: '',
+              first: 20,
             },
           },
           result: {
             data: {
-              changePassword: {
-                __typename: 'Status',
-                success: true,
+              concerts: {
+                totalCount: 24,
+                edges: [
+                  {
+                    node: {
+                      concert_id: 41170526,
+                      type: 'Concert',
+                      uri: 'https://www.songkick.com/concerts/41170526-guy2bezbar-at-le-point-fort-daubervilliers',
+                      display_name:
+                        'Kalash at Le point fort daubervilliers (June 08, 2024)',
+                      status: 'ok',
+                      popularity: '0.052765',
+                      datetime: '2024-11-16T20:00:00-0800',
+                      city: 'Paris, France',
+                      lng: 48.9106183,
+                      lat: 2.4041042,
+                      artist: {
+                        artist_id: 11,
+                        uri: 'https://www.songkick.com/artists/616082-kalash',
+                        display_name: 'Kalash',
+                        __typename: 'Artist',
+                      },
+                      __typename: 'Concert',
+                    },
+                    cursor: 'NDExNzA1MjY=',
+                    __typename: 'Edge',
+                  },
+                ],
+                pageInfo: {
+                  startCursor: 'NDExNzA1MjY=',
+                  endCursor: 'NDA3Mjg1ODg=',
+                  hasNextPage: true,
+                  hasPrevPage: false,
+                  __typename: 'PageInfo',
+                },
+                __typename: 'Concerts',
               },
             },
           },
@@ -53,68 +79,55 @@ describe('Change password Container', () => {
       render(
         <MockedProvider mocks={mocks} addTypename={false}>
           <AuthContext.Provider>
-            <MemoryRouter initialEntries={['/change-password']}>
-              <ChangePassword />
+            <MemoryRouter initialEntries={['/concert']}>
+              <Concert />
             </MemoryRouter>
           </AuthContext.Provider>
         </MockedProvider>,
       );
-
-      inputOldPassword = screen.getByTestId('oldPassword');
-      inputPassword = screen.getByTestId('password');
-      inputConfirmPassword = screen.getByTestId('confirmPassword');
-      btnSubmit = screen.getByTestId('submit');
     });
 
-    it('should success change password', async () => {
-      fireEvent.change(inputOldPassword, {
-        target: { value: '9Ij!Z-Tb)nft73OpLpw£71----' },
-      });
-      fireEvent.change(inputPassword, {
-        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
-      });
-      fireEvent.change(inputConfirmPassword, {
-        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
-      });
-
-      await act(() => {
-        fireEvent.submit(btnSubmit);
-      });
+    it('should success concert', async () => {
+      expect(await screen.findByTestId('infinite-scroll')).toBeInTheDocument();
+      expect(await screen.findByText('search')).toBeInTheDocument();
+      expect(
+        await screen.findByText(
+          'Kalash at Le point fort daubervilliers (June 08, 2024)',
+        ),
+      ).toBeInTheDocument();
+      expect(await screen.findByText('Paris, France')).toBeInTheDocument();
+      expect(await screen.findByText('Go somewhere')).toBeInTheDocument();
 
       screen.debug();
-
-      expect(
-        await screen.findByText('Your password has been changed successfully'),
-      ).toBeInTheDocument();
     });
   });
-  describe('Change password fail', () => {
-    let inputOldPassword: HTMLInputElement;
-    let inputPassword: HTMLInputElement;
-    let inputConfirmPassword: HTMLInputElement;
-    let btnSubmit: HTMLButtonElement;
-
+  describe('Concert success but empty', () => {
     afterEach(cleanup);
     beforeEach(() => {
       const mocks = [
         {
-          //delay: 30,
+          delay: 10,
           request: {
-            query: ChangePasswordDocument,
+            query: GetConcertsDocument,
             variables: {
-              id: 1,
-              input: {
-                oldPassword: '9Ij!Z-Tb)nft73OpLpw£71----',
-                password: '9Ij!Z-Tb)nft73OpLpw£71',
-              },
+              afterCursor: null,
+              filters: '',
+              first: 20,
             },
           },
           result: {
-            errors: [new GraphQLError('Passwords does not match')],
             data: {
-              changePassword: {
-                __typename: 'Status',
-                success: false,
+              concerts: {
+                totalCount: 0,
+                edges: [],
+                pageInfo: {
+                  startCursor: 'NDExNzA1MjY=',
+                  endCursor: 'NDA3Mjg1ODg=',
+                  hasNextPage: false,
+                  hasPrevPage: false,
+                  __typename: 'PageInfo',
+                },
+                __typename: 'Concerts',
               },
             },
           },
@@ -124,37 +137,68 @@ describe('Change password Container', () => {
       render(
         <MockedProvider mocks={mocks} addTypename={false}>
           <AuthContext.Provider>
-            <MemoryRouter initialEntries={['/change-password']}>
-              <ChangePassword />
+            <MemoryRouter initialEntries={['/concert']}>
+              <Concert />
             </MemoryRouter>
           </AuthContext.Provider>
         </MockedProvider>,
       );
-
-      inputOldPassword = screen.getByTestId('oldPassword');
-      inputPassword = screen.getByTestId('password');
-      inputConfirmPassword = screen.getByTestId('confirmPassword');
-      btnSubmit = screen.getByTestId('submit');
     });
 
-    it('should success change password£ password', async () => {
-      fireEvent.change(inputOldPassword, {
-        target: { value: '9Ij!Z-Tb)nft73OpLpw£71----' },
-      });
-      fireEvent.change(inputPassword, {
-        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
-      });
-      fireEvent.change(inputConfirmPassword, {
-        target: { value: '9Ij!Z-Tb)nft73OpLpw£71' },
-      });
+    it('should success concert but empty', async () => {
+      expect(await screen.findByText('No data')).toBeInTheDocument();
 
-      await act(() => {
-        fireEvent.submit(btnSubmit);
-      });
+      screen.debug();
+    });
+  });
+  describe('Concert fail', () => {
+    afterEach(cleanup);
+    beforeEach(() => {
+      const mocks = [
+        {
+          delay: 10,
+          request: {
+            query: GetConcertsDocument,
+            variables: {
+              afterCursor: null,
+              filters: '',
+              first: 20,
+            },
+          },
+          result: {
+            data: {
+              concerts: {
+                totalCount: 0,
+                edges: [],
+                pageInfo: {
+                  startCursor: 'NDExNzA1MjY=',
+                  endCursor: 'NDA3Mjg1ODg=',
+                  hasNextPage: false,
+                  hasPrevPage: false,
+                  __typename: 'PageInfo',
+                },
+                __typename: 'Concerts',
+              },
+            },
+          },
+        },
+      ];
 
-      expect(
-        await screen.findByText('Passwords does not match'),
-      ).toBeInTheDocument();
+      render(
+        <MockedProvider mocks={mocks} addTypename={false}>
+          <AuthContext.Provider>
+            <MemoryRouter initialEntries={['/concert']}>
+              <Concert />
+            </MemoryRouter>
+          </AuthContext.Provider>
+        </MockedProvider>,
+      );
+    });
+
+    it('should fail concert', async () => {
+      expect(await screen.findByText('No data')).toBeInTheDocument();
+
+      screen.debug();
     });
   });
 });
