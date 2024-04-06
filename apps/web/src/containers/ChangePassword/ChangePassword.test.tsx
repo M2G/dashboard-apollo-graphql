@@ -84,7 +84,7 @@ describe('Change password Container', () => {
       screen.debug();
 
       expect(
-        await screen.findByText('Your request has been processed successfully'),
+        await screen.findByText('Your password has been changed successfully'),
       ).toBeInTheDocument();
     });
   });
@@ -110,9 +110,7 @@ describe('Change password Container', () => {
             },
           },
           result: {
-            errors: [
-              new GraphQLError('An error has occurred during your request'),
-            ],
+            errors: [new GraphQLError('Passwords does not match')],
             data: {
               changePassword: {
                 __typename: 'Status',
@@ -139,7 +137,7 @@ describe('Change password Container', () => {
       btnSubmit = screen.getByTestId('submit');
     });
 
-    it('should success forgot password', async () => {
+    it('should success change password£ password', async () => {
       fireEvent.change(inputOldPassword, {
         target: { value: '9Ij!Z-Tb)nft73OpLpw£71----' },
       });
@@ -154,10 +152,8 @@ describe('Change password Container', () => {
         fireEvent.submit(btnSubmit);
       });
 
-      screen.debug();
-
       expect(
-        await screen.findByText('An error has occurred during your request'),
+        await screen.findByText('Passwords does not match'),
       ).toBeInTheDocument();
     });
   });
