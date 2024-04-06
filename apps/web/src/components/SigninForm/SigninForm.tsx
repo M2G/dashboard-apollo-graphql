@@ -9,22 +9,23 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Button, Field } from 'ui';
+import { Alert, Button, Field } from 'ui';
 
-import { formSchema, INITIAL_VALUES, INPUT_NAME } from './constants';
+import { INITIAL_VALUES, INPUT_NAME, formSchema } from './constants';
 
 type FormSchemaType = z.infer<typeof formSchema>;
 
 interface IForm {
+  error?: string;
   initialValues: typeof INITIAL_VALUES;
   onSubmit: SubmitHandler<FormSchemaType>;
 }
 
-function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
+function SigninForm({ error, initialValues, onSubmit }: IForm): JSX.Element {
   const { t } = useTranslation();
   const {
-    formState: { errors, isValid },
     control,
+    formState: { errors, isValid },
     handleSubmit,
     register,
   } = useForm<FormSchemaType>({
@@ -37,6 +38,8 @@ function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
     mode: 'onBlur',
     resolver: zodResolver(formSchema(t)),
   });
+
+  console.log('error error error error error', error);
 
   return (
     <div
@@ -75,6 +78,13 @@ function SigninForm({ initialValues, onSubmit }: IForm): JSX.Element {
           variant="primary">
           {t('form.signin')}
         </Button>
+        {error && (
+          <Alert className="w-full mt-2" type="danger">
+            <div className="whitespace-nowrap max-w-[170px]">
+              {t(`errorsSignin.${error}`)}
+            </div>
+          </Alert>
+        )}
         <div className="c-action gab-1 mt-3 flex flex-nowrap justify-start">
           <span className="m-0 box-border text-sm font-normal leading-tight">
             {t('form.haveAnAccount')}
