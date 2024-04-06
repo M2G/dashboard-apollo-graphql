@@ -4,7 +4,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Button, Field } from 'ui';
+import { Alert, Button, Field } from 'ui';
 import type { z } from 'zod';
 
 import ROUTER_PATH from '@/constants/RouterPath';
@@ -16,9 +16,16 @@ type FormSchemaType = z.infer<typeof formSchema>;
 interface IForm {
   initialValues: { [x: string]: string | undefined };
   onSubmit: SubmitHandler<FormSchemaType>;
+  error?: string;
+  success?: boolean;
 }
 
-function ChangePassordForm({ initialValues, onSubmit }: IForm): JSX.Element {
+function ChangePassordForm({
+  error,
+  initialValues,
+  onSubmit,
+  success,
+}: IForm): JSX.Element {
   const { t } = useTranslation();
   const {
     control,
@@ -81,6 +88,26 @@ function ChangePassordForm({ initialValues, onSubmit }: IForm): JSX.Element {
           variant="primary">
           {t('form.changePassword')}
         </Button>
+        {success && (
+          <Alert className="w-full mt-2" type="info">
+            <div className="whitespace-nowrap max-w-[170px]">
+              {t(
+                `successChangePassword.CHANGE_PASSWORD`,
+                'Your password has been changed successfully',
+              )}
+            </div>
+          </Alert>
+        )}
+        {error && (
+          <Alert className="w-full mt-2" type="danger">
+            <div className="whitespace-nowrap max-w-[170px]">
+              {t(
+                `errorsChangePassword.CHANGE_PASSWORD_MATCH_ERROR`,
+                'Passwords does not match',
+              )}
+            </div>
+          </Alert>
+        )}
         <div className="c-action gab-1 mt-3 flex flex-nowrap justify-start">
           <span className="m-0 box-border text-sm font-normal leading-tight">
             {t('form.wantToSeeYour')}
