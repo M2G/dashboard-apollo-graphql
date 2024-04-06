@@ -35,4 +35,5 @@ useAuthSpy.mockReturnValue({
   userData: {
     id: 1,
   },
+  activateAuth: jest.fn(),
 });
