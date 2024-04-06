@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import { useAuth } from '@/AuthContext';
 import ChangePasswordForm from '@/components/ChangePassordForm';
-import ChangePasswordStatus from '@/containers/ChangePassword/ChangePasswordStatus';
 import { INITIAL_VALUES } from '@/components/ChangePassordForm/constants';
-import { useChangePasswordMutation } from '@/modules/graphql/generated';
 import Loading from '@/components/Loading';
+import { useChangePasswordMutation } from '@/modules/graphql/generated';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 function ChangePassword(): JSX.Element {
   const {
@@ -30,19 +31,19 @@ function ChangePassword(): JSX.Element {
     [changePasswordMutation, id],
   );
 
-  console.log(
-    'useUpdateUserMutation useUpdateUserMutation useUpdateUserMutation',
-    data,
-  );
-
   if (loading) return <Loading isLoading={loading} />;
-  if (data) return <ChangePasswordStatus success />;
-  if (error) return <ChangePasswordStatus />;
+
+  const success = data?.changePassword?.success;
+  const messageError = error?.networkError?.result?.errors?.[0]?.message;
+
+  console.log('success success success', success);
 
   return (
     <ChangePasswordForm
+      error={messageError}
       initialValues={INITIAL_VALUES}
       onSubmit={handleSubmit}
+      success={success}
     />
   );
 }
