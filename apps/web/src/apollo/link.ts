@@ -50,14 +50,20 @@ const authMiddleware = new ApolloLink((operation: any, forward: any) => {
 });
 
 const errorLink = onError(
-  ({ graphQLErrors, networkError, operation, response, ...arg }) => {
-    if (
-      networkError?.response === 'invalid_token' ||
-      networkError?.response?.status === 401
-    ) {
+  ({ graphQLErrors, networkError, operation, response }) => {
+    console.log(
+      'networkError networkError networkError networkError',
+      networkError,
+    );
+    console.log(
+      'graphQLErrors graphQLErrors graphQLErrors graphQLErrors',
+      graphQLErrors,
+    );
+
+    if (networkError?.response?.status === 401) {
       clearAuthStorage();
       clearUserStorage();
-      window.location.href = ROUTER_PATH.SIGNIN;
+      // window.location.href = ROUTER_PATH.SIGNIN;
     }
 
     if (graphQLErrors?.length) {
@@ -66,14 +72,14 @@ const errorLink = onError(
           extensions: { exception: { status: number }; code: string };
           message: string | null | undefined;
         }) => {
-          toast.error(err?.message);
+          // toast.error(err?.message);
 
           console.log('graphQLErrors', err);
 
           if (err?.extensions?.exception?.status === 401) {
             clearAuthStorage();
             clearUserStorage();
-            window.location.href = ROUTER_PATH.SIGNIN;
+            // window.location.href = ROUTER_PATH.SIGNIN;
           }
 
           // err.message, err.locations, err.path, err.extensions
@@ -83,7 +89,7 @@ const errorLink = onError(
           ) {
             clearAuthStorage();
             clearUserStorage();
-            window.location.href = ROUTER_PATH.SIGNIN;
+            // window.location.href = ROUTER_PATH.SIGNIN;
           }
         },
       );
