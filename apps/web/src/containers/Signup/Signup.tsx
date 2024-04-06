@@ -7,7 +7,7 @@ import { INITIAL_VALUES } from './constants';
 
 function Signup(): JSX.Element {
   const navigate = useNavigate();
-  const [signup] = useSignupMutation({
+  const [signup, { error }] = useSignupMutation({
     onCompleted: () => {
       navigate(ROUTER_PATH.SIGNIN);
     },
@@ -24,7 +24,15 @@ function Signup(): JSX.Element {
     [signup],
   );
 
-  return <SignupForm initialValues={INITIAL_VALUES} onSubmit={handleSubmit} />;
+  const messageError = error?.networkError?.result?.errors?.[0]?.message;
+
+  return (
+    <SignupForm
+      initialValues={INITIAL_VALUES}
+      onSubmit={handleSubmit}
+      error={messageError}
+    />
+  );
 }
 
 export default Signup;
