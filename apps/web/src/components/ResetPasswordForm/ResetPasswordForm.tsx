@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { Button, Field } from 'ui';
+import { Alert, Button, Field } from 'ui';
 import { formSchema, INPUT_NAME } from './constants';
 import { Link } from 'react-router-dom';
 import ROUTER_PATH from '@/constants/RouterPath';
@@ -16,9 +16,11 @@ type FormSchemaType = z.infer<typeof formSchema>;
 interface IForm {
   initialValues: Record<any, unknown>;
   onSubmit: SubmitHandler<FormSchemaType>;
+  error: string | undefined;
+  success: boolean | null | undefined;
 }
 
-function ResetPasswordForm({ initialValues, onSubmit }: IForm) {
+function ResetPasswordForm({ initialValues, onSubmit, error, success }: IForm) {
   const { t } = useTranslation();
   const {
     formState: { errors, isValid },
@@ -73,6 +75,20 @@ function ResetPasswordForm({ initialValues, onSubmit }: IForm) {
           variant="primary">
           {t('form.submit')}
         </Button>
+        {success && (
+          <Alert className="w-full mt-2" type="info">
+            <div className="whitespace-nowrap max-w-[170px]">
+              {t(`success.CHANGE_PASSWORD`)}
+            </div>
+          </Alert>
+        )}
+        {error && (
+          <Alert className="w-full mt-2" type="danger">
+            <div className="whitespace-nowrap max-w-[170px]">
+              {t(`errorsResetPassword.${error}`)}
+            </div>
+          </Alert>
+        )}
         <div className="c-action gab-1 mt-3 flex flex-nowrap justify-start">
           <span className="m-0 box-border text-sm font-normal leading-tight">
             {t('form.haveAnAccount')}
