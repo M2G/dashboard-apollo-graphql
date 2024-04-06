@@ -1,13 +1,16 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useForgotPasswordMutation } from '@/modules/graphql/generated';
 import { INITIAL_VALUES } from './constants';
 import ForgotPasswordView from '@/components/ForgotPasswordForm';
-import ForgotPasswordStatus from './ForgotPasswordStatus';
 import Loading from '@/components/Loading';
 
 function ForgotPassword(): JSX.Element {
   const [forgotPasswordMutation, { loading, error, data }] =
-    useForgotPasswordMutation();
+    useForgotPasswordMutation({
+      onCompleted: (data) => {
+        console.log('onCompleted onCompleted onCompleted onCompleted', data);
+      },
+    });
 
   const success: boolean | null | undefined = data?.forgotPassword?.success;
 
@@ -22,9 +25,13 @@ function ForgotPassword(): JSX.Element {
     [forgotPasswordMutation],
   );
 
+  useEffect(() => {
+    console.log('forgotPasswordMutation', success, error);
+  }, [success, error]);
+
   if (loading) return <Loading isLoading={loading} />;
-  if (success) return <ForgotPasswordStatus success />;
-  if (error) return <ForgotPasswordStatus />;
+  // if (success) return <ForgotPasswordStatus success />;
+  // if (error) return <ForgotPasswordStatus />;
 
   return (
     <ForgotPasswordView initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
