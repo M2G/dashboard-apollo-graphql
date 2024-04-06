@@ -1,13 +1,13 @@
 import type { ComponentType, SVGAttributes } from 'react';
 
 enum IconNames {
-  ARROW_DOWN = 'ArrowDown',
-  ARROW_UP = 'ArrowUp',
-  DELETE = 'Delete',
-  EDIT = 'Edit',
-  HOME = 'Home',
-  PROFIL = 'Profil',
-  PROFILS = 'Profils',
+  ARROW_DOWN = 'arrow-down',
+  ARROW_UP = 'arrow-up',
+  DELETE = 'delete',
+  EDIT = 'edit',
+  HOME = 'home',
+  PROFIL = 'profil',
+  PROFILS = 'profils',
 }
 
 export type IconComponent = ComponentType<SVGAttributes<SVGElement>>;
