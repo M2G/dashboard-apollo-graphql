@@ -1,11 +1,10 @@
-/* eslint-disable */
-import NoData from './NoData';
+import TopLineLoading from './TopLineLoading';
 import { render, screen } from '@testing-library/react';
 
-describe('test NoData', () => {
+describe('test TopLineLoading', () => {
   test('should render', () => {
-    render(<NoData />);
+    render(<TopLineLoading />);
 
-    expect(screen.getByText('No Data')).toBeInTheDocument();
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
 });
