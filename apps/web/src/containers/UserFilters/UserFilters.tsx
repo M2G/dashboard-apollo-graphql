@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { debounce } from 'lodash';
 
 import { INPUT_NAME, PLACEHOLDER_SEARCH } from './constants';
-import './index.scss';
 
 interface UserFiltersProps {
   currentTerm?: string;
@@ -40,8 +39,9 @@ function UserFilters({
 
   return (
     <input
+      data-testid="search-input"
       aria-label="Search"
-      className="form-control c-search-input"
+      className="form-control c-search-input w-full"
       id="floatingInput"
       name={INPUT_NAME.SEARCH}
       onChange={handleChange}
