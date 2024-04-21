@@ -57,7 +57,7 @@ function TableWrapper({
   }, [sortData, rows]);
 
   useEffect(() => {
-    header?.forEach(({ defaultSort, type }: any, index: any) => {
+    header?.forEach(({ defaultSort, type }: any, index: number) => {
       if (defaultSort) handleSort(index, 'descending', type);
     });
   }, [header]);
@@ -65,7 +65,9 @@ function TableWrapper({
   return (
     <TableContext.Provider
       value={{ getSortedTable, handleSort, header, sortData }}>
-      <table className="c-table text-grey-dark w-full border-collapse">
+      <table
+        className="c-table text-grey-dark w-full border-collapse"
+        data-testid="table">
         <TableHead id={id} />
         <TableBody id={id} />
       </table>
