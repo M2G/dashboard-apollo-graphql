@@ -1,14 +1,15 @@
 import type { JSX, Key } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { DebouncedFunc, debounce } from 'lodash';
-import type { GetConcertsQuery } from '@/modules/graphql/generated';
-import { useGetConcertsLazyQuery } from '@/modules/graphql/generated';
 
 import InfiniteScroll from '@/components/Core/InfiniteScroll';
 import TopLineLoading from '@/components/Loading/TopLineLoading';
 import NoData from '@/components/NoData';
-import chunk from './helpers';
+import { useGetConcertsLazyQuery } from '@/modules/graphql/generated';
+import { DebouncedFunc, debounce } from 'lodash';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Card, Field } from 'ui';
+import type { GetConcertsQuery } from '@/modules/graphql/generated';
+
+import chunk from './helpers';
 import './index.scss';
 
 function Home(): JSX.Element {
@@ -96,13 +97,14 @@ function Home(): JSX.Element {
           <Field
             aria-label="Search"
             id="floatingInput"
-            name="search"
             label="search"
+            name="search"
             onChange={handleChange}
             type="search"
             value={term}
           />
         </form>
+        {loading && <TopLineLoading />}
         {concerts?.length > 0 ? (
           <InfiniteScroll
             hasMore={pageInfo?.hasNextPage}
@@ -124,7 +126,7 @@ function Home(): JSX.Element {
                     }[],
                     concertIdx: number,
                   ) => (
-                    <Card key={`${index}_${concertIdx}_${node?.concert_id}`}>
+                    <Card key={node?.concert_id}>
                       <div className="o-cell--one">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                           {node?.display_name}
@@ -133,8 +135,8 @@ function Home(): JSX.Element {
                           {node?.city}
                         </p>
                         <a
-                          href={node?.uri || ''}
-                          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          href={node?.uri || ''}>
                           Go somewhere
                           <svg
                             aria-hidden="true"
@@ -143,11 +145,11 @@ function Home(): JSX.Element {
                             viewBox="0 0 14 10"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
+                              d="M1 5h12m0 0L9 1m4 4L9 9"
                               stroke="currentColor"
                               strokeLinecap="round"
                               strokeLinejoin="round"
                               strokeWidth="2"
-                              d="M1 5h12m0 0L9 1m4 4L9 9"
                             />
                           </svg>
                         </a>
