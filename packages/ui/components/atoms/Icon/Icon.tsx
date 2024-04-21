@@ -1,8 +1,7 @@
 import { SVGProps, useMemo } from 'react';
 
-import type IconNames from './Icons.types';
-
 import Icons from './Icons';
+import type IconNames from './Icons.types';
 
 export interface IconProps extends SVGProps<SVGElement> {
   as: IconNames;
@@ -19,11 +18,13 @@ export interface IconProps extends SVGProps<SVGElement> {
  * import { ReactComponent as PlusIcon } from "../../../assets/icons";
  * <Icon as={PlusIcon} />
  * */
-function Icon({ as, ...rest }: IconProps): JSX.Element {
+function Icon({ as, ...rest }: IconProps): JSX.Element | null {
   const DynamicIcon = useMemo(
     () => Icons?.[as || (`${as}` as IconNames)],
     [as],
   );
+
+  if (!DynamicIcon) return null;
 
   return (
     <DynamicIcon

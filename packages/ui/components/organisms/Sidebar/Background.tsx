@@ -12,7 +12,7 @@ function Background({ setIsOpened, show }: IBackground): JSX.Element {
     <div
       className={clsx(
         'invisible fixed left-0 top-0 z-[100] h-full w-full bg-[rgba(0,0,0,0.5)] opacity-0 transition-opacity delay-[0ms] duration-[225ms] ease-in-out',
-        show ? 'visible opacity-100' : '',
+        show ? '_:visible opacity-100' : '',
       )}
       aria-hidden="true"
       onClick={() => setIsOpened(false)}
