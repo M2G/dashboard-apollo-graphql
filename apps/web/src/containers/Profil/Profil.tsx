@@ -53,7 +53,7 @@ function Profil(): JSX.Element | null {
   console.log('updateProfil updateProfil', updateProfil);
 
   const handleSubmit: any = useCallback(
-    async (formData: {
+    (formData: {
       email: any;
       first_name: any;
       last_name: any;
@@ -62,7 +62,7 @@ function Profil(): JSX.Element | null {
       console.log('userProfil userProfil', userProfil);
       console.log('formData formData', formData);
 
-      await updateUserMutation({
+      updateUserMutation({
         variables: {
           id: userProfil?.getUser?.id,
           input: {
