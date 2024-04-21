@@ -6,8 +6,6 @@ interface IPageSize {
 }
 
 function PageSize({ currentPageSize, setCurrentPageSize }: IPageSize) {
-  const pageSize = useMemo(() => currentPageSize, [currentPageSize]);
-
   const handleClick = ({ target: { value } }: { target: { value: string } }) =>
     setCurrentPageSize(parseInt(value, 10));
 
@@ -15,9 +13,12 @@ function PageSize({ currentPageSize, setCurrentPageSize }: IPageSize) {
     <select
       aria-label="-1"
       className="mt-[15px] block appearance-none border-none bg-transparent px-2 text-base font-normal leading-normal text-white outline-none"
+      data-testid="select-page-size"
       onChange={handleClick}
-      value={pageSize}>
-      <option value="2">2</option>
+      value={currentPageSize}>
+      <option selected value="2">
+        2
+      </option>
       <option value="5">5</option>
       <option value="10">10</option>
       <option value="">All</option>
