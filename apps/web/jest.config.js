@@ -21,6 +21,7 @@ module.exports = {
   ],
   moduleNameMapper: {
     '/^@/constants\\/(.*)$/': '<rootDir>/src/constants/$1',
+    '/^@/ui\\/(.*)$/': '<rootDir>/packages/ui/$1',
     '/^components\\/(.*)$/': '<rootDir>/src/components/$1',
     '/^containers\\/(.*)$/': '<rootDir>/src/containers/$1',
     '/^exceptions\\/(.*)$/': '<rootDir>/src/exceptions/$1',
@@ -55,7 +56,8 @@ module.exports = {
       },
     ],
     '^.+\\.css$': '<rootDir>/config/jest/cssTransform.ts',
-    // '^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)': '<rootDir>/config/jest/fileTransform.ts',
+    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+      '<rootDir>/config/jest/fileTransform.ts',
     '^.+\\.svg$': '<rootDir>/config/jest/svgTransform.ts',
   },
   transformIgnorePatterns: [

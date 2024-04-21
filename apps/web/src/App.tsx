@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import { logError } from '@/sentry/logError';
 import { BrowserRouter } from 'react-router-dom';
 import ErrorFallback from '@/containers/Error/Error';
+import { LanguageProvider } from '@/LanguageProvider';
 import AuthContext from './AuthContext';
 import Routes from './routes';
 import apolloClient from './apollo/config';
@@ -18,7 +19,9 @@ function App(): JSX.Element {
       <ApolloProvider client={apolloClient}>
         <AuthContext.Provider>
           <BrowserRouter>
-            <Routes />
+            <LanguageProvider>
+              <Routes />
+            </LanguageProvider>
             <ToastContainer />
           </BrowserRouter>
         </AuthContext.Provider>
