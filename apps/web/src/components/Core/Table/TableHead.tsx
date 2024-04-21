@@ -12,7 +12,7 @@ interface ITableHead {
 function TableHead({ id }: ITableHead): JSX.Element {
   const { handleSort, header, sortData } = useContext(TableContext);
   return (
-    <thead className="text-left">
+    <thead data-testid="thead" className="text-left">
       <tr className="border-semi-10-contrast border-b-solid border-b-[1px]">
         {header?.map(({ label, sortable, type }: never, index: number) => (
           <TableHeaderCell
