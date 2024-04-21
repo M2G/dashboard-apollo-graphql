@@ -32,7 +32,7 @@ const MemoizedTableRow = memo(TableRow);
 function TableBody({ id }: ITableBody): JSX.Element {
   const { getSortedTable } = useContext(TableContext);
   return (
-    <tbody>
+    <tbody data-testid="tbody">
       {getSortedTable?.map((row: { display: any }[], indexRow: number) => (
         <MemoizedTableRow
           data={row}
