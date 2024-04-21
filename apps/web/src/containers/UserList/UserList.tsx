@@ -1,9 +1,16 @@
 import type { JSX } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
-import type { UserList as UserListType } from './types';
+import { useTranslation } from 'react-i18next';
 import type { IUserListItem } from '@/containers/UserList/UserListItem';
 import type { GetUsersQuery, User, Users } from '@/modules/graphql/generated';
+
+import TopLineLoading from '@/components/Loading/TopLineLoading';
+import NoData from '@/components/NoData';
+import UserFilters from '@/containers/UserFilters';
+import List from '@/containers/UserList/ListLegacy';
+import userListItem from '@/containers/UserList/UserListItem';
+import UserEdit from '@/components/Users/UserEdit';
+import UserNew from '@/components/Users/UserNew';
 import {
   GetUsersDocument,
   useCreateUserMutation,
@@ -11,17 +18,19 @@ import {
   useGetUsersLazyQuery,
   useUpdateUserMutation,
 } from '@/modules/graphql/generated';
+
 import { Modal, Sidebar } from 'ui';
-import TopLineLoading from '@/components/Loading/TopLineLoading';
-import NoData from '@/components/NoData';
-import UserFilters from '@/containers/UserFilters';
-import List from '@/containers/UserList/ListLegacy';
-import userListItem from '@/containers/UserList/UserListItem';
-import UserEdit from '@/containers/Users/UserEdit';
-import UserNew from '@/containers/Users/UserNew';
 
 import AddUser from './Action/AddUser';
-import './index.scss';
+import type { UserList as UserListType } from './types';
+
+// import './index.scss';
+
+interface IUserList {
+  deletingUser: User | boolean | null;
+  editingUser: User | boolean | null;
+  newUser: User | boolean | null;
+}
 
 function UserList({
   canAdd = false,
@@ -29,14 +38,11 @@ function UserList({
   canEdit = false,
   id,
 }: UserListType): JSX.Element {
-  const [state, setUser] = useState<{
-    deletingUser?: User | boolean;
-    editingUser?: User | boolean;
-    newUser?: User | boolean;
-  }>({
-    deletingUser: false,
-    editingUser: false,
-    newUser: false,
+  const { t } = useTranslation();
+  const [state, setUser] = useState<IUserList>({
+    deletingUser: null,
+    editingUser: null,
+    newUser: null,
   });
   const [pagination, setPagination] = useState<{
     page: number;
@@ -54,43 +60,50 @@ function UserList({
 
   console.log('useGetUserListLazyQuery', { data, error, loading });
 
-  async function getData(): Promise<void> {
-    await getUsers({
+  useEffect((): void => {
+    getUsers({
       variables: {
         filters: term,
         page: pagination.page,
         pageSize: pagination.pageSize,
       },
     });
-  }
-
-  useEffect((): void => {
-    getData();
-  }, [pagination, term]);
+  }, [getUsers, pagination, term]);
 
   const [createUser] = useCreateUserMutation();
   const [updateUser] = useUpdateUserMutation();
   const [deleteUser] = useDeleteUserMutation();
 
-  const onDelete = useCallback((user: User): void => {
-    setUser({ deletingUser: user, editingUser: false, newUser: false });
-  }, []);
+  const handleAction = useCallback(
+    ({
+      deletingUser = null,
+      editingUser = null,
+      newUser = null,
+    }: {
+      deletingUser: boolean | null;
+      editingUser: boolean | null;
+      newUser: boolean | null;
+    }): void => {
+      setUser({
+        deletingUser,
+        editingUser,
+        newUser,
+      });
+    },
+    [],
+  );
 
-  const onClose = useCallback(() => {
-    setUser({ deletingUser: false, editingUser: false, newUser: false });
-  }, []);
-
-  const onAdd = useCallback((): void => {
-    setUser({ deletingUser: false, editingUser: false, newUser: true });
-  }, []);
-
-  const onEdit = useCallback((user: User): void => {
-    setUser({ deletingUser: false, editingUser: user, newUser: false });
-  }, []);
+  function onClose(): void {
+    handleAction({
+      deletingUser: false,
+      editingUser: false,
+      newUser: false,
+    });
+  }
 
   const onEditUser = useCallback(
-    async (user: User): Promise<void> => {
-      await updateUser({
+    (user: User): Promise<void> => {
+      updateUser({
         optimisticResponse: {
           __typename: 'Mutation',
           updateUser: {
@@ -155,12 +168,12 @@ function UserList({
       });
       onClose();
     },
-    [pagination, onClose, updateUser],
+    [updateUser, onClose, term, pagination.page, pagination.pageSize],
   );
 
   const onNewUser = useCallback(
-    async (user: User): Promise<void> => {
-      await createUser({
+    (user: User): void => {
+      createUser({
         optimisticResponse: {
           __typename: 'Mutation',
           createUser: {
@@ -283,15 +296,15 @@ function UserList({
           id: user?.id!,
         },
       });
-      onClose();
+      handleAction({ deletingUser: false, editingUser: false, newUser: false });
     },
-    [deleteUser, onClose, pagination.page, pagination.pageSize, term],
+    [deleteUser, handleAction, pagination.page, pagination.pageSize, term],
   );
 
   const searchTerms = useCallback(
-    async (term: string): Promise<void> => {
+    async (term?: string): Promise<void> => {
       setTerm(term);
-      await getUsers({
+      getUsers({
         variables: {
           filters: term,
           page: pagination.page,
@@ -309,7 +322,7 @@ function UserList({
         page,
       }));
 
-      await getUsers({
+      getUsers({
         variables: {
           filters: term,
           page: page || pagination.page,
@@ -326,8 +339,7 @@ function UserList({
         ...prevState,
         pageSize,
       }));
-
-      await getUsers({
+      getUsers({
         variables: {
           filters: term,
           page: pagination.page,
@@ -335,7 +347,7 @@ function UserList({
         },
       });
     },
-    [pagination, getUsers],
+    [getUsers, term, pagination.page, pagination.pageSize],
   );
 
   const users = data?.users;
@@ -349,58 +361,82 @@ function UserList({
           canDelete,
           canEdit,
           id,
-          onDelete,
-          onEdit,
+          onDelete: (d) =>
+            handleAction({
+              deletingUser: d,
+              editingUser: false,
+              newUser: false,
+            }),
+          onEdit: (d) =>
+            handleAction({
+              deletingUser: false,
+              editingUser: d,
+              newUser: false,
+            }),
           user,
         } as IUserListItem),
       ),
-    [results, canDelete, canEdit, id, onDelete, onEdit],
+    [results, canDelete, canEdit, id, handleAction],
   );
 
   const header = useMemo(
     () => [
       { label: '', sortable: false },
-      { label: 'First name', sortable: false },
-      { label: 'Last name', sortable: false },
-      { label: 'Email', sortable: false },
-      { label: 'Created at', sortable: true, type: 'date' },
-      { label: 'Modified at', sortable: true, type: 'date' },
+      { label: t('field.firstName'), sortable: false },
+      { label: t('field.lastName'), sortable: false },
+      { label: t('field.email'), sortable: false },
+      { label: t('field.createdAt'), sortable: true, type: 'date' },
+      { label: t('field.updateAt'), sortable: true, type: 'date' },
     ],
-    [],
+    [t],
   );
 
-  if (loading) return <TopLineLoading />;
+  // if (loading) return <TopLineLoading />;
 
   return (
     <div className="c-user-list">
-      <AddUser canAdd={canAdd} onAdd={onAdd} />
-
-      {!results.length && <NoData />}
+      {canAdd && (
+        <AddUser
+          onAdd={() => {
+            handleAction({
+              deletingUser: false,
+              editingUser: false,
+              newUser: true,
+            });
+          }}
+        />
+      )}
       <UserFilters currentTerm={term} onSearchTerm={searchTerms} />
-      <List
-        count={pageInfo?.count}
-        currentPage={pagination?.page}
-        currentPageSize={pagination?.pageSize}
-        data={results}
-        header={header}
-        id={id}
-        rows={rows}
-        setCurrentPage={onChangePage}
-        setCurrentPageSize={onChangePageSize}
-      />
+      {results?.length > 0 ? (
+        <List
+          count={pageInfo?.count}
+          currentPage={pagination?.page}
+          currentPageSize={pagination?.pageSize}
+          data={results}
+          header={header}
+          id={id}
+          rows={rows}
+          setCurrentPage={onChangePage}
+          setCurrentPageSize={onChangePageSize}
+        />
+      ) : (
+        <NoData />
+      )}
 
-      <Sidebar isOpened={!!state.editingUser} setIsOpened={onClose}>
-        <UserEdit data={state.editingUser} onSubmit={onEditUser} />
+      <Sidebar isOpened={!!state?.editingUser} setIsOpened={onClose}>
+        {state?.editingUser && (
+          <UserEdit initialValues={state.editingUser} onSubmit={onEditUser} />
+        )}
       </Sidebar>
 
-      <Sidebar isOpened={!!state.newUser} setIsOpened={onClose}>
-        <UserNew onSubmit={onNewUser} />
+      <Sidebar isOpened={!!state?.newUser} setIsOpened={onClose}>
+        {state?.newUser && <UserNew onSubmit={onNewUser} />}
       </Sidebar>
 
       <Modal
-        onConfirm={() => onDeleteUser(state.deletingUser as unknown as User)}
         hide={onClose}
-        isShowing={state.deletingUser}
+        isShowing={state?.deletingUser}
+        onConfirm={() => onDeleteUser(state?.deletingUser as unknown as User)}
         title="Delete">
         <p>Warning, you are about to perform an irreversible action</p>
       </Modal>
