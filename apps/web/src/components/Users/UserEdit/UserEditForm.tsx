@@ -43,14 +43,14 @@ function UserEditForm({ initialValues, onSubmit }: IForm) {
       <form className="p-2" onSubmit={handleSubmit(onSubmit)}>
         <Field
           className="_:mb-4"
-          label={t('field.firstname')}
+          label={t('field.firstName')}
           name={INPUT_NAME.FIRST_NAME}
           type="text"
           {...{ errors, register }}
         />
         <Field
           className="_:mb-4"
-          label={t('field.lastname')}
+          label={t('field.lastName')}
           name={INPUT_NAME.LAST_NAME}
           type="text"
           {...{ errors, register }}
