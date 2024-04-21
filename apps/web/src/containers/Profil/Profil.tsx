@@ -48,9 +48,7 @@ function Profil(): JSX.Element | null {
     },
   });
 
-  const [updateUserMutation, { data: updateProfil }] = useUpdateUserMutation();
-
-  console.log('updateProfil updateProfil', updateProfil);
+  const [updateUserMutation] = useUpdateUserMutation();
 
   const handleSubmit: any = useCallback(
     (formData: {
@@ -59,9 +57,6 @@ function Profil(): JSX.Element | null {
       last_name: any;
       username: any;
     }) => {
-      console.log('userProfil userProfil', userProfil);
-      console.log('formData formData', formData);
-
       updateUserMutation({
         variables: {
           id: userProfil?.getUser?.id,
@@ -84,7 +79,7 @@ function Profil(): JSX.Element | null {
     [userProfil, updateUserMutation],
   );
 
-  if (loading && userProfil?.getUser) return null;
+  if (loading && !userProfil?.getUser) return null;
 
   return (
     <ProfilForm

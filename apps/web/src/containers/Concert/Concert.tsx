@@ -126,7 +126,7 @@ function Home(): JSX.Element {
                     }[],
                     concertIdx: number,
                   ) => (
-                    <Card key={node?.concert_id}>
+                    <Card key={`${index}_${concertIdx}_${node?.concert_id}`}>
                       <div className="o-cell--one">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                           {node?.display_name}

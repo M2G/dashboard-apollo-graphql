@@ -7,13 +7,7 @@ import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Field } from 'ui';
 
-import {
-  formSchema,
-  INPUT_NAME,
-  LABEL_EMAIL,
-  LABEL_FIRST_NAME,
-  LABEL_LAST_NAME,
-} from './constants';
+import { formSchema, INPUT_NAME } from './constants';
 
 type FormSchemaType = z.infer<typeof formSchema>;
 

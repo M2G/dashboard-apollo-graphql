@@ -25,6 +25,8 @@ function InfiniteScroll({
   const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
   const isMounted: MutableRefObject<boolean> = useRef(true);
 
+  console.log('isMounted.current', isMounted.current);
+
   useEffect(() => {
     function scrollHandler(): undefined | void {
       if (!ref.current) {
@@ -57,10 +59,6 @@ function InfiniteScroll({
   const size = useWindowSize();
 
   const windowHeight = useMemo(() => size.height - LIMIT_SCROLL, [size.height]);
-
-  if (!size.height && !size.width) return null;
-  console.log('RENDERRRRRR size', size);
-  console.log('RENDERRRRRR windowHeight', windowHeight);
 
   return (
     <div

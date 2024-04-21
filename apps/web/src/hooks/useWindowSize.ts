@@ -7,17 +7,17 @@ function useWindowSize() {
   });
 
   useLayoutEffect(() => {
-    const handleResize = () => {
+    function handleResize(): void {
       setSize({
         height: window.innerHeight,
         width: window.innerWidth,
       });
-    };
+    }
 
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    return () => {
+    return (): void => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
