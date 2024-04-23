@@ -1,17 +1,19 @@
 import type { JSX } from 'react';
+
+import ErrorFallback from '@/containers/Error/Error';
+import { logError } from '@/sentry/logError';
 import { ApolloProvider } from '@apollo/client/react';
 import * as Sentry from '@sentry/react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { ToastContainer } from 'react-toastify';
-import { logError } from '@/sentry/logError';
 import { BrowserRouter } from 'react-router-dom';
-import ErrorFallback from '@/containers/Error/Error';
+import { ToastContainer } from 'react-toastify';
 import { LanguageProvider } from '@/LanguageProvider';
-import AuthContext from './AuthContext';
-import Routes from './routes';
-import apolloClient from './apollo/config';
 import 'react-toastify/dist/ReactToastify.css';
+
+import apolloClient from './apollo/config';
+import AuthContext from './AuthContext';
 import './i18n';
+import Routes from './routes';
 
 function App(): JSX.Element {
   return (
