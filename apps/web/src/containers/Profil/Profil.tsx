@@ -79,7 +79,7 @@ function Profil(): JSX.Element | null {
     [userProfil, updateUserMutation],
   );
 
-  if (loading && !userProfil?.getUser) return null;
+  if (loading) return null;
 
   return (
     <ProfilForm

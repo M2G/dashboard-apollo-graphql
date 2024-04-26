@@ -129,6 +129,7 @@ function Home(): JSX.Element {
                   ) => (
                     <ConcertList
                       key={`${index}_${concertIdx}_${node?.concert_id}`}
+                      node={node}
                     />
                   ),
                 )}
