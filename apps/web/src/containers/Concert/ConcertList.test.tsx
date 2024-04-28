@@ -1,11 +1,4 @@
-/* eslint-disable */
-import {
-  fireEvent,
-  render,
-  cleanup,
-  screen,
-  act,
-} from '@testing-library/react';
+import { render, cleanup, screen } from '@testing-library/react';
 
 import ConcertList from './ConcertList';
 
