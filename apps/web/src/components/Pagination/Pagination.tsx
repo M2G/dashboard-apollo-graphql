@@ -14,38 +14,46 @@ export type DatasetInjector<
 };
 
 function Pagination({ hasNextPage, hasPrevPage, setCurrentPage }: IPagination) {
-  const handlePrevClick: ChangeEventHandler<
+  function handlePrevClick({
+    target: { dataset },
+  }: ChangeEventHandler<
     DatasetInjector<HTMLAnchorElement, { prev: string }>
-  > = ({ target: { dataset } }) => setCurrentPage(dataset);
+  >): void {
+    setCurrentPage(dataset);
+  }
 
-  const handleNextClick: ChangeEventHandler<
-    DatasetInjector<HTMLAnchorElement, { next: string }>
-  > = ({ target: { dataset } }) => setCurrentPage(dataset);
+  function handleNextClick({
+    target: { dataset },
+  }: ChangeEventHandler<
+    DatasetInjector<HTMLAnchorElement, { prev: string }>
+  >): void {
+    setCurrentPage(dataset);
+  }
 
   return (
     <nav aria-label="-1">
       <ul className="pagination">
         <li className={`page-item ${hasPrevPage ? '' : 'disabled'}`}>
           <a
-            data-prev
             className="page-link"
+            data-prev
+            data-testid="prev"
             href="#"
             onClick={
               handlePrevClick as unknown as MouseEventHandler<HTMLAnchorElement>
-            }
-          >
+            }>
             Prev
           </a>
         </li>
         <li className={`page-item ${hasNextPage ? '' : 'disabled'}`}>
           <a
-            data-next
             className="page-link"
+            data-next
+            data-testid="next"
             href="#"
             onClick={
               handleNextClick as unknown as MouseEventHandler<HTMLAnchorElement>
-            }
-          >
+            }>
             Next
           </a>
         </li>
