@@ -29,9 +29,10 @@ function Icon({ as, ...rest }: IconProps): JSX.Element | null {
   return (
     <DynamicIcon
       {...rest}
-      className={['min-w-4 min-h-4 h-4 w-4 fill-current', rest.className].join(
-        ' ',
-      )}
+      className={[
+        'min-w-4 min-h-4 h-4 w-4 stroke-current',
+        rest.className,
+      ].join(' ')}
     />
   );
 }
