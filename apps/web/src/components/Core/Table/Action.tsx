@@ -16,10 +16,7 @@ function Action({ action, icon, id }: IAction): JSX.Element {
   return (
     <div className="cursor-pointer px-2" key={`actionCol__${id}`}>
       <div aria-hidden="true" id={id} onClick={action}>
-        <Icon
-          as={icon as IconNames}
-          className="fill-grey-dark w-4 cursor-pointer"
-        />
+        <Icon as={icon as IconNames} className="fw-4 cursor-pointer" />
       </div>
     </div>
   );

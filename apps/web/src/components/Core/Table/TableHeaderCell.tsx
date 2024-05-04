@@ -45,7 +45,7 @@ function TableHeaderCell({
           onClick={onSortClick}>
           <Icon
             as={sortedClass}
-            className="fill-grey-dark w-4 cursor-pointer"
+            className="_:w-6 _:h-6 cursor-pointer mb-[-5px]"
           />
         </button>
       )}
