@@ -12,8 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import apolloClient from './apollo/config';
 import AuthContext from './AuthContext';
-import './i18n';
 import Routes from './routes';
+import './i18n';
 
 function App(): JSX.Element {
   return (
