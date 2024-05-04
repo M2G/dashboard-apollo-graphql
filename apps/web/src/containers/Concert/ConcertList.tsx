@@ -12,7 +12,7 @@ function ConcertList({
   };
 }): JSX.Element {
   return (
-    <Card>
+    <Card className="ml-2">
       <div className="o-cell--one">
         <div className="flex flex-col h-[200px]">
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -26,18 +26,17 @@ function ConcertList({
             href={node?.uri || ''}>
             Go somewhere
             <svg
-              aria-hidden="true"
-              className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+              className="lucide lucide-chevron-right ml-2"
               fill="none"
-              viewBox="0 0 14 10"
+              height="20"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              width="20"
               xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-              />
+              <path d="m9 18 6-6-6-6" />
             </svg>
           </a>
         </div>

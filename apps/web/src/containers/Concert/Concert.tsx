@@ -3,15 +3,15 @@ import type { JSX, Key } from 'react';
 import InfiniteScroll from '@/components/Core/InfiniteScroll';
 import TopLineLoading from '@/components/Loading/TopLineLoading';
 import NoData from '@/components/NoData';
+import ConcertList from '@/containers/Concert/ConcertList';
 import { useGetConcertsLazyQuery } from '@/modules/graphql/generated';
 import { DebouncedFunc, debounce } from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Card, Field } from 'ui';
+import { Field } from 'ui';
 import type { GetConcertsQuery } from '@/modules/graphql/generated';
 
 import chunk from './helpers';
 import './index.scss';
-import ConcertList from '@/containers/Concert/ConcertList';
 
 function Home(): JSX.Element {
   const [term, setTerm] = useState('');
@@ -62,9 +62,6 @@ function Home(): JSX.Element {
   const pageInfo = constList?.pageInfo;
   const concerts = constList?.edges;
 
-  console.log('loading', loading);
-  console.log('concerts', concerts?.length);
-
   const loadMore = useCallback(async (): Promise<void> => {
     await fetchMore({
       skip: !pageInfo?.hasNextPage,
@@ -89,10 +86,8 @@ function Home(): JSX.Element {
     });
   }, [fetchMore, pageInfo?.endCursor, pageInfo?.hasNextPage]);
 
-  // if (loading) return <TopLineLoading />;
-
   return (
-    <div className="o-zone c-home">
+    <div className="o-zone c-home _:pl-[280px]">
       <div className="o-grid">
         <form>
           <Field
