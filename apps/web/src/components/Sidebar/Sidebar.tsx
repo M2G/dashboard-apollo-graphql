@@ -14,10 +14,10 @@ function Sidebar(): JSX.Element {
           Ici Logo
         </h3>
         <ul className="nav flex flex-col justify-center pt-4">
-          <li className="mb-4 flex items-center">
+          <li className="mb-5 flex items-center">
             <Icon
               as={IconNames.HOME}
-              className="_:stroke-white _:stroke-1.5 _:h-5 _:w-5 _:min-h-5"
+              className="_:stroke-white  _:h-5 _:w-10 _:min-h-6"
             />
             <a
               aria-current="page"
@@ -26,10 +26,10 @@ function Sidebar(): JSX.Element {
               {t('navbar.home')}
             </a>
           </li>
-          <li className="mb-4 flex stroke-white">
+          <li className="mb-5 flex stroke-white">
             <Icon
               as={IconNames.PROFIL}
-              className="_:stroke-white _:stroke-1.5 _:h-5 _:w-5 _:min-h-5"
+              className="_:stroke-white  _:h-5 _:w-10 _:min-h-6"
             />
             <a
               aria-current="page"
@@ -38,10 +38,10 @@ function Sidebar(): JSX.Element {
               {t('navbar.profil')}
             </a>
           </li>
-          <li className="mb-4 flex stroke-white">
+          <li className="mb-5 flex stroke-white">
             <Icon
               as={IconNames.PROFILS}
-              className="_:stroke-white _:stroke-1.5 _:h-5 _:w-5 _:min-h-5"
+              className="_:stroke-white  _:h-5 _:w-10 _:min-h-6"
             />
             <a
               aria-current="page"
@@ -50,10 +50,10 @@ function Sidebar(): JSX.Element {
               {t('navbar.users')}
             </a>
           </li>
-          <li className="mb-4 flex stroke-white">
+          <li className="mb-5 flex">
             <Icon
-              as={IconNames.PROFILS}
-              className="_:stroke-white _:stroke-1.5 _:h-5 _:w-5 _:min-h-5"
+              as={IconNames.CONCERT}
+              className="_:stroke-white  _:h-5 _:w-10 _:min-h-6"
             />
             <a
               aria-current="page"
