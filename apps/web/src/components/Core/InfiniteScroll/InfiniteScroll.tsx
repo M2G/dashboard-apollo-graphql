@@ -13,7 +13,7 @@ interface IInfiniteScroll {
   onLoadMore: () => void;
 }
 
-const LIMIT_SCROLL = 750;
+const LIMIT_SCROLL = 200;
 const WAIT = 500;
 
 function InfiniteScroll({
@@ -24,8 +24,6 @@ function InfiniteScroll({
 }: IInfiniteScroll): JSX.Element | null {
   const ref: MutableRefObject<HTMLDivElement | null> = useRef(null);
   const isMounted: MutableRefObject<boolean> = useRef(true);
-
-  console.log('isMounted.current', isMounted.current);
 
   useEffect(() => {
     function scrollHandler(): undefined | void {
