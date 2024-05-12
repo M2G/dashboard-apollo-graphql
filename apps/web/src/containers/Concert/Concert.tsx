@@ -87,7 +87,7 @@ function Home(): JSX.Element {
   }, [fetchMore, pageInfo?.endCursor, pageInfo?.hasNextPage]);
 
   return (
-    <div className="o-zone c-home _:pl-[280px]">
+    <div className="o-zone c-home !pl-[280px]">
       <div className="o-grid">
         <form>
           <Field

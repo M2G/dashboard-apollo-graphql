@@ -16,9 +16,10 @@ function PrivateRoutes(): JSX.Element {
       <Navbar />
       <Sidebar />
       <Routes>
-        <Route path={ROUTER_PATH.HOME} element={<Concert />} />
+        <Route path={ROUTER_PATH.HOME} element={null} />
         <Route path={ROUTER_PATH.USERS} element={<Users />} />
         <Route path={ROUTER_PATH.PROFIL} element={<Profil />} />
+        <Route path={ROUTER_PATH.CONCERTS} element={<Concert />} />
         <Route
           path={ROUTER_PATH.CHANGE_PASSWORD}
           element={<ChangePassword />}
