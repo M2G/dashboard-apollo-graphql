@@ -24,7 +24,7 @@ function Card({ tag = 'div', children, ...rest }: CardProps) {
     <DynamicTag
       {...rest}
       className={[
-        'min-w-[270px] max-w-[270px] rounded-lg border border-gray-700 bg-transparent p-6 shadow dark:border-gray-700 dark:bg-gray-800',
+        'min-h-[220px] rounded-lg border border-white border-opacity-10 bg-transparent p-6 shadow dark:border-gray-700 dark:bg-gray-800',
         rest.className,
       ].join(' ')}>
       {children}
