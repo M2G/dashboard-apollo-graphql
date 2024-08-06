@@ -85,8 +85,9 @@ export type Mutation = {
   createUser: User;
   deleteUser: Status;
   forgotPassword: Status;
+  refreshToken: Token;
   resetPassword: Status;
-  signin: Scalars['String']['output'];
+  signin: Token;
   signup: User;
   updateUser: Status;
 };
@@ -106,6 +107,10 @@ export type MutationdeleteUserArgs = {
 
 export type MutationforgotPasswordArgs = {
   email: Scalars['String']['input'];
+};
+
+export type MutationrefreshTokenArgs = {
+  requestToken: Scalars['String']['input'];
 };
 
 export type MutationresetPasswordArgs = {
@@ -185,6 +190,12 @@ export type Status = {
   success: Maybe<Scalars['Boolean']['output']>;
 };
 
+export type Token = {
+  __typename: 'Token';
+  accessToken: Maybe<Scalars['String']['output']>;
+  refreshToken: Maybe<Scalars['String']['output']>;
+};
+
 export type UpdateUserInput = {
   email: InputMaybe<Scalars['String']['input']>;
   first_name: InputMaybe<Scalars['String']['input']>;
@@ -224,7 +235,14 @@ export type SigninMutationVariables = Exact<{
   password: Scalars['String']['input'];
 }>;
 
-export type SigninMutation = { __typename: 'Mutation'; signin: string };
+export type SigninMutation = {
+  __typename: 'Mutation';
+  signin: {
+    __typename: 'Token';
+    accessToken: string | null;
+    refreshToken: string | null;
+  };
+};
 
 export type SignupMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -305,6 +323,19 @@ export type ForgotPasswordMutationVariables = Exact<{
 export type ForgotPasswordMutation = {
   __typename: 'Mutation';
   forgotPassword: { __typename: 'Status'; success: boolean | null };
+};
+
+export type RefreshTokenMutationVariables = Exact<{
+  token: Scalars['String']['input'];
+}>;
+
+export type RefreshTokenMutation = {
+  __typename: 'Mutation';
+  refreshToken: {
+    __typename: 'Token';
+    accessToken: string | null;
+    refreshToken: string | null;
+  };
 };
 
 export type ArtistPartsFragment = {
@@ -475,7 +506,10 @@ export const UserPartsFragmentDoc = gql`
 `;
 export const SigninDocument = gql`
   mutation Signin($email: String!, $password: String!) {
-    signin(input: { email: $email, password: $password })
+    signin(input: { email: $email, password: $password }) {
+      accessToken
+      refreshToken
+    }
   }
 `;
 export type SigninMutationFn = ApolloReactCommon.MutationFunction<
@@ -883,6 +917,57 @@ export type ForgotPasswordMutationOptions =
     ForgotPasswordMutation,
     ForgotPasswordMutationVariables
   >;
+export const RefreshTokenDocument = gql`
+  mutation RefreshToken($token: String!) {
+    refreshToken(requestToken: $token) {
+      accessToken
+      refreshToken
+    }
+  }
+`;
+export type RefreshTokenMutationFn = ApolloReactCommon.MutationFunction<
+  RefreshTokenMutation,
+  RefreshTokenMutationVariables
+>;
+
+/**
+ * __useRefreshTokenMutation__
+ *
+ * To run a mutation, you first call `useRefreshTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRefreshTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [refreshTokenMutation, { data, loading, error }] = useRefreshTokenMutation({
+ *   variables: {
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useRefreshTokenMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RefreshTokenMutation,
+    RefreshTokenMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useMutation<
+    RefreshTokenMutation,
+    RefreshTokenMutationVariables
+  >(RefreshTokenDocument, options);
+}
+export type RefreshTokenMutationHookResult = ReturnType<
+  typeof useRefreshTokenMutation
+>;
+export type RefreshTokenMutationResult =
+  ApolloReactCommon.MutationResult<RefreshTokenMutation>;
+export type RefreshTokenMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RefreshTokenMutation,
+  RefreshTokenMutationVariables
+>;
 export const GetConcertsDocument = gql`
   query GetConcerts($afterCursor: String, $first: Int!, $filters: String) {
     concerts(afterCursor: $afterCursor, first: $first, filters: $filters) {
@@ -926,7 +1011,11 @@ export function useGetConcertsQuery(
   baseOptions: ApolloReactHooks.QueryHookOptions<
     GetConcertsQuery,
     GetConcertsQueryVariables
-  >,
+  > &
+    (
+      | { variables: GetConcertsQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return ApolloReactHooks.useQuery<GetConcertsQuery, GetConcertsQueryVariables>(
@@ -1080,7 +1169,8 @@ export function useGetUserQuery(
   baseOptions: ApolloReactHooks.QueryHookOptions<
     GetUserQuery,
     GetUserQueryVariables
-  >,
+  > &
+    ({ variables: GetUserQueryVariables; skip?: boolean } | { skip: boolean }),
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return ApolloReactHooks.useQuery<GetUserQuery, GetUserQueryVariables>(
