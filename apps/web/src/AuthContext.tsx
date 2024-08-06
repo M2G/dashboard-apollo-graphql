@@ -3,11 +3,12 @@ import type { Context, JSX, ReactNode } from 'react';
 import { createContext, useContext, useMemo, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import {
-  clearAuthStorage,
+  setRefreshTokenStorage,
+  // clearAuthStorage,
   clearUserStorage,
-  getAuthStorage,
+  getAccessTokenStorage,
   getUserStorage,
-  setAuthStorage,
+  setAccessTokenStorage,
   setUserStorage,
 } from '@/services/storage';
 
@@ -42,18 +43,19 @@ interface AuthContextProps {
 // export a provider
 function Provider({ children }: AuthContextProps): JSX.Element {
   const [isAuth, setIsAuth] = useState<boolean | null | string>(() =>
-    getAuthStorage(),
+    getAccessTokenStorage(),
   );
+
   const [userData, setUserData] = useState<boolean | null | string>(() =>
     getUserStorage(),
   );
 
   const value = {
-    activateAuth: (token: string) => {
+    activateAuth: (auth) => {
       const decodedToken: {
         email: string;
         id: number;
-      } = jwtDecode(token) || {};
+      } = jwtDecode(auth.accessToken) || {};
 
       const user = {
         email: decodedToken.email,
@@ -61,7 +63,8 @@ function Provider({ children }: AuthContextProps): JSX.Element {
       };
       setUserStorage(JSON.stringify(user));
       setUserData(JSON.stringify(user));
-      setAuthStorage(token);
+      setAccessTokenStorage(auth.accessToken);
+      setRefreshTokenStorage(auth.refreshToken);
       setIsAuth(true);
     },
     isAuth,
@@ -69,7 +72,7 @@ function Provider({ children }: AuthContextProps): JSX.Element {
       setIsAuth(false);
       setUserStorage(null);
       clearUserStorage();
-      clearAuthStorage();
+      // clearAuthStorage();
     },
     userData: userData ? JSON.parse(userData as string) : null,
   };
