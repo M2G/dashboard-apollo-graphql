@@ -1,19 +1,21 @@
-import { ApolloLink, HttpLink } from '@apollo/client';
+import {
+  ApolloLink,
+  createHttpLink,
+  FetchResult,
+  HttpLink,
+} from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
+import { setContext } from '@apollo/client/link/context';
 import { toast } from 'react-toastify';
 import ROUTER_PATH from '@/constants/RouterPath';
+
 import {
-  clearAuthStorage,
-  clearUserStorage,
-  getAuthStorage,
+  setAccessTokenStorage,
+  getAccessTokenStorage,
 } from '@/services/storage';
+import getAccessTokenPromise from '@/utils/getAccessToken';
 
 const operationName = 'GetConcerts';
-
-const ERRORS = {
-  FORBIDDEN: 'FORBIDDEN',
-  UNAUTHENTICATED: 'UNAUTHENTICATED',
-};
 
 // https://localhost:8282/graphql
 /* Configuration imported from '.env' file */
@@ -32,23 +34,68 @@ const httpLink = new HttpLink({
 });
 const httpLink2 = new HttpLink({
   uri: 'http://localhost:8282/graphql',
+  credentials: 'same-origin',
 });
 
-const authMiddleware = new ApolloLink((operation: any, forward: any) => {
-  console.log('operation operation operation operation', operation);
-
-  const token = getAuthStorage();
+const linkTokenHeader = setContext((operation, { headers }) => {
+  console.log('---------------------------', operation.operationName);
+  const token = getAccessTokenStorage();
   const authorization = token ? `Bearer ${token}` : '';
-  operation.setContext(({ headers = {} }) => ({
+  return {
     headers: {
       ...headers,
       authorization,
     },
-  }));
-
-  return forward(operation);
+  };
 });
 
+export const possibleRefreshTokenErrors = [
+  'Refresh token is not in database!', // refresh token is not in the database
+  'Refresh token was expired. Please make a new signin request', // refresh token is expired
+];
+
+export const possibleAccessTokenErrors = [
+  'Login required.', // access token is not sent or Header key is not correct
+  'Error decoding signature', // access token or prefix is invalid
+  'Signature has expired', // access token is expired
+];
+
+const errorHandler = ({ graphQLErrors, networkError, operation, forward }) => {
+  console.log('operation', operation);
+  if (graphQLErrors)
+    graphQLErrors.forEach(async ({ err, message }) => {
+      if (networkError?.response?.status === 401) {
+        //clearRefreshTokenStorage();
+        //clearAccessTokenStorage();
+        //clearUserStorage();
+        //window.location.href = ROUTER_PATH.SIGNIN;
+        const accessToken = await getAccessTokenPromise();
+        console.log(
+          'getAccessTokenPromise getAccessTokenPromise getAccessTokenPromise',
+          accessToken,
+        );
+        setAccessTokenStorage(accessToken as string);
+      }
+
+      if (possibleRefreshTokenErrors.includes(message)) {
+        //clearRefreshTokenStorage();
+        //clearAccessTokenStorage();
+        //clearUserStorage();
+        //window.location.href = ROUTER_PATH.SIGNIN;
+      }
+
+      console.log('graphQLErrors', message);
+      console.log('err err err err', err?.extensions?.code);
+      if (networkError) {
+        console.log('networkError', networkError);
+      }
+      // response.errors = undefined
+    });
+};
+
+export const linkError = onError(errorHandler);
+
+/*
 const errorLink = onError(
   ({ graphQLErrors, networkError, operation, response }) => {
     console.log(
@@ -60,6 +107,32 @@ const errorLink = onError(
       graphQLErrors,
     );
 
+    console.log(
+      'networkError?.response?.status',
+      networkError?.response?.status,
+    );
+
+    if (graphQLErrors?.length) {
+      graphQLErrors.forEach(
+        (err: {
+          extensions: { exception: { status: number }; code: string };
+          message: string | null | undefined;
+        }) => {
+          console.log(
+            'err?.extensions?.exception?.status',
+            err?.extensions?.exception?.status,
+          );
+        },
+      );
+    }
+
+    if (networkError?.response?.status === 403) {
+      clearRefreshTokenStorage();
+      clearAccessTokenStorage();
+      clearUserStorage();
+      window.location.href = ROUTER_PATH.SIGNIN;
+    }
+    /*
     if (networkError?.response?.status === 401) {
       clearAuthStorage();
       clearUserStorage();
@@ -82,7 +155,6 @@ const errorLink = onError(
             window.location.href = ROUTER_PATH.SIGNIN;
           }
 
-          err.message, err.locations, err.path, err.extensions;
           if (
             err.extensions.code === ERRORS.UNAUTHENTICATED ||
             err.extensions.code === ERRORS.FORBIDDEN
@@ -96,6 +168,7 @@ const errorLink = onError(
     }
   },
 );
+*/
 
 const graphqlEndpoints = ApolloLink.split(
   (operation) => operation.operationName === operationName,
@@ -103,6 +176,6 @@ const graphqlEndpoints = ApolloLink.split(
   httpLink,
 );
 
-const link = ApolloLink.from([authMiddleware, errorLink, graphqlEndpoints]);
+const link = ApolloLink.from([linkTokenHeader, linkError, graphqlEndpoints]);
 
 export default link;
