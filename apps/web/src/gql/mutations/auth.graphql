@@ -1,5 +1,8 @@
 mutation Signin($email: String!, $password: String!) {
-  signin(input: { email: $email, password: $password })
+  signin(input: { email: $email, password: $password }) {
+    accessToken
+    refreshToken
+  }
 }
 
 mutation Signup($email: String!, $password: String!) {
@@ -46,10 +49,16 @@ mutation ChangePassword($id: Int!, $input: ChangePasswordInput!) {
   }
 }
 
-
 mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email) {
     success
+  }
+}
+
+mutation RefreshToken($token: String!) {
+  refreshToken(requestToken: $token) {
+    accessToken
+    refreshToken
   }
 }
 
