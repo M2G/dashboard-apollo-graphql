@@ -1,12 +1,23 @@
-const STORAGE_KEY_AUTH = 'auth';
+const STORAGE_KEY_ACCESS_TOKEN = 'accessToken';
+const STORAGE_KEY_REFRESH_TOKEN = 'refreshToken';
 const STORAGE_KEY_USER = 'user';
 
-const setAuthStorage = (authData: string) => {
-  localStorage.setItem(STORAGE_KEY_AUTH, authData);
+const setAccessTokenStorage = (authData: string) => {
+  localStorage.setItem(STORAGE_KEY_ACCESS_TOKEN, authData);
 };
-const getAuthStorage = () => localStorage.getItem(STORAGE_KEY_AUTH);
-const clearAuthStorage = () => {
-  localStorage.removeItem(STORAGE_KEY_AUTH);
+const getAccessTokenStorage = () =>
+  localStorage.getItem(STORAGE_KEY_ACCESS_TOKEN);
+const clearAccessTokenStorage = () => {
+  localStorage.removeItem(STORAGE_KEY_ACCESS_TOKEN);
+};
+
+const setRefreshTokenStorage = (authData: string) => {
+  localStorage.setItem(STORAGE_KEY_REFRESH_TOKEN, authData);
+};
+const getRefreshTokenStorage = () =>
+  localStorage.getItem(STORAGE_KEY_REFRESH_TOKEN);
+const clearRefreshTokenStorage = () => {
+  localStorage.removeItem(STORAGE_KEY_REFRESH_TOKEN);
 };
 
 const setUserStorage = (userData: any) => {
@@ -18,10 +29,13 @@ const clearUserStorage = () => {
 };
 
 export {
-  clearAuthStorage,
+  clearAccessTokenStorage,
+  clearRefreshTokenStorage,
   clearUserStorage,
-  getAuthStorage,
+  getAccessTokenStorage,
+  getRefreshTokenStorage,
   getUserStorage,
-  setAuthStorage,
+  setAccessTokenStorage,
+  setRefreshTokenStorage,
   setUserStorage,
 };
