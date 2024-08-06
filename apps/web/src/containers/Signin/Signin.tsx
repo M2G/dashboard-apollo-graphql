@@ -11,13 +11,15 @@ function Signin(): JSX.Element {
   const { activateAuth } = useAuth();
 
   const [signin, { error }] = useSigninMutation({
-    onCompleted: ({ signin: signinData }: { signin: string }) =>
-      activateAuth(signinData),
+    onCompleted: ({ signin: signinData }: { signin: string }) => {
+      console.log('signinData signinData', signinData);
+      activateAuth(signinData);
+    },
   });
 
   const handleSubmit = useCallback(
-    async (formData: { email: string; password: string }): Promise<void> => {
-      await signin({
+    (formData: { email: string; password: string }): Promise<void> => {
+      signin({
         variables: {
           email: formData.email,
           password: formData.password,
