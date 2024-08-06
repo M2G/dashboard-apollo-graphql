@@ -3,6 +3,11 @@ schema {
   mutation: Mutation
 }
 
+"""
+Indicates exactly one field must be supplied and this field must not be `null`.
+"""
+directive @oneOf on INPUT_OBJECT
+
 type Artist {
   artist_id: Int
   display_name: String
@@ -54,8 +59,9 @@ type Mutation {
   createUser(input: CreateUserInput!): User!
   deleteUser(id: Int!): Status!
   forgotPassword(email: String!): Status!
+  refreshToken(requestToken: String!): Token!
   resetPassword(input: ResetPasswordInput!): Status!
-  signin(input: SigninInput!): String!
+  signin(input: SigninInput!): Token!
   signup(input: SignupInput!): User!
   updateUser(id: Int!, input: UpdateUserInput): Status!
 }
@@ -95,6 +101,11 @@ input SignupInput {
 
 type Status {
   success: Boolean
+}
+
+type Token {
+  accessToken: String
+  refreshToken: String
 }
 
 input UpdateUserInput {
