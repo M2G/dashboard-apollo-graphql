@@ -1,4 +1,4 @@
-import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 import apolloClient from '@/apollo/config';
 import { RefreshTokenDocument } from '@/modules/graphql/generated';
 import {
@@ -45,10 +45,10 @@ async function getAccessTokenPromise(): Promise<unknown> {
   console.log('currentNumericDate', currentNumericDate);
   console.log(
     'currentNumericDate + 1 * 60 <= decodedToken.exp',
-    currentNumericDate + 1 * 60 <= decodedToken.exp,
+    currentNumericDate <= decodedToken.exp,
   );
 
-  if (currentNumericDate + 1 * 60 <= decodedToken.exp) {
+  if (currentNumericDate <= decodedToken.exp) {
     return new Promise((resolve) => {
       console.log('GOOOOOOOOO');
       resolve(token);
