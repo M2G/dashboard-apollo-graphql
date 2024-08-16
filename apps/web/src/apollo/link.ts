@@ -56,41 +56,41 @@ export const possibleAccessTokenErrors = [
   'Signature has expired', // access token is expired
 ];
 
-function errorHandler({
+async function errorHandler({
   graphQLErrors,
   networkError,
   operation,
 }: ErrorResponse): void {
   console.log('operation', operation);
-  if (graphQLErrors)
-    graphQLErrors.forEach(async ({ err, message }): Promise<void> => {
-      if (networkError?.response?.status === 401) {
-        // clearRefreshTokenStorage();
-        // clearAccessTokenStorage();
-        // clearUserStorage();
-        // window.location.href = ROUTER_PATH.SIGNIN;
-        const accessToken = await getAccessTokenPromise();
-        console.log(
-          'getAccessTokenPromise getAccessTokenPromise getAccessTokenPromise',
-          accessToken,
-        );
-        setAccessTokenStorage(accessToken as string);
-      }
-
-      if (possibleRefreshTokenErrors.includes(message)) {
-        clearRefreshTokenStorage();
-        clearAccessTokenStorage();
-        clearUserStorage();
-        window.location.href = ROUTER_PATH.SIGNIN;
-      }
-
+  if (graphQLErrors) {
+    graphQLErrors.forEach(function ({ err, message }): Promise<void> {
       console.log('graphQLErrors', message);
       console.log('err err err err', err?.extensions?.code);
-      if (networkError) {
-        console.log('networkError', networkError);
-      }
       // response.errors = undefined
     });
+  }
+  if (networkError?.response?.status === 401) {
+    // clearRefreshTokenStorage();
+    // clearAccessTokenStorage();
+    // clearUserStorage();
+    // window.location.href = ROUTER_PATH.SIGNIN;
+    const accessToken = await getAccessTokenPromise();
+    console.log(
+      'getAccessTokenPromise getAccessTokenPromise getAccessTokenPromise',
+      accessToken,
+    );
+    setAccessTokenStorage(accessToken as string);
+  }
+
+  if (possibleRefreshTokenErrors.includes(message)) {
+    clearRefreshTokenStorage();
+    clearAccessTokenStorage();
+    clearUserStorage();
+    window.location.href = ROUTER_PATH.SIGNIN;
+  }
+  if (networkError) {
+    console.log('networkError', networkError);
+  }
 }
 
 export const linkError = onError(errorHandler);

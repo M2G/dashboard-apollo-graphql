@@ -1,24 +1,24 @@
 import type { JSX } from 'react';
 
 import { useCallback } from 'react';
+import { useAuth } from '@/AuthContext';
 import SiginForm from '@/components/SigninForm';
 import { useSigninMutation } from '@/modules/graphql/generated';
 
-import { useAuth } from '@/AuthContext';
 import { INITIAL_VALUES } from './constants';
 
 function Signin(): JSX.Element {
   const { activateAuth } = useAuth();
 
   const [signin, { error }] = useSigninMutation({
-    onCompleted: ({ signin: signinData }: { signin: string }) => {
+    onCompleted({ signin: signinData }: { signin: string }): void {
       console.log('signinData signinData', signinData);
       activateAuth(signinData);
     },
   });
 
   const handleSubmit = useCallback(
-    (formData: { email: string; password: string }): Promise<void> => {
+    function (formData: { email: string; password: string }) {
       signin({
         variables: {
           email: formData.email,
@@ -29,13 +29,15 @@ function Signin(): JSX.Element {
     [signin],
   );
 
+  console.log('--------- error --------', error);
+
   const messageError = error?.networkError?.result?.errors?.[0]?.message;
 
   return (
     <SiginForm
+      error={messageError}
       initialValues={INITIAL_VALUES}
       onSubmit={handleSubmit}
-      error={messageError}
     />
   );
 }

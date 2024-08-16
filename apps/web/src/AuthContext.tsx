@@ -1,16 +1,17 @@
 import type { Context, JSX, ReactNode } from 'react';
 
-import { createContext, useContext, useMemo, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import {
-  setRefreshTokenStorage,
-  // clearAuthStorage,
+  clearRefreshTokenStorage,
+  clearAccessTokenStorage,
   clearUserStorage,
   getAccessTokenStorage,
   getUserStorage,
   setAccessTokenStorage,
+  setRefreshTokenStorage,
   setUserStorage,
 } from '@/services/storage';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 type AuthContextType = {
   activateAuth: (token: string) => void;
@@ -22,7 +23,7 @@ type AuthContextType = {
   } | null;
 };
 
-//@see https://twitter.com/gregberge_/status/1750111230554153450/photo/1
+// @see https://twitter.com/gregberge_/status/1750111230554153450/photo/1
 // keep context private
 export const AuthContext: Context<AuthContextType | undefined> = createContext<
   AuthContextType | undefined
@@ -72,7 +73,8 @@ function Provider({ children }: AuthContextProps): JSX.Element {
       setIsAuth(false);
       setUserStorage(null);
       clearUserStorage();
-      // clearAuthStorage();
+      clearRefreshTokenStorage();
+      clearAccessTokenStorage();
     },
     userData: userData ? JSON.parse(userData as string) : null,
   };

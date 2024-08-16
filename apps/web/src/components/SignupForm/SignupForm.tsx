@@ -1,23 +1,17 @@
 import type { JSX } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
+
 import type { z } from 'zod';
 
-import { useTranslation } from 'react-i18next';
 import ROUTER_PATH from '@/constants/RouterPath';
 import { zodResolver } from '@hookform/resolvers/zod';
-
+import { useMemo } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Alert, Button, Field } from 'ui';
 
-import {
-  formSchema,
-  INPUT_NAME,
-  LABEL_EMAIL,
-  LABEL_PASSWORD,
-} from './constants';
-import { useMemo } from 'react';
+import { INPUT_NAME, formSchema } from './constants';
 
 type FormSchemaType = z.infer<typeof formSchema>;
 
@@ -26,11 +20,11 @@ interface IForm {
   onSubmit: SubmitHandler<FormSchemaType>;
 }
 
-function SigninForm({ initialValues, onSubmit, error }: IForm): JSX.Element {
+function SigninForm({ error, initialValues, onSubmit }: IForm): JSX.Element {
   const { t } = useTranslation();
   const {
-    formState: { errors, isValid },
     control,
+    formState: { errors, isValid },
     handleSubmit,
     register,
   } = useForm<FormSchemaType>({

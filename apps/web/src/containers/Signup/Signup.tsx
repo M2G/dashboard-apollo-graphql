@@ -14,7 +14,7 @@ function Signup(): JSX.Element {
   });
 
   const handleSubmit = useCallback(
-    async (formData: any) =>
+    async (formData) =>
       signup({
         variables: {
           email: formData.email,
