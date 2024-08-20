@@ -22,15 +22,15 @@ export enum languageOptions {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const { i18n } = useTranslation();
-  const defaultLanguage = window.localStorage.getItem('rcml-lang');
-  const [userLanguage, setUserLanguage] = useState(defaultLanguage || 'en');
+  const defaultLanguage = window.localStorage.getItem('rcml-lang') || 'en';
+  const [userLanguage, setUserLanguage] = useState(defaultLanguage);
 
   const provider = {
     userLanguage,
     userLanguageChange: (selected: number | string) => {
       const newLanguage = languageOptions[selected] ? selected : 'en';
-      setUserLanguage(newLanguage);
-      window.localStorage.setItem('rcml-lang', newLanguage);
+      setUserLanguage(newLanguage as string);
+      window.localStorage.setItem('rcml-lang', newLanguage as string);
     },
   };
 

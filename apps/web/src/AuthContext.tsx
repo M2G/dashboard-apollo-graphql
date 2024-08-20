@@ -1,5 +1,6 @@
 import type { Context, JSX, ReactNode } from 'react';
 
+import { createContext, useContext, useMemo, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import {
   clearRefreshTokenStorage,
@@ -11,7 +12,6 @@ import {
   setRefreshTokenStorage,
   setUserStorage,
 } from '@/services/storage';
-import { createContext, useContext, useMemo, useState } from 'react';
 
 type AuthContextType = {
   activateAuth: (token: string) => void;
